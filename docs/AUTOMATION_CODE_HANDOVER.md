@@ -122,6 +122,15 @@ GitHubへpushできてもSites更新やAPI保存はできるとは限らない�
 
 CI（2026/11/06、run 42236514700）：自動取得クライアントの手順は16/16成功。既存の計算テストの手順は、依存（next）が未インストールのため失敗が続いている（取り込み時点からの既存の状態）。
 
+### 実行場所：GitHub Actions（2026/11/06 ユーザー決定）
+- `.github/workflows/border-writer.yml`：手動起動（workflow_dispatch）のみ。scheduleは未設定。
+- 入力 `mode`（既定はplan）。`refresh` は入力 `confirm` に `production-write` を入れないと停止する。
+- `BORDER_WRITER_KEY` は、discover／refresh のときだけリポジトリSecretsから渡す。現在、Secretsは未登録（`gh secret list` で空を確認）。
+- CLIは、CI上ではworkflow_dispatch以外でplan以外を拒否する。push・PR・scheduleからは通信しない。
+- 結果のJSONはジョブ概要に出力する。公開リポジトリのため、ログと概要は公開される。キー・署名・本文は出力しない。
+- 起動できるのは書き込み権限を持つ人だけ。フォークからのPRにはSecretsが渡らない。
+- 未確認：GitHub Actionsの実行環境から本番サイトと取得元へ届くか（diagnoseの1回実行で確認。要承認）。
+
 ## 承認が必要な運用開始段階
 準備とローカルテスト後、実行場所、時刻、認証の提供方法、送信先、費用、復旧方法を具体的に示す。
 ユーザーの明示承認後にだけ、保留中の実通信診断を再実施する。

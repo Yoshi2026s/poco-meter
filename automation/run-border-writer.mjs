@@ -21,8 +21,10 @@ if (!(mode in MODES)) {
   console.error('modeは ' + Object.keys(MODES).join(' / ') + ' のいずれかです。');
   process.exit(64);
 }
-if (process.env.CI && mode !== 'plan') {
-  console.error('CIでは plan 以外を実行しません。');
+// In CI only an explicit manual start (workflow_dispatch) may use the network.
+// Push, pull_request and schedule runs stay at "plan".
+if (process.env.CI && mode !== 'plan' && process.env.GITHUB_EVENT_NAME !== 'workflow_dispatch') {
+  console.error('CIでは、手動起動（workflow_dispatch）以外で plan 以外を実行しません。');
   process.exit(64);
 }
 
