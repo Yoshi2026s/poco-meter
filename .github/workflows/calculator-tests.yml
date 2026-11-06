@@ -14,6 +14,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      # 計算テストは画面のスクリプトを構文解析する。アプリの依存一式（next）は入れず、
+      # 解析器 acorn だけを版指定で一時フォルダーへ入れる。
+      - name: テスト用の構文解析器を準備
+        run: |
+          npm install --prefix "$RUNNER_TEMP/test-tools" --no-save --no-audit --no-fund acorn@8.15.0
+          echo "NODE_PATH=$RUNNER_TEMP/test-tools/node_modules" >> "$GITHUB_ENV"
       - name: 計算・コア数入力・保存認証・履歴検索を検証
         run: |
           node tests/calculation-engine.mjs

@@ -24,7 +24,7 @@ test('Independent page is sealed, has usable labels and preserves a bounded read
  for(const id of ['query','rank','close','month','start','end','units','order','origin','view','pageSize','pageJump'])assert.match(html,new RegExp('for="'+id+'"'));
  assert.match(html,/max-width:350px/);assert.match(html,/min-height:44px/);assert.match(html,/font-size:16px/);assert.match(html,/filter-chip\{[^}]*overflow-wrap:anywhere/);assert.match(html,/role="status" aria-live="polite"/);
  assert.match(html,/script-src 'sha256-/);assert.doesNotMatch(html,/script-src 'unsafe-inline'/);
- const scripts=[...html.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)].map(x=>x[1]);const require=createRequire(import.meta.url);const {parse}=require('next/dist/compiled/acorn');scripts.forEach(s=>parse(s,{ecmaVersion:'latest',sourceType:'module'}));
+ const scripts=[...html.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)].map(x=>x[1]);const require=createRequire(import.meta.url);const {parse}=(()=>{try{return require('next/dist/compiled/acorn');}catch{return require('acorn');}})();scripts.forEach(s=>parse(s,{ecmaVersion:'latest',sourceType:'module'}));
  const ui=fs.readFileSync(new URL('../calculator/history-ui.mjs',import.meta.url),'utf8');assert.doesNotMatch(ui,/localStorage\.setItem\(MAIN_KEY/);assert.doesNotMatch(ui,/\.innerHTML\s*=/);assert.match(ui,/slice=historyPage/);
 });
 test('10000 distinct filter/date/pagination/unit conditions, repeated for ten independently checked rounds',()=>{

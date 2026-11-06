@@ -6,7 +6,7 @@ import { createRequire } from 'node:module';
 // Exercise the functions shipped to browsers, without copying their formulas
 // into a parallel implementation or executing page initialization.
 const require = createRequire(import.meta.url);
-const { parse } = require('next/dist/compiled/acorn');
+const { parse } = (()=>{try{return require('next/dist/compiled/acorn');}catch{return require('acorn');}})();
 const html = fs.readFileSync(new URL('../calculator/index.html', import.meta.url), 'utf8');
 const script = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)]
   .map(match => match[1]).find(source => source.includes('function readNumber('));
