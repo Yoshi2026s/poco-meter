@@ -11,15 +11,14 @@ test.afterEach(()=>global.gc?.());
 const desktop={theme:'dark',accent:'standard',weight:'standard',width:1280,pointer:'fine'};
 function input(p,id,value){const field=p.element(id);field.focus();field.value=value;field.dispatchEvent(new Event('input'));return field;}
 
-test('Closing the item window after HUD OFF returns focus to the visible HUD switch',()=>{
+test('Closing the other menus returns focus to the visible menu toggle',()=>{
   const p=pageEngine(undefined,{navigator:{onLine:false}});
-  p.element('itemsHudToggle').click();assert.equal(p.element('itemsWindow').hidden,false);
-  p.element('hudToggle').click();assert.equal(p.element('mini').classList.contains('hud-collapsed'),true);
-  assert.equal(p.element('itemsWindow').hidden,false,'The item window has its own visibility preference');
-  p.element('closeItemsWindow').focus();p.element('closeItemsWindow').click();
-  assert.equal(p.element('itemsWindow').hidden,true);
-  assert.equal(p.document.activeElement?.id,'hudToggle');
-  assert.equal(p.element('hudToggle').getAttribute('aria-checked'),'false');
+  p.element('mainMenuToggle').click();assert.equal(p.document.body.classList.contains('menus-open'),true);
+  p.element('closeMainMenus').focus();p.element('closeMainMenus').click();
+  assert.equal(p.document.body.classList.contains('menus-open'),false);
+  assert.equal(p.document.activeElement?.id,'mainMenuToggle');
+  assert.equal(p.element('mainMenuToggle').getAttribute('aria-expanded'),'false');
+  assert.equal(p.element('itemsWindow').hidden,false,'The item estimate stays visible');
 });
 
 for(const [id,errorId] of [['targetMini','targetMiniError'],['currentMini','currentMiniError']])test('Desktop HUD '+id+' exposes its local error without relying on border color',()=>{

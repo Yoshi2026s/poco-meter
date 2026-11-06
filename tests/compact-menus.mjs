@@ -107,7 +107,7 @@ test('Opening a header menu closes the other two panels to prevent overlap',()=>
 });
 
 test('Simple menu is visible in the delivered HTML before initialization',()=>{
-  assert.match(html,/<div class="mini show" id="mini" aria-hidden="false">/);
+  assert.match(html,/<div class="mini show main-screen" id="mini" [^>]*aria-hidden="false">/);
   for(const id of ['miniTargetField','miniCurrentField','miniGoalMenu','miniNow']){
     const tag=html.match(new RegExp('<[^>]+id="'+id+'"[^>]*>'))[0];
     assert.doesNotMatch(tag,/\shidden(?:\s|>)/);
@@ -115,5 +115,6 @@ test('Simple menu is visible in the delivered HTML before initialization',()=>{
   const p=page();
   assert.ok(p.element('mini').classList.contains('show'));
   assert.equal(p.element('fullMeterMenu').open,false);
-  assert.equal(p.element('itemsWindow').hidden,true);
+  assert.equal(p.element('itemsWindow').hidden,false,'remaining items are always shown in the simple menu');
+  assert.ok(p.element('itemsWindow').closest('#mini'),'remaining items live inside the simple menu');
 });
