@@ -25,7 +25,8 @@ async function open(width,file,config={}){
  await p.evaluate(()=>document.fonts.ready);
  await p.evaluate(c=>{for(const [id,value] of [['screenTheme',c.theme||'dark'],['textWeight',c.weight||'bold']]){const e=document.getElementById(id);e.value=value;e.dispatchEvent(new Event('change',{bubbles:true}));}},config);
  // The detailed meter menu is closed by default (see compact-menus); open it as a user would.
- await p.evaluate(()=>{const menu=document.getElementById('fullMeterMenu');if(menu)menu.open=true;});
+ // Other menus are closed behind the simple menu (main screen) by default; open them as a user would.
+ await p.evaluate(()=>{if(window.pocochaMainMenus)window.pocochaMainMenus.open();const menu=document.getElementById('fullMeterMenu');if(menu)menu.open=true;});
  if(config.defaultsOnly)return {context,p,errors};
  await fill(p,'#coreCountTop','40');await fill(p,'#target','500K');await p.locator('#applyManualTarget').click();await fill(p,'#currentTop','125K');
  await p.locator('#currentTop').blur();await p.evaluate(()=>window.scrollTo(0,0));await p.waitForTimeout(80);
@@ -45,7 +46,7 @@ async function step(p){await p.waitForTimeout(80);}
   const opened=await open(config.width,path.join(ROOT,'calculator/index.html'),config);context=opened.context;const p=opened.p;
   assert.equal((await p.locator('#remain').innerText()).trim(),'375K');
   assert.equal((await p.locator('#pct').innerText()).trim(),'25%');
-  assert.equal(await p.locator('#mini').getAttribute('aria-hidden'),'false','HUD visible at page top');assert.ok(await p.locator('#mini').isVisible());assert.equal(await p.locator('#miniAdd').getAttribute('tabindex'),'-1');assert.equal(await p.locator('#miniAdd').isVisible(),false);
+  assert.equal(await p.locator('#mini').getAttribute('aria-hidden'),'false','HUD visible at page top');assert.ok(await p.locator('#mini').isVisible());for(const id of ['#miniSub1k','#miniAdd1k','#miniAdd10k','#miniAdd100k','#miniUndoCurrent']){const box=await p.locator(id).boundingBox();assert.ok(box&&box.height>=44,'quick add tap target '+id);}assert.equal(await p.locator('#mainMenuToggle').getAttribute('aria-expanded'),'true');
   assert.equal(await p.locator('#miniR').innerText(),await p.locator('#remain').innerText());
   assert.ok(await p.locator('#miniNow').isVisible(),'HUD current datetime visible');assert.equal(await p.locator('#miniNowDate').innerText(),'2026/10/05（月）');const hudClock=await p.locator('#miniNowTime').innerText();
   const countdown=await p.locator('#miniT').innerText();await p.clock.runFor(1000);assert.notEqual(await p.locator('#miniT').innerText(),countdown,'HUD countdown ticks');assert.equal(await p.locator('#miniT').innerText(),await p.locator('#left').innerText());
@@ -89,10 +90,13 @@ async function step(p){await p.waitForTimeout(80);}
   assert.equal(await p.locator('#mini').getAttribute('aria-hidden'),'false','HUD remains visible while summary is visible');
   await p.evaluate(()=>window.scrollTo(0,document.querySelector('#remainingSummary').getBoundingClientRect().bottom+scrollY+4));await step(p);
   assert.equal(await p.locator('#mini').getAttribute('aria-hidden'),'false','HUD when summary leaves viewport');
-  const mini=await p.locator('#mini').boundingBox();assert.ok(mini.y>=0&&mini.y<20,'HUD belongs at top');
-  await p.locator('#currentTop').focus();await p.clock.runFor(100);await step(p);assert.equal(await p.locator('#mini').getAttribute('aria-hidden'),'false','HUD remains visible while editing');assert.ok(await p.locator('#mini').isVisible(),'HUD is painted while editing');
-  assert.ok((await p.locator('#currentTop').boundingBox()).y>=(await p.locator('#mini').boundingBox()).y+(await p.locator('#mini').boundingBox()).height+7,'HUD does not cover focused input');
-  await p.locator('#currentTop').blur();await p.evaluate(()=>window.scrollTo(0,document.documentElement.scrollHeight));await step(p);assert.ok(await p.locator('#mini').isVisible(),'HUD visible at footer');
+  // 2026-11: the simple menu is the main screen in normal flow (not fixed); it scrolls away with the page.
+  const mini=await p.locator('#mini').boundingBox();assert.ok(mini.y+mini.height<=0,'main screen scrolls with the page instead of covering the menus');
+  await p.locator('#currentTop').focus();await p.clock.runFor(100);await step(p);
+  const focused=await p.locator('#currentTop').boundingBox();assert.ok(focused.y>=0&&focused.y+focused.height<=844,'focused input is in view');
+  assert.equal(await p.evaluate(()=>{const r=document.getElementById('currentTop').getBoundingClientRect();return document.elementFromPoint(r.left+r.width/2,r.top+r.height/2)?.id;}),'currentTop','nothing covers the focused input');
+  await p.locator('#currentTop').blur();await p.evaluate(()=>window.scrollTo(0,document.documentElement.scrollHeight));await step(p);assert.ok(await p.locator('#closeMainMenus').isVisible(),'return button visible at footer');
+  const back=await p.locator('#closeMainMenus').boundingBox();assert.ok(back.height>=44&&back.x+back.width<=config.width,'return button reachable');
   await p.locator('#currentTop').blur();await p.evaluate(()=>window.scrollTo(0,0));await step(p);
   if(config.scale===1&&[320,390,430].includes(config.width)&&config.weight==='bold')await p.screenshot({path:path.join(OUT,'phone-'+config.width+'-'+config.theme+'.png'),fullPage:true,animations:'disabled'});
   await fill(p,'#target','514.421K');await p.locator('#applyManualTarget').click();await fill(p,'#currentTop','100K');await p.locator('#currentTop').blur();assert.equal((await p.locator('#remain').innerText()).trim(),'414.421K');
@@ -111,20 +115,15 @@ async function step(p){await p.waitForTimeout(80);}
  }catch(e){failures.push({width,error:e.message});console.log('FAIL desktop '+width+' '+e.message);}finally{if(before)await before.context.close();if(after)await after.context.close();}}
  {let opened;try{
   opened=await open(390,path.join(ROOT,'calculator/index.html'),{virtualViewport:true});const p=opened.p;
-  await p.locator('#currentTop').focus();
-  await p.evaluate(()=>{Object.assign(window.visualViewport,{height:470,offsetTop:0});window.visualViewport.dispatchEvent(new Event('resize'));});await p.clock.runFor(100);
-  let mini=await p.locator('#mini').boundingBox(),input=await p.locator('#currentTop').boundingBox();assert.ok(mini.y>=0&&mini.y<20,'HUD stays at top with simulated keyboard');assert.ok(input.y>=mini.y+mini.height+7&&input.y+input.height<=470,'keyboard HUD clears input');assert.equal(await p.locator('#mini').getAttribute('aria-hidden'),'false');
-  await p.evaluate(()=>{window.visualViewport.offsetTop=40;window.visualViewport.dispatchEvent(new Event('scroll'));});await step(p);mini=await p.locator('#mini').boundingBox();assert.ok(mini.y>=40&&mini.y<60,'HUD follows visual viewport top');
-  await p.locator('#currentTop').blur();await p.evaluate(()=>{Object.assign(window.visualViewport,{height:844,offsetTop:0});window.visualViewport.dispatchEvent(new Event('resize'));});await p.clock.runFor(100);mini=await p.locator('#mini').boundingBox();assert.ok(mini.y>=0&&mini.y<20,'HUD returns to top');
-  await p.evaluate(()=>window.scrollTo(0,800));await p.locator('#currentMini').focus();const scrollBefore=await p.evaluate(()=>scrollY);
-  await p.evaluate(()=>{Object.assign(window.visualViewport,{height:470,offsetTop:0});window.visualViewport.dispatchEvent(new Event('resize'));});await p.clock.runFor(100);
-  assert.equal(await p.evaluate(()=>scrollY),scrollBefore,'HUD input does not scroll document on keyboard resize');
-  input=await p.locator('#currentMini').boundingBox();mini=await p.locator('#mini').boundingBox();assert.ok(input.y>=mini.y&&input.y+input.height<=mini.y+mini.height&&input.y+input.height<=470,'HUD input remains visible above keyboard');
-  await p.setViewportSize({width:768,height:844});await p.evaluate(()=>window.scrollTo(0,0));await step(p);assert.equal(await p.locator('#mini').getAttribute('aria-hidden'),'false','simple menu stays visible on desktop');assert.equal(await p.locator('#remainingItems').evaluate(e=>!!e.closest('#remainingSummary')),true,'desktop items restore original place');
-  assert.equal(await p.locator('#currentMini').isVisible(),true,'HUD field stays visible on desktop');assert.equal(await p.evaluate(()=>document.activeElement.id),'currentMini','focus stays in the HUD field');
-  await p.locator('#currentTop').blur();
-  await p.setViewportSize({width:390,height:844});await step(p);assert.equal(await p.locator('#mini').getAttribute('aria-hidden'),'false','phone HUD returns on resize');assert.equal(await p.locator('#remainingItems').evaluate(e=>!!e.closest('.goal-inputs')),true,'phone items move below current again');
-  await p.locator('#targetMini').focus();const targetScroll=await p.evaluate(()=>scrollY);await p.evaluate(()=>window.visualViewport.dispatchEvent(new Event('resize')));await p.clock.runFor(100);assert.equal(await p.evaluate(()=>scrollY),targetScroll,'fixed target input does not scroll document');assert.equal(await p.locator('#mini').getAttribute('aria-hidden'),'false');
+  // Main screen is in normal flow: a simulated keyboard keeps the focused simple-menu input visible and uncovered.
+  await p.evaluate(()=>window.scrollTo(0,0));await p.locator('#currentMini').focus();
+  await p.evaluate(()=>{Object.assign(window.visualViewport,{height:470,offsetTop:0});window.visualViewport.dispatchEvent(new Event('resize'));});await p.clock.runFor(200);
+  let input=await p.locator('#currentMini').boundingBox();assert.ok(input.y>=0&&input.y+input.height<=470,'simple-menu input stays above simulated keyboard');
+  assert.equal(await p.evaluate(()=>{const r=document.getElementById('currentMini').getBoundingClientRect();return document.elementFromPoint(r.left+r.width/2,r.top+r.height/2)?.id;}),'currentMini','nothing covers the focused simple-menu input');
+  await p.locator('#currentMini').blur();await p.evaluate(()=>{Object.assign(window.visualViewport,{height:844,offsetTop:0});window.visualViewport.dispatchEvent(new Event('resize'));});await p.clock.runFor(100);
+  await p.setViewportSize({width:768,height:844});await step(p);assert.equal(await p.locator('#mini').getAttribute('aria-hidden'),'false','simple menu stays visible on desktop');
+  assert.equal(await p.locator('#currentMini').isVisible(),true,'main screen field stays visible on desktop');assert.equal(await p.locator('#itemsWindow').isVisible(),true,'items stay visible on desktop');
+  await p.setViewportSize({width:390,height:844});await step(p);assert.equal(await p.locator('#itemsWindow').isVisible(),true,'items stay visible on phone');
   assert.deepEqual(opened.errors,[]);results.push({status:'passed',persistentMeterKeyboardSimulation:true});console.log('PASS persistent meter keyboard and resize');
  }catch(e){failures.push({behavior:'persistentMeterKeyboardSimulation',error:e.message});console.log('FAIL persistent meter '+e.message);}finally{if(opened)await opened.context.close();}}
  {let opened;try{
@@ -165,7 +164,8 @@ async function step(p){await p.waitForTimeout(80);}
   assert.equal(await p.evaluate(()=>JSON.parse(localStorage.getItem('pococha-meter-calc-v1')).target),'600000','HUD target is saved');assert.equal(await p.locator('#targetMini').inputValue(),'600,000');
   // Opening on a phone resets the target to its default; HUD and detailed input stay in sync.
   await p.reload();assert.notEqual(await p.locator('#targetMini').inputValue(),'600,000','phone opening resets target');assert.equal(await p.locator('#targetMini').inputValue(),await p.locator('#target').inputValue());assert.equal(await p.locator('#currentMini').inputValue(),'0');
-  await p.evaluate(()=>{document.getElementById('fullMeterMenu').open=true;});await p.locator('#restoreGoalDefaults').click();assert.equal(await p.locator('#targetMini').inputValue(),await p.locator('#target').inputValue(),'defaults mirror target');
+  assert.equal(await p.evaluate(()=>document.body.classList.contains('menus-open')),false,'other menus closed again after reload');
+  await p.locator('#navFullMeter').click();await p.locator('#restoreGoalDefaults').click();assert.equal(await p.locator('#targetMini').inputValue(),await p.locator('#target').inputValue(),'defaults mirror target');
   assert.deepEqual(opened.errors,[]);results.push({status:'passed',hudTargetValidationAutomaticCompositionPersistence:true});console.log('PASS HUD target validation, auto border, IME, reset/default and persistence');
  }catch(e){failures.push({behavior:'hudTargetInput',error:e.message});console.log('FAIL HUD target '+e.message);}finally{if(opened)await opened.context.close();}}
  {let opened;try{

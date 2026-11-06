@@ -101,7 +101,7 @@ test('Pressed controls follow reference desktop and mobile paints in both themes
   const e=make();
   for(const theme of ['light','dark'])for(const accent of ['standard','blue','pink','green','purple','black'])
     for(const weight of ['thin','standard','bold'])for(const width of [320,390,1280])
-      for(const n of [e.p.element('applyManualTarget'),e.p.element('copyRemaining'),e.p.element('displaySettings').children[0],e.p.element('hudToggle')]){
+      for(const n of [e.p.element('applyManualTarget'),e.p.element('copyRemaining'),e.p.element('displaySettings').children[0],e.p.element('mainMenuToggle')]){
         const ctx={theme,accent,weight,width,pointer:width<700?'coarse':'fine',states:new Map([[n,new Set(['active','hover'])]])};
         const c=e.audit.computed(n,ctx);assert.equal(c.filter,n.tagName==='BUTTON'&&width<=700?'brightness(.88)':'none');
         if(c.filter!=='none'){const scaled=rgba=>rgba.map((v,i)=>i<3?v*.88:v);assert.ok(contrast(scaled(parseColor(c.color)),scaled(e.audit.background(n,ctx)))>=4.5);}

@@ -264,23 +264,13 @@ section.collapsed>*:not(h2){display:none!important}
 #goalDefaultsStatus{font-size:.68rem;margin:7px 0 0}
 #goalDefaultsStatus:empty{display:none}
 @media(max-width:560px){.goal-defaults-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.goal-defaults-date{grid-column:1/-1}}
-#mini #hudToggle{grid-column:1/-1;grid-row:4;justify-self:end;min-height:26px;padding:2px 10px;font-size:12px!important;line-height:1.4}
-#mini .hud-actions{grid-column:1/-1;grid-row:4;display:flex;justify-content:flex-end;align-items:center;gap:6px;flex-wrap:wrap;max-width:100%;min-width:0}
-#mini .hud-actions button{min-height:44px;padding:3px 8px;font-size:12px!important;line-height:1.4}
 #mini{box-sizing:border-box;max-height:max(44px,calc(var(--meter-visible-height,100vh) - 20px - env(safe-area-inset-top,0px) - var(--items-window-height,0px)));overflow-y:auto;overscroll-behavior:contain;scroll-padding-block:8px}
-#mini.hud-collapsed{display:flex!important;width:auto;min-width:0;padding:4px 6px;gap:0}
-#mini.hud-collapsed>:not(.hud-actions){display:none!important}
-#mini.hud-collapsed .hud-actions>:not(#hudToggle){display:none!important}
-#mini.hud-collapsed #hudToggle{display:block!important;margin:0}
 :root #mini #miniClose{grid-column:1;grid-row:2;min-height:24px;height:24px;font-size:10px!important;padding:1px 12px 1px 3px}
-#mini #itemsHudToggle{grid-column:2/-1;grid-row:2;justify-self:start;min-height:28px;padding:3px 6px;font-size:12px!important;line-height:1.4;max-width:100%;white-space:normal}
 #itemsWindow{position:fixed;top:calc(var(--hud-bottom,240px) + 6px);bottom:auto;left:50%;transform:translateX(-50%);z-index:51;width:min(560px,calc(100% - 24px));box-sizing:border-box;padding:6px 8px;background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:12px;box-shadow:0 -4px 18px #0003}
-#itemsWindow[hidden]{display:none}
 #itemsWindow{max-height:calc(var(--meter-visible-height,100vh) / 2);overflow:auto;overscroll-behavior:contain}
 #itemsWindow{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6px;padding:6px 8px;border-radius:8px}
 .items-window-head{display:contents}
 #itemsWindowTitle{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
-#closeItemsWindow{grid-column:2;grid-row:1;min-height:30px;width:26px;padding:0;font-size:14px!important}
 #itemsWindowDescription{grid-column:1/-1;grid-row:2;margin:0;font-size:12px!important;line-height:1.5;white-space:normal;overflow-wrap:anywhere;color:var(--ink)}
 #itemsWindowRow{grid-column:1/-1;grid-row:3;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;min-width:0;padding:0}
 #itemsWindowRow .coin-card{min-width:0;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 6px;margin:0;background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:4px}
@@ -1426,7 +1416,7 @@ header.card>.header-main>#toolUpdatedDate>time{font-size:.75rem;white-space:norm
   #liveMeter .goal-inputs #manualTargetMsg{grid-row:10}
   #liveMeter .goal-inputs #currentActionMsg{grid-row:11}
   #liveMeter .goal-inputs #remainingItems{grid-row:12}
-  #liveMeter .goal-inputs .curbtns,#miniAdd{display:none}
+  #liveMeter .goal-inputs .curbtns{display:none}
   .meter-tools{margin-top:10px}
   .menus-toolbar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}
   .menus-toolbar button{font-size:.8125rem!important;padding:6px 8px}
@@ -1504,7 +1494,6 @@ header.card>.header-main>#toolUpdatedDate>time{font-size:.75rem;white-space:norm
   :root #mini .mini-goal-menu select,:root #mini .mini-goal-menu input{width:100%;min-width:0;min-height:26px;height:26px;margin:0;padding:2px 3px;border-radius:5px;font-size:12px!important;line-height:1.2}
   :root #mini .mini-goal-menu select{padding-right:12px;background-size:7px 5px;background-position:right 3px center}
   .mini{width:min(560px,calc(100% - 24px))}
-  #miniAdd{display:none}
   body{padding-top:calc(var(--meter-hud-height,230px) + var(--items-window-height,0px) + 20px)}
 }
 
@@ -1651,25 +1640,134 @@ footer .footer-support .tool-disclaimer ul{font-size:.875rem;line-height:1.8}
 
 /* 2026-11-07 tap targets: compact simple-menu controls are at least 44px tall (user decision: 44px, not 48px).
    Only when the screen is tall enough: the panel is fixed, so landscape and short screens keep the compact size. */
-@media (min-height:640px){#mini :is(#restoreTargetMini,#openMiniTargetDetails,#resetCurrentMini,#hudToggle,#miniPeriod,#miniRank,#miniBorder,#miniMethod,#miniBuffer){min-height:44px!important}}
+@media (min-height:640px){#mini :is(#restoreTargetMini,#openMiniTargetDetails,#resetCurrentMini,#miniPeriod,#miniRank,#miniBorder,#miniMethod,#miniBuffer){min-height:44px!important}}
+
+/* 2026-11 main screen: the simple menu is the main screen on every screen size (in normal flow, not fixed).
+   Other menus open from buttons. Phone portrait first: 16px controls (no iOS zoom), 44-48px tap targets. */
+:root body{padding-top:0!important}
+:root body .wrap{padding-top:4px!important}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
+:root body #mini.main-screen{position:relative!important;left:auto!important;top:auto!important;bottom:auto!important;transform:none!important;z-index:1!important;display:flex!important;flex-direction:column;gap:12px;box-sizing:border-box;width:min(760px,calc(100% - 20px))!important;max-width:none;max-height:none!important;overflow:visible!important;margin:calc(env(safe-area-inset-top,0px) + 10px) auto 12px!important;padding:14px!important;border:1px solid var(--line);border-radius:16px;visibility:visible!important;pointer-events:auto!important;box-shadow:0 8px 24px #0003}
+:root body #mini.main-screen>*{min-width:0;margin:0!important;width:auto!important;max-width:none!important;flex:0 0 auto!important;align-self:stretch!important}
+/* Hero: remaining goal + countdown */
+:root body #mini.main-screen .main-hero{display:grid!important;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:4px 12px;align-items:end;padding-bottom:12px;border-bottom:1px solid var(--line)}
+:root body #mini.main-screen .main-hero :is(.mini-remaining,.mini-countdown){display:flex!important;flex-direction:column;gap:2px;min-width:0;text-align:left!important;grid-row:1;align-self:end}
+:root body #mini.main-screen .mini-remaining{grid-column:1}
+:root body #mini.main-screen .mini-countdown{grid-column:2}
+:root body #mini.main-screen :is(#miniL,#miniDeadlineLabel){font-size:13px!important;line-height:1.4;font-weight:700;color:var(--sub)!important;white-space:nowrap}
+:root body #mini.main-screen #miniR{display:block;font-size:clamp(26px,8.2vw,40px)!important;line-height:1.15;font-weight:800;color:var(--number-ink,var(--teal))!important;white-space:normal;overflow-wrap:anywhere;letter-spacing:0;font-variant-numeric:tabular-nums}
+:root body #mini.main-screen #miniR.done{color:var(--success)!important}
+:root body #mini.main-screen #miniT{display:block;font-size:clamp(22px,6.6vw,32px)!important;line-height:1.15;font-weight:800;color:var(--red)!important;white-space:nowrap;font-variant-numeric:tabular-nums}
+:root body #mini.main-screen #miniClockAccuracy{font-size:12px!important;line-height:1.4;color:var(--sub)!important}
+:root body #mini.main-screen #miniPeriodReview{min-height:44px;font-size:13px!important;margin-top:4px}
+:root body #mini.main-screen #miniNow{grid-column:1/-1!important;grid-row:2!important;display:flex!important;flex-wrap:wrap;align-items:baseline;justify-content:flex-end;gap:2px 8px;text-align:right;margin:2px 0 0;line-height:1.4}
+:root body #mini.main-screen #miniTimeLabel{font-size:12px!important;color:var(--success)!important}
+:root body #mini.main-screen #miniNowTime{font-size:15px!important;color:var(--success)!important;font-variant-numeric:tabular-nums}
+:root body #mini.main-screen .main-progress{grid-column:1/-1;grid-row:3;display:flex;align-items:center;gap:8px;margin-top:6px}
+:root body #mini.main-screen .main-progress-bar{flex:1;height:10px;border-radius:5px;background:var(--line);overflow:hidden}
+:root body #mini.main-screen #miniFill{display:block;height:100%;width:0;border-radius:5px;background:var(--number-ink,var(--teal));transition:width .3s}
+:root body #mini.main-screen #miniPct{min-width:3.2em;text-align:right;font-size:14px!important;font-weight:800;color:var(--ink)!important;font-variant-numeric:tabular-nums}
+:root body #mini.main-screen .mini-quick-add{grid-column:1/-1;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-top:4px}
+:root body #mini.main-screen .mini-quick-add button{min-width:0;min-height:44px;margin:0;padding:4px 2px;border:1px solid var(--line);border-radius:8px;font-size:14px!important;font-weight:800;line-height:1.2;white-space:nowrap;font-variant-numeric:tabular-nums;touch-action:manipulation}
+:root body #mini.main-screen .mini-quick-add button:disabled{opacity:1;color:var(--sub)!important;border-style:dashed}
+:root body #mini.main-screen .mini-action-msg{grid-column:1/-1;margin:0;font-size:13px!important;line-height:1.5;color:var(--success)!important}
+:root body #mini.main-screen .mini-action-msg:empty{display:none}
+/* Inputs */
+:root body #mini.main-screen .main-inputs{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 10px}
+:root body #mini.main-screen .mini-input{display:flex!important;flex-direction:column;gap:4px;min-width:0;grid-row:auto!important;grid-column:auto!important}
+:root body #mini.main-screen .mini-input label{font-size:13px!important;line-height:1.4;font-weight:700;color:var(--sub)!important;margin:0!important}
+:root body #mini.main-screen :is(#targetMini,#currentMini){width:100%!important;min-height:52px!important;height:52px!important;padding:6px 10px!important;border-radius:10px!important;font-size:20px!important;line-height:1.2;font-weight:800;text-align:left}
+:root body #mini.main-screen .mini-target-actions{display:flex!important;gap:6px;flex-wrap:nowrap}
+:root body #mini.main-screen .mini-input .mini-action{flex:1 1 0;width:auto!important;min-width:0!important;min-height:44px!important;height:auto!important;margin:0!important;padding:4px 2px!important;border-radius:8px!important;font-size:13px!important;line-height:1.3;letter-spacing:0;white-space:nowrap!important;overflow:hidden;text-overflow:ellipsis}
+:root body #mini.main-screen :is(#targetMiniError,#currentMiniError){grid-column:1/-1;margin:0;font-size:13px!important;line-height:1.5;color:var(--red)!important}
+/* Goal conditions: labelled 16px controls */
+:root body #mini.main-screen .mini-goal-menu{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important;grid-row:auto!important;grid-column:auto!important;padding:10px;border:1px solid var(--line);border-radius:12px}
+:root body #mini.main-screen .goal-field{display:flex;flex-direction:column;gap:3px;min-width:0}
+:root body #mini.main-screen .goal-field label{font-size:12px!important;line-height:1.4;font-weight:700;color:var(--sub)!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+:root body #mini.main-screen .mini-goal-menu :is(select,input){width:100%!important;min-width:0!important;min-height:44px!important;height:44px!important;margin:0!important;padding:4px 18px 4px 6px!important;letter-spacing:0;border-radius:8px!important;font-size:16px!important;line-height:1.2!important;text-overflow:ellipsis}
+:root body #mini.main-screen .mini-goal-menu input{padding-right:8px!important}
+:root body #mini.main-screen #miniBufferError{font-size:13px!important;color:var(--red)!important}
+/* Remaining items: always shown */
+:root body #mini.main-screen #itemsWindow{position:static!important;transform:none!important;left:auto!important;top:auto!important;z-index:auto!important;display:block!important;width:auto!important;max-height:none!important;overflow:visible!important;margin:0;padding:12px!important;border:1px solid var(--line);border-radius:12px!important;box-shadow:none!important}
+:root body #mini.main-screen #itemsWindow[hidden]{display:block!important}
+:root body #mini.main-screen .items-window-head{display:flex!important;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+:root body #mini.main-screen #itemsWindowTitle::before,:root body #mini.main-screen #itemsWindowTitle::after{content:none!important;display:none!important}
+:root body #mini.main-screen #itemsWindowTitle{padding:0!important;border:0!important;background:none!important;position:static!important;width:auto!important;height:auto!important;overflow:visible!important;clip-path:none!important;margin:0;font-size:16px!important;line-height:1.4;font-weight:800;color:var(--ink)!important}
+:root body #mini.main-screen .items-core{display:flex!important;align-items:center;gap:6px;margin:0!important;grid-column:auto!important;grid-row:auto!important}
+:root body #mini.main-screen .items-core label{font-size:13px!important;font-weight:700;color:var(--sub)!important;white-space:nowrap}
+:root body #mini.main-screen #coreCountItems{width:76px!important;min-height:44px!important;height:44px!important;padding:4px 8px!important;border-radius:8px!important;font-size:18px!important;font-weight:800;text-align:center}
+:root body #mini.main-screen #coreCountItemsError{display:block;font-size:13px!important;color:var(--red)!important;margin-top:4px}
+:root body #mini.main-screen #coreCountItemsError[hidden]{display:none!important}
+:root body #mini.main-screen #itemsWindowDescription{margin:4px 0 8px!important;font-size:12px!important;line-height:1.5;color:var(--sub)!important}
+:root body #mini.main-screen #itemsWindowRow{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:6px!important;padding:0!important}
+:root body #mini.main-screen #itemsWindowRow .coin-card{display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:0;min-height:60px;padding:6px 4px!important;margin:0!important;border:1px solid var(--line)!important;border-radius:10px!important;background:var(--paper)!important}
+:root body #mini.main-screen #itemsWindowRow .coin-card:first-child{grid-column:1/-1;flex-direction:row;justify-content:space-between;min-height:52px;padding:6px 12px!important}
+:root body #mini.main-screen #itemsWindowRow .coin-card span{font-size:12px!important;line-height:1.4;font-weight:700;color:var(--sub)!important;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+:root body #mini.main-screen #itemsWindowRow .coin-card b .item-unit{margin-left:2px;font-size:.72em!important;font-weight:700;white-space:nowrap;color:var(--sub)!important}
+:root body #mini.main-screen #itemsWindowRow .coin-card b{font-size:clamp(13px,3.6vw,17px)!important;line-height:1.3;font-weight:800;color:var(--number-ink,var(--teal))!important;text-align:center;white-space:normal;max-width:100%;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+:root body #mini.main-screen #itemsWindowRow .coin-card:first-child span{font-size:14px!important}
+:root body #mini.main-screen #itemsWindowRow .coin-card:first-child b{font-size:24px!important}
+/* Menu buttons */
+:root body #mini.main-screen .main-menu-nav{display:flex;flex-direction:column;gap:8px}
+:root body #mini.main-screen .main-menu-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+:root body #mini.main-screen .main-menu-nav :is(button,a){display:flex;align-items:center;justify-content:center;box-sizing:border-box;width:100%;min-width:0;min-height:48px;margin:0;padding:6px 10px;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink)!important;font-size:14px!important;line-height:1.3;font-weight:700;text-align:center;text-decoration:none;white-space:normal;touch-action:manipulation}
+:root body #mini.main-screen .main-menu-nav .main-menu-toggle{border-color:var(--teal);color:var(--teal)!important;font-size:15px!important}
+:root body #mini.main-screen .main-menu-nav .main-menu-link::after{content:'›';margin-left:6px;font-size:18px;line-height:1}
+:root body #mini.main-screen .main-menu-nav :is(button,a):focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+@media (pointer:fine){:root body #mini.main-screen .main-menu-nav :is(button,a):hover{border-color:var(--teal)}}
+/* Other menus: hidden until opened */
+body:not(.menus-open) .wrap>:is(#menusReturn,header.card,.history-portal,#fullMeterMenu,#menusToolbar,.secondary-menus){display:none!important}
+.menus-return{position:fixed;right:calc(env(safe-area-inset-right,0px) + 12px);bottom:calc(env(safe-area-inset-bottom,0px) + 12px);z-index:60;display:flex;margin:0}
+body.menus-open .wrap{padding-bottom:84px!important}
+.menus-return button{min-height:48px;padding:6px 16px;border:1px solid var(--teal);border-radius:24px;background:var(--paper);color:var(--teal);font-size:15px;font-weight:800;box-shadow:0 4px 14px #0004}
+/* Wider screens: one row of goal conditions, 3 menu columns */
+@media (min-width:560px){
+  :root body #mini.main-screen .mini-goal-menu{grid-template-columns:repeat(6,minmax(0,1fr))!important}
+  :root body #mini.main-screen .main-menu-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  :root body #mini.main-screen #itemsWindowRow{grid-template-columns:1.4fr repeat(4,minmax(0,1fr))!important}
+  :root body #mini.main-screen #itemsWindowRow .coin-card:first-child{grid-column:auto;flex-direction:column;justify-content:center}
+  :root body #mini.main-screen #itemsWindowRow .coin-card:first-child b{font-size:20px!important}
+}
+@media (max-width:399px){
+  :root body #mini.main-screen .mini-input .mini-action{font-size:12px!important}
+  :root body #mini.main-screen .main-menu-nav :is(button,a){font-size:13px!important;padding:6px 6px}
+  :root body #mini.main-screen #itemsWindowRow .coin-card:not(:first-child){padding:6px 1px!important}
+  :root body #mini.main-screen #itemsWindowRow .coin-card:not(:first-child) b{font-size:14px!important;letter-spacing:-.02em}
+  :root body #mini.main-screen #itemsWindowRow .coin-card b .item-unit{margin-left:1px}
+}
+/* Very narrow phones */
+@media (max-width:359px){
+  :root body #mini.main-screen{padding:10px!important;width:calc(100% - 12px)!important}
+  :root body #mini.main-screen .mini-goal-menu{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  :root body #mini.main-screen #itemsWindowRow{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  :root body #mini.main-screen #miniR{font-size:24px!important}
+  :root body #mini.main-screen #miniT{font-size:21px!important}
+}
+@media (prefers-reduced-motion:reduce){.menus-return button,#mainMenuNav :is(button,a),#miniFill{transition:none!important}}
+@media print{#mainMenuNav,.menus-return{display:none!important}}
 </style>
 </head>
 <body>
-<div class="mini show" id="mini" aria-hidden="false"><div class="hud-actions"><button type="button" id="hudToggle" role="switch" aria-checked="true" aria-label="シンプルメニュー">シンプルメニューOFF</button></div><div class="mini-remaining"><span id="miniL">目標まであと</span><br><b id="miniR" class="num">-</b></div><div class="mini-countdown" style="text-align:right"><span id="miniDeadlineLabel">締切まで</span><br><span class="mt" id="miniT">-</span><small class="clock-accuracy" id="miniClockAccuracy">誤差：未確認</small><button type="button" id="miniPeriodReview" hidden>締め後・現在値を確認</button></div><button id="miniAdd" aria-label="現在値に1,000 ptを足す">+1K</button>
+<div class="mini show main-screen" id="mini" role="region" aria-label="シンプルメニュー（メイン画面）" aria-hidden="false">
+<div class="main-hero"><div class="mini-remaining"><span id="miniL">目標まであと</span><b id="miniR" class="num">-</b></div><div class="mini-countdown"><span id="miniDeadlineLabel">締切まで</span><span class="mt" id="miniT">-</span><small class="clock-accuracy" id="miniClockAccuracy">誤差：未確認</small><button type="button" id="miniPeriodReview" hidden>締め後・現在値を確認</button></div>
 <!-- phone-current:start -->
 <time id="miniNow" class="num" title="現在日時・日本時間（時刻同期を確認中）"><span id="miniTimeLabel">時刻を確認中</span><b id="miniNowTime"></b>
 <span id="miniNowDate" hidden></span>
-</time>
-<div class="mini-input mini-target" id="miniTargetField"><label for="targetMini">目標値</label><input class="num" id="targetMini" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="未設定" tabindex="-1" aria-describedby="targetMiniError inputStatus"><div class="mini-target-actions"><button type="button" class="mini-action" id="restoreTargetMini" tabindex="-1" aria-label="目標値をデフォルトに戻す">デフォルト</button><button type="button" class="mini-action" id="openMiniTargetDetails" tabindex="-1" aria-controls="sectionBody-1" aria-label="目標値の詳細設定を開く">詳細設定</button></div></div>
-<div class="mini-input mini-current" id="miniCurrentField"><label for="currentMini">現在値</label><input class="num" id="currentMini" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="0" tabindex="-1" aria-describedby="currentMiniError inputStatus"><button type="button" class="mini-action" id="resetCurrentMini" tabindex="-1" aria-label="現在値をリセット">リセット</button></div>
-<div class="mini-goal-menu" id="miniGoalMenu" aria-label="目標設定メニュー"><select id="miniPeriod" aria-label="集計期間" tabindex="-1"></select><select id="miniRank" aria-label="ランク" tabindex="-1"></select><select id="miniBorder" aria-label="設定する目標のボーダー" tabindex="-1"></select><select id="miniMethod" aria-label="算出方法" tabindex="-1"></select><input id="miniBuffer" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" aria-label="上乗せ率（％）" title="上乗せ率（％）" tabindex="-1" aria-describedby="miniBufferError inputStatus"><select id="miniClose" aria-label="締め時間" tabindex="0"><option value="13:00">13時〆</option><option value="22:00" selected>22時〆</option><option value="00:00">24時〆</option><option value="custom">手入力</option></select><button type="button" id="itemsHudToggle" role="switch" aria-checked="false" aria-controls="itemsWindow">残りアイテム目安ON</button></div>
+</time><div class="main-progress"><div class="main-progress-bar" aria-hidden="true"><span id="miniFill"></span></div><span id="miniPct" class="num" aria-label="目標の達成率">0%</span></div></div>
+<div class="main-inputs"><div class="mini-input mini-target" id="miniTargetField"><label for="targetMini">目標値</label><input class="num" id="targetMini" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="未設定" aria-describedby="targetMiniError inputStatus"><div class="mini-target-actions"><button type="button" class="mini-action" id="restoreTargetMini" aria-label="目標値をデフォルトに戻す">デフォルト</button><button type="button" class="mini-action" id="openMiniTargetDetails" aria-controls="sectionBody-1" aria-label="目標値の詳細設定を開く">詳細設定</button></div></div>
+<div class="mini-input mini-current" id="miniCurrentField"><label for="currentMini">現在値</label><input class="num" id="currentMini" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="0" aria-describedby="currentMiniError inputStatus"><div class="mini-target-actions"><button type="button" class="mini-action" id="resetCurrentMini" aria-label="現在値をリセット">リセット</button></div></div>
 <small id="targetMiniError" hidden role="status" aria-live="polite"></small>
 <small id="currentMiniError" hidden role="status" aria-live="polite"></small>
+<div class="mini-quick-add" role="group" aria-label="現在値をワンタップで加減算"><button type="button" id="miniSub1k" aria-label="現在値から1,000 ptを引く">−1K</button><button type="button" id="miniAdd1k" aria-label="現在値に1,000 ptを足す">+1K</button><button type="button" id="miniAdd10k" aria-label="現在値に10,000 ptを足す">+10K</button><button type="button" id="miniAdd100k" aria-label="現在値に100,000 ptを足す">+100K</button><button type="button" id="miniUndoCurrent" disabled aria-label="直前の現在値に戻す">戻す</button></div>
+<p id="miniActionMsg" class="mini-action-msg" role="status" aria-live="polite"></p></div>
+<div class="mini-goal-menu" id="miniGoalMenu" role="group" aria-label="目標設定メニュー"><div class="goal-field"><label for="miniPeriod">集計期間</label><select id="miniPeriod" aria-label="集計期間"></select></div><div class="goal-field"><label for="miniRank">ランク</label><select id="miniRank" aria-label="ランク"></select></div><div class="goal-field"><label for="miniBorder">ボーダー</label><select id="miniBorder" aria-label="設定する目標のボーダー"></select></div><div class="goal-field"><label for="miniMethod">算出方法</label><select id="miniMethod" aria-label="算出方法"></select></div><div class="goal-field"><label for="miniBuffer">上乗せ％</label><input id="miniBuffer" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" aria-label="上乗せ率（％）" title="上乗せ率（％）" aria-describedby="miniBufferError inputStatus"></div><div class="goal-field"><label for="miniClose">締め時間</label><select id="miniClose" aria-label="締め時間" tabindex="0"><option value="13:00">13時〆</option><option value="22:00" selected>22時〆</option><option value="00:00">24時〆</option><option value="custom">手入力</option></select></div></div>
 <small id="miniBufferError" hidden role="status" aria-live="polite"></small>
 <!-- phone-current:end -->
+<section id="itemsWindow" aria-labelledby="itemsWindowTitle" aria-describedby="itemsWindowDescription"><div class="items-window-head"><h2 id="itemsWindowTitle">残りアイテムの目安</h2><div class="items-core"><label for="coreCountItems">現コア数</label><input id="coreCountItems" class="num" type="text" inputmode="numeric" enterkeyhint="done" autocomplete="off" placeholder="0" aria-label="現コア数（0〜1000人）" aria-describedby="coreCountItemsError inputStatus" value="0"></div></div><small id="coreCountItemsError" class="items-core-error" hidden></small><p id="itemsWindowDescription">目標メーターまでの残りコイン・アイテム数</p><div id="itemsWindowRow"></div></section>
+<nav class="main-menu-nav" id="mainMenuNav" aria-label="その他のメニュー"><button type="button" class="main-menu-toggle" id="mainMenuToggle" aria-expanded="false" aria-controls="mainMenus">その他のメニューを開く</button><div class="main-menu-grid"><button type="button" id="navFullMeter" data-open-menu="fullMeterMenu">詳細メーター・入力</button><button type="button" id="navMenus" data-open-menu="menusToolbar">目標・記録・換算</button><button type="button" id="navDisplay" data-open-menu="displaySettings">表示設定</button><button type="button" id="navUsage" data-open-menu="toolUsage">使い方・更新</button><a class="main-menu-link" id="mainHistoryLink" href="#">過去ボーダー表</a><a class="main-menu-link" id="mainEBorderLink" href="#">E帯ボーダー</a></div></nav>
 </div>
-<aside id="itemsWindow" hidden aria-labelledby="itemsWindowTitle" aria-describedby="itemsWindowDescription"><div class="items-window-head"><span id="itemsWindowTitle">残りアイテムの目安</span><button type="button" id="closeItemsWindow" aria-label="残りアイテムの目安を閉じる">×</button></div><div class="items-core"><label for="coreCountItems">現コア数</label><input id="coreCountItems" class="num" type="text" inputmode="numeric" enterkeyhint="done" autocomplete="off" placeholder="0" aria-label="現コア数（0〜1000人）" aria-describedby="coreCountItemsError inputStatus" value="0"><small id="coreCountItemsError" class="items-core-error" hidden></small></div><p id="itemsWindowDescription">目標メーターまでの残りコイン・アイテム数</p><div id="itemsWindowRow"></div></aside>
 <div class="wrap">
+  <div class="menus-return" id="menusReturn"><button type="button" id="closeMainMenus">← シンプルメニューに戻る</button></div>
   <header class="card">
     <div class="header-main">
       <h1>ポコメーター番長</h1>
@@ -1694,7 +1792,6 @@ footer .footer-support .tool-disclaimer ul{font-size:.875rem;line-height:1.8}
       <details class="display-settings" id="displaySettings"><summary>表示設定</summary>
         <div class="display-settings-panel">
           <div class="display-settings-grid">
-            <div><label for="hudVisibility">シンプルメニュー</label><select id="hudVisibility"><option value="on">ON</option><option value="off">OFF</option></select></div>
             <div><label for="screenTheme">画面の明るさ</label><select id="screenTheme"><option value="dark">暗い表示</option><option value="light">明るい表示</option></select></div>
             <div><label for="screenColor">画面の色</label><select id="screenColor"><option value="standard">標準</option><option value="blue">ブルー</option><option value="green">グリーン</option><option value="purple">パープル</option><option value="pink">ピンク</option><option value="black">黒</option></select></div>
             <div><label for="backgroundColor">全体の背景色</label><select id="backgroundColor" aria-describedby="backgroundHelp"><option value="theme">標準</option><option value="black">黒</option><option value="gray">グレー</option><option value="blue">ブルー</option><option value="green">グリーン</option><option value="purple">パープル</option><option value="pink">ピンク</option><option value="red">レッド</option><option value="orange">オレンジ</option><option value="gold">ゴールド</option></select></div>
@@ -1719,7 +1816,7 @@ footer .footer-support .tool-disclaimer ul{font-size:.875rem;line-height:1.8}
   </header>
   <p class="hint" id="borderSyncStatus" role="status" style="font-size:.68rem;margin:5px 2px 8px;line-height:1.5">ボーダー確認中…</p>
   
-  <div class="history-portal"><a href="https://poco-meter.freefreelife2000.chatgpt.site/e-border.html" class="manual-link"><span class="history-portal-text"><span class="history-portal-title">E帯のボーダーを保存・管理</span><span class="hint">画像の一括取込・編集・削除・未記録日を確認</span></span><span aria-hidden="true">›</span></a></div>
+  <div class="history-portal"><a href="https://poco-meter.freefreelife2000.chatgpt.site/e-border.html" class="manual-link" id="eBorderPortalLink"><span class="history-portal-text"><span class="history-portal-title">E帯のボーダーを保存・管理</span><span class="hint">画像の一括取込・編集・削除・未記録日を確認</span></span><span aria-hidden="true">›</span></a></div>
   <div class="history-portal"><a href="/border-history" class="manual-link" id="historyPortalLink"><span aria-hidden="true">🗂️</span><span class="history-portal-text"><span class="history-portal-title">過去のボーダー表を開く</span><span class="hint">ランク別カレンダー／日付検索／カードをコピー</span></span><span class="history-portal-arrow" aria-hidden="true">›</span></a></div>
   
   <div class="period-notice-actions" id="periodNoticeActions" hidden><button type="button" id="reviewPeriodCurrent">現在値を確認・入力</button><button type="button" id="resetPeriodCurrent">0にリセット</button></div>
@@ -1808,7 +1905,7 @@ footer .footer-support .tool-disclaimer ul{font-size:.875rem;line-height:1.8}
 </div>
 
   </details>
-  <div class="menus-toolbar"><span id="menuSummary">補助メニュー</span><button type="button" id="collapseAllMenus" aria-controls="sectionBody-1 sectionBody-2 sectionBody-3 sectionBody-4 sectionBody-5 displaySettings">すべて折りたたむ</button></div>
+  <div class="menus-toolbar" id="menusToolbar"><span id="menuSummary">補助メニュー</span><button type="button" id="collapseAllMenus" aria-controls="sectionBody-1 sectionBody-2 sectionBody-3 sectionBody-4 sectionBody-5 displaySettings">すべて折りたたむ</button></div>
   <div class="secondary-menus" aria-label="補助メニュー">
   <section class="pick card studio collapsed" id="targetStudio" data-collapse-key="目標の自動計算・分析">
     <h2>📈 <span id="analysisHeading">目標詳細設定</span></h2>
@@ -2040,65 +2137,47 @@ footer .footer-support .tool-disclaimer ul{font-size:.875rem;line-height:1.8}
 <script id="simple-menu-controller">
 (function(){
   'use strict';
-  var mini=document.getElementById('mini'),button=document.getElementById('hudToggle'),field=document.getElementById('hudVisibility');
-  if(!mini||!button)return;
-  var enabled=true,itemsEnabled=false,itemsPanel=document.getElementById('itemsWindow'),itemsButton=document.getElementById('itemsHudToggle'),itemsClose=document.getElementById('closeItemsWindow');
-  var itemsRow=document.getElementById('itemsWindowRow');
-  if(itemsRow&&!itemsRow.children.length)Array.prototype.forEach.call(document.querySelectorAll('#remainingItems .coin-card'),function(card){var clone=card.cloneNode(true);clone.querySelectorAll('[id]').forEach(function(el){el.dataset.mirrorSource=el.id;el.removeAttribute('id');});var label=clone.querySelector('span');if(label){label.title=label.textContent;label.textContent=['コイン','犬・猫','笹パンダ','花火','馬車'][itemsRow.children.length];}itemsRow.appendChild(clone);});
+  // The simple menu is the main screen on every screen size; the remaining-items estimate is always shown inside it.
+  var mini=document.getElementById('mini');
+  if(!mini)return;
+  var itemsRow=document.getElementById('itemsWindowRow'),ITEM_SOURCES=['coinNeed','dogcatNeed','pandaNeed','hanabiNeed','bashaNeed'];
+  if(itemsRow&&!itemsRow.children.length)Array.prototype.forEach.call(document.querySelectorAll('#remainingItems .coin-card'),function(card,index){var clone=card.cloneNode(true);clone.querySelectorAll('[id]').forEach(function(el){el.dataset.mirrorSource=el.id;el.removeAttribute('id');});var label=clone.querySelector('span');if(label){label.title=label.textContent;label.textContent=['必要コイン','犬・猫','笹パンダ','花火','馬車'][index]||label.textContent;}itemsRow.appendChild(clone);});
   function renderItems(){
-    if(!itemsPanel||!itemsButton)return;
-    itemsPanel.hidden=!itemsEnabled;document.body.classList.toggle('items-window-on',itemsEnabled);
-    itemsButton.textContent=itemsEnabled?'残りアイテム目安OFF':'残りアイテム目安ON';itemsButton.setAttribute('aria-checked',String(itemsEnabled));
-    document.querySelectorAll('#itemsWindow [data-mirror-source]').forEach(function(el){var source=document.getElementById(el.dataset.mirrorSource);if(source)el.textContent=source.textContent;});
-    document.documentElement.style.setProperty('--items-window-height',(itemsEnabled?itemsPanel.getBoundingClientRect().height+6:0)+'px');
-  }
-  var preferenceFailures={};
-  function persistMenuPreference(key,value){
-    try{localStorage.setItem(key,value);delete preferenceFailures[key];}catch(e){preferenceFailures[key]=true;}
-    var status=document.getElementById('menuPreferenceStatus');
-    if(status){status.hidden=Object.keys(preferenceFailures).length===0;status.textContent=status.hidden?'':'表示切替の設定を端末に保存できませんでした。この画面の操作は利用できます。';}
-  }
-  function setItemsEnabled(value,persist){
-    var moveFocus=!value&&document.activeElement&&document.activeElement.closest&&document.activeElement.closest('#itemsWindow');
-    itemsEnabled=!!value;renderItems();render();
-    if(moveFocus)(enabled?itemsButton:button).focus({preventScroll:true});
-    if(persist!==false)persistMenuPreference('pococha-meter-items-window-v1',itemsEnabled?'on':'off');
-    document.dispatchEvent(new Event('pococha-items-menu-change'));
+    if(!itemsRow)return;Array.prototype.forEach.call(itemsRow.children,function(card,index){var value=card.querySelector('b'),source=document.getElementById(ITEM_SOURCES[index]);if(!value||!source||value.getAttribute('data-value')===source.textContent)return;var text=source.textContent,match=/^(.*\S)\s+(\S+)$/.exec(text);value.setAttribute('data-value',text);value.setAttribute('aria-label',text);value.textContent=match?match[1]:text;if(match){var unit=document.createElement('small');unit.className='item-unit';unit.textContent=match[2];value.appendChild(unit);}});
   }
   function render(){
-    mini.classList.add('show');mini.classList.toggle('hud-collapsed',!enabled);mini.setAttribute('aria-hidden','false');
-    document.body.classList.toggle('hud-off',!enabled);
-    button.textContent=enabled?'シンプルメニューOFF':'シンプルメニューON';button.setAttribute('aria-checked',String(enabled));button.setAttribute('aria-label',enabled?'シンプルメニューをOFFにする':'シンプルメニューをONにする');
-    if(field)field.value=enabled?'on':'off';
-    ['targetMini','currentMini','restoreTargetMini','openMiniTargetDetails','resetCurrentMini','miniPeriod','miniRank','miniBorder','miniMethod','miniBuffer','miniClose','itemsHudToggle'].forEach(function(id){var el=document.getElementById(id);if(el)el.tabIndex=enabled?0:-1;});
-    var rect=mini.getBoundingClientRect();document.documentElement.style.setProperty('--meter-hud-height',rect.height+'px');document.documentElement.style.setProperty('--hud-bottom',rect.bottom+'px');
+    mini.classList.add('show');mini.classList.remove('hud-collapsed');mini.setAttribute('aria-hidden','false');
+    ['targetMini','currentMini','restoreTargetMini','openMiniTargetDetails','resetCurrentMini','miniPeriod','miniRank','miniBorder','miniMethod','miniBuffer','miniClose'].forEach(function(id){var el=document.getElementById(id);if(el)el.tabIndex=0;});
+    document.documentElement.style.setProperty('--meter-hud-height','0px');document.documentElement.style.setProperty('--items-window-height','0px');
   }
-  function setEnabled(value,persist){
-    var active=document.activeElement,moveFocus=!value&&active&&active!==button&&active.closest&&active.closest('#mini');
-    enabled=!!value;render();
-    if(moveFocus)button.focus({preventScroll:true});
-    if(persist!==false)persistMenuPreference('pococha-meter-hud-v1',enabled?'on':'off');
-    document.dispatchEvent(new Event('pococha-simple-menu-change'));
+  // Other menus stay closed at start and open only from a button or explicit navigation.
+  var toggle=document.getElementById('mainMenuToggle'),menusOpen=false;
+  function setMenusOpen(value){
+    menusOpen=!!value;document.body.classList.toggle('menus-open',menusOpen);
+    if(toggle){toggle.setAttribute('aria-expanded',String(menusOpen));toggle.textContent=menusOpen?'その他のメニューを閉じる':'その他のメニューを開く';}
+    if(!menusOpen){var panel=document.getElementById('displaySettings');if(panel&&panel.open)panel.open=false;}
   }
-  // Sync only explicit remote changes; keep the requested startup defaults.
-  window.addEventListener('storage',function(event){
-    try{if(event.storageArea&&event.storageArea!==localStorage)return;}catch(e){return;}
-    if(event.newValue!==null&&event.newValue!=='on'&&event.newValue!=='off')return;
-    if(event.key==='pococha-meter-items-window-v1')setItemsEnabled(event.newValue==='on',false);
-    if(event.key==='pococha-meter-hud-v1')setEnabled(event.newValue!=='off',false);
-  });
-  window.pocochaSimpleMenuController={isEnabled:function(){return enabled;},setEnabled:setEnabled,isItemsEnabled:function(){return itemsEnabled;},setItemsEnabled:setItemsEnabled};
-  if(itemsButton)itemsButton.onclick=function(){setItemsEnabled(!itemsEnabled);};
-  if(itemsClose)itemsClose.onclick=function(){setItemsEnabled(false);(enabled?itemsButton:button).focus({preventScroll:true});};
-  if(itemsPanel)itemsPanel.addEventListener('keydown',function(event){
-    var selectWindow=document.getElementById('selectWindow');
-    if(event.key!=='Escape'||event.isComposing||!itemsEnabled||(selectWindow&&!selectWindow.hidden))return;
-    event.preventDefault();event.stopPropagation();setItemsEnabled(false);(enabled?itemsButton:button).focus({preventScroll:true});
-  });
-  renderItems();
-  button.onclick=function(){setEnabled(!enabled);};
-  if(field)field.onchange=function(){if(this.value!=='on'&&this.value!=='off'){render();return;}setEnabled(this.value==='on');};
-  render();
+  function scrollToNode(node){if(!node||typeof node.scrollIntoView!=='function')return;var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;node.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});}
+  function openMenu(id){
+    var target=document.getElementById(id);if(!target)return;
+    var wasOpen=menusOpen;setMenusOpen(true);
+    if(target.tagName==='DETAILS')target.open=true;
+    if(id==='displaySettings'){displayFromMain=!wasOpen;var summary=target.querySelector('summary');if(summary)summary.focus({preventScroll:true});return;}
+    scrollToNode(id==='toolUsage'?target.closest('header')||target:target);
+    var focusTarget=target.tagName==='DETAILS'?target.querySelector('summary'):target.querySelector('button, summary, a');
+    if(focusTarget)focusTarget.focus({preventScroll:true});
+  }
+  var displayFromMain=false,displayPanel=document.getElementById('displaySettings');
+  if(displayPanel)displayPanel.addEventListener('toggle',function(){if(displayPanel.open||!displayFromMain)return;displayFromMain=false;setMenusOpen(false);var origin=document.getElementById('navDisplay');if(origin)origin.focus({preventScroll:true});});
+  if(toggle)toggle.onclick=function(){if(menusOpen){setMenusOpen(false);}else{openMenu('menusToolbar');}};
+  ['navFullMeter','navMenus','navDisplay','navUsage'].forEach(function(id){var button=document.getElementById(id);if(button)button.onclick=function(){openMenu(button.getAttribute('data-open-menu'));};});
+  var back=document.getElementById('closeMainMenus');
+  if(back)back.onclick=function(){setMenusOpen(false);scrollToNode(mini);if(toggle)toggle.focus({preventScroll:true});};
+  [['mainHistoryLink','historyPortalLink'],['mainEBorderLink','eBorderPortalLink']].forEach(function(pair){var link=document.getElementById(pair[0]),source=document.getElementById(pair[1]);if(link&&source)link.setAttribute('href',source.getAttribute('href'));});
+  window.pocochaMainMenus={open:function(){setMenusOpen(true);},close:function(){setMenusOpen(false);},isOpen:function(){return menusOpen;},openMenu:openMenu};
+  // Compatibility for the calculator script: both menus are always on.
+  window.pocochaSimpleMenuController={isEnabled:function(){return true;},setEnabled:function(){render();},isItemsEnabled:function(){return true;},setItemsEnabled:function(){renderItems();},renderItems:renderItems};
+  renderItems();render();setMenusOpen(false);
 })();
 </script>
 <script>
@@ -3197,7 +3276,7 @@ footer .footer-support .tool-disclaimer ul{font-size:.875rem;line-height:1.8}
     if($('itemsWindowRow').children.length)syncItemsWindow();
     $('remain').classList.toggle('done',done);
     $('remainLabel').textContent=!tgt?(automaticDataMissing?'目標メーター':'目標を入力'):done?'目標達成':'目標まであと';
-    $('fill').style.width=pct+'%';
+    $('fill').style.width=pct+'%';if($('miniFill')){$('miniFill').style.width=pct+'%';$('miniPct').textContent=pct+'%';}
     $('progressMeter').setAttribute('aria-valuenow',String(pct));$('progressMeter').setAttribute('aria-valuetext',tgt?pct+'％、現在'+fmt(cur)+' pt、目標'+fmt(tgt)+' pt、残り'+fmt(remain)+' pt':'目標未設定');
     $('fill').classList.toggle('done',done);$('fill').classList.toggle('mid',!done&&pct>=50&&pct<80);$('fill').classList.toggle('hi',!done&&pct>=80);
     $('pct').textContent=pct+'%';
@@ -3352,7 +3431,7 @@ footer .footer-support .tool-disclaimer ul{font-size:.875rem;line-height:1.8}
   var currentUndo=null,currentEdit=null;
   function beginCurrentEdit(el,force){if(force||!currentEdit||currentEdit.id!==el.id)currentEdit={id:el.id,value:state.current,savedAt:state.currentSavedAt};}
   function finishCurrentEdit(el){if(!el||currentEdit&&currentEdit.id===el.id)currentEdit=null;}
-  function renderCurrentUndo(){var button=$('undoCurrent');if(button){button.disabled=!currentUndo;button.setAttribute('aria-label',currentUndo?'現在値を '+fmt(parseNum(currentUndo.value))+' ptに戻す':'現在値を戻す操作はありません');}}
+  function renderCurrentUndo(){if($('miniUndoCurrent'))$('miniUndoCurrent').disabled=!currentUndo;var button=$('undoCurrent');if(button){button.disabled=!currentUndo;button.setAttribute('aria-label',currentUndo?'現在値を '+fmt(parseNum(currentUndo.value))+' ptに戻す':'現在値を戻す操作はありません');}}
   function resetCurrentUndo(){currentUndo=null;currentEdit=null;numericComposing={};renderCurrentUndo();var msg=$('currentActionMsg');if(msg)msg.textContent='';}
   function commitCurrent(v,options){options=options||{};var next=String(Math.min(MAX_VALUE,Math.max(0,v))),changed=next!==state.current,el=options.editElement;if(el&&document.activeElement===el)beginCurrentEdit(el);if(changed){var previous=el&&currentEdit&&currentEdit.id===el.id?currentEdit:{value:state.current,savedAt:state.currentSavedAt};currentUndo={value:previous.value,savedAt:previous.savedAt};var msg=$('currentActionMsg');if(msg){msg.className='toast';msg.textContent='';}}state.current=next;if(changed||options.refresh)state.currentSavedAt=Date.now();if(options.format){['current','currentTop','currentMini'].forEach(function(id){$(id).value=fmt(parseNum(state.current));flagInput($(id),'');});}renderCurrentUndo();var persisted=save();update();return !!persisted&&!storageFailed;}
   function confirmCurrent(el,explicit){if(isNumericComposing(el))return false;var n=readNumber(el.value);if(n===null){flagInput(el,pointInputError(el.value,'current'));return false;}flagInput(el,'');el.value=fmt(n);commitCurrent(n,{editElement:el,refresh:!!explicit});return true;}
@@ -3559,6 +3638,7 @@ footer .footer-support .tool-disclaimer ul{font-size:.875rem;line-height:1.8}
   function scrollToControl(target,block){if(target&&target.id==='manualGoal'&&window.matchMedia&&window.matchMedia('(max-width:700px)').matches)target=$('target');if(target)target.scrollIntoView({behavior:window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:block||'nearest'});}
   function revealMenuTarget(id,focus){
     var target=$(id);if(!target)return;
+    if(window.pocochaMainMenus&&target.closest('.wrap')&&target!==$('inputStatus'))window.pocochaMainMenus.open();
     var sec=target.closest('section.card');if(sec){setSectionCollapsed(sec,false);save();}
     for(var ancestor=target;ancestor;ancestor=ancestor.parentNode){if(ancestor.tagName==='DETAILS'){ancestor.open=true;ancestor.setAttribute('open','');}}
     scrollToControl(target,'start');
@@ -3570,20 +3650,15 @@ footer .footer-support .tool-disclaimer ul{font-size:.875rem;line-height:1.8}
   window.addEventListener('hashchange',function(){revealHashMenu(true);});
   // Initial view stays simple; explicit navigation can open a menu later.
   var itemsMenuController=window.pocochaSimpleMenuController;
-  var itemsWindowEnabled=itemsMenuController?itemsMenuController.isItemsEnabled():false;
-  if(!$('itemsWindowRow').children.length)Array.prototype.forEach.call(document.querySelectorAll('#remainingItems .coin-card'),function(card){var clone=card.cloneNode(true);clone.querySelectorAll('[id]').forEach(function(el){el.dataset.mirrorSource=el.id;el.removeAttribute('id');});var label=clone.querySelector('span');label.title=label.textContent;label.textContent=['コイン','犬・猫','笹パンダ','花火','馬車'][$('itemsWindowRow').children.length];$('itemsWindowRow').appendChild(clone);});
-  function syncItemsWindow(){if(itemsMenuController)itemsWindowEnabled=itemsMenuController.isItemsEnabled();var coreInput=$('coreCountItems');if(document.activeElement!==coreInput&&coreInput.getAttribute('aria-invalid')!=='true')coreInput.value=String(state.coreCount||0);document.querySelectorAll('#itemsWindow [data-mirror-source]').forEach(function(el){el.textContent=$(el.dataset.mirrorSource).textContent;});$('itemsWindow').hidden=!itemsWindowEnabled;document.body.classList.toggle('items-window-on',itemsWindowEnabled);$('itemsHudToggle').textContent=itemsWindowEnabled?'残りアイテム目安OFF':'残りアイテム目安ON';$('itemsHudToggle').setAttribute('aria-checked',String(itemsWindowEnabled));document.documentElement.style.setProperty('--items-window-height',(itemsWindowEnabled?$('itemsWindow').getBoundingClientRect().height+6:0)+'px');}
-  function setItemsWindow(enabled){if(itemsMenuController){itemsMenuController.setItemsEnabled(enabled);return;}itemsWindowEnabled=enabled;syncItemsWindow();try{localStorage.setItem('pococha-meter-items-window-v1',enabled?'on':'off');}catch(e){}}
-  if(!itemsMenuController){$('itemsHudToggle').onclick=function(){setItemsWindow(!itemsWindowEnabled);};$('closeItemsWindow').onclick=function(){setItemsWindow(false);(hudEnabled?$('itemsHudToggle'):$('hudToggle')).focus({preventScroll:true});};}
+  
+  if(!$('itemsWindowRow').children.length)Array.prototype.forEach.call(document.querySelectorAll('#remainingItems .coin-card'),function(card){var clone=card.cloneNode(true);clone.querySelectorAll('[id]').forEach(function(el){el.dataset.mirrorSource=el.id;el.removeAttribute('id');});var label=clone.querySelector('span');label.title=label.textContent;label.textContent=['必要コイン','犬・猫','笹パンダ','花火','馬車'][$('itemsWindowRow').children.length];$('itemsWindowRow').appendChild(clone);});
+  function syncItemsWindow(){var coreInput=$('coreCountItems');if(document.activeElement!==coreInput&&coreInput.getAttribute('aria-invalid')!=='true')coreInput.value=String(state.coreCount||0);if(window.pocochaSimpleMenuController&&window.pocochaSimpleMenuController.renderItems)window.pocochaSimpleMenuController.renderItems();$('itemsWindow').hidden=false;}
   document.addEventListener('pococha-items-menu-change',function(){syncMiniVisibility();});syncItemsWindow();
   window.addEventListener('resize',syncItemsWindow);
   // 固定ミニメーター
   var simpleMenuController=window.pocochaSimpleMenuController;
-  var hudEnabled=simpleMenuController?simpleMenuController.isEnabled():true;
-  $('hudVisibility').value=hudEnabled?'on':'off';
-  function setHudEnabled(enabled,persist){if(simpleMenuController){simpleMenuController.setEnabled(enabled,persist);return;}hudEnabled=enabled;$('hudVisibility').value=hudEnabled?'on':'off';syncMiniVisibility();if(persist===false)return;try{localStorage.setItem('pococha-meter-hud-v1',hudEnabled?'on':'off');}catch(e){$('displaySettingsStatus').textContent='この画面には反映しましたが、設定を保存できません。';}}
-  if(!simpleMenuController){$('hudVisibility').onchange=function(){setHudEnabled(this.value!=='off');};$('hudToggle').onclick=function(){setHudEnabled(!hudEnabled);};}
-  document.addEventListener('pococha-simple-menu-change',function(){hudEnabled=simpleMenuController.isEnabled();syncMiniVisibility();});
+  var hudEnabled=true;
+  
   var miniOutsideView=false,mobileScrollTimer=0,phoneHudFocusId='';
   var phoneLayoutQuery=window.matchMedia&&window.matchMedia('(max-width:700px)'),items=$('remainingItems'),itemsHome=items.parentNode,itemsNext=items.nextSibling;
   var deadlineControls=document.querySelector('#liveMeter .compact-deadline-controls'),deadlineHome=deadlineControls.parentNode,deadlineNext=deadlineControls.nextSibling;
@@ -3597,7 +3672,7 @@ footer .footer-support .tool-disclaimer ul{font-size:.875rem;line-height:1.8}
   if(phoneLayoutQuery){if(phoneLayoutQuery.addEventListener)phoneLayoutQuery.addEventListener('change',syncPhoneLayout);else if(phoneLayoutQuery.addListener)phoneLayoutQuery.addListener(syncPhoneLayout);}
   syncPhoneLayout();
   function isEditingField(el){return !!el&&['INPUT','SELECT','TEXTAREA'].indexOf(el.tagName)>=0;}
-  function syncMiniVisibility(){var editing=isEditingField(document.activeElement),phone=phoneLayoutQuery&&phoneLayoutQuery.matches,show=simpleMenuController?simpleMenuController.isEnabled():hudEnabled;hudEnabled=show;document.body.classList.toggle('hud-off',!show);var viewport=window.visualViewport,offset=phone&&viewport?Math.max(0,window.innerHeight-viewport.height-viewport.offsetTop):0,top=phone&&viewport?Math.max(0,viewport.offsetTop||0):0;document.documentElement.style.setProperty('--meter-keyboard-offset',offset+'px');document.documentElement.style.setProperty('--meter-viewport-top',top+'px');document.body.classList.toggle('editing-field',editing);var visibleHeight=viewport&&viewport.height||window.innerHeight;if(Number.isFinite(visibleHeight)&&visibleHeight>0)document.documentElement.style.setProperty('--meter-visible-height',visibleHeight+'px');syncItemsWindow();$('mini').classList.add('show');$('mini').classList.toggle('hud-collapsed',!show);$('mini').setAttribute('aria-hidden','false');$('hudToggle').textContent=show?'シンプルメニューOFF':'シンプルメニューON';$('hudToggle').setAttribute('aria-checked',String(show));$('hudToggle').setAttribute('aria-label',show?'シンプルメニューをOFFにする':'シンプルメニューをONにする');$('miniAdd').tabIndex=-1;['targetMini','currentMini','restoreTargetMini','openMiniTargetDetails','resetCurrentMini','miniPeriod','miniRank','miniBorder','miniMethod','miniBuffer','miniClose','itemsHudToggle'].forEach(function(id){$(id).tabIndex=show?0:-1;});document.documentElement.style.setProperty('--meter-hud-height',$('mini').getBoundingClientRect().height+'px');document.documentElement.style.setProperty('--hud-bottom',$('mini').getBoundingClientRect().bottom+'px');}
+  function syncMiniVisibility(){var editing=isEditingField(document.activeElement),phone=phoneLayoutQuery&&phoneLayoutQuery.matches,show=true;var viewport=window.visualViewport,offset=phone&&viewport?Math.max(0,window.innerHeight-viewport.height-viewport.offsetTop):0,top=phone&&viewport?Math.max(0,viewport.offsetTop||0):0;document.documentElement.style.setProperty('--meter-keyboard-offset',offset+'px');document.documentElement.style.setProperty('--meter-viewport-top',top+'px');document.body.classList.toggle('editing-field',editing);var visibleHeight=viewport&&viewport.height||window.innerHeight;if(Number.isFinite(visibleHeight)&&visibleHeight>0)document.documentElement.style.setProperty('--meter-visible-height',visibleHeight+'px');syncItemsWindow();$('mini').classList.add('show');$('mini').setAttribute('aria-hidden','false');['targetMini','currentMini','restoreTargetMini','openMiniTargetDetails','resetCurrentMini','miniPeriod','miniRank','miniBorder','miniMethod','miniBuffer','miniClose'].forEach(function(id){$(id).tabIndex=0;});document.documentElement.style.setProperty('--meter-hud-height','0px');document.documentElement.style.setProperty('--hud-bottom',$('mini').getBoundingClientRect().bottom+'px');}
   function keepMiniInputVisible(){var el=document.activeElement;if(!isEditingField(el))return;if(el.closest('#mini, #itemsWindow, #selectWindow, .display-settings-panel')){el.scrollIntoView({behavior:'auto',block:'nearest'});return;}if(!(phoneLayoutQuery&&phoneLayoutQuery.matches)){scrollToControl(el,'nearest');return;}el.scrollIntoView({behavior:'auto',block:'nearest'});var rect=el.getBoundingClientRect(),top=$('mini').getBoundingClientRect().bottom+8,viewport=window.visualViewport,bottom=(viewport?viewport.height+viewport.offsetTop:window.innerHeight)-8;if(rect.top<top)window.scrollBy({top:rect.top-top,behavior:'auto'});else if(rect.bottom>bottom)window.scrollBy({top:rect.bottom-bottom,behavior:'auto'});}
   function settleMiniInput(){clearTimeout(mobileScrollTimer);mobileScrollTimer=setTimeout(function(){syncMiniVisibility();keepMiniInputVisible();},80);}
   document.addEventListener('focusin',function(){phoneHudFocusId=['targetMini','currentMini'].indexOf(document.activeElement.id)>=0?document.activeElement.id:'';syncMiniVisibility();if(window.matchMedia&&window.matchMedia('(max-width:700px)').matches)settleMiniInput();});document.addEventListener('focusout',function(e){if((e.target===$('currentMini')||e.target===$('targetMini'))&&phoneLayoutQuery&&phoneLayoutQuery.matches)phoneHudFocusId='';setTimeout(syncMiniVisibility,0);});
@@ -3605,8 +3680,11 @@ footer .footer-support .tool-disclaimer ul{font-size:.875rem;line-height:1.8}
   if('IntersectionObserver' in window){new IntersectionObserver(function(es){es.forEach(function(e){miniOutsideView=!e.isIntersecting&&e.boundingClientRect.top<0;});syncMiniVisibility();}).observe($('remain'));}
   window.addEventListener('resize',syncMiniVisibility);
   if('ResizeObserver' in window)new ResizeObserver(syncMiniVisibility).observe($('mini'));
-  $('miniAdd').tabIndex=-1;
-  $('miniAdd').onclick=function(){adjustCurrentBy(1000);};
+  [['miniSub1k',-1000],['miniAdd1k',1000],['miniAdd10k',10000],['miniAdd100k',100000]].forEach(function(pair){$(pair[0]).onclick=function(){adjustCurrentBy(pair[1]);showMiniAction($('currentActionMsg').textContent);};});
+  $('miniUndoCurrent').onclick=function(){var undone=undoCurrent();showMiniAction(undone===false?'戻す操作はありません。':'現在値を直前の値に戻しました。');};
+  // Tapping a main-screen number selects it, so a new value replaces the old one without deleting digits by hand.
+  ['targetMini','currentMini','coreCountItems'].forEach(function(id){$(id).addEventListener('focus',function(){var el=this;setTimeout(function(){if(document.activeElement===el&&el.value&&typeof el.select==='function')el.select();},0);});});
+  var miniActionTimer=0;function showMiniAction(text){var msg=$('miniActionMsg');msg.textContent=text||'';clearTimeout(miniActionTimer);if(text)miniActionTimer=setTimeout(function(){msg.textContent='';},5000);}
   syncMiniVisibility();
   // バックアップ
 
@@ -3763,7 +3841,7 @@ footer .footer-support .tool-disclaimer ul{font-size:.875rem;line-height:1.8}
   window.addEventListener('storage',function(event){
     if(event.storageArea&&event.storageArea!==localStorage)return;
     if(event.key==='pococha-e-display-v1'){statsCache={};update();return;}
-    if(event.key==='pococha-meter-hud-v1'){if(!simpleMenuController&&(event.newValue===null||event.newValue==='on'||event.newValue==='off'))setHudEnabled(event.newValue!=='off',false);return;}
+    if(event.key==='pococha-meter-hud-v1'||event.key==='pococha-meter-items-window-v1')return;
     if(event.key===null){draftConflict=true;markStorageConflict(true);return;}
     if(event.key===KEY){if(event.newValue!==lastSavedRaw)markStorageConflict(event.newValue===null);return;}
     if(event.key===DRAFT_KEY&&event.newValue!==lastDraftRaw){draftConflict=true;setEditorMessage('別の画面で下書きが変更されました。この入力をバックアップしてから再読み込みしてください。','error');return;}
