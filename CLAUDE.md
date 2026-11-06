@@ -1,13 +1,9 @@
 # Claude Code向け開始案内
 
-このリポジトリは「ポコメーター番長」の開発用です。
-AGENTS.md、README.md、docs/HANDOVER.mdを読み、現在の自動取得移行についてはdocs/AUTOMATION_CODE_HANDOVER.mdを優先して確認してください。
+このリポジトリは「ポコメーター番長」の開発用です。AGENTS.md（Code・ChatGPT共通の指示）、README.md、docs/HANDOVER.md を読んでください。
 
-現在の目的はボーダー自動取得をCode側へ移す準備です。
-既存ChatGPTタスクは無効のまま維持し、キー変更・秘密値の共有・本番保存・新しい定期実行の有効化は行わないでください。
+2026/11/07 から、公開は GitHub Pages、ボーダー更新は GitHub Actions です。旧Sites・署名キー・旧ChatGPTタスクは使いません。
+ChatGPT側もGitHub経由で編集することがあります。作業前に最新を取り込み、他の変更を上書きしないでください。
 
-アプリ本体（Sitesソース、取得コミット3c0e6c8）は2026/11/06にリポジトリ直下へ取り込み済みです。ソース内の旧AGENTS.md・README.mdはdocs/legacy-source/にあり、現行の指示ではありません。
+アプリ本体は Sitesソース（取得コミット3c0e6c8）を元にしています。ソース内の旧AGENTS.md・README.mdは docs/legacy-source/ にあり、現行の指示ではありません。
 ソースや旧資料を推測で置き換えないでください。
-
-Codeでの計算・公開版照合の結果はユーザー転記による報告として扱い、最優先は自動取得の実行場所・認証経路・403診断の整理です。
-ネットワークを使わないfixtureテストから準備し、実通信再試行やスケジュール有効化は保留してください。

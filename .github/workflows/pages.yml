@@ -1,0 +1,50 @@
+name: GitHub Pages 公開
+
+# 計算画面とボーダーを https://yoshi2026s.github.io/poco-meter/ に公開する。
+# ボーダー自動更新のコミットは GITHUB_TOKEN で行われ push イベントを起こさないため、
+# workflow_run でも公開する。
+on:
+  push:
+    branches: ['(root)']
+  workflow_run:
+    workflows: ['ボーダー自動更新']
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: テスト（ネットワークなし）
+        run: node --test tests/pages-borders.mjs
+      - name: 公開ファイルを作成
+        run: node scripts/build-pages.mjs --out=_site
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

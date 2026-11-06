@@ -24,3 +24,6 @@ jobs:
       - name: ボーダー自動取得クライアント（ネットワークなし）を検証
         if: always()
         run: node --test tests/automation-border-client.mjs
+      - name: GitHub Pages版とボーダー更新（ネットワークなし）を検証
+        if: always()
+        run: node --test tests/pages-borders.mjs

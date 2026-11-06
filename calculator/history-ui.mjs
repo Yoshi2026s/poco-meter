@@ -1,4 +1,4 @@
-const $=id=>document.getElementById(id),MAIN_KEY='pococha-meter-calc-v1',PREF_KEY='pococha-meter-history-v1',THEME_KEY='pococha-meter-history-theme-v1';
+const $=id=>document.getElementById(id),$status=id=>document.getElementById(id)||document.createElement('span'),MAIN_KEY='pococha-meter-calc-v1',PREF_KEY='pococha-meter-history-v1',THEME_KEY='pococha-meter-history-theme-v1';
 const filterIDs=['query','rank','close','start','end','units','order','origin','view','pageSize'];
 const cardCopyNodes=new Map(),pendingCardCopies=new Map(),copiedCardTexts=new Set();
 let localReadFailed=false,meterCalendarMonthValue='',meterCalendarInitialized=false,eCalendarRows=[],eCalendarReadFailed=false;
@@ -16,7 +16,7 @@ function loadPreferences(){let value,restored=false;displayMonth='';try{value=JS
  let theme='dark';try{theme=localStorage.getItem(THEME_KEY)||JSON.parse(localStorage.getItem('pococha-meter-display-v1')||'null')?.theme||'dark';}catch{}document.body.classList.toggle('light',theme==='light');syncTheme();return restored;
 }
 function syncTheme(){$('themeButton').textContent=document.body.classList.contains('light')?'暗い表示':'明るい表示';}
-function savePreferences(){let message='この端末に検索条件を保存しました。';try{localStorage.setItem(PREF_KEY,JSON.stringify(filters()));}catch{message='検索条件を保存できません。検索は利用できます。';}$('preferenceStatus').textContent=(localReadFailed||eCalendarReadFailed?'端末の記録を読み直せません。読み込み済みの記録と保存資料を表示しています。端末の記録は変更していません。 ':'')+message;}
+function savePreferences(){let message='この端末に検索条件を保存しました。';try{localStorage.setItem(PREF_KEY,JSON.stringify(filters()));}catch{message='検索条件を保存できません。検索は利用できます。';}$status('preferenceStatus').textContent=(localReadFailed||eCalendarReadFailed?'端末の記録を読み直せません。読み込み済みの記録と保存資料を表示しています。端末の記録は変更していません。 ':'')+message;}
 function browseMonth(month){const range=historyMonthRange(month);if(!range)return;displayMonth=range.month;renderCalendar(filters());renderRecordNavigation(filters());}
 function setRange(range){if(!range)return;composing=false;clearTimeout(inputTimer);displayMonth=range.end.slice(0,7);$('start').value=range.start;$('end').value=range.end;$('query').value='';render(true);}
 function latestMonth(){const date=latestHistoryDate(index,filters());if(date)setRange(historyMonthRange(date.slice(0,7)));else render(true);}
@@ -35,7 +35,7 @@ function renderCalendar(f){
   button.appendChild(node('span',String(Number(date.slice(8)))));const mark=node('span',count?'●':'','calendar-mark');mark.setAttribute('aria-hidden','true');button.appendChild(mark);
   button.addEventListener('click',()=>{setRange({start:date,end:date});moveTo('resultHeading');});buttons.set(date,button);$('calendarDays').appendChild(button);
  });
- $('calendarStatus').textContent=f.start&&f.start===f.end&&validHistoryDate(f.start)?f.start.replaceAll('-','/')+'を選択中':f.start||f.end?'検索期間：'+(f.start||'最初の記録')+'〜'+(f.end||'最新の記録'):'日付を押すと、その日の記録を表示します。';
+ $status('calendarStatus').textContent=f.start&&f.start===f.end&&validHistoryDate(f.start)?f.start.replaceAll('-','/')+'を選択中':f.start||f.end?'検索期間：'+(f.start||'最初の記録')+'〜'+(f.end||'最新の記録'):'日付を押すと、その日の記録を表示します。';
  $('prevMonth').disabled=!historyMonthRange(calendar.month,-1);$('nextMonth').disabled=!historyMonthRange(calendar.month,1);
  if(focusDate&&buttons.has(focusDate))buttons.get(focusDate).focus({preventScroll:true});
 }
@@ -64,31 +64,31 @@ function cardCopyControls(row){
 }
 function card(row){const article=node('article',undefined,'record'),heading=node('div',undefined,'record-head');const time=node('time',row.date.replaceAll('-','/'));time.dateTime=row.date;heading.appendChild(time);heading.appendChild(node('span',row.rank,'rank'));heading.appendChild(node('span',row.close+'時〆'));article.appendChild(heading);const nums=node('dl',undefined,'numbers');row.values.forEach((value,i)=>{const item=node('div',undefined,'metric');item.appendChild(node('dt',['±0','+1','+2'][i]));const dd=node('dd',historyRowNumber(row,i,$('units').value));dd.title=row.displayValues?'画面表示値（概数）':value.toLocaleString('ja-JP')+' pt';dd.setAttribute('aria-label',['プラスマイナス0','プラス1','プラス2'][i]+' '+(row.displayValues?row.displayValues[i]+'（画面表示値・概数）':value+'ポイント'));item.appendChild(dd);nums.appendChild(item);});article.appendChild(nums);article.appendChild(sourceNode(row));article.appendChild(cardCopyControls(row));return article;}
 function render(reset=false){if(composing)return {rows:allMatches,error:''};if(reset)page=1;const f=filters(),result=filterHistory(index,f);allMatches=result.rows;const size=Number(f.pageSize)||20,slice=historyPage(allMatches,page,size);page=slice.page;const copyScope=JSON.stringify([f,page]);if(copyScope!==lastCardCopyScope){lastCardCopyScope=copyScope;cardCopyEpoch++;}renderedPageSize=size;renderCalendar(f);renderMeterCalendar();$('clearQuery').disabled=!f.query;syncSearchCopy();renderRecordNavigation(f);
- $('searchError').hidden=!result.error;$('searchError').textContent=result.error;for(const id of ['start','end'])$(id).setAttribute('aria-invalid',String(!!result.error));
+ $status('searchError').hidden=!result.error;$status('searchError').textContent=result.error;for(const id of ['start','end'])$(id).setAttribute('aria-invalid',String(!!result.error));
  $('scope').replaceChildren();const chips=[['rank',f.rank||'全ランク',!!f.rank],['close',f.close?f.close+'時〆':'全締め時間',!!f.close],['period',(f.start||'最初の記録')+'〜'+(f.end||'最新の記録'),!!(f.start||f.end)],['query',f.query?'検索：'+f.query:'',!!f.query],['origin',f.origin==='personal'?'端末の記録':f.origin==='published'?'掲載・取得記録':'',!!f.origin]];for(const [key,text,removable] of chips){if(!text)continue;const chip=node(removable?'button':'span',text+(removable?' ×':''),'filter-chip');if(removable){chip.type='button';chip.setAttribute('aria-label',text+'の条件を解除');chip.addEventListener('click',()=>{for(const id of key==='period'?['start','end']:[key])$(id).value='';if(key==='period')displayMonth='';render(true);moveTo('resultHeading');});}$('scope').appendChild(chip);}
- const days=new Set(allMatches.map(row=>row.date+'|'+row.close));$('resultCount').textContent=result.error?'条件を修正してください。':allMatches.length.toLocaleString('ja-JP')+'件（'+days.size.toLocaleString('ja-JP')+'日・締め時間の記録）';
+ const days=new Set(allMatches.map(row=>row.date+'|'+row.close));$status('resultCount').textContent=result.error?'条件を修正してください。':allMatches.length.toLocaleString('ja-JP')+'件（'+days.size.toLocaleString('ja-JP')+'日・締め時間の記録）';
  const manualBefore=manualCardCopy,manualFocus=manualBefore&&document.activeElement===manualBefore.textarea,selectionStart=manualBefore?.textarea.selectionStart,selectionEnd=manualBefore?.textarea.selectionEnd;
  $('emptyState').hidden=!!result.error||allMatches.length!==0;$('results').hidden=f.view==='table';$('tableResults').hidden=f.view!=='table';cardCopyNodes.clear();$('results').replaceChildren();$('tableResults').replaceChildren();
  if(f.view==='table'&&slice.rows.length){const table=node('table'),caption=node('caption','検索条件に合うボーダー記録（'+(f.units==='K'?'K':'pt')+'）');table.appendChild(caption);const head=node('thead'),tr=node('tr');for(const text of ['日付','ランク','締め','±0','+1','+2','記録・出典']){const th=node('th',text);th.scope='col';tr.appendChild(th);}head.appendChild(tr);table.appendChild(head);const body=node('tbody');for(const row of slice.rows){const tr=node('tr');for(const [i,text] of [row.date.replaceAll('-','/'),row.rank,row.close+'時',...row.values.map((v,i)=>historyRowNumber(row,i,f.units))].entries()){const td=node('td',text);if(i>=3){td.title=row.displayValues?'画面表示値（概数）':row.values[i-3].toLocaleString('ja-JP')+' pt';td.setAttribute('aria-label',row.displayValues?row.displayValues[i-3]+'（画面表示値・概数）':row.values[i-3]+'ポイント');}tr.appendChild(td);}const td=node('td');td.appendChild(sourceNode(row));tr.appendChild(td);body.appendChild(tr);}table.appendChild(body);$('tableResults').appendChild(table);}
  else for(const row of slice.rows)$('results').appendChild(card(row));
  if(manualBefore&&manualCardCopy===manualBefore)manualCardCopy=null;
  if(manualFocus&&manualCardCopy?.text===manualBefore.text){manualCardCopy.textarea.focus({preventScroll:true});manualCardCopy.textarea.setSelectionRange?.(selectionStart??0,selectionEnd??manualBefore.text.length);}
- for(const suffix of ['', 'Top']){$('pageInfo'+suffix).textContent=slice.page+' / '+slice.pages+'ページ';$('prevPage'+suffix).disabled=slice.page<=1;$('nextPage'+suffix).disabled=slice.page>=slice.pages;$('prevPage'+suffix).textContent='前の'+size+'件';$('nextPage'+suffix).textContent='次の'+size+'件';}
- $('visibleRange').textContent=allMatches.length?((page-1)*size+1).toLocaleString('ja-JP')+'〜'+Math.min(page*size,allMatches.length).toLocaleString('ja-JP')+'件を表示（全'+allMatches.length.toLocaleString('ja-JP')+'件）':'表示する記録はありません。';
- $('pageJumpPanel').hidden=slice.pages<=1;for(const id of ['pagerTop','pagerBottom'])$(id).hidden=slice.pages<=1;$('pageJump').value=String(page);$('pageJump').max=String(slice.pages);$('pageJumpLimit').textContent='1〜'+slice.pages+'ページ';$('pageJump').disabled=$('goPage').disabled=!allMatches.length;savePreferences();return result;
+ for(const suffix of ['', 'Top']){$status('pageInfo'+suffix).textContent=slice.page+' / '+slice.pages+'ページ';$('prevPage'+suffix).disabled=slice.page<=1;$('nextPage'+suffix).disabled=slice.page>=slice.pages;$('prevPage'+suffix).textContent='前の'+size+'件';$('nextPage'+suffix).textContent='次の'+size+'件';}
+ $status('visibleRange').textContent=allMatches.length?((page-1)*size+1).toLocaleString('ja-JP')+'〜'+Math.min(page*size,allMatches.length).toLocaleString('ja-JP')+'件を表示（全'+allMatches.length.toLocaleString('ja-JP')+'件）':'表示する記録はありません。';
+ $('pageJumpPanel').hidden=slice.pages<=1;for(const id of ['pagerTop','pagerBottom'])$(id).hidden=slice.pages<=1;$('pageJump').value=String(page);$('pageJump').max=String(slice.pages);$status('pageJumpLimit').textContent='1〜'+slice.pages+'ページ';$('pageJump').disabled=$('goPage').disabled=!allMatches.length;savePreferences();return result;
 
 }
 function renderRecordNavigation(f){
  const navigation=historyRecordNavigation(index,f),target=(f.rank||'全ランク')+' · '+(f.close?f.close+'時〆':'すべての締め時間'),period=f.start&&f.start===f.end?f.start.replaceAll('-','/'):f.start||f.end?(f.start||'最初の記録')+'〜'+(f.end||'最新の記録'):'すべての日付';
- $('targetSummary').textContent=target+' / '+(f.units==='K'?'K表示':'pt表示');$('resultHeading').textContent=target+'の検索結果';
- $('calendarSummary').textContent=$('calendarLabel').textContent+(f.start&&f.start===f.end?' / '+f.start.replaceAll('-','/')+' 選択中':'');
- $('recordDateLabel').textContent=navigation.count?period+' · 記録のある日へ移動':'このランク・締め時間・記録の種類に記録がありません。';
+ $status('targetSummary').textContent=target+' / '+(f.units==='K'?'K表示':'pt表示');$('resultHeading').textContent=target+'の検索結果';
+ $status('calendarSummary').textContent=$('calendarLabel').textContent+(f.start&&f.start===f.end?' / '+f.start.replaceAll('-','/')+' 選択中':'');
+ $status('recordDateLabel').textContent=navigation.count?period+' · 記録のある日へ移動':'このランク・締め時間・記録の種類に記録がありません。';
  $('prevRecord').disabled=!navigation.previous;$('nextRecord').disabled=!navigation.next;$('latestRecord').disabled=$('emptyLatest').disabled=!navigation.latest;
  for(const [id,date,label] of [['prevRecord',navigation.previous,'前の記録日'],['nextRecord',navigation.next,'次の記録日']])$(id).setAttribute('aria-label',label+(date?' '+date.replaceAll('-','/'):'（記録なし）'));
  $('showResults').textContent=allMatches.length?'結果 '+allMatches.length.toLocaleString('ja-JP')+'件へ ↓':'検索結果へ ↓';
 }
 function selectRecordDay(direction){const navigation=historyRecordNavigation(index,filters()),date=direction<0?navigation.previous:direction>0?navigation.next:navigation.latest;if(!date)return;setRange({start:date,end:date});moveTo('resultHeading');}
-function syncSearchCopy(){const signature=JSON.stringify(filters());if(signature===lastFilterSignature)return;lastFilterSignature=signature;searchCopyRequest++;searchCopyPending=false;$('copySearch').disabled=false;$('copySearch').removeAttribute?.('aria-busy');$('copyFallback').hidden=$('closeCopySearch').hidden=true;$('copySearchStatus').textContent='';}
+function syncSearchCopy(){const signature=JSON.stringify(filters());if(signature===lastFilterSignature)return;lastFilterSignature=signature;searchCopyRequest++;searchCopyPending=false;$('copySearch').disabled=false;$('copySearch').removeAttribute?.('aria-busy');$('copyFallback').hidden=$('closeCopySearch').hidden=true;$status('copySearchStatus').textContent='';}
 function moveTo(id){document.activeElement?.blur?.();$(id).focus({preventScroll:true});$(id).scrollIntoView({block:'start',behavior:'auto'});}
 $('historyForm').addEventListener('submit',event=>{event.preventDefault();if(composing||event.isComposing)return;clearTimeout(inputTimer);const result=render(true);if(result.error){$('advanced').open=true;moveTo('start');}else moveTo('resultHeading');});
 $('clearQuery').addEventListener('click',()=>{$('query').value='';clearTimeout(inputTimer);composing=false;render(true);$('query').focus();});
@@ -103,15 +103,15 @@ $('monthAll').addEventListener('click',()=>{setRange(historyMonthRange(calendarM
 for(const [id,days] of [['recent7',7],['recent30',30]])$(id).addEventListener('click',()=>{setRange(recentHistoryRange(index,filters(),days));moveTo('resultHeading');});$('latestMonth').addEventListener('click',()=>{latestMonth();moveTo('resultHeading');});
 function clearFilters(){composing=false;clearTimeout(inputTimer);displayMonth='';for(const id of ['query','rank','close','start','end','origin'])$(id).value='';$('month').value='';render(true);}for(const id of ['clearFilters','emptyClear'])$(id).addEventListener('click',clearFilters);
 for(const [id,delta] of [['prevPage',-1],['nextPage',1],['prevPageTop',-1],['nextPageTop',1]])$(id).addEventListener('click',()=>{page+=delta;render();moveTo('resultHeading');});
-$('themeButton').addEventListener('click',()=>{document.body.classList.toggle('light');syncTheme();try{localStorage.setItem(THEME_KEY,document.body.classList.contains('light')?'light':'dark');}catch{$('preferenceStatus').textContent='表示の明るさを保存できません。現在の表示は利用できます。';}});
+$('themeButton').addEventListener('click',()=>{document.body.classList.toggle('light');syncTheme();try{localStorage.setItem(THEME_KEY,document.body.classList.contains('light')?'light':'dark');}catch{$status('preferenceStatus').textContent='表示の明るさを保存できません。現在の表示は利用できます。';}});
 $('copySearch').addEventListener('click',async()=>{
- if(searchCopyPending)return;const signature=JSON.stringify(filters()),request=++searchCopyRequest,url=new URL(location.href);url.search='';url.hash=new URLSearchParams(filters()).toString();searchCopyPending=true;$('copySearch').disabled=true;$('copySearch').setAttribute('aria-busy','true');$('copySearchStatus').textContent='リンクをコピーしています…';
+ if(searchCopyPending)return;const signature=JSON.stringify(filters()),request=++searchCopyRequest,url=new URL(location.href);url.search='';url.hash=new URLSearchParams(filters()).toString();searchCopyPending=true;$('copySearch').disabled=true;$('copySearch').setAttribute('aria-busy','true');$status('copySearchStatus').textContent='リンクをコピーしています…';
  const current=()=>request===searchCopyRequest&&signature===JSON.stringify(filters());
- try{if(typeof navigator.clipboard?.writeText!=='function')throw Error('Clipboard unavailable');await navigator.clipboard.writeText(url.href);if(!current())return;$('copyFallback').hidden=$('closeCopySearch').hidden=true;$('copySearchStatus').textContent='検索条件のリンクをコピーしました。';}
- catch{if(!current())return;$('copyFallback').value=url.href;$('copyFallback').hidden=$('closeCopySearch').hidden=false;$('copyFallback').focus({preventScroll:true});$('copyFallback').select();$('copyFallback').setSelectionRange?.(0,url.href.length);$('copyFallback').scrollIntoView({block:'nearest',behavior:'auto'});$('copySearchStatus').textContent='自動コピーできません。表示されたリンクを長押ししてコピーしてください。';}
+ try{if(typeof navigator.clipboard?.writeText!=='function')throw Error('Clipboard unavailable');await navigator.clipboard.writeText(url.href);if(!current())return;$('copyFallback').hidden=$('closeCopySearch').hidden=true;$status('copySearchStatus').textContent='検索条件のリンクをコピーしました。';}
+ catch{if(!current())return;$('copyFallback').value=url.href;$('copyFallback').hidden=$('closeCopySearch').hidden=false;$('copyFallback').focus({preventScroll:true});$('copyFallback').select();$('copyFallback').setSelectionRange?.(0,url.href.length);$('copyFallback').scrollIntoView({block:'nearest',behavior:'auto'});$status('copySearchStatus').textContent='自動コピーできません。表示されたリンクを長押ししてコピーしてください。';}
  finally{if(request===searchCopyRequest){searchCopyPending=false;$('copySearch').disabled=false;$('copySearch').setAttribute('aria-busy','false');}}
 });
-$('closeCopySearch').addEventListener('click',()=>{searchCopyRequest++;searchCopyPending=false;$('copySearch').disabled=false;$('copySearch').setAttribute('aria-busy','false');$('copyFallback').hidden=$('closeCopySearch').hidden=true;$('copySearchStatus').textContent='';$('advanced').open=true;$('copySearch').focus({preventScroll:true});});
+$('closeCopySearch').addEventListener('click',()=>{searchCopyRequest++;searchCopyPending=false;$('copySearch').disabled=false;$('copySearch').setAttribute('aria-busy','false');$('copyFallback').hidden=$('closeCopySearch').hidden=true;$status('copySearchStatus').textContent='';$('advanced').open=true;$('copySearch').focus({preventScroll:true});});
 window.addEventListener('storage',event=>{if(event.key===MAIN_KEY||event.key===E_KEY||event.key===null){rebuild();render();}});
 window.addEventListener('hashchange',()=>{loadPreferences();render(true);});
 rebuild();const restoredPreferences=loadPreferences();if(!restoredPreferences)latestMonth();else render();
@@ -133,7 +133,7 @@ async function refreshPublic(){
 }
 $('retryPublic').addEventListener('click',refreshPublic);refreshPublic();window.addEventListener('online',refreshPublic);
 window.addEventListener('offline',()=>stopPublic('オフライン：保存済みの記録を表示しています。接続後に再確認できます。'));
-window.addEventListener('pagehide',()=>{composing=false;clearTimeout(inputTimer);inputTimer=0;searchCopyRequest++;if(searchCopyPending)$('copySearchStatus').textContent='';searchCopyPending=false;$('copySearch').disabled=false;$('copySearch').setAttribute('aria-busy','false');latestCardCopyRequest++;cardCopyEpoch++;pendingCardCopies.clear();for(const state of cardCopyNodes.values())state.button.disabled=false;stopPublic('保存済みの記録を表示しています。必要に応じて公開データを再確認できます。');});
+window.addEventListener('pagehide',()=>{composing=false;clearTimeout(inputTimer);inputTimer=0;searchCopyRequest++;if(searchCopyPending)$status('copySearchStatus').textContent='';searchCopyPending=false;$('copySearch').disabled=false;$('copySearch').setAttribute('aria-busy','false');latestCardCopyRequest++;cardCopyEpoch++;pendingCardCopies.clear();for(const state of cardCopyNodes.values())state.button.disabled=false;stopPublic('保存済みの記録を表示しています。必要に応じて公開データを再確認できます。');});
 if('serviceWorker' in navigator&&window.isSecureContext)navigator.serviceWorker.register('./meter-sw.js',{scope:'./',updateViaCache:'none'}).catch(()=>{});
 // A restored page can miss storage events while it is frozen in the back-forward cache.
 window.addEventListener('pageshow',event=>{if(!event.persisted)return;rebuild();render();refreshPublic();});
@@ -143,9 +143,9 @@ function renderMeterCalendar(){
  if(!meterCalendarInitialized){$('meterCalendarRank').value=$('rank').value;$('meterCalendarClose').value=$('close').value;meterCalendarInitialized=true;}
  if(!meterCalendarMonthValue)meterCalendarMonthValue=calendarMonth();
  const model=historyMeterCalendar(index,{...filters(),rank:$('meterCalendarRank').value,close:$('meterCalendarClose').value},meterCalendarMonthValue);$('meterCalendarResults').replaceChildren();
- if(!model){$('meterCalendarStatus').textContent='月・ランク・締め時間を確認してください。';return;}
+ if(!model){$status('meterCalendarStatus').textContent='月・ランク・締め時間を確認してください。';return;}
  $('meterCalendarMonth').value=model.month;$('meterCalendarPrev').disabled=!historyMonthRange(model.month,-1);$('meterCalendarNext').disabled=!historyMonthRange(model.month,1);
- $('meterCalendarStatus').textContent=model.month.replace('-','年')+'月 · '+($('meterCalendarRank').value||'全ランク')+' · '+($('meterCalendarClose').value?$('meterCalendarClose').value+'時〆':'すべての締め時間')+' · '+model.count.toLocaleString('ja-JP')+'件'+(eCalendarReadFailed?' · E帯の保存記録を読み直せません。読み込み済みの内容を表示しています。':'');
+ $status('meterCalendarStatus').textContent=model.month.replace('-','年')+'月 · '+($('meterCalendarRank').value||'全ランク')+' · '+($('meterCalendarClose').value?$('meterCalendarClose').value+'時〆':'すべての締め時間')+' · '+model.count.toLocaleString('ja-JP')+'件'+(eCalendarReadFailed?' · E帯の保存記録を読み直せません。読み込み済みの内容を表示しています。':'');
  for(const group of model.ranks){
   const section=node('section',undefined,'meter-calendar-rank'),heading=node('h3',group.rank+' · '+group.count+'件'),scroll=node('div',undefined,'meter-calendar-scroll'),grid=node('div',undefined,'meter-calendar-grid');
   scroll.tabIndex=0;scroll.setAttribute('role','region');scroll.setAttribute('aria-label',model.month+' '+group.rank+'のメーター結果カレンダー。左右にスクロールできます');
@@ -162,7 +162,7 @@ function renderMeterCalendar(){
  }
 }
 $('meterCalendarPanel').addEventListener('toggle',renderMeterCalendar);
-$('meterCalendarMonth').addEventListener('change',()=>{const range=historyMonthRange($('meterCalendarMonth').value);if(range){meterCalendarMonthValue=range.month;renderMeterCalendar();}else{$('meterCalendarMonth').value=meterCalendarMonthValue;$('meterCalendarStatus').textContent='2000年1月から2099年12月の月を選んでください。';}});
+$('meterCalendarMonth').addEventListener('change',()=>{const range=historyMonthRange($('meterCalendarMonth').value);if(range){meterCalendarMonthValue=range.month;renderMeterCalendar();}else{$('meterCalendarMonth').value=meterCalendarMonthValue;$status('meterCalendarStatus').textContent='2000年1月から2099年12月の月を選んでください。';}});
 for(const [id,delta] of [['meterCalendarPrev',-1],['meterCalendarNext',1]])$(id).addEventListener('click',()=>{const range=historyMonthRange(meterCalendarMonthValue,delta);if(range){meterCalendarMonthValue=range.month;renderMeterCalendar();}});
 
 for(const rank of METER_CALENDAR_RANKS){const option=node('option',rank);option.value=rank;$('meterCalendarRank').appendChild(option);}

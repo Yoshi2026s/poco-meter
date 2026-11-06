@@ -48,3 +48,6 @@ next-env.d.ts
 /github-sync/generated/
 __pycache__/
 *.pyc
+
+# GitHub Pages build output
+/_site/

@@ -1,35 +1,41 @@
 # ポコメーター番長
 
-Pocochaの目標メーター計算・過去ボーダー管理ツールの開発引継ぎリポジトリです。
+Pocochaの目標メーター計算・過去ボーダー管理ツールです。
 
-- 現行Sites：https://poco-meter.freefreelife2000.chatgpt.site/
-- 開発先：このリポジトリ（Yoshi2026s/poco-meter）
-- 開発環境：Claude Code
+- 公開先：https://yoshi2026s.github.io/poco-meter/
+- 開発・正本：このリポジトリ（Yoshi2026s/poco-meter、既定ブランチ `(root)`）
+- 開発環境：Claude Code（ChatGPTからもGitHub経由で共同編集可）
+- [開発指示（Code・ChatGPT共通）](AGENTS.md)
 - [引継ぎ資料](docs/HANDOVER.md)
-- [開発指示](AGENTS.md)
-- [自動取得のCode移行引継ぎ](docs/AUTOMATION_CODE_HANDOVER.md)
+- [自動取得の経緯](docs/AUTOMATION_CODE_HANDOVER.md)
 
-## 現在の状態
+## 仕組み
 
-2026/11/06に旧オフライン配布版の案内から、ポコメーター番長専用の開発資料へ変更しました。
-このリポジトリには、アプリ本体・依存設定・ビルド／テスト環境はまだありません。
-Sitesの編集元ソースの移管と、現行公開版との照合が必要です。現行アプリの完全な複製として扱わないでください。
+| 部分 | 場所 |
+| --- | --- |
+| 画面の元ファイル | `calculator/`（計算画面・過去ボーダー・E帯・算出方法・SW） |
+| 公開用の加工 | `scripts/build-pages.mjs` → `_site/`（コミットしない） |
+| ボーダーデータ | `data/borders.json`（自動更新専用） |
+| 自動更新 | `.github/workflows/border-update.yml`（毎日 05:07・17:07 JST、手動実行も可） |
+| 公開 | `.github/workflows/pages.yml`（push と自動更新のあとに GitHub Pages へ） |
+| 取得処理 | `automation/update-borders-json.mjs`（取得元の検証は `lib/border-source.mjs`） |
 
-リポジトリは公開されています。秘密情報、認証トークン、利用者データ、アクセスログはコミットしないでください。
-GitHub Pagesは今回の確認時点で未設定です。資料更新によるSitesの自動更新はありません。
+利用者の履歴・設定・E帯データは各端末のブラウザーに保存されます。サーバーへは送りません。
+旧Sites（https://poco-meter.freefreelife2000.chatgpt.site/）からの移行は、旧Sitesで「保存・出力」→JSONバックアップを保存し、新しいURLで読み込みます。
 
-## Claude Codeで開始する
+## ローカルでの確認
 
 ```bash
-git clone https://github.com/Yoshi2026s/poco-meter.git poco-meter
-cd poco-meter
-claude
+node --test tests/pages-borders.mjs tests/automation-border-client.mjs
 ```
 
-Claude Codeへの最初の指示：
+```bash
+node scripts/build-pages.mjs --out=_site
+```
 
-> CLAUDE.mdとdocs/AUTOMATION_CODE_HANDOVER.mdを読み、PC側の移管候補を保全しながら、ボーダー自動取得をCodeへ移す準備をしてください。実行場所・認証経路を整理し、ネットワークなしのテストまで進めてください。タスク再開・キー変更・本番保存・新規スケジュール有効化はしないでください。
+リポジトリは公開されています。秘密情報、認証トークン、利用者データ、アクセスログはコミットしないでください。
 
 ## 履歴
 
-旧ツールの案内はGit履歴に残っています。旧移転案内を現在の公開・同期先として使用しないでください。
+2026/11/06 にSitesの正規ソース（取得コミット3c0e6c8）を取り込み、2026/11/07 に GitHub Pages ＋ GitHub Actions の構成へ移行しました。
+旧ツールの案内と旧Sites向け資料はGit履歴と `docs/legacy-source/` に残っています。現在の公開・同期先として使用しないでください。

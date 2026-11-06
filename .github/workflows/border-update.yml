@@ -1,0 +1,59 @@
+name: ボーダー自動更新
+
+# 取得元（one-carat.com）の前日分を取得・検証し、data/borders.json に保存する。
+# 毎日 05:07 と 17:07（日本時間）。GitHub の混雑で数分〜数十分遅れることがある。
+on:
+  schedule:
+    - cron: '7 20 * * *'   # 05:07 JST
+    - cron: '7 8 * * *'    # 17:07 JST
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: border-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: テスト（ネットワークなし）
+        run: node --test tests/pages-borders.mjs
+      - name: 取得元を確認して data/borders.json を更新
+        id: update
+        run: |
+          set +e
+          node automation/update-borders-json.mjs --file=data/borders.json | tee update-report.json
+          echo "exit=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+      - name: 変更があればコミット
+        run: |
+          if git diff --quiet -- data/borders.json; then
+            echo "変更なし"; exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/borders.json
+          git commit -m "ボーダー自動更新 $(TZ=Asia/Tokyo date '+%Y-%m-%d %H:%M') JST"
+          for attempt in 1 2 3; do
+            git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:refs/heads/${GITHUB_REF_NAME}" && exit 0
+            sleep 5
+          done
+          echo "pushに失敗しました"; exit 1
+      - name: 結果をジョブ概要に記録
+        if: always()
+        run: |
+          if [ -f update-report.json ]; then
+            { echo '### ボーダー自動更新の結果'; echo '```json'; cat update-report.json; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: 取得が止まった場合は失敗として通知
+        if: steps.update.outputs.exit != '0'
+        run: |
+          echo "取得元の確認が止まりました（403は再試行しません）。保存済みの値は保持しています。"
+          exit 1
