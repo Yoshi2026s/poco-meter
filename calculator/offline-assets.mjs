@@ -1,7 +1,7 @@
 export const manifest = {
   "id": "/",
   "name": "ポコメーター番長",
-  "short_name": "メーター",
+  "short_name": "ポコメーター番長",
   "lang": "ja",
   "start_url": "/",
   "scope": "/",
