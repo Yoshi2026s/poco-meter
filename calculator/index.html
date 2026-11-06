@@ -1743,6 +1743,33 @@ body.menus-open .wrap{padding-bottom:84px!important}
   :root body #mini.main-screen #miniR{font-size:24px!important}
   :root body #mini.main-screen #miniT{font-size:21px!important}
 }
+:root body #mini.main-screen #itemsWindowRow .coin-card b .item-unit{font-size:12px!important}
+/* 2026-11 round 2: the other menus on phones / touch screens. Readable text is 12px or larger, touch targets 44px. */
+@media (max-width:700px),(pointer:coarse){
+  :root body #liveMeter :is(#closeSel,#coreCountTop,#quickPeriod,#quickRank,#quickBorder,#quickMethod,#quickBufferPct){min-height:44px!important;height:44px!important}
+  :root body #liveMeter :is(#applyManualTarget,#resetTop,button.x,#undoTarget,#undoCurrent,#copyRemaining,#restoreGoalDefaults){min-height:44px!important}
+  :root body #liveMeter #clockTimeBasis{font-size:12px!important;--font-meta:12px}
+  :root body #liveMeter #clockTimeBasis :is(span,button){font-size:12px!important}
+  :root body #liveMeter #clockSyncNow{min-height:44px!important;padding:4px 10px!important}
+  :root body #liveMeter #remainingSummary .compact-deadline-controls{--font-meta:12px}
+  :root body #liveMeter #remainingSummary .countdown-value{min-height:44px!important}
+  :root body #liveMeter #remainingSummary :is(.meter-deadline label,.meter-core label){font-size:12px!important;line-height:1.4!important}
+  :root body :is(#todayTimeLabel,#manualTargetMode,#currentSavedTime,#menuSummary,#formulaLine,a.offline-source,#candidateLabel+small,.goal-defaults-date small){font-size:12px!important}
+  :root body #liveMeter .goal-inputs #manualTargetMode{font-size:12px!important}
+  :root body .wrap :is(#analysisRows,#logList) button{min-width:44px!important;min-height:44px!important}
+  :root body .wrap details>summary{min-height:44px;box-sizing:border-box}
+  :root body .wrap .goal-defaults-start{min-height:44px}
+  :root body .wrap .goal-defaults-start input{width:22px;height:22px;flex-basis:22px}
+}
+/* Slim status bar while the main screen is scrolled away (other menus open): remaining goal and countdown stay in view. */
+.sticky-status{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 6px);z-index:55;transform:translateX(-50%);display:flex;align-items:baseline;gap:6px 14px;box-sizing:border-box;width:min(560px,calc(100% - 20px));padding:6px 12px;border:1px solid var(--line);border-radius:12px;background:var(--paper);color:var(--ink);box-shadow:0 6px 18px #0005;pointer-events:none;font-variant-numeric:tabular-nums}
+.sticky-status[hidden]{display:none}
+.sticky-status span{font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap}
+.sticky-status b{margin-left:4px;font-size:17px;font-weight:800}
+:root body .sticky-status #stickyR{color:var(--number-ink,var(--teal))!important}
+:root body .sticky-status #stickyT{color:var(--red)!important}
+.sticky-status span:last-child{margin-left:auto}
+@media print{.sticky-status{display:none!important}}
 @media (prefers-reduced-motion:reduce){.menus-return button,#mainMenuNav :is(button,a),#miniFill{transition:none!important}}
 @media print{#mainMenuNav,.menus-return{display:none!important}}
 </style>
@@ -1766,6 +1793,7 @@ body.menus-open .wrap{padding-bottom:84px!important}
 <section id="itemsWindow" aria-labelledby="itemsWindowTitle" aria-describedby="itemsWindowDescription"><div class="items-window-head"><h2 id="itemsWindowTitle">残りアイテムの目安</h2><div class="items-core"><label for="coreCountItems">現コア数</label><input id="coreCountItems" class="num" type="text" inputmode="numeric" enterkeyhint="done" autocomplete="off" placeholder="0" aria-label="現コア数（0〜1000人）" aria-describedby="coreCountItemsError inputStatus" value="0"></div></div><small id="coreCountItemsError" class="items-core-error" hidden></small><p id="itemsWindowDescription">目標メーターまでの残りコイン・アイテム数</p><div id="itemsWindowRow"></div></section>
 <nav class="main-menu-nav" id="mainMenuNav" aria-label="その他のメニュー"><button type="button" class="main-menu-toggle" id="mainMenuToggle" aria-expanded="false" aria-controls="mainMenus">その他のメニューを開く</button><div class="main-menu-grid"><button type="button" id="navFullMeter" data-open-menu="fullMeterMenu">詳細メーター・入力</button><button type="button" id="navMenus" data-open-menu="menusToolbar">目標・記録・換算</button><button type="button" id="navDisplay" data-open-menu="displaySettings">表示設定</button><button type="button" id="navUsage" data-open-menu="toolUsage">使い方・更新</button><a class="main-menu-link" id="mainHistoryLink" href="#">過去ボーダー表</a><a class="main-menu-link" id="mainEBorderLink" href="#">E帯ボーダー</a></div></nav>
 </div>
+<div class="sticky-status" id="stickyStatus" hidden aria-hidden="true"><span>目標まであと<b id="stickyR">-</b></span><span>締めまで<b id="stickyT">-</b></span></div>
 <div class="wrap">
   <div class="menus-return" id="menusReturn"><button type="button" id="closeMainMenus">← シンプルメニューに戻る</button></div>
   <header class="card">
@@ -2156,6 +2184,7 @@ body.menus-open .wrap{padding-bottom:84px!important}
     menusOpen=!!value;document.body.classList.toggle('menus-open',menusOpen);
     if(toggle){toggle.setAttribute('aria-expanded',String(menusOpen));toggle.textContent=menusOpen?'その他のメニューを閉じる':'その他のメニューを開く';}
     if(!menusOpen){var panel=document.getElementById('displaySettings');if(panel&&panel.open)panel.open=false;}
+    if(typeof renderBar==='function')renderBar();
   }
   function scrollToNode(node){if(!node||typeof node.scrollIntoView!=='function')return;var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;node.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});}
   function openMenu(id){
@@ -2174,6 +2203,11 @@ body.menus-open .wrap{padding-bottom:84px!important}
   var back=document.getElementById('closeMainMenus');
   if(back)back.onclick=function(){setMenusOpen(false);scrollToNode(mini);if(toggle)toggle.focus({preventScroll:true});};
   [['mainHistoryLink','historyPortalLink'],['mainEBorderLink','eBorderPortalLink']].forEach(function(pair){var link=document.getElementById(pair[0]),source=document.getElementById(pair[1]);if(link&&source)link.setAttribute('href',source.getAttribute('href'));});
+  // Status bar: shown only while other menus are open and the main screen has scrolled out of view.
+  var bar=document.getElementById('stickyStatus'),barR=document.getElementById('stickyR'),barT=document.getElementById('stickyT'),miniOut=false,barTimer=0;
+  function copyBar(){var r=document.getElementById('miniR'),t=document.getElementById('miniT');if(r&&barR.textContent!==r.textContent)barR.textContent=r.textContent;if(t&&barT.textContent!==t.textContent)barT.textContent=t.textContent;}
+  function renderBar(){if(!bar)return;var show=menusOpen&&miniOut;if(bar.hidden===show)bar.hidden=!show;clearInterval(barTimer);if(show){copyBar();barTimer=setInterval(copyBar,200);}}
+  if(bar&&'IntersectionObserver' in window)new IntersectionObserver(function(entries){entries.forEach(function(entry){miniOut=!entry.isIntersecting&&entry.boundingClientRect.top<0;});renderBar();}).observe(mini);
   window.pocochaMainMenus={open:function(){setMenusOpen(true);},close:function(){setMenusOpen(false);},isOpen:function(){return menusOpen;},openMenu:openMenu};
   // Compatibility for the calculator script: both menus are always on.
   window.pocochaSimpleMenuController={isEnabled:function(){return true;},setEnabled:function(){render();},isItemsEnabled:function(){return true;},setItemsEnabled:function(){renderItems();},renderItems:renderItems};
@@ -2294,7 +2328,7 @@ body.menus-open .wrap{padding-bottom:84px!important}
     var success=dark?'#b3f0cc':'#145737',red=dark?'#ffbec8':'#9d2034',amber=dark?'#ffe1a3':'#704400';
     var number=DISPLAY_CUSTOM.number[displaySettings.numberColor][theme];
     var tokens={ink:ink,muted:muted,sub:muted,text:ink,paper:paper,panel:paper,surface:paper,field:paper,'input-bg':paper,raised:raised,line:line,'control-border':control,teal:teal,'teal-soft':raised,'on-accent':dark?'#07131f':'#ffffff',success:success,'success-bg':dark?'#163c2b':'#e5f5ed',red:red,'error-bg':dark?'#3a1d29':'#fff0f3',amber:amber,'amber-bg':dark?'#3b2c19':'#fff2d6','number-ink':number,'remaining-ink':number,c1:teal,c2:teal,c3:amber,c4:success,c5:amber,c6:teal};
-    ['mini','itemsWindow'].forEach(function(id){var panel=$(id);panel.setAttribute('data-hud-background-color',displaySettings.hudBackground);panel.setAttribute('data-hud-theme',theme);panel.style.setProperty('color-scheme',theme);Object.keys(tokens).forEach(function(key){panel.style.setProperty('--'+key,tokens[key]);});});
+    ['mini','itemsWindow','stickyStatus'].forEach(function(id){var panel=$(id);if(!panel)return;panel.setAttribute('data-hud-background-color',displaySettings.hudBackground);panel.setAttribute('data-hud-theme',theme);panel.style.setProperty('color-scheme',theme);Object.keys(tokens).forEach(function(key){panel.style.setProperty('--'+key,tokens[key]);});});
     $('hudBackgroundColor').value=displaySettings.hudBackground;
   }
   function applyDisplaySettings(){
