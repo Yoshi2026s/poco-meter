@@ -1648,6 +1648,10 @@ footer .footer-support .tool-disclaimer ul{font-size:.875rem;line-height:1.8}
 .history-portal{margin:12px 0}.history-portal a{display:flex;align-items:center;gap:12px;width:100%;min-height:64px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;font-weight:700;text-decoration:none;background:var(--paper,var(--panel))}.history-portal-text{display:flex;flex:1;min-width:0;flex-direction:column;gap:3px}.history-portal-title{font-size:1rem;overflow-wrap:anywhere}.history-portal .hint{font-size:.8rem;font-weight:400;line-height:1.5}.history-portal-arrow{font-size:1.4rem;flex:0 0 auto}.history-portal a:focus-visible{outline:3px solid currentColor;outline-offset:3px}
 /* Keep the cutoff picker touchable inside the simple menu on every screen size. */
 :root #mini #miniClose{min-height:44px;height:auto;min-width:0;font-size:16px!important;padding:6px 22px 6px 6px;pointer-events:auto;touch-action:manipulation}
+
+/* 2026-11-07 tap targets: compact simple-menu controls are at least 44px tall (user decision: 44px, not 48px).
+   Only when the screen is tall enough: the panel is fixed, so landscape and short screens keep the compact size. */
+@media (min-height:640px){#mini :is(#restoreTargetMini,#openMiniTargetDetails,#resetCurrentMini,#hudToggle,#miniPeriod,#miniRank,#miniBorder,#miniMethod,#miniBuffer){min-height:44px!important}}
 </style>
 </head>
 <body>
