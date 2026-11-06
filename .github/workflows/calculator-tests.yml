@@ -20,4 +20,7 @@ jobs:
           node tests/items-core-input.mjs
           node tests/border-write-auth.mjs
           node tests/history-search.mjs
-          node --test tests/automation-border-client.mjs
+      # 依存パッケージ不要。上の手順の結果にかかわらず実行する。
+      - name: ボーダー自動取得クライアント（ネットワークなし）を検証
+        if: always()
+        run: node --test tests/automation-border-client.mjs
