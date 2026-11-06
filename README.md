@@ -3,7 +3,7 @@
 Pocochaの目標メーター計算・過去ボーダー管理ツールの開発引継ぎリポジトリです。
 
 - 現行Sites：https://poco-meter.freefreelife2000.chatgpt.site/
-- 開発先：このリポジトリ（Yoshi2026s/-）
+- 開発先：このリポジトリ（Yoshi2026s/poco-meter）
 - 開発環境：Claude Code
 - [引継ぎ資料](docs/HANDOVER.md)
 - [開発指示](AGENTS.md)
@@ -20,7 +20,7 @@ GitHub Pagesは今回の確認時点で未設定です。資料更新によるSi
 ## Claude Codeで開始する
 
 ```bash
-git clone https://github.com/Yoshi2026s/-.git poco-meter
+git clone https://github.com/Yoshi2026s/poco-meter.git poco-meter
 cd poco-meter
 claude
 ```
