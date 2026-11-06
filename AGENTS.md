@@ -5,7 +5,7 @@ Claude Code と ChatGPT（Codex など）の共通指示です。
 ## 対象と現状（2026/11/07）
 - このリポジトリはポコメーター番長専用。**正本はこのGitHubリポジトリ**（既定ブランチ `(root)`）。
 - 公開先：GitHub Pages https://yoshi2026s.github.io/poco-meter/ （計算画面・過去ボーダー・E帯・算出方法）。
-- ボーダーは GitHub Actions「ボーダー自動更新」が毎日 05:07・17:07 JST に取得元（one-carat.com）から取得し、`data/borders.json` に保存する。
+- ボーダーは GitHub Actions「ボーダー自動更新」が毎日 05:00・17:00 JST に取得元（one-carat.com）から取得し、`data/borders.json` に保存する。
 - 旧Sites（https://poco-meter.freefreelife2000.chatgpt.site/）は更新しない。署名キー・Sites API・旧ChatGPTタスクは使わない（旧タスクは無効のまま）。
 - まず README.md と docs/HANDOVER.md を読む。旧資料は docs/legacy-source/（実行しない）。
 

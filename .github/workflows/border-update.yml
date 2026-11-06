@@ -1,11 +1,11 @@
 name: ボーダー自動更新
 
 # 取得元（one-carat.com）の前日分を取得・検証し、data/borders.json に保存する。
-# 毎日 05:07 と 17:07（日本時間）。GitHub の混雑で数分〜数十分遅れることがある。
+# 毎日 05:00 と 17:00（日本時間）。GitHub の定期実行は混雑で数分〜数十分遅れることがある。
 on:
   schedule:
-    - cron: '7 20 * * *'   # 05:07 JST
-    - cron: '7 8 * * *'    # 17:07 JST
+    - cron: '0 20 * * *'   # 05:00 JST
+    - cron: '0 8 * * *'    # 17:00 JST
   workflow_dispatch:
 
 permissions:
