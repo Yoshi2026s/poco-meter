@@ -73,9 +73,9 @@ async function step(p){await p.waitForTimeout(80);}
   assert.ok(Math.abs(b['#remainingItems'].width-b['.goal-inputs'].width)<2,'items use full width');
   assert.ok(Math.abs(b['#currentTop'].y-b['#target'].y)<1,'target and current input share one row');assert.ok(b['#currentTop'].x>=b['#target'].right,'input groups do not overlap');
   assert.ok(g.closeTextNeed<=b['#closeSel'].width+1,'closing choice clipped '+g.closeTextNeed+' > '+b['#closeSel'].width);
-  for(const id of ['#closeSel','#coreCountTop']){assert.ok(b[id].height>=30,'compact control height '+id);if(config.scale===1)assert.ok(b[id].height<=36,'control is mini '+id);assert.ok(parseFloat(b[id].font)>=16,'input avoids iOS focus zoom '+id);}
+  for(const id of ['#closeSel','#coreCountTop']){assert.ok(b[id].height>=44,'touch control height (2026-11: 44px or more) '+id);assert.ok(parseFloat(b[id].font)>=16,'input avoids iOS focus zoom '+id);}
   for(const id of ['#target','#currentTop'])assert.ok(b[id].height>=44,'touch height '+id);
-  for(const selector of ['#quickPeriod','#quickRank','#quickBorder','#quickMethod','#quickBufferPct']){const rect=await p.locator(selector).boundingBox();if(config.scale===1)assert.ok(rect.height<=36,'goal menu is mini '+selector);}
+  for(const selector of ['#quickPeriod','#quickRank','#quickBorder','#quickMethod','#quickBufferPct']){const rect=await p.locator(selector).boundingBox();assert.ok(rect.height>=44,'goal menu touch height (2026-11: 44px or more) '+selector);}
   if(config.scale===1)for(const row of g.coins){assert.ok(row.label<=row.labelLine*1.1,'item label wraps unnecessarily');assert.ok(row.number<=row.numberLine*1.1,'item count wraps unnecessarily');}
   for(const id of ['-1000','1000','10000','100000'])assert.equal(await p.locator('[data-addtop="'+id+'"]').isVisible(),false,'phone increment controls removed');
   await fill(p,'#currentTop','126K');await p.locator('#currentTop').blur();assert.equal((await p.locator('#remain').innerText()).trim(),'374K');assert.equal((await p.locator('#miniR').innerText()).trim(),'374K');
