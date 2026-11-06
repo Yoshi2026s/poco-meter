@@ -29,4 +29,4 @@ jobs:
       # 依存パッケージ不要。上の手順の結果にかかわらず実行する。
       - name: GitHub Pages版とボーダー更新（ネットワークなし）を検証
         if: always()
-        run: node --test tests/pages-borders.mjs
+        run: node --test tests/pages-borders.mjs tests/table-channel.mjs
