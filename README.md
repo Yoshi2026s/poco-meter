@@ -7,6 +7,7 @@ Pocochaの目標メーター計算・過去ボーダー管理ツールの開発�
 - 開発環境：Claude Code
 - [引継ぎ資料](docs/HANDOVER.md)
 - [開発指示](AGENTS.md)
+- [自動取得のCode移行引継ぎ](docs/AUTOMATION_CODE_HANDOVER.md)
 
 ## 現在の状態
 
@@ -27,7 +28,7 @@ claude
 
 Claude Codeへの最初の指示：
 
-> CLAUDE.md、AGENTS.md、docs/HANDOVER.mdを読んで、現行Sitesの編集元ソースを確認してください。ソースが未取得なら不足するものを報告してください。取得後は公開版との差分と既存データを保全し、締め時間を変えても目標値が同じになるという過去報告を再現・調査してください。
+> CLAUDE.mdとdocs/AUTOMATION_CODE_HANDOVER.mdを読み、PC側の移管候補を保全しながら、ボーダー自動取得をCodeへ移す準備をしてください。実行場所・認証経路を整理し、ネットワークなしのテストまで進めてください。タスク再開・キー変更・本番保存・新規スケジュール有効化はしないでください。
 
 ## 履歴
 
