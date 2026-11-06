@@ -1,0 +1,3 @@
+# 長い1行（埋め込みデータ・画像）を検索結果に丸ごと出さない
+--max-columns=300
+--max-columns-preview

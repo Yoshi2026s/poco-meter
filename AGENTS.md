@@ -7,13 +7,15 @@ Claude Code と ChatGPT（Codex など）の共通指示です。
 - 公開先：GitHub Pages https://yoshi2026s.github.io/poco-meter/ （計算画面・過去ボーダー・E帯・算出方法）。
 - ボーダーは GitHub Actions「ボーダー自動更新」が毎日 05:00・17:00 JST に取得元（one-carat.com）から取得し、`data/borders.json` に保存する。
 - 旧Sites（https://poco-meter.freefreelife2000.chatgpt.site/）は更新しない。署名キー・Sites API・旧ChatGPTタスクは使わない（旧タスクは無効のまま）。
-- 現状・未解決は docs/HANDOVER.md、画面・計算の要望は docs/REQUESTS.md。旧資料は docs/archive/・docs/legacy-source/（参照のみ・実行しない）。
+- どこを読むかは docs/CODEMAP.md で当たりを付ける。現状・未解決は docs/HANDOVER.md、画面・計算の要望は docs/REQUESTS.md。旧資料は docs/archive/・docs/legacy-source/（参照のみ・実行しない）。
 
 ## 共同編集のルール（Code・ChatGPT共通）
 - 変更はこのリポジトリへのコミットかPRで行う。Sitesや別の場所で編集しない。
 - 作業前に最新を取り込み、他の人の未マージ変更を上書きしない。強制pushはしない。
+- PRは squash でマージする。マージ後に同じ作業ブランチで続けるときは、既定ブランチ `(root)` から作り直し、リモートの作業ブランチとは中身の変わらない合流コミットでつないでから push する（強制pushを避けるため）。
 - `data/borders.json` は自動更新専用。手で編集しない（修正が必要なら理由を残して別PR）。
 - 画面の元ファイルは `calculator/`。公開用の加工は `scripts/build-pages.mjs` が行う。公開物（`_site/`）はコミットしない。
+- `calculator/border-history.html`・`calculator/e-border.html` は生成物。テンプレートや `.mjs` を直したら `npm run pages:prepare` で作り直してコミットする（`npm run check` が不一致を検出）。
 - ツール本体を変えたら `npm run version:bump` で `PAGES_VERSION`（画面の「最終更新バージョン」）を更新する。データ更新だけでは変えない。
 - push すると「GitHub Pages 公開」が自動で動く。公開の確認は実際のURLで行う。
 
@@ -28,7 +30,8 @@ Claude Code と ChatGPT（Codex など）の共通指示です。
 ## 検証
 - 統合前の標準チェック：`npm run check`（CIと同じ計算・保存・Pages系テスト＋公開物の作成。出力は合否のみ）。Node 22以上。
 - ネットワークも依存も不要な最小テスト：`npm test`。
-- UI・CSSを変えたとき：`npm run test:extra`（vite系・Playwright画面系。Playwright と Chromium は既存のものを使う）。
+- UI・CSSを変えたとき：`npm run test:extra`（vite系・Playwright画面系、約8分。Playwright と Chromium は既存のものを使う）。typography-balance-1000 は既知の不合格。
+- 関係するテストだけ先に回すときは docs/CODEMAP.md の「テストの選び方」を見る。
 - 取得元を追加するときは、利用規約・robots.txt・転載可否を先に確認する（HAISHIN LAB は無断転載禁止のため不使用）。表画像の読み取り値は、既知の日と全一致した画像からのみ採用し、自信度の低い値は推測で埋めない。
 - スマホ変更では縦持ち、小画面、横持ち、低い画面で操作・保存・再読込後の復元を検証。エミュレーションと物理端末を区別する。
 - 締め時間ごとに異なる既知データを用いて計算を検証。同値を機械的に異なる数字へ変えない。

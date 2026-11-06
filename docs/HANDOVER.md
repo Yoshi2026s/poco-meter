@@ -28,6 +28,7 @@
 
 ## 参照先
 - 開発ルール・検証コマンド：[../AGENTS.md](../AGENTS.md)
+- ファイルの場所・関数・テストの選び方：[CODEMAP.md](CODEMAP.md)
 - 画面・計算の要望一覧：[REQUESTS.md](REQUESTS.md)
 - 自動取得の経緯・403の経路：[AUTOMATION_CODE_HANDOVER.md](AUTOMATION_CODE_HANDOVER.md)
 - 旧Sites時代の報告類：`archive/`（参照のみ。現行の指示ではない）
