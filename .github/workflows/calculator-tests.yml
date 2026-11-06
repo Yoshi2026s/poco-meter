@@ -1,7 +1,10 @@
 name: メーター計算・ボーダー保存の検証
 on:
+  # 資料だけの変更では実行しない（時間短縮）
   push:
+    paths-ignore: ['**/*.md', 'docs/**']
   pull_request:
+    paths-ignore: ['**/*.md', 'docs/**']
   workflow_dispatch:
 permissions:
   contents: read

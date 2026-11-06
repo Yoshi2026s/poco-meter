@@ -14,8 +14,11 @@
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "db:generate": "drizzle-kit generate",
     "test": "node --test tests/pages-borders.mjs tests/table-channel.mjs",
+    "check": "bash scripts/check.sh",
+    "test:extra": "bash scripts/test-extra.sh",
     "pages:build": "node scripts/build-pages.mjs --out=_site",
-    "borders:update": "node automation/update-borders-json.mjs --file=data/borders.json"
+    "borders:update": "node automation/update-borders-json.mjs --file=data/borders.json",
+    "version:bump": "node scripts/bump-version.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

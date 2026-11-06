@@ -1,0 +1,10 @@
+# ripgrep（Claude Code の Grep・Glob を含む）の検索から外す大きいファイル・旧資料。
+# 中身を見る必要があるときはパスを直接指定する（例：rg -n 語 data/borders.json --max-columns 300）。
+tsconfig.tsbuildinfo
+pnpm-lock.yaml
+SOURCE_MANIFEST.json
+docs/archive/
+docs/legacy-source/
+docs/*.json
+db/*.json
+data/*.json
