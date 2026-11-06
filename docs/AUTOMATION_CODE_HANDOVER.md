@@ -57,7 +57,7 @@ catalog/publication/v1の現在の実値は未取得。10/21当時の実値も�
 5. 署名付きPOST /api/borders/refresh に {articles:[{url,html}]} を送る。
 6. GET /api/borders でsync.last_attempt、sync.last_success、sync.status、締め時間別最新日付・保存値を確認。
 
-3はボーダー保存ではないが、再送防止の記録が1件書き込まれる。完全な読み取りモードに含めない。
+3はボーダーを保存しない。ソース（lib/border-store.mjs）では再送防止の記録（claimSignedWrite）は5のrefreshでだけ書き込まれ、3ではDBへの書き込みはない（2026/11/06 Codeのテストで確認）。ただし署名付き操作なので、読み取りモードには含めない。
 5は本番保存。新しい実行は別途明示承認が必要。
 サーバー側の日付・締め時間・18ランクの検証、書き込み権限、重複防止を維持する。
 元記事の更新日時をデータ日付と扱わない。欠損は0・他の締め時間・推測値で補完しない。
@@ -96,6 +96,29 @@ GitHubへpushできてもSites更新やAPI保存はできるとは限らない�
 - ログの保管先・保持期間・通知先を決めるまでは外部通知やアップロードをしない。
 - 403停止、非JSON応答、認証未設定、日付・ランク不正、保存失敗、部分欠損、二重起動を意味のあるテストで検証する。
 - README、実装、設定例、引継ぎの時刻・手順を最終的に一致させる。
+
+### Code側で実装済み（2026/11/06、通信なしのテストのみ）
+- `automation/border-writer-client.mjs`：既存APIの書き込みクライアント。`automation/run-border-writer.mjs`：CLI。
+- モード：`plan`（既定・通信なし）／`diagnose`（GETのみ）／`discover`（＋署名付きURL判定POST）／`refresh`（＋本番保存POST＋GET照合）。
+- `refresh`は`--confirm-production-write`がないと通信前に停止。キーは環境変数`BORDER_WRITER_KEY`からだけ読む。形式が不正なら通信前に停止。CIでは`plan`以外を拒否。
+- 403は即停止し、再試行しない。応答の形式から経路の候補（A／B／C／D／E・F／G）を記録する。GETだけは5xxと通信エラーのときに1回再試行する。POSTは再試行しない。
+- 接続先はサイトのoriginとone-carat.comに限定。リダイレクトは拒否。タイムアウトは15秒、サイズ上限は3.6MB。ロックファイルで二重起動を防止（10分で失効）。
+- ログに記録するのは、日時・手順・URL（クエリなし）・メソッド・ステータス・Content-Type・サニタイズ済みerror・3ヘッダーの有無だけ。キーと署名の値、64桁16進は記録しない。
+- 成功の判定は、GET /api/borders で last_attempt・status・送信した日の値が一致することまで確認して行う。
+- テスト：`tests/automation-border-client.mjs` 16件。本物のborderApiとインメモリSQLiteを使う。Node 22.23.4 で3回連続全件成功。
+- 既存テスト：border-write-auth、history-search、border-source-regressions、border-read-cache、daily-borders は成功。calculation-engine、items-core-input、border-reliability-regressions は依存（next）が未インストールのため起動できず（依存インストールは未実施）。
+- 同じ秒に同じ本文で署名した refresh は、サーバーが再送として409で拒否する（テストで確認）。
+
+### 実行場所・認証経路・不足権限（整理）
+| 項目 | 現状 | 不足・要判断 |
+| --- | --- | --- |
+| 実行場所 | 未決定。候補は、ユーザーPC（タスクスケジューラ）／GitHub Actions／その他クラウド | PCは電源・スリープ時に欠損。Actionsは公開リポジトリのため秘密値をSecretsに置く判断と、実行環境からの403の有無の確認が必要 |
+| サイトへの到達 | ユーザーPCからのGETは200。ChatGPT実行環境からのGETは403（text/plain） | 選んだ実行場所から diagnose を1回実行して確認する（要承認） |
+| 取得元への到達 | ユーザーPCからは200 | 実行場所ごとに未確認 |
+| 署名キー | 本番のBORDER_WRITER_KEYは、ChatGPTのSites接続トークンから導出した値 | Code側には値も導出元もない。同じ値を移すのか、新しいキーを設定してChatGPT側の導出をやめるのか（キー変更）を決める必要がある。どちらもSitesの環境変数を扱う権限が必要で、ChatGPT側の操作になる |
+| BORDER_WRITER_ORIGIN | 既定は本番origin | 変更不要（POSTの宛先は本番originのまま） |
+| Sitesへのデプロイ | Code側には権限なし | 書き込みクライアントだけならデプロイは不要（サーバーは変更していない） |
+| GitHub | gh は導入済み。認証待ち | pushとActionsの利用 |
 
 ## 承認が必要な運用開始段階
 準備とローカルテスト後、実行場所、時刻、認証の提供方法、送信先、費用、復旧方法を具体的に示す。
