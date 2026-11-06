@@ -44,7 +44,11 @@
   - offline-v2-sw-50 の4件失敗は、SWがオフライン保存する資源に過去ボーダー画面（/border-history）が加わったのに、テストの期待リストが追加前のままだったため。同系統の offline-sw-50 と同じく期待リストを SW の定数から読む形に揃え、50/50 成功（アプリ本体は変更なし）。
   - history-mobile-audit は失敗ではなく、--output 等の引数が必須の監査スクリプト。`--rounds 2 --cases-per-round 1000 --output <パス>` で passed（2,000件）。
   - 欠け9日（10/15〜11/04）は 04:05 JST の自動更新で第2系統が補完済み。残る欠けは 10/31 13時（取得元が空欄）と、3日経過前の 11/05 13時。
-- 未実行：compact-menus と playwright系のテストは依存（vite・playwright）が未導入のため実行できない。
+- 2026/11/07 追加テストの実行環境：`bash scripts/test-extra.sh` で、vite系10本とPlaywright画面系3本を実行できる（acorn・vite・Noto Sans JP は版固定で一時フォルダーへ入れる。package.json は不変）。Chromiumでのエミュレーションのみで、Safari固有の差・物理端末は未確認。
+  - 結果：compact-menus 8/8、color-state-regressions 11/11、custom-display 27/27、hud-focus-errors 7/7、native-select-contrast 10/10、reference-colors 17/17、theme-visibility-100 100/100、theme-cascade-cached・mobile-usability-10000 成功、hud-items-browser 3幅、record-display-browser 4幅（5,472セル照合）、phone-layout-browser 18/18。
+  - テスト側の修正（アプリ本体は変更なし）：旧環境の固定パス（Chromium・フォント）を環境変数／Playwright既定へ。元ファイルは公開時にCSPハッシュを付け直すため bypassCSP を指定。詳細メーターは既定で閉じる仕様のため開いてから操作。過去ボーダーの旧日別表（hidden・inert）は非表示を確認してから従来の値照合を実施。
+  - ユーザー決定（2026/11/07）：PC幅でもシンプルメニュー（目標・現在の入力欄、日時）を表示する現行仕様を正とし、phone-layout の旧期待（PC幅では隠す・入力途中の値を詳細欄へ移す）を現行動作へ更新。スマホで開くと目標・現在が初期値に戻るのも既存仕様（storage-recovery-regressions）。
+  - 未解決：typography-balance-1000 は不合格。表示しない「年・日付」（hidden）は検査対象から外したが、スマホ幅（700px以下）で「締めまで」（#leftLabel）と「コアボ」（.core-bonus-caption）が10px（基準12px以上）。ほかに項目名の文字サイズ等が古い設計値のまま。画面の文字サイズを変えるかはユーザー判断待ち。
 
 ## 自動取得移行の方針（2026/11/06追記・旧）
 

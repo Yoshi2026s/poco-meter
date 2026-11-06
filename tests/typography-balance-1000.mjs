@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
-import {pageEngine} from './calculator-harness.mjs';
+import {pageEngine,html} from './calculator-harness.mjs';
 import {createAudit} from './theme-cascade.mjs';
 
 // Author-CSS/DOM-double audit: 25 real surfaces × 5 widths × 2 themes ×
@@ -38,6 +38,11 @@ function pixels(value,width,root){
   return Math.max(lo,Math.min(preferred,hi));
 }
 
+// The DOM double does not keep the hidden attribute, so read it from the shipped markup.
+const hiddenIds=new Set([...html.matchAll(/<[a-z]+\b[^>]*\bid="([^"]+)"[^>]*\shidden(?=[\s>])/g)].map(m=>m[1]));
+assert.deepEqual([...hiddenIds].filter(id=>surfaces.some(([,n])=>n.id===id)).sort(),['todayDate','todayYear'],'only script-only date parts are hidden');
+function notRendered(node){return hiddenIds.has(node.id);}
+
 test('T01 1,000 font-role, contrast, weight, width and wrapping conditions',()=>{
   const signatures=new Set();
   for(const width of [280,320,390,700,1280])for(const theme of ['light','dark'])
@@ -46,8 +51,10 @@ test('T01 1,000 font-role, contrast, weight, width and wrapping conditions',()=>
     for(const [name,node] of surfaces){
       const signature=JSON.stringify({name,width,theme,weight});
       assert.ok(!signatures.has(signature));signatures.add(signature);
-      const c=audit.computed(node,ctx),paint=audit.textContrast(node,ctx);
       const message=signature;
+      // Text kept only for scripts (hidden attribute, e.g. the year) is never painted, so readable-size rules do not apply.
+      if(notRendered(node))continue;
+      const c=audit.computed(node,ctx),paint=audit.textContrast(node,ctx);
       assert.ok(pixels(c['font-size'],width,16)>=12,message+' minimum readable role size');
       assert.ok(pixels(c['font-size'],width,32)>=pixels(c['font-size'],width,16),message+' root text enlargement');
       assert.ok(Number(c['line-height'])>=1.2,message+' line spacing');
