@@ -134,21 +134,21 @@ test('D32 動きの軽減設定をメニュー移動へ反映', () => {
 test('D33 動きの軽減設定を日別編集移動へも反映', () => {
   const p = page(autoSettings, { reducedMotion: true }); const edit = p.element('analysisRows').children.flatMap(row => row.children).flatMap(cell => cell.children).find(node => node.dataset.date === '2026-10-02'); edit.click(); assert.equal(p.element('recordEditor').lastScroll.behavior, 'auto');
 });
-test('D34 メーターが画面内外でも固定HUDを表示し非表示加算ボタンはタブ順から外す', () => {
+test('D34 メーターが画面内外でもシンプルメニューを表示し、旧非表示加算ボタンは表示中のワンタップ加算に置き換え', () => {
   const p = page();
   for (const outside of [false, true]) {
     p.intersect(outside); assert.equal(p.element('mini').getAttribute('aria-hidden'), 'false'); assert.equal(p.element('mini').classList.contains('show'), true);
-    assert.equal(p.element('miniAdd').tabIndex, -1); assert.equal(p.element('currentMini').tabIndex, 0); assert.equal(p.element('targetMini').tabIndex, 0);
+    assert.equal(p.element('miniAdd'), undefined); assert.ok(p.element('miniAdd1k')); assert.equal(p.element('currentMini').tabIndex, 0); assert.equal(p.element('targetMini').tabIndex, 0);
   }
 });
 test('D35 現在値の入力中も終了後も固定HUDを表示する', () => {
   const p = page(); p.intersect(true); p.element('currentTop').focus(); assert.equal(p.element('mini').getAttribute('aria-hidden'), 'false'); assert.equal(p.element('mini').classList.contains('show'), true);
-  assert.equal(p.document.body.classList.contains('editing-field'), true); assert.equal(p.element('miniAdd').tabIndex, -1); assert.equal(p.element('currentMini').tabIndex, 0);
+  assert.equal(p.document.body.classList.contains('editing-field'), true); assert.equal(p.element('miniAdd'), undefined); assert.ok(p.element('miniAdd1k')); assert.equal(p.element('currentMini').tabIndex, 0);
   p.element('currentTop').blur(); p.flushTimers(0); assert.equal(p.element('mini').getAttribute('aria-hidden'), 'false'); assert.equal(p.document.body.classList.contains('editing-field'), false);
 });
 test('D36 選択メニュー操作中も固定HUDを表示して編集状態を維持する', () => {
   const p = page(); p.intersect(true); p.element('quickRank').focus(); assert.equal(p.element('mini').classList.contains('show'), true); assert.equal(p.element('mini').getAttribute('aria-hidden'), 'false'); assert.equal(p.document.body.classList.contains('editing-field'), true);
-  assert.equal(p.element('miniAdd').tabIndex, -1); assert.equal(p.element('miniRank').tabIndex, 0);
+  assert.equal(p.element('miniAdd'), undefined); assert.ok(p.element('miniAdd1k')); assert.equal(p.element('miniRank').tabIndex, 0);
 });
 test('D37 画面の表示領域変更で入力中の欄を見える位置へ', () => {
   const p = page(); p.element('currentTop').focus(); p.resizeViewport(); p.flushTimers(80); assert.equal(p.element('currentTop').lastScroll.block, 'nearest');
