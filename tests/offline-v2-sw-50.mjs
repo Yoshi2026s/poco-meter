@@ -10,11 +10,12 @@ const HOME = `${ORIGIN}/`;
 // Read release metadata so the same lifecycle checks exercise every new cache
 // version and the public help page shipped with the calculator.
 const workerConstants = vm.runInNewContext(workerSource.slice(0, workerSource.indexOf('function expectedAssetType'))
-  + '\n({cache:CACHE_NAME,methodPath:METHOD_PATH,methodMarker:METHOD_MARKER})', { self: { location: { origin: ORIGIN } }, URL });
+  + '\n({cache:CACHE_NAME,methodPath:METHOD_PATH,methodMarker:METHOD_MARKER,historyPath:HISTORY_PATH,historyMarker:HISTORY_MARKER})', { self: { location: { origin: ORIGIN } }, URL });
 const CACHE = workerConstants.cache, METHOD_PATH = workerConstants.methodPath, METHOD_MARKER = workerConstants.methodMarker;
+const HISTORY_PATH = workerConstants.historyPath, HISTORY_MARKER = workerConstants.historyMarker;
 const OLD = 'pococha-meter-shell-v1';
 const MARKER = '<meta name="pococha-app" content="meter-offline-v1">';
-const ASSETS = ['/meter.webmanifest', '/meter-icon-192.png', '/meter-icon-512.png', '/meter-icon-180.png', METHOD_PATH];
+const ASSETS = ['/meter.webmanifest', '/meter-icon-192.png', '/meter-icon-512.png', '/meter-icon-180.png', METHOD_PATH, HISTORY_PATH];
 const EPOCH = Date.parse('2026-10-03T12:00:00.000Z');
 const STAMP = '2026-09-30T09:15:00.000Z';
 
@@ -50,9 +51,10 @@ function saved(label = 'saved', stamp = STAMP) {
   return shell(label, { headers: { 'Content-Type': 'text/html', 'X-Pococha-Saved-At': stamp } });
 }
 function asset(path, label = path, options = {}) {
-  return new FakeResponse(path === METHOD_PATH ? `<!doctype html>${METHOD_MARKER}<main>${label}</main>` : label,
+  const html = path === METHOD_PATH ? METHOD_MARKER : path === HISTORY_PATH ? HISTORY_MARKER : '';
+  return new FakeResponse(html ? `<!doctype html>${html}<main>${label}</main>` : label,
     { url: new URL(path, HOME).href, type: 'basic',
-      headers: { 'Content-Type': path === METHOD_PATH ? 'text/html; charset=utf-8' : path.endsWith('.png') ? 'image/png' : 'application/manifest+json' }, ...options });
+      headers: { 'Content-Type': html ? 'text/html; charset=utf-8' : path.endsWith('.png') ? 'image/png' : 'application/manifest+json' }, ...options });
 }
 function request(path = '/', options = {}) {
   return { url: new URL(path, HOME).href, method: 'GET', mode: 'navigate', ...options };
