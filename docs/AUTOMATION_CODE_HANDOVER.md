@@ -1,5 +1,8 @@
 # ボーダー自動取得をCodeへ移すための引継ぎ
 
+> **2026/11/07 追記：この文書は経緯の記録です。** 自動取得は GitHub Pages＋Actions 構成（README.md）へ移行済み。
+> 以下に出てくる Sites 書き込み用の一式（`automation/border-writer-client.mjs`・`automation/run-border-writer.mjs`・`tests/automation-border-client.mjs`・`.github/workflows/border-writer.yml`）と、GitHub Secrets の `BORDER_WRITER_KEY` は、ユーザーの指示で削除した（Git履歴には残る）。
+
 更新日：2026/11/06（日本時間）
 対象：https://github.com/Yoshi2026s/poco-meter
 現行Sites：https://poco-meter.freefreelife2000.chatgpt.site/

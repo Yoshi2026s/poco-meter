@@ -27,7 +27,7 @@ Pocochaの目標メーター計算・過去ボーダー管理ツールです。
 ## ローカルでの確認
 
 ```bash
-node --test tests/pages-borders.mjs tests/automation-border-client.mjs
+node --test tests/pages-borders.mjs
 ```
 
 ```bash

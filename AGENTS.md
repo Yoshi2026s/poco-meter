@@ -26,7 +26,7 @@ Claude Code と ChatGPT（Codex など）の共通指示です。
 - 実施していないテストや回数を完了扱いにしない。
 
 ## 検証
-- ネットワークなしのテスト：`node --test tests/pages-borders.mjs tests/automation-border-client.mjs`（Node 22以上）。
+- ネットワークなしのテスト：`node --test tests/pages-borders.mjs`（Node 22以上）。
 - 公開物の作成：`node scripts/build-pages.mjs --out=_site`。
 - スマホ変更では縦持ち、小画面、横持ち、低い画面で操作・保存・再読込後の復元を検証。エミュレーションと物理端末を区別する。
 - 締め時間ごとに異なる既知データを用いて計算を検証。同値を機械的に異なる数字へ変えない。
