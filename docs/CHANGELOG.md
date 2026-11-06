@@ -2,6 +2,7 @@
 
 新しいものを上に、1変更1行で書く（日付 JST・版・内容・検証）。詳細はPRとコミットに残す。
 
+- 2026/11/07 docs/CODEMAP.md（コード地図）追加。`npm run pages:prepare` 追加、`npm run check` に生成物の不一致検出と版更新忘れの注意を追加。`test:extra` の出力を合否のみにし、結果ファイルを自動で戻す。
 - 2026/11/07 .claude/settings.json を追加（検証コマンドの許可リスト、data/borders.json の手編集禁止）。
 - 2026/11/07 開発ルール整理：docs を現状（HANDOVER）・要望（REQUESTS）・履歴（本ファイル）・archive に分割。`npm run check`・`npm run version:bump` を追加。
 - 2026/11/07 テスト：vite系10本・Playwright画面系3本を `bash scripts/test-extra.sh` で実行可能に（typography-balance-1000 のみ不合格）。offline-v2-sw-50 の期待リストを SW 定数から読む形に修正（50/50）。
