@@ -1,6 +1,30 @@
-# Pococha1012 naming policy
+# ポコメーター番長 開発指示
 
-Use Pococha1012 for the creator and brand name throughout Pococha tools, logos, copyright notices, copied text, and exported files. Never restore former creator branding from old archives. Preserve user data, storage keys, and calculation behavior. The creator's official Instagram is https://www.instagram.com/pococha1012/.
+## 対象と現状
+- このリポジトリはポコメーター番長専用。
+- 現行Sites：https://poco-meter.freefreelife2000.chatgpt.site/
+- まずREADME.mdとdocs/HANDOVER.mdを読む。
+- アプリ本体は未移管。ソースの所在、版、保存先、公開経路を確認するまで再実装・上書きしない。
+- 旧版に記載されていた公開停止・旧名義への移転指示は、この専用化に伴い置き換える。他リポジトリには適用しない。
 
-## GitHub publication migration (2026-10-09)
-All public Pococha tools are now maintained under pococha2026/pococha2026.github.io. Do not resume publication or synchronize generated tool pages in this retired repository. Preserve the legacy record backup entry for users who need to export device data. The successful Sites publication receipt is written only to the new repository.
+## 変更方針
+- 日本語で報告し、全体レイアウト・既存機能・保存データを維持する。
+- 名称はポコメーター番長。現行指定の制作者ロゴはYoshi1012、最下段左寄せ、ブルー×ブラック系。
+- 保存キー、API、データ形式を不用意に変更しない。移行時は復元手段を用意する。
+- サブエージェントへの委任はユーザーの明示依頼がある場合のみ。
+- 実施していないテストや回数を完了扱いにしない。
+
+## 検証
+- 既存手順を確認し、変更に応じた検査・ビルドを行う。
+- スマホ変更では縦持ち、小画面、横持ち、低い画面で操作・保存・再読込後の復元を検証。
+- エミュレーションと物理端末を区別する。
+- 締め時間ごとに異なる既知データを用いて計算を検証。同値を機械的に異なる数字へ変えない。
+
+## 統合・公開・保全
+- 開発修正の調査、実装、検証、コミット、PR、マージはユーザー承認範囲。
+- 公開反映が目的なら、確認した対象・公開先に対して配信・公開確認まで行う。
+- SitesとGitHubの同期経路は未確認。GitHubへのpushだけでSites更新済みと報告しない。
+- 秘密情報・利用者データの新規公開、強制push、保護解除、復元不能な削除は禁止。
+- 新たな費用・外部データ送信は既存承認範囲を確認する。
+- 停止済み定期実行を勝手に再開しない。
+- 変更内容、検証、統合、公開を分け、コミット・公開URL・未確認点を報告する。
