@@ -6,7 +6,7 @@ Pocochaの目標メーター計算・過去ボーダー管理ツールです。
 - 開発・正本：このリポジトリ（Yoshi2026s/poco-meter、既定ブランチ `(root)`）
 - 開発環境：Claude Code（ChatGPTからもGitHub経由で共同編集可）
 - [開発指示（Code・ChatGPT共通）](AGENTS.md)
-- [引継ぎ資料](docs/HANDOVER.md)
+- [引継ぎ資料（現状）](docs/HANDOVER.md)／[要望・仕様メモ](docs/REQUESTS.md)／[変更履歴](docs/CHANGELOG.md)
 - [自動取得の経緯](docs/AUTOMATION_CODE_HANDOVER.md)
 
 ## 仕組み
@@ -28,11 +28,21 @@ Pocochaの目標メーター計算・過去ボーダー管理ツールです。
 ## ローカルでの確認
 
 ```bash
-node --test tests/pages-borders.mjs tests/table-channel.mjs
+npm run check
 ```
 
 ```bash
-node scripts/build-pages.mjs --out=_site
+npm run test:extra
+```
+
+```bash
+npm run pages:build
+```
+
+ツール本体を変えたときは版を更新します（データ更新だけでは不要）。
+
+```bash
+npm run version:bump
 ```
 
 リポジトリは公開されています。秘密情報、認証トークン、利用者データ、アクセスログはコミットしないでください。
