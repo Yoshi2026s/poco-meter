@@ -5,4 +5,5 @@
 
 - 現行の開発指示は、リポジトリ直下の資料が優先です。
 - 旧版資料に書かれている公開先・同期手順（pococha2026.github.io、github-sync/、毎日のクラウドタスクなど）は、記録として残しているだけです。この資料を根拠に実行しないでください。
+- README.md の BORDER_WRITER_KEY 導出手順（get_site のサービス資格から計算する方法）は、2026/11/07 に廃止した。新しいキーの扱いは docs/AUTOMATION_CODE_HANDOVER.md を参照。
 - 他の移管ファイルは、SOURCE_MANIFEST.json のハッシュと 358/358 件一致しています（2026/11/06 確認）。
