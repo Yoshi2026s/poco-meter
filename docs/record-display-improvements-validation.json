@@ -1,0 +1,35 @@
+{
+  "status": "passed",
+  "date": "2026-10-06",
+  "sourceSHA256": "62ce6d63a6783401855d6fd3ad39614f2185fc31f3cdf5d86f381bcc33902a64",
+  "browser": {
+    "widths": [
+      320,
+      390,
+      768,
+      1280
+    ],
+    "displayProfiles": 128,
+    "historicalCellsCompared": 5472,
+    "checks": [
+      "panel fits viewport",
+      "no document horizontal overflow",
+      "goal unchanged while browsing or styling",
+      "single-click theme selection",
+      "Escape closes settings",
+      "previous/next saved date",
+      "19 ranks including unrecorded E",
+      "sticky rank column"
+    ]
+  },
+  "numeric": {
+    "assertions": 1000000,
+    "scope": "250000 point values in four representations: integer, comma grouping, K, 万"
+  },
+  "limitations": [
+    "No physical iPhone or Android testing",
+    "Browser environment lacked Japanese glyphs; Japanese font shaping was not verified",
+    "Numeric assertions are not one million end-to-end app sessions",
+    "No claim of 100000 distinct improvements or fixes"
+  ]
+}

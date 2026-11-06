@@ -1,0 +1,19 @@
+{
+  "status": "passed",
+  "distinctScenarios": 10000,
+  "counts": {
+    "pointParsingAndDisplay": 4000,
+    "coinAndItemRounding": 3000,
+    "jstCutoffsAndCountdown": 2000,
+    "desktopAndPhoneInputSync": 500,
+    "contactFilesValidationAndPrivacy": 500
+  },
+  "sourceSHA256": {
+    "calculator/index.html": "f43a92c11e990721f9eb2d1335ec15ebabb7236463f60ea887a48daa97758b69",
+    "calculator/sw.js": "394f600c0fe7ad76d4beae0ddf7fd9e5e9fa363690ac5a13bca7a27be2f6dbf8",
+    "lib/contact-store.mjs": "d3c8fb94e7e20615fc5d2ea9a256bc9446a01055621d2bde14c6696cf6b7896d"
+  },
+  "durationMs": 66429,
+  "scope": "Point parsing, exact item rounding, JST cutoff boundaries, desktop/phone DOM-handler sync, isolated contact API validation and private image access.",
+  "limitations": "These are automated scenarios, not 10,000 browser sessions or physical iPhone/Android runs."
+}

@@ -1,0 +1,287 @@
+{
+  "scope": "Final minute-cadence correction with delayed first response, UI synchronization, cache update and GitHub export",
+  "verificationLimit": "DOM and authored CSS audits; real-browser rendering not tested",
+  "startedAt": "2026-10-11T19:36:08.375085+00:00",
+  "finishedAt": "2026-10-11T19:36:08.720573+00:00",
+  "sourceSha256": "a4dccdef8a38c716f89713d3457bd2a60e5681b1584dffe3ecba646b33197785",
+  "serviceWorkerSha256": "2fa26bde00fe442f1de4eeb80f716e6561874003c2b806b2730120d8bbc31b5d",
+  "serviceWorkerCache": "v37",
+  "builtWorkerSha256": "ad5f5181100b201eaf32399c3cf26df886a18e74cffbe95f08ccb58ff76ebcbe",
+  "releaseHash": "04ac7e8fa6e62060c38ad18b4847ce5a87f55a8f25ba3f8c561a9025044a113c",
+  "allPassed": true,
+  "suiteExecutions": 3,
+  "passedNamedOrFileTests": 66,
+  "absentFeatureMarkers": {
+    "source": [],
+    "githubGenerated": [],
+    "releaseDecoded": []
+  },
+  "allSevenReleaseContentsEmbeddedInWorker": true,
+  "sourceUnchanged": true,
+  "results": [
+    {
+      "file": "tests/offline-sw-50.mjs",
+      "exitCode": 0,
+      "counts": {
+        "tests": 50,
+        "pass": 50,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "elapsedMs": 312,
+      "sourceUnchanged": true
+    },
+    {
+      "file": "tests/github-meter-export.mjs",
+      "exitCode": 0,
+      "counts": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "elapsedMs": 261,
+      "sourceUnchanged": true
+    },
+    {
+      "file": "tests/pococha-clock-ui.mjs",
+      "verificationMode": "delegated agent final UI test execution",
+      "counts": {
+        "tests": 15,
+        "pass": 15,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "includesRegression": "Initial reply RTT1000ms; at page60000ms and sampleAge59000ms next periodic synchronization must run"
+    }
+  ],
+  "previousPassingBaseline": {
+    "scope": "Pococha official website HTTP Date synchronization, monotonic main/HUD clocks, countdown, failures and static export",
+    "verificationLimit": "DOM and authored CSS audits; real-browser rendering not tested",
+    "startedAt": "2026-10-11T19:26:53.240416+00:00",
+    "finishedAt": "2026-10-11T19:27:42.528546+00:00",
+    "sourceSha256": "841089697767c60f72b260a722373e1b4e12fee8f20721b6e4e7382abd088600",
+    "serviceWorkerSha256": "09bac2be447ef29d3262be819988921b74892a3730bcb79e4f32aa53ae97620a",
+    "serviceWorkerCache": "v36",
+    "builtWorkerSha256": "8d25cbe585ca7e3c58b46c4a4e91a788f782417ced1409f5eae9c634a6e24144",
+    "releaseHash": "8220d1c4260ee8e5ffd57a9fec6af741db8b048e7ebfb1c58efa74a0808e1751",
+    "allPassed": true,
+    "suiteExecutions": 15,
+    "passedNamedOrFileTests": 299,
+    "absentFeatureMarkers": {
+      "source": [],
+      "githubGenerated": [],
+      "releaseDecoded": []
+    },
+    "allSevenReleaseContentsEmbeddedInWorker": true,
+    "sourceUnchanged": true,
+    "results": [
+      {
+        "file": "tests/pococha-clock-api.mjs",
+        "exitCode": 0,
+        "counts": {
+          "tests": 19,
+          "pass": 19,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        },
+        "elapsedMs": 305,
+        "sourceUnchanged": true
+      },
+      {
+        "file": "tests/pococha-clock-ui.mjs",
+        "exitCode": 0,
+        "counts": {
+          "tests": 15,
+          "pass": 15,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        },
+        "elapsedMs": 17438,
+        "sourceUnchanged": true
+      },
+      {
+        "file": "tests/retired-external-app-features.mjs",
+        "exitCode": 0,
+        "counts": {
+          "tests": 6,
+          "pass": 6,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        },
+        "elapsedMs": 3406,
+        "sourceUnchanged": true
+      },
+      {
+        "file": "tests/hud-preference-sync.mjs",
+        "exitCode": 0,
+        "counts": {
+          "tests": 5,
+          "pass": 5,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        },
+        "elapsedMs": 2567,
+        "sourceUnchanged": true
+      },
+      {
+        "file": "tests/hud-focus-errors.mjs",
+        "exitCode": 0,
+        "counts": {
+          "tests": 7,
+          "pass": 7,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        },
+        "elapsedMs": 3932,
+        "sourceUnchanged": true
+      },
+      {
+        "file": "tests/fixed-panel-focus.mjs",
+        "exitCode": 0,
+        "counts": {
+          "tests": 8,
+          "pass": 8,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        },
+        "elapsedMs": 3738,
+        "sourceUnchanged": true
+      },
+      {
+        "file": "tests/mobile-debug-50.mjs",
+        "exitCode": 0,
+        "counts": {
+          "tests": 48,
+          "pass": 48,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        },
+        "elapsedMs": 14499,
+        "sourceUnchanged": true
+      },
+      {
+        "file": "tests/custom-display.mjs",
+        "exitCode": 0,
+        "counts": {
+          "tests": 27,
+          "pass": 27,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        },
+        "elapsedMs": 39477,
+        "sourceUnchanged": true
+      },
+      {
+        "file": "tests/display-settings.mjs",
+        "exitCode": 0,
+        "counts": {
+          "tests": 19,
+          "pass": 19,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        },
+        "elapsedMs": 14654,
+        "sourceUnchanged": true
+      },
+      {
+        "file": "tests/reference-colors.mjs",
+        "exitCode": 0,
+        "counts": {
+          "tests": 17,
+          "pass": 17,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        },
+        "elapsedMs": 4820,
+        "sourceUnchanged": true
+      },
+      {
+        "file": "tests/color-state-regressions.mjs",
+        "exitCode": 0,
+        "counts": {
+          "tests": 11,
+          "pass": 11,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        },
+        "elapsedMs": 6164,
+        "sourceUnchanged": true
+      },
+      {
+        "file": "tests/calculation-engine.mjs",
+        "exitCode": 0,
+        "counts": {
+          "tests": 16,
+          "pass": 16,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        },
+        "elapsedMs": 1244,
+        "sourceUnchanged": true
+      },
+      {
+        "file": "tests/offline-ui-50.mjs",
+        "exitCode": 0,
+        "counts": {
+          "tests": 50,
+          "pass": 50,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        },
+        "elapsedMs": 16959,
+        "sourceUnchanged": true
+      },
+      {
+        "file": "tests/offline-sw-50.mjs",
+        "exitCode": 0,
+        "counts": {
+          "tests": 50,
+          "pass": 50,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        },
+        "elapsedMs": 294,
+        "sourceUnchanged": true
+      },
+      {
+        "file": "tests/github-meter-export.mjs",
+        "exitCode": 0,
+        "counts": {
+          "tests": 1,
+          "pass": 1,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        },
+        "elapsedMs": 252,
+        "sourceUnchanged": true
+      }
+    ],
+    "clockApiSourceSha256": "612d4f1ebb33fc5d4b7b2afdc4c129d3e72da19d83e116d823a51982c0aa33c5",
+    "clockSourceURL": "https://www.pococha.com/",
+    "clockSourceType": "Official website HTTP Date",
+    "internalPocochaAppClockVerified": false
+  },
+  "totalPassedTestExecutions": 365,
+  "clockApiSourceSha256": "612d4f1ebb33fc5d4b7b2afdc4c129d3e72da19d83e116d823a51982c0aa33c5",
+  "clockSourceURL": "https://www.pococha.com/",
+  "internalPocochaAppClockVerified": false
+}

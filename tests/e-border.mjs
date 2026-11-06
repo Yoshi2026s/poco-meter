@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';import {readFile} from 'node:fs/promises';import {E_SCHEMA,E_SEEDS,eRow,eMerge,eParseOCR,eBackup,eValue,eSort} from '../calculator/e-border-core.mjs';
+assert.equal(E_SEEDS.length,10);for(const r of E_SEEDS)assert.deepEqual(eRow(r),r);
+assert.equal(eValue('１.６Ｋ〜').text,'1.6K'.toUpperCase());assert.equal(eValue('1.6K').approx,true);assert.equal(eValue('235').approx,false);
+for(const v of ['','0','-1','1e3','NaN','1.2','<script>','1,000 KX'])assert.throws(()=>eValue(v));
+for(const date of ['2026-02-30','2026-13-01','2099-01-01'])assert.throws(()=>eRow({...E_SEEDS[0],date}));
+assert.throws(()=>eRow({...E_SEEDS[0],rank:'E4'}));assert.throws(()=>eRow({...E_SEEDS[0],values:['9000','1K','2K']}));
+const same=eMerge(E_SEEDS,E_SEEDS);assert.equal(same.same,10);assert.equal(same.added,0);const changed={...E_SEEDS[0],values:['245','1.8K','4.8K']};assert.throws(()=>eMerge(E_SEEDS,[changed]));assert.equal(eMerge(E_SEEDS,[changed],true).replaced,1);assert.throws(()=>eMerge(E_SEEDS,[E_SEEDS[0],changed],true));
+assert.deepEqual(eBackup(JSON.stringify({schema:E_SCHEMA,records:E_SEEDS})),eSort(E_SEEDS));assert.throws(()=>eBackup('{"schema":"unknown","records":[]}'));
+const r=eParseOCR('2026年10月5日 0:00:00 JST\n〜2026年10月5日 23:59:59 JST\n締め時間24:00:00 JST','E1','±0 235〜 +1 1.6K〜 +2 5.1K〜 1位267.8K');assert.deepEqual(eRow(r).values,['235','1.6K'.toUpperCase(),'5.1K'.toUpperCase()]);assert.equal(r.close,'24');assert.equal(r.date,'2026-10-05');assert.equal(eParseOCR('2026年10月5日 0:00','E1','123 456 789').close,'');assert.deepEqual(eParseOCR('','E1','1位 200K').values,['','','']);
+const html=await readFile(new URL('../calculator/e-border.html',import.meta.url),'utf8');assert.ok(!html.includes('__'));assert.ok(html.includes("'wasm-unsafe-eval'"));assert.ok(html.includes('sha384-'));assert.ok(!/fetch\(|XMLHttpRequest/.test(html));assert.ok(html.includes('URL.revokeObjectURL'));console.log('E帯：10件の初期記録、表記精度、日付・数値検証、重複・相違、OCR抽出、バックアップ、画像非送信のチェック合格');

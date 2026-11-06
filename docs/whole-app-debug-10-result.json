@@ -1,0 +1,316 @@
+{
+  "schema": "pococha1012-whole-app-debug-10-v1",
+  "status": "passed",
+  "completedAtUTC": "2026-10-11T04:38:23.619943+00:00",
+  "baselineSourceCommit": "10a4e7ba932edc4fb0099084a64c1c4bf78c9f7b",
+  "testedFileSHA256": {
+    "calculator/index.html": "05fd8a5667320e12bee317d6215721d29c12babe87efeb8c03f0d7a03a7a79b8",
+    "calculator/sw.js": "d8e4afa0dacea9d24ae0e98235c63030693be2cad1b7937697badaed5919c6dc",
+    "dist/server/index.js": "ffb7ff803d5ecb7ef8e7664ae250af69405ee03bd8f89d197ead3e2af5f9f28d",
+    "tests/calculator-harness.mjs": "7588aad234769cb7a6f8f67df3453d43d70e63319a7420189bb6a7d35c954eb9",
+    "tests/theme-cascade.mjs": "8f0c63ff99ed8566141ee5e659cf01dbec9de9b57770b7cb0bb1d8a83d46b1c1"
+  },
+  "requiredWholeAppRounds": 10,
+  "suiteFileSHA256": {
+    "tests/admin-worker.mjs": "d7ba58d185a7a42467e100aecbd15058dc8934ecc7cedd4ee54880a62b09fc89",
+    "tests/border-reliability-regressions.mjs": "abffcd975f694cf2f1748f2243f419016911fd0c5493514a62f2308353731259",
+    "tests/border-write-auth.mjs": "288c983c5c96e7c00b2524be0555749528663ebbcaf8b9880e357e50021b0143",
+    "tests/calculation-engine.mjs": "1901298381e0243ef2fea1b60802d901dffa085bf76f1ecf00737425d4dc3030",
+    "tests/cloudflare-pages-migration.mjs": "75866b3f63140381fee0454f96688424caba019a730ee18b6903d7ef5c8965dc",
+    "tests/color-state-regressions.mjs": "f8bd1c7690beb662890d38ce27e7dd82c8c2eba49970b5c6549e62af904aadc6",
+    "tests/compact-menus.mjs": "2f67d1392843d71ec519b533652d6db761c90223e5ee1bcb98da3161640cba93",
+    "tests/contact-images.mjs": "74a894956c406b80bc9deff19283d2660292b278c10b6bf8ef067f86aa2d907a",
+    "tests/contact-store.mjs": "24b3fad2042edfd1f3cf02b1d3d0a335acbd95a8aedf7f11f95b47356049b7a7",
+    "tests/contact-tracking.mjs": "6342fb463f84ffd51d660cbb3c933c27b8dc3e134e25d32e5641d7aa3f99f7a8",
+    "tests/contact-worker.mjs": "a27a27e8d7e502cecf71c48b480365c1a50069cf7fbe20a11cb05e0df87d5570",
+    "tests/custom-display.mjs": "e0358fddc7450b82fc870d5f6ebd6b81776264dea89f37dd5098b85f26151682",
+    "tests/daily-borders.mjs": "ce4406220bfd442c84484a8ffdeeaf4aee48a78a7891b2d29d2c898616c50f6c",
+    "tests/display-settings.mjs": "9b759057a7a9a459f929f7db3296475c1895f700f64e3c60f6315cdcf6040292",
+    "tests/fixed-panel-focus.mjs": "20589da8d46c79cff6f33bb5d4166b89029f75f26a5d982d00d99d3e8e85426c",
+    "tests/floating-hud.mjs": "a724d657604a46a8ab1b0e854df5d6f7fc0551ddf0a0d8df879e18fc0b1ed387",
+    "tests/github-meter-export.mjs": "970465d385c39b8a59cca2ef9e2e1b2d2f357c90b1703d8d617f6bcab963b0ce",
+    "tests/history-archive.mjs": "22a6b6689fc97a0dbd9a3340430c8535cf5ed4e115502014e1e94f3785a8660c",
+    "tests/history-storage.mjs": "f838fae0422871d2cf9890ad031fbcd6605b45d164d5d0c3cc30fe0ec507f536",
+    "tests/items-core-input.mjs": "edbdf5a3b9bbcf8f1867cf90a7bb6c58ccc8618cc2cc8d7479ff31e12d4b05ae",
+    "tests/mobile-debug-50.mjs": "a2bc1daa7a96e647ef7c94fcad4073c8028f74e268d2b123e34dc2d058dc6725",
+    "tests/native-select-contrast.mjs": "a68212911c50a8b8d91071bc6562662c58aecd0e255a191f7eedc5cbb90b002f",
+    "tests/offline-round3-fixes.mjs": "709e2059d7b2205e01638461898d128abc1ff352b2a05e0c12cf18c9264ad096",
+    "tests/offline-sw-50.mjs": "0a4b2399d10e7190c44fa9f62cdcbe3764f54d648c81a9c26f84328cce4c5410",
+    "tests/offline-ui-50.mjs": "89090ca6a665dc52f9ec140c657dc5aed8f989e1caa6bd8b2c3989516e6803e0",
+    "tests/offline-v2-sw-50.mjs": "2241d97559236867e6dbfeb6d4e4fc31b20743fada0821b3af55766b794f1d26",
+    "tests/offline-v2-ui-50.mjs": "069cbbcb15ffa27d873d7caaccb68b6f33f667843fd6e69d5dd9fe5d5b58f7b2",
+    "tests/reference-colors.mjs": "4093cb099a0931779f5dd44ba5a258b105f3c86afa7b78ef8975d9370e015d5f",
+    "tests/save-menu.mjs": "ba8a7a99ebb39c8c00f682866ea416704b202e19b939f8a258d109c58d90c810",
+    "tests/saved-record-months.mjs": "a939058b685e7f9128082fe60e0adcf69620ef0ebffb2a3005dc80f06c6d3661",
+    "tests/storage-recovery-regressions.mjs": "0ab75898d7d94ed552fec8ef8bcb8866390c6eb9c4203b47d7cae79a0fd3f84b",
+    "tests/visitor-stats.mjs": "ee960e06d69da8676939fdf3eb37850926c0fbf8a21647cc5b89a0269d6ed13e"
+  },
+  "uniqueSuiteFiles": 32,
+  "suiteExecutionsPassed": 320,
+  "failed": 0,
+  "cancelled": 0,
+  "skipped": 0,
+  "timedOut": 0,
+  "groups": {
+    "server": {
+      "suiteFiles": [
+        "admin-worker",
+        "border-reliability-regressions",
+        "border-write-auth",
+        "cloudflare-pages-migration",
+        "contact-images",
+        "contact-store",
+        "contact-tracking",
+        "contact-worker",
+        "daily-borders",
+        "github-meter-export",
+        "visitor-stats"
+      ],
+      "rounds": [
+        {
+          "round": 1,
+          "suiteExecutionsPassed": 11,
+          "reportedNodeTestPasses": 60,
+          "plainScriptPasses": 6
+        },
+        {
+          "round": 2,
+          "suiteExecutionsPassed": 11,
+          "reportedNodeTestPasses": 60,
+          "plainScriptPasses": 6
+        },
+        {
+          "round": 3,
+          "suiteExecutionsPassed": 11,
+          "reportedNodeTestPasses": 60,
+          "plainScriptPasses": 6
+        },
+        {
+          "round": 4,
+          "suiteExecutionsPassed": 11,
+          "reportedNodeTestPasses": 60,
+          "plainScriptPasses": 6
+        },
+        {
+          "round": 5,
+          "suiteExecutionsPassed": 11,
+          "reportedNodeTestPasses": 60,
+          "plainScriptPasses": 6
+        },
+        {
+          "round": 6,
+          "suiteExecutionsPassed": 11,
+          "reportedNodeTestPasses": 60,
+          "plainScriptPasses": 6
+        },
+        {
+          "round": 7,
+          "suiteExecutionsPassed": 11,
+          "reportedNodeTestPasses": 60,
+          "plainScriptPasses": 6
+        },
+        {
+          "round": 8,
+          "suiteExecutionsPassed": 11,
+          "reportedNodeTestPasses": 60,
+          "plainScriptPasses": 6
+        },
+        {
+          "round": 9,
+          "suiteExecutionsPassed": 11,
+          "reportedNodeTestPasses": 60,
+          "plainScriptPasses": 6
+        },
+        {
+          "round": 10,
+          "suiteExecutionsPassed": 11,
+          "reportedNodeTestPasses": 60,
+          "plainScriptPasses": 6
+        }
+      ],
+      "reportedNodeTestPasses": 600,
+      "plainScriptPasses": 60
+    },
+    "state": {
+      "suiteFiles": [
+        "calculation-engine",
+        "history-archive",
+        "history-storage",
+        "offline-round3-fixes",
+        "offline-sw-50",
+        "offline-ui-50",
+        "offline-v2-sw-50",
+        "offline-v2-ui-50",
+        "save-menu",
+        "saved-record-months",
+        "storage-recovery-regressions"
+      ],
+      "rounds": [
+        {
+          "round": 1,
+          "suiteExecutionsPassed": 11,
+          "reportedNodeTestPasses": 278,
+          "plainScriptPasses": 0
+        },
+        {
+          "round": 2,
+          "suiteExecutionsPassed": 11,
+          "reportedNodeTestPasses": 278,
+          "plainScriptPasses": 0
+        },
+        {
+          "round": 3,
+          "suiteExecutionsPassed": 11,
+          "reportedNodeTestPasses": 278,
+          "plainScriptPasses": 0
+        },
+        {
+          "round": 4,
+          "suiteExecutionsPassed": 11,
+          "reportedNodeTestPasses": 278,
+          "plainScriptPasses": 0
+        },
+        {
+          "round": 5,
+          "suiteExecutionsPassed": 11,
+          "reportedNodeTestPasses": 278,
+          "plainScriptPasses": 0
+        },
+        {
+          "round": 6,
+          "suiteExecutionsPassed": 11,
+          "reportedNodeTestPasses": 278,
+          "plainScriptPasses": 0
+        },
+        {
+          "round": 7,
+          "suiteExecutionsPassed": 11,
+          "reportedNodeTestPasses": 278,
+          "plainScriptPasses": 0
+        },
+        {
+          "round": 8,
+          "suiteExecutionsPassed": 11,
+          "reportedNodeTestPasses": 278,
+          "plainScriptPasses": 0
+        },
+        {
+          "round": 9,
+          "suiteExecutionsPassed": 11,
+          "reportedNodeTestPasses": 278,
+          "plainScriptPasses": 0
+        },
+        {
+          "round": 10,
+          "suiteExecutionsPassed": 11,
+          "reportedNodeTestPasses": 278,
+          "plainScriptPasses": 0
+        }
+      ],
+      "reportedNodeTestPasses": 2780,
+      "plainScriptPasses": 0
+    },
+    "ui": {
+      "suiteFiles": [
+        "color-state-regressions",
+        "compact-menus",
+        "custom-display",
+        "display-settings",
+        "fixed-panel-focus",
+        "floating-hud",
+        "items-core-input",
+        "mobile-debug-50",
+        "native-select-contrast",
+        "reference-colors"
+      ],
+      "rounds": [
+        {
+          "round": 1,
+          "suiteExecutionsPassed": 10,
+          "reportedNodeTestPasses": 207,
+          "plainScriptPasses": 0
+        },
+        {
+          "round": 2,
+          "suiteExecutionsPassed": 10,
+          "reportedNodeTestPasses": 207,
+          "plainScriptPasses": 0
+        },
+        {
+          "round": 3,
+          "suiteExecutionsPassed": 10,
+          "reportedNodeTestPasses": 207,
+          "plainScriptPasses": 0
+        },
+        {
+          "round": 4,
+          "suiteExecutionsPassed": 10,
+          "reportedNodeTestPasses": 207,
+          "plainScriptPasses": 0
+        },
+        {
+          "round": 5,
+          "suiteExecutionsPassed": 10,
+          "reportedNodeTestPasses": 207,
+          "plainScriptPasses": 0
+        },
+        {
+          "round": 6,
+          "suiteExecutionsPassed": 10,
+          "reportedNodeTestPasses": 207,
+          "plainScriptPasses": 0
+        },
+        {
+          "round": 7,
+          "suiteExecutionsPassed": 10,
+          "reportedNodeTestPasses": 207,
+          "plainScriptPasses": 0
+        },
+        {
+          "round": 8,
+          "suiteExecutionsPassed": 10,
+          "reportedNodeTestPasses": 207,
+          "plainScriptPasses": 0
+        },
+        {
+          "round": 9,
+          "suiteExecutionsPassed": 10,
+          "reportedNodeTestPasses": 207,
+          "plainScriptPasses": 0
+        },
+        {
+          "round": 10,
+          "suiteExecutionsPassed": 10,
+          "reportedNodeTestPasses": 207,
+          "plainScriptPasses": 0
+        }
+      ],
+      "reportedNodeTestPasses": 2070,
+      "plainScriptPasses": 0
+    }
+  },
+  "applicationFixes": [
+    "Fixed-panel focus and mobile keyboard resize no longer invoke underlying-page scrollBy.",
+    "List controls use their independent palette for text, arrows, focus, disabled and error states.",
+    "List native color-scheme follows the list palette; shell cache is version v33."
+  ],
+  "fixtureCorrections": [
+    "Existing split HUD and list palettes, header grid/footer menus and always-visible editing behavior.",
+    "Current five public offline assets, current cache namespace and packed saved-state decoding.",
+    "Current seven display preference fields and Cloudflare official uncompressed 64 MiB limit.",
+    "VM closest selector-list support and CSS audit optimization with original-result differential checks."
+  ],
+  "auditOptimizationEquivalence": {
+    "mainPaintCases": 17390,
+    "supplementalPaintCases": 2952,
+    "finalPaintMutationCases": 2630,
+    "mediaTruthCases": 569088,
+    "sameResults": true
+  },
+  "githubCandidateReleaseHash": "3127d7773e2e9b48af0300019efa7b2f7f3a02161a10494abee6adb30bac80e4",
+  "limitations": [
+    "Automated DOM/geometry/media/storage doubles and local Worker/SQLite/D1/R2 fixtures.",
+    "No real mobile/browser rendering, actual Pococha launch or cross-application PiP persistence test.",
+    "No production database mutation or production Cloudflare CPU benchmark."
+  ]
+}

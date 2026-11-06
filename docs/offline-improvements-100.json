@@ -1,0 +1,820 @@
+{
+  "requestedAt": "2026-10-04T03:41:59+09:00",
+  "completedAt": "2026-10-03T19:04:40.649Z",
+  "scope": "現状の全体レイアウトを維持したスマホ向けオフライン対応",
+  "count": 100,
+  "meaning": "100項目の改善・点検と100件の追加自動デバッグ。100回の実機反復や100個の独立した画面変更を意味しません。",
+  "regression": {
+    "newCases": 100,
+    "existingCases": 120,
+    "totalPassed": 220,
+    "dailyBorderRegression": "passed"
+  },
+  "limitations": [
+    "iPhone・Android実機での起動・ホーム画面追加・機内モード再起動・描画は未検証。",
+    "初回およびホーム画面からの初回起動はオンライン準備が必要。",
+    "ブラウザの保存領域削除・容量不足・削除方針でデータや準備が失われる場合がある。"
+  ],
+  "items": [
+    {
+      "id": "001",
+      "criterion": "01 root navigation is eligible for the app shell",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 01 root navigation is eligible for the app shell",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "002",
+      "criterion": "02 root with query parameters is excluded",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 02 root with query parameters is excluded",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "003",
+      "criterion": "03 API and nested routes are excluded",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 03 API and nested routes are excluded",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "004",
+      "criterion": "04 another origin cannot use the shell",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 04 another origin cannot use the shell",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "005",
+      "criterion": "05 non-GET root requests are excluded",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 05 non-GET root requests are excluded",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "006",
+      "criterion": "06 root subresource requests are excluded",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 06 root subresource requests are excluded",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "007",
+      "criterion": "07 marked HTML shell is validated without consuming its body",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 07 marked HTML shell is validated without consuming its body",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "008",
+      "criterion": "08 all non-200 shell statuses are rejected",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 08 all non-200 shell statuses are rejected",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "009",
+      "criterion": "09 redirected HTML cannot be cached as the shell",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 09 redirected HTML cannot be cached as the shell",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "010",
+      "criterion": "10 opaque and cross-origin response types are rejected",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 10 opaque and cross-origin response types are rejected",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "011",
+      "criterion": "11 MIME guards reject JSON and HTML lookalikes",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 11 MIME guards reject JSON and HTML lookalikes",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "012",
+      "criterion": "12 a login URL or another origin is not a root shell",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 12 a login URL or another origin is not a root shell",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "013",
+      "criterion": "13 generic HTML without the app marker is rejected",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 13 generic HTML without the app marker is rejected",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "014",
+      "criterion": "14 default responses and case-insensitive HTML MIME remain valid",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 14 default responses and case-insensitive HTML MIME remain valid",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "015",
+      "criterion": "15 cacheShell saves a readable clone under the absolute root key",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 15 cacheShell saves a readable clone under the absolute root key",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "016",
+      "criterion": "16 invalid shell does not open or alter a cache",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 16 invalid shell does not open or alter a cache",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "017",
+      "criterion": "17 cacheShell exposes quota failure without replacing a saved shell",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 17 cacheShell exposes quota failure without replacing a saved shell",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "018",
+      "criterion": "18 savedShell returns a valid cached response",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 18 savedShell returns a valid cached response",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "019",
+      "criterion": "19 corrupt cached HTML is deleted before offline reuse",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 19 corrupt cached HTML is deleted before offline reuse",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "020",
+      "criterion": "20 savedShell tolerates cache open and match failures",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 20 savedShell tolerates cache open and match failures",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "021",
+      "criterion": "21 unreadable cached response is treated as unavailable",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 21 unreadable cached response is treated as unavailable",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "022",
+      "criterion": "22 prepareShell uses explicit same-origin fetch and cache policies",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 22 prepareShell uses explicit same-origin fetch and cache policies",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "023",
+      "criterion": "23 preparation saves the validated manifest and all three icons",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 23 preparation saves the validated manifest and all three icons",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "024",
+      "criterion": "24 optional icon failures leave a usable prepared shell",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 24 optional icon failures leave a usable prepared shell",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "025",
+      "criterion": "25 asset status, redirect and MIME guards prevent invalid cache entries",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 25 asset status, redirect and MIME guards prevent invalid cache entries",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "026",
+      "criterion": "26 rejected shell stops preparation before asset requests",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 26 rejected shell stops preparation before asset requests",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "027",
+      "criterion": "27 preparation aborts a hung network at twelve seconds",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 27 preparation aborts a hung network at twelve seconds",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "028",
+      "criterion": "28 install skips waiting only after the shell has been saved",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 28 install skips waiting only after the shell has been saved",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "029",
+      "criterion": "29 a failed install rejects its lifetime and does not skip waiting",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 29 a failed install rejects its lifetime and does not skip waiting",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "030",
+      "criterion": "30 activation cleans only obsolete calculator cache namespaces",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 30 activation cleans only obsolete calculator cache namespaces",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "031",
+      "criterion": "31 unprepared activation preserves old shells and claims clients",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 31 unprepared activation preserves old shells and claims clients",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "032",
+      "criterion": "32 corrupt current cache cannot trigger deletion of an old shell",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 32 corrupt current cache cannot trigger deletion of an old shell",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "033",
+      "criterion": "33 status messages return readiness, request id and cache version",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 33 status messages return readiness, request id and cache version",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "034",
+      "criterion": "34 status reports a device with no prepared shell as not ready",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 34 status reports a device with no prepared shell as not ready",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "035",
+      "criterion": "35 prepare message saves the app and replies when ready",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 35 prepare message saves the app and replies when ready",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "036",
+      "criterion": "36 failed preparation reports failure while retaining existing readiness",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 36 failed preparation reports failure while retaining existing readiness",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "037",
+      "criterion": "37 messages from another origin are ignored even with a valid id",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 37 messages from another origin are ignored even with a valid id",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "038",
+      "criterion": "38 missing and malformed message source URLs are ignored safely",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 38 missing and malformed message source URLs are ignored safely",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "039",
+      "criterion": "39 unsupported types and invalid message ids cannot prepare the shell",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 39 unsupported types and invalid message ids cannot prepare the shell",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "040",
+      "criterion": "40 fresh root navigation returns the network shell and updates offline storage",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 40 fresh root navigation returns the network shell and updates offline storage",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "041",
+      "criterion": "41 authentication and permission responses are returned without cached substitution",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 41 authentication and permission responses are returned without cached substitution",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "042",
+      "criterion": "42 redirected login HTML is returned and cannot overwrite the offline shell",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 42 redirected login HTML is returned and cannot overwrite the offline shell",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "043",
+      "criterion": "43 server errors fall back to a validated saved shell",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 43 server errors fall back to a validated saved shell",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "044",
+      "criterion": "44 a rejected navigation fetch uses the saved shell",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 44 a rejected navigation fetch uses the saved shell",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "045",
+      "criterion": "45 offline without a usable shell returns a Japanese no-store 503 page",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 45 offline without a usable shell returns a Japanese no-store 503 page",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "046",
+      "criterion": "46 slow navigation serves saved shell at three seconds and later refreshes it",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 46 slow navigation serves saved shell at three seconds and later refreshes it",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "047",
+      "criterion": "47 slow navigation without saved data keeps waiting for the real page",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 47 slow navigation without saved data keeps waiting for the real page",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "048",
+      "criterion": "48 navigation remains usable when refreshing the cache hits a quota error",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 48 navigation remains usable when refreshing the cache hits a quota error",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "049",
+      "criterion": "49 asset requests use network then cached fallback or a network-error response",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 49 asset requests use network then cached fallback or a network-error response",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "050",
+      "criterion": "50 fetch handler bypasses query, API, external and non-GET asset requests",
+      "action": "新しいオフライン起動機能の改善・確認",
+      "status": "passed",
+      "evidence": "tests/offline-sw-50.mjs :: 50 fetch handler bypasses query, API, external and non-GET asset requests",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "051",
+      "criterion": "U01 未対応ブラウザでもオフライン計算を継続",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U01 未対応ブラウザでもオフライン計算を継続",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "052",
+      "criterion": "U02 安全な接続でなければ登録しない",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U02 安全な接続でなければ登録しない",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "053",
+      "criterion": "U03 保存済みシェルを確認してオフライン準備完了",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U03 保存済みシェルを確認してオフライン準備完了",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "054",
+      "criterion": "U04 オフラインでシェル未保存なら準備完了と言わない",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U04 オフラインでシェル未保存なら準備完了と言わない",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "055",
+      "criterion": "U05 保存済みシェルの通常確認は再取得しない",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U05 保存済みシェルの通常確認は再取得しない",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "056",
+      "criterion": "U06 確認ボタンで最新版のシェルを準備",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U06 確認ボタンで最新版のシェルを準備",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "057",
+      "criterion": "U07 オンラインでキャッシュ未保存なら自動準備",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U07 オンラインでキャッシュ未保存なら自動準備",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "058",
+      "criterion": "U08 初回登録はルートの同一オリジンworkerだけ",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U08 初回登録はルートの同一オリジンworkerだけ",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "059",
+      "criterion": "U09 登録失敗でも計算・保存を維持",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U09 登録失敗でも計算・保存を維持",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "060",
+      "criterion": "U10 worker起動待ちが終わらなくても準備ボタンを戻す",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U10 worker起動待ちが終わらなくても準備ボタンを戻す",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "061",
+      "criterion": "U11 状況応答なしの待機は3秒で終了",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U11 状況応答なしの待機は3秒で終了",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "062",
+      "criterion": "U12 別workerからの準備完了通知を無視",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U12 別workerからの準備完了通知を無視",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "063",
+      "criterion": "U13 別種類の通知を準備完了として扱わない",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U13 別種類の通知を準備完了として扱わない",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "064",
+      "criterion": "U14 準備完了の型が不正なら無視",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U14 準備完了の型が不正なら無視",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "065",
+      "criterion": "U15 再準備失敗時は保存済みシェルと更新失敗を区別",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U15 再準備失敗時は保存済みシェルと更新失敗を区別",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "066",
+      "criterion": "U16 準備応答がない場合は完了を取り消す",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U16 準備応答がない場合は完了を取り消す",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "067",
+      "criterion": "U17 worker通信例外を画面に閉じ込める",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U17 worker通信例外を画面に閉じ込める",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "068",
+      "criterion": "U18 worker更新でも編集中の現在値を消さない",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U18 worker更新でも編集中の現在値を消さない",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "069",
+      "criterion": "U19 通信切断で取得を中止し素早い復帰でも再取得",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U19 通信切断で取得を中止し素早い復帰でも再取得",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "070",
+      "criterion": "U20 オフラインの定期確認はAPIを呼ばない",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U20 オフラインの定期確認はAPIを呼ばない",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "071",
+      "criterion": "U21 通信復帰で5分待たずAPIを確認",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U21 通信復帰で5分待たずAPIを確認",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "072",
+      "criterion": "U22 復帰・focus・pageshowが重なってもAPI重複なし",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U22 復帰・focus・pageshowが重なってもAPI重複なし",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "073",
+      "criterion": "U23 API通信失敗でも有効な履歴を維持",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U23 API通信失敗でも有効な履歴を維持",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "074",
+      "criterion": "U24 復帰データから自動目標と残りを再計算",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U24 復帰データから自動目標と残りを再計算",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "075",
+      "criterion": "U25 復帰データで手入力の履歴を上書きしない",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U25 復帰データで手入力の履歴を上書きしない",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "076",
+      "criterion": "U26 保存保護の許可は操作後に申請し表示",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U26 保存保護の許可は操作後に申請し表示",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "077",
+      "criterion": "U27 保存保護が不許可でもオフライン準備は継続",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U27 保存保護が不許可でもオフライン準備は継続",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "078",
+      "criterion": "U28 保存保護API例外でも計算を妨げない",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U28 保存保護API例外でも計算を妨げない",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "079",
+      "criterion": "U29 保存保護API無応答は5秒で案内",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U29 保存保護API無応答は5秒で案内",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "080",
+      "criterion": "U30 準備中の連打で処理を重複しない",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U30 準備中の連打で処理を重複しない",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "081",
+      "criterion": "U31 pageshowでキャッシュの消失を再確認",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U31 pageshowでキャッシュの消失を再確認",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "082",
+      "criterion": "U32 背景へ移る時に端末保存を試みる",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U32 背景へ移る時に端末保存を試みる",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "083",
+      "criterion": "U33 ページ終了時に最後の有効値を保存",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U33 ページ終了時に最後の有効値を保存",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "084",
+      "criterion": "U34 別タブの変更を検出したら上書きを停止",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U34 別タブの変更を検出したら上書きを停止",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "085",
+      "criterion": "U35 同じ保存内容のstorage通知ではロックしない",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U35 同じ保存内容のstorage通知ではロックしない",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "086",
+      "criterion": "U36 他のキーのstorage通知は無視",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U36 他のキーのstorage通知は無視",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "087",
+      "criterion": "U37 オフライン再初期化で主要入力を復元",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U37 オフライン再初期化で主要入力を復元",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "088",
+      "criterion": "U38 未確定のボーダー下書きをオフライン再起動で復元",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U38 未確定のボーダー下書きをオフライン再起動で復元",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "089",
+      "criterion": "U39 壊れた下書きは有効な記録を隠さない",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U39 壊れた下書きは有効な記録を隠さない",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "090",
+      "criterion": "U40 下書きの数と文字数を制限して容量を保護",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U40 下書きの数と文字数を制限して容量を保護",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "091",
+      "criterion": "U41 下書き保存失敗は明示し入力値を保持",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U41 下書き保存失敗は明示し入力値を保持",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "092",
+      "criterion": "U42 記録保存失敗で保存成功と言わない",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U42 記録保存失敗で保存成功と言わない",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "093",
+      "criterion": "U43 CSV取込の保存失敗を明確に表示",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U43 CSV取込の保存失敗を明確に表示",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "094",
+      "criterion": "U44 JSON復元の保存失敗を明確に表示",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U44 JSON復元の保存失敗を明確に表示",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "095",
+      "criterion": "U45 壊れた元データを保全し既存の保存メニューで取り出せる",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U45 壊れた元データを保全し既存の保存メニューで取り出せる",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "096",
+      "criterion": "U46 復旧コピーの保存も失敗したら元データを画面から取得",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U46 復旧コピーの保存も失敗したら元データを画面から取得",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "097",
+      "criterion": "U47 ホーム画面manifestとPNGの寸法・識別子が一致",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U47 ホーム画面manifestとPNGの寸法・識別子が一致",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "098",
+      "criterion": "U48 CSPは同一サイトworkerとmanifestだけを許可",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U48 CSPは同一サイトworkerとmanifestだけを許可",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "099",
+      "criterion": "U49 オフライン設定は既存保存メニュー内で44px・読み上げ対応",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U49 オフライン設定は既存保存メニュー内で44px・読み上げ対応",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    },
+    {
+      "id": "100",
+      "criterion": "U50 主要メーターの順序と削除済み機能の不在を維持",
+      "action": "端末での操作・保存の改善または既存動作の点検",
+      "status": "passed",
+      "evidence": "tests/offline-ui-50.mjs :: U50 主要メーターの順序と削除済み機能の不在を維持",
+      "verification": "実コードの自動検証（模擬キャッシュ・通信・DOM・保存領域、または静的構造）"
+    }
+  ]
+}

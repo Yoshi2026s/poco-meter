@@ -1,0 +1,62 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1791013021283,
+      "tag": "0000_sweet_corsair",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1791480358271,
+      "tag": "0001_fine_monster_badoon",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1791484491086,
+      "tag": "0002_magenta_solo",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1791491494725,
+      "tag": "0003_large_blackheart",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1791539925515,
+      "tag": "0004_dizzy_the_leader",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1791545560831,
+      "tag": "0005_blushing_madrox",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1791863809450,
+      "tag": "0006_security_rate_windows",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "6",
+      "when": 1792210936339,
+      "tag": "0007_contact_sessions",
+      "breakpoints": true
+    }
+  ]
+}

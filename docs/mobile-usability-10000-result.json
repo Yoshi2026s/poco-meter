@@ -1,0 +1,83 @@
+{
+  "matrix": "mobile-usability-10000",
+  "status": "passed",
+  "distinctDisplayConditions": 10000,
+  "regressionBatches": 7,
+  "regressions": [
+    "All 37 native option previews survive timer sync and commit once on blur",
+    "All committed native options reach their real change handlers and survive blur/tick",
+    "Core local validation preserves the previous valid value, invalid Enter retains focus, correction clears error",
+    "Both buffer fields mirror invalid state, retain last valid value, show/clear local error, and valid Enter dismisses",
+    "Local described-by references resolve and error nodes stay under their respective form groups",
+    "Record Enter moves next/next/done without saving and all three independent IME guards prevent advancement",
+    "Record next actions preserve raw drafts and Enter never creates a saved border triple"
+  ],
+  "candidateConditions": 15200,
+  "effectiveDuplicatesSkipped": 0,
+  "cacheVerificationConditions": 69,
+  "inputSignatureDuplicates": 0,
+  "sourceSHA256": "4d0b0856166e8b45bba2441243f2343e06bfad6f333f6b46450b4842def8caee",
+  "conditionSignatureSHA256": "064e0ad9490b8d1a145ede34df1d4ca060a824e3fc549e34542e16db3396a4e4",
+  "effectiveSnapshotSHA256": "22cd825a64dcebc6518841d599e0af0d493b8c06ffdd8feaf96715dd44c048f4",
+  "minimumContrast": 6.253026986074784,
+  "histogram": {
+    "theme": {
+      "dark": 5086,
+      "light": 4914
+    },
+    "background": {
+      "gold": 1021,
+      "gray": 1099,
+      "theme": 1096,
+      "purple": 1041,
+      "blue": 1068,
+      "red": 1019,
+      "pink": 1041,
+      "orange": 979,
+      "green": 1084,
+      "black": 552
+    },
+    "list": {
+      "orange": 990,
+      "green": 986,
+      "white": 1026,
+      "black": 1003,
+      "pink": 1019,
+      "gray": 1015,
+      "blue": 995,
+      "gold": 989,
+      "red": 986,
+      "purple": 991
+    },
+    "number": {
+      "green": 991,
+      "black": 984,
+      "pink": 1020,
+      "gold": 984,
+      "purple": 978,
+      "gray": 1024,
+      "red": 1003,
+      "cyan": 1019,
+      "blue": 994,
+      "orange": 1003
+    },
+    "weight": {
+      "thin": 2512,
+      "ultra": 2610,
+      "bold": 2224,
+      "standard": 2654
+    },
+    "width": {
+      "320": 4282,
+      "390": 5718
+    },
+    "mode": {
+      "invalid": 3336,
+      "normal": 3345,
+      "focus": 3319
+    }
+  },
+  "elapsedMs": 193848,
+  "methodology": "Real shipped JavaScript handlers plus author CSS cascade on DOM doubles; effective multi-surface snapshots deduplicated; fixed-DOM selector-match cache compared with original CSS audit",
+  "limitation": "No physical iPhone/Android, native picker pixels, browser rendering, font shaping, keyboard viewport or geometry verification; no claim of 10,000 changes/fixes"
+}

@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 2,
+  "kind": "synthetic-history-core-correctness-audit",
+  "requested": {
+    "rounds": 1,
+    "casesPerRound": 100000,
+    "totalCases": 100000,
+    "seed": 20261019
+  },
+  "scope": {
+    "domains": [
+      "dates_and_month_boundaries",
+      "calendar_layout_and_record_marks",
+      "search_rank_close_origin_and_order",
+      "pagination_and_units",
+      "numeric_and_triple_boundaries",
+      "merge_precedence_and_immutability",
+      "local_and_packed_data_preservation",
+      "archive_normalization_and_source_validation",
+      "copy_text_and_private_field_exclusion",
+      "latest_recent_and_adjacent_dates"
+    ],
+    "coveredSourceFunctions": [
+      "validHistoryDate",
+      "validHistoryTriple",
+      "historySource",
+      "normalizeHistoryRows",
+      "localHistoryRows",
+      "mergeHistoryRows",
+      "createHistoryIndex",
+      "historyMonthRange",
+      "historyCalendarMonth",
+      "historyRecordDates",
+      "latestHistoryDate",
+      "adjacentHistoryDate",
+      "historyRecordNavigation",
+      "recentHistoryRange",
+      "normalizeHistoryQuery",
+      "filterHistory",
+      "historyPage",
+      "historyNumber",
+      "historyOriginLabel",
+      "historyCardText"
+    ],
+    "archiveRows": 2013,
+    "indexedFixtureFamilies": {
+      "empty": "No indexed records; independent normalization/copy fixtures still exercise their own inputs.",
+      "dense": "All 19 ranks and 3 cutoffs across 3 adjacent month-end days, plus 4 reviewed archive rows.",
+      "sparse": "Nine widely separated dates, partial ranks/cutoffs and some same-day records, plus 4 reviewed archive rows."
+    },
+    "numericGeneration": "Two 32-bit PRNG outputs are combined via BigInt into 53 bits. Numeric-format scenarios guarantee low, middle stored-value, high 53-bit, boundary and invalid bands."
+  },
+  "limitations": [
+    "Synthetic conditions, not actual people or distinct implemented improvements.",
+    "Finite boundary values legitimately recur; each round uses a different PRNG seed and varies combined conditions and record values.",
+    "No DOM, real browser, iPhone, touch, keyboard, network or production data checks are counted here.",
+    "UI event and layout tests and the final ten debug rounds are separate."
+  ],
+  "startedAt": "2026-10-17T06:19:08.057Z",
+  "sourceHashes": {
+    "calculator/history-core.mjs": "b7085f98b87baba2c5105f43d8cbb5f090f182c9927644b992e08b257e242631",
+    "calculator/history-ui.mjs": "d0781fd1e21472dcc8a735aeac9024a6e92ff4b2bc2a0d8eaa53fcff31a3f82a",
+    "calculator/history-page-template.html": "8ce8a1caf5aff240868fc1a8f9979b46d41a179d443e97f4743313b999a3401c",
+    "tests/history-mobile-audit.mjs": "773ea31a3da4f8d12325d48b26e6798e09ea951ab8234b11317964e1fb1e48c0",
+    "db/history-2025-2026.json": "f922974faf2230ed6e75d1f86ac4a78f0ab531a8d17b2fcb129fd1446fcdc7f6",
+    "db/history-2026-10-02-03.json": "6bac471972436f351fe933f1b870257185dfe21cdd0b4add6b9d8b9036c8cb90",
+    "db/seed.json": "7a5b614b7086abfe7900b1fa859877560c00c270be216b7a5cdd913c9226fdfd"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "seed": 3137854586,
+      "cases": 100000,
+      "assertions": 695968,
+      "domainCounts": {
+        "dates_and_month_boundaries": 10000,
+        "calendar_layout_and_record_marks": 10000,
+        "search_rank_close_origin_and_order": 10000,
+        "pagination_and_units": 10000,
+        "numeric_and_triple_boundaries": 10000,
+        "merge_precedence_and_immutability": 10000,
+        "local_and_packed_data_preservation": 10000,
+        "archive_normalization_and_source_validation": 10000,
+        "copy_text_and_private_field_exclusion": 10000,
+        "latest_recent_and_adjacent_dates": 10000
+      },
+      "fixtureFamily": "empty",
+      "indexedRows": 0,
+      "elapsedMs": 1134,
+      "finalRngState": 819375643,
+      "datasetHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    }
+  ],
+  "finishedAt": "2026-10-17T06:19:09.195Z",
+  "elapsedMs": 1138,
+  "completedCases": 100000,
+  "assertions": 695971,
+  "counts": {
+    "dates_and_month_boundaries": 10000,
+    "calendar_layout_and_record_marks": 10000,
+    "search_rank_close_origin_and_order": 10000,
+    "pagination_and_units": 10000,
+    "numeric_and_triple_boundaries": 10000,
+    "merge_precedence_and_immutability": 10000,
+    "local_and_packed_data_preservation": 10000,
+    "archive_normalization_and_source_validation": 10000,
+    "copy_text_and_private_field_exclusion": 10000,
+    "latest_recent_and_adjacent_dates": 10000
+  },
+  "checkCounts": {
+    "dates_and_month_boundaries": 30000,
+    "calendar_layout_and_record_marks": 404791,
+    "search_rank_close_origin_and_order": 21176,
+    "pagination_and_units": 50000,
+    "numeric_and_triple_boundaries": 20002,
+    "merge_precedence_and_immutability": 30002,
+    "local_and_packed_data_preservation": 30000,
+    "archive_normalization_and_source_validation": 30000,
+    "copy_text_and_private_field_exclusion": 30000,
+    "latest_recent_and_adjacent_dates": 50000
+  },
+  "coverage": {
+    "fixtureFamilies": {
+      "empty": 1,
+      "sparse": 0,
+      "dense": 0
+    },
+    "calendar": {
+      "forcedMatchingScope": 0,
+      "recordMonthAnyScope": 0,
+      "unrestrictedMonth": 10000,
+      "positiveMarkers": 0,
+      "emptyMarkers": 10000
+    },
+    "numbers": {
+      "upToUint32": 2000,
+      "aboveUint32ThroughStoredMax": 2986,
+      "aboveStoredMaxBelow53Bit": 502,
+      "high53Bit": 2512,
+      "invalid": 2000
+    },
+    "storedTripleBasesAboveUint32": 10000
+  },
+  "conditionDigestSHA256": "b133eced9dec81d2f447392d9a383a6e416a4ea086ea74055fdf9b86675d6081",
+  "conditionDigestBytes": 1600000,
+  "failedCases": 0,
+  "completedRounds": 1,
+  "status": "passed",
+  "failure": null,
+  "endingSourceHashes": {
+    "calculator/history-core.mjs": "b7085f98b87baba2c5105f43d8cbb5f090f182c9927644b992e08b257e242631",
+    "calculator/history-ui.mjs": "d0781fd1e21472dcc8a735aeac9024a6e92ff4b2bc2a0d8eaa53fcff31a3f82a",
+    "calculator/history-page-template.html": "8ce8a1caf5aff240868fc1a8f9979b46d41a179d443e97f4743313b999a3401c",
+    "tests/history-mobile-audit.mjs": "773ea31a3da4f8d12325d48b26e6798e09ea951ab8234b11317964e1fb1e48c0",
+    "db/history-2025-2026.json": "f922974faf2230ed6e75d1f86ac4a78f0ab531a8d17b2fcb129fd1446fcdc7f6",
+    "db/history-2026-10-02-03.json": "6bac471972436f351fe933f1b870257185dfe21cdd0b4add6b9d8b9036c8cb90",
+    "db/seed.json": "7a5b614b7086abfe7900b1fa859877560c00c270be216b7a5cdd913c9226fdfd"
+  }
+}

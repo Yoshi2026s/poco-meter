@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ja" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="pococha-help" content="calculation-methods-v1">
+<title>算出方法の説明 | ポコメーター番長</title>
+<script>
+try {
+  var settings = JSON.parse(localStorage.getItem('pococha-meter-display-v1') || 'null');
+  if (settings) {
+    document.documentElement.dataset.theme = settings.background === 'black' ? 'dark' : settings.theme === 'light' ? 'light' : 'dark';
+    if (['ultra','bold','standard','thin'].includes(settings.weight)) document.documentElement.dataset.weight = settings.weight;
+  }
+} catch (_) {}
+</script>
+<style>
+:root{color-scheme:dark;--bg:#080e1a;--paper:#131f32;--ink:#edf2f9;--muted:#bfcbda;--line:#3d5068;--accent:#75d5f2;--weight:700}
+:root[data-theme="light"]{color-scheme:light;--bg:#f4f7fc;--paper:#fff;--ink:#1b293d;--muted:#4d607a;--line:#b4c4d8;--accent:#12649a}
+:root[data-weight="ultra"]{--weight:900}:root[data-weight="standard"]{--weight:400}:root[data-weight="thin"]{--weight:300}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:16px}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif;font-size:1rem;font-weight:var(--weight);line-height:1.75;overflow-wrap:anywhere}
+main{width:min(860px,100%);margin:auto;padding:20px 16px 32px}header{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}h1{font-size:clamp(1.35rem,5vw,1.8rem);line-height:1.5;margin:0;flex:1 1 240px}h2{font-size:1.125rem;margin:0 0 8px;line-height:1.6}p{margin:8px 0}a{color:var(--accent)}button,.return-link,nav a{display:inline-flex;justify-content:center;align-items:center;min-height:44px;padding:6px 12px;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink);font:inherit;font-size:.875rem;text-decoration:none;cursor:pointer}a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}nav{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}nav a{color:var(--accent)}section{margin:14px 0;padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--paper)}section p:last-child{margin-bottom:0}.muted{color:var(--muted);font-size:.875rem}.example{padding:8px 10px;border-left:3px solid var(--accent);font-variant-numeric:tabular-nums}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}th,td{text-align:left;padding:8px;border-bottom:1px solid var(--line);font-size:.875rem}td:last-child,th:last-child{text-align:right;white-space:nowrap}ul,ol{padding-left:1.5em;margin:8px 0}li{margin:4px 0}
+@media(max-width:360px){main{padding:14px 12px 24px}section{padding:12px}nav a{flex:1 1 90px;padding:5px 8px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}@media print{header button,.return-link,nav{display:none}body{background:#fff;color:#000}section{break-inside:avoid;border-color:#888}.muted{color:#333}}
+</style>
+</head>
+<body>
+<main>
+<header><h1>算出方法の説明</h1><a class="return-link" id="returnLink" href="/">メーターに戻る</a><button type="button" id="closePage">閉じる</button></header>
+<p>選んだ締め時間・集計期間・ランク・ボーダーの記録から、目標の基準値を作ります。基準値に上乗せ率を適用し、最後に指定単位で切り上げます。</p>
+<nav aria-label="算出方法の目次"><a href="#mean">平均値</a><a href="#median">中央値</a><a href="#p75">上位25％の境界値</a><a href="#max">最大値</a><a href="#min">最小値</a></nav>
+<section id="mean"><h2>平均値</h2><p>有効な記録の合計を、記録のある日数で割ります。すべての日の値が結果に影響するため、特に高い日や低い日があると、その方向へ動きます。</p><p class="example">例：100・200・300・400・1,000 pt<br>合計2,000 ÷ 5日 ＝ <strong>400 pt</strong></p></section>
+<section id="median"><h2>中央値</h2><p>値を小さい順に並べた時の中央の値です。日数が偶数なら、中央の2つを足して2で割ります。平均値に比べ、1日だけ極端に高い・低い値の影響を受けにくい方法です。</p><p class="example">5日分の例では、中央の3番目 ＝ <strong>300 pt</strong><br>偶数4日で100・200・400・1,000なら、（200 ＋ 400）÷ 2 ＝ 300 pt</p></section>
+<section id="p75"><h2>上位25％の境界値</h2><p>値を小さい順に並べ、日数 × 0.75 を整数へ切り上げた順位の値を使います。このツールでは、順位の間の値を補間しません。平均や中央値より高めの基準になることがあります。</p><p class="example">5日 × 0.75 ＝ 3.75 → 4番目を選択<br>100・200・300・<strong>400</strong>・1,000 → <strong>400 pt</strong></p><p class="muted">「高い方の25％の平均」ではありません。少ない日数では、最大値と同じ値になる場合があります。</p></section>
+<section id="max"><h2>期間内の最大値</h2><p>有効な記録の中で、最も高い値を使います。選んだ期間で一番高かった日を基準にする方法です。</p><p class="example">5日分の例では <strong>1,000 pt</strong></p></section>
+<section id="min"><h2>期間内の最小値</h2><p>有効な記録の中で、最も低い値を使います。選んだ期間で一番低かった日を基準にする方法です。</p><p class="example">5日分の例では <strong>100 pt</strong></p></section>
+<section><h2>5つの方法を同じ記録で比較</h2><p class="muted">例の記録：100・200・300・400・1,000 pt。上乗せ前の値です。</p><div class="table-wrap"><table><thead><tr><th scope="col">算出方法</th><th scope="col">基準値</th></tr></thead><tbody><tr><th scope="row">平均値</th><td>400 pt</td></tr><tr><th scope="row">中央値</th><td>300 pt</td></tr><tr><th scope="row">上位25％の境界値</th><td>400 pt</td></tr><tr><th scope="row">期間内の最大値</th><td>1,000 pt</td></tr><tr><th scope="row">期間内の最小値</th><td>100 pt</td></tr></tbody></table></div></section>
+<section><h2>上乗せ・切り上げの順序</h2><ol><li>選んだ方法で基準値を算出。</li><li>基準値 ×（1 ＋ 上乗せ率 ÷ 100）。</li><li>1・100・1,000・10,000 ptのうち、選んだ単位で切り上げ。</li></ol><p class="example">平均400 pt → 10％上乗せで440 pt<br>100 pt単位で切り上げ → <strong>目標500 pt</strong></p><p class="muted">計算途中では丸めません。画面の統計値は小数1桁までの表示でも、目標は表示前の値から計算します。上乗せ率は0〜50％、小数1桁までです。</p></section>
+<section><h2>集計する記録の範囲</h2><ul><li>選択中の締め時間・ランク・±0／+1／+2に対応する、有効な保存済み記録だけを使います。</li><li>未登録日を0で埋めません。たとえば30日の期間に27日分しかなければ、その27日分で計算します。</li><li>当日・未来日の値は対象外です。記録がない場合は新しい目標を算出せず、直前の目標を保持します。</li><li>直近30日は集計最終日を含む30暦日。最終日が空欄なら、日本時間の昨日までです。</li><li>当月は月初〜昨日、先月は前月の全日、3か月は当月を含む3暦月〜昨日、全期間は昨日以前の有効な記録が対象です。</li><li>旧版参考値は直近30日の計算では除外し、他の期間では含めます。</li></ul><p class="muted">手入力の目標は、この5つの統計方法による自動設定とは別です。過去の数値は当日のボーダーを予測・保証するものではありません。</p></section>
+<a class="return-link" href="/">メーターに戻る</a>
+</main>
+<script>document.getElementById('closePage').onclick=function(){window.close();document.getElementById('returnLink').focus();};</script>
+<div class="tool-creator-footer" style="display:block;clear:both;width:100%;max-width:1200px;box-sizing:border-box;margin:24px auto 0;padding:12px 16px 20px;text-align:left;flex-basis:100%"><span class="tool-creator-logo" aria-label="制作者 Yoshi1012" style="display:inline-block;max-width:100%;box-sizing:border-box;padding:8px 18px 9px;border:1px solid #1676bc;border-left:3px solid #36c5ff;border-radius:3px;background:linear-gradient(115deg,#02050b 0%,#0b1d31 55%,#03070e 100%);color:#66d5ff;font-family:Arial,Helvetica,sans-serif;font-size:18px;font-weight:900;font-style:italic;letter-spacing:.08em;line-height:1.3;text-shadow:0 0 8px #008cce;box-shadow:inset 0 1px 0 #24618a,0 3px 12px #001c3c55">Yoshi1012</span></div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+{
+  "checkedAt": "2026-10-11T21:08:58.230685+00:00",
+  "serverDate": "2026-10-12",
+  "apiSync": {
+    "last_attempt": "2026-10-11T19:58:10.409Z",
+    "last_success": "2026-10-11T19:58:10.409Z",
+    "status": "ok",
+    "message": "掲載済みの日別ボーダーを確認しました。"
+  },
+  "matchedValues": 162,
+  "cutoffs": [
+    {
+      "close": "13",
+      "date": "2026-10-09",
+      "sourceURL": "https://one-carat.com/campus/archives/89497",
+      "sourceSHA256": "92d1ff36d6efd04fc4cab9d8d0d1e673896a0c8c4a70b2e0128d51c82d647b70",
+      "sourceCapturedAt": "2026-10-11T21:07:28.535010+00:00",
+      "matchedRanks": 18,
+      "matchedValues": 54,
+      "apiLatestDate": "2026-10-09",
+      "matched": true
+    },
+    {
+      "close": "22",
+      "date": "2026-10-10",
+      "sourceURL": "https://one-carat.com/campus/archives/89496",
+      "sourceSHA256": "8037a8a6c2b5422e474fa581428acf99851b1e124debc743dac9cce5921367f4",
+      "sourceCapturedAt": "2026-10-11T21:07:28.478673+00:00",
+      "matchedRanks": 18,
+      "matchedValues": 54,
+      "apiLatestDate": "2026-10-10",
+      "matched": true
+    },
+    {
+      "close": "24",
+      "date": "2026-10-10",
+      "sourceURL": "https://one-carat.com/campus/archives/89495",
+      "sourceSHA256": "13b79ca81948aaafe587ae681175d4ca27de063f0506a56fd579c4d097f1284a",
+      "sourceCapturedAt": "2026-10-11T21:07:28.280845+00:00",
+      "matchedRanks": 18,
+      "matchedValues": 54,
+      "apiLatestDate": "2026-10-10",
+      "matched": true
+    }
+  ],
+  "method": "Independent HTMLParser structural extraction from directly downloaded publisher pages, compared with current deployed API snapshot.",
+  "limitations": "Agreement with third-party past records; does not verify live Pococha app or predict future borders. Missing dates were not fabricated."
+}

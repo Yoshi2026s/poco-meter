@@ -1,0 +1,48 @@
+name: Sitesからメーター計算を同期
+
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: pococha-meter-sites-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    # Publication requires the owner's per-tool staging button.
+    if: ${{ false }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: 公開先の最新ソースを取得
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+      - name: Sites公開データを検証して同期
+        id: sync
+        run: python3 .github/scripts/sync-meter.py
+      - name: メーター7ファイルに変更がある場合だけ保存
+        if: steps.sync.outputs.changed == 'true'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- poco-meter/index.html poco-meter/calculation-methods.html poco-meter/meter-sw.js poco-meter/meter.webmanifest poco-meter/meter-icon-180.png poco-meter/meter-icon-192.png poco-meter/meter-icon-512.png
+          if ! git diff --cached --quiet -- poco-meter/index.html poco-meter/calculation-methods.html poco-meter/meter-sw.js poco-meter/meter.webmanifest poco-meter/meter-icon-180.png poco-meter/meter-icon-192.png poco-meter/meter-icon-512.png; then
+            git commit -m 'Sync published Pococha meter from Sites' -- poco-meter/index.html poco-meter/calculation-methods.html poco-meter/meter-sw.js poco-meter/meter.webmanifest poco-meter/meter-icon-180.png poco-meter/meter-icon-192.png poco-meter/meter-icon-512.png
+            git push origin HEAD:main
+          fi
+      - name: GitHub Pagesへの反映を開始
+        if: steps.sync.outputs.rebuild == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST "repos/$GITHUB_REPOSITORY/pages/builds" --jq '.status'
+      - name: 公開された7ファイルを確認
+        if: steps.sync.outputs.rebuild == 'true'
+        run: python3 .github/scripts/sync-meter.py --verify-public

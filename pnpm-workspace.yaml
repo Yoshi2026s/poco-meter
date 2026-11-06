@@ -1,0 +1,38 @@
+# Copied Sites are standalone projects and cannot inherit the monorepo policy.
+minimumReleaseAge: 10080
+minimumReleaseAgeIgnoreMissingTime: false
+trustLockfile: false
+strictDepBuilds: true
+allowBuilds:
+  esbuild: true
+  fsevents: true
+  sharp: true
+  unrs-resolver: true
+  workerd: true
+storeDir: ${SITES_PNPM_SHARED_STORE:-.sites-runtime/pnpm-store}
+cacheDir: ${SITES_PNPM_SHARED_STORE:-.sites-runtime/pnpm-store}/policy-cache
+enableGlobalVirtualStore: false
+# Reuse store files with clones or hardlinks before falling back to copies.
+packageImportMethod: auto
+# The explicit installer owns dependency setup, including restored workspaces.
+verifyDepsBeforeRun: false
+optimisticRepeatInstall: false
+overrides:
+  "miniflare>sharp": "0.35.5"
+  "react-server-dom-webpack": "19.2.8"
+  "@babel/core": "7.29.6"
+  "browserslist": "4.28.7"
+  "baseline-browser-mapping": "2.11.0"
+  "fast-uri": "3.1.8"
+  "source-map-js": "1.2.2"
+  "sharp": "0.35.5"
+  "esbuild@<0.28.1": "0.28.1"
+  "ws@<8.21.0": "8.21.0"
+  "undici@>=7 <7.29.1": "7.29.1"
+  "js-yaml@>=4 <4.3.2": "4.3.2"
+  "brace-expansion@>=1 <2": "1.1.21"
+  "brace-expansion@>=5 <6": "5.0.12"
+  "fflate@>=0.7 <0.8": "0.7.5"
+  "image-size@>=2 <2.0.3": "2.0.3"
+patchedDependencies:
+  braces@3.0.3: patches/braces@3.0.3.patch

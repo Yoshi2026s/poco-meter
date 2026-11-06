@@ -33,6 +33,22 @@ Code側で自動取得を行うための引継ぎ準備。実行開始の承認�
 catalog/publication/v1の現在の実値は未取得。10/21当時の実値も不明。
 公開設定サービスはR2の同一キーを現在値・revision・updatedAtで上書きする実装で、確認した処理には履歴保存がなかった。available:true、初期値、現在値を当時のenabledの証拠にしない。
 
+### ソース上の403発生箇所（Code確認、取得コミット3c0e6c8）
+| 経路 | 対象 | 403条件 | 応答 |
+| --- | --- | --- | --- |
+| A Sites基盤 | 全リクエスト | owner-private配信前認証など。ソース外で条件未確認 | 基盤依存 |
+| B catalogGate（lib/catalog-gate.mjs） | 全メソッド | 所有者ヘッダー不一致かつ一覧サービスがenabled:false（到達不可・形式不正は503） | JSON `このツールは現在非公開です。` |
+| C origin判定（build/sites-worker.ts） | POST | 配信originがBORDER_WRITER_ORIGIN（既定は本番origin）と違う | JSON `Production writer origin required` |
+| D Originヘッダー（lib/border-store.mjs） | POST | Originヘッダーがあり自身のoriginと違う | JSON `Origin rejected` |
+| E 署名ヘッダー形式（lib/border-writer-auth.mjs） | POST | キー形式不正・時刻が-60〜+300秒の範囲外・署名形式不正 | JSON `Border writer authorization required` |
+| F HMAC検証 | POST | 本文SHA-256を含むHMACが不一致 | 同上 |
+| G 取得元 | ONECARATへのGET | 取得元が拒否 | 取得元依存 |
+
+- 流量制限・再送防止・サイズ超過は429・409・413・408・503で、403を返さない。
+- アプリ（B〜F）の403はすべて`application/json`の応答。上の手順1-1の403は`text/plain`でJSON errorがないため、B〜Fのアプリ応答とは形式が一致しない。アプリより手前の層（Sites基盤、または診断した実行環境の通信制限）である可能性が高い。ただし、層は確定していない。
+- 同じGETをユーザーPC上のCodeから実行した結果は200（2026/11/06）。実行環境によって結果が違う。
+- 10/21の定期タスクの403がどれに当たるかは、記録が要約だけのため未特定。
+
 ## 自動取得の既存構成
 1. GET /api/borders/source-urls で取得元一覧URLを得る。
 2. ONECARATの通常の公開HTMLを取得。

@@ -1,0 +1,167 @@
+{
+  "task": "whole-debug-10000",
+  "status": "passed",
+  "completedAt": "2026-10-09T12:47:40.835730+00:00",
+  "mainDistinctConditions": 10000,
+  "matrices": [
+    {
+      "matrix": "offline-sw-5000",
+      "distinctMatrixConditions": 5000,
+      "groups": {
+        "shell": 1024,
+        "message": 1024,
+        "navigation": 1536,
+        "asset": 1024,
+        "concurrency": 360,
+        "routing": 32
+      },
+      "deterministicCasesSha256": "a9c5aa631db66cf9af318b510f393b5f3ad05c41664e01caf2bf1a37b2da415f",
+      "passedConditions": 5000,
+      "failedConditions": 0,
+      "status": "passed",
+      "limitations": [
+        "Service-worker VM and controlled browser IO; no physical-device or browser-rendering runs"
+      ]
+    },
+    {
+      "matrix": "offline-ui-5000",
+      "nodeTestBatches": 10,
+      "distinctMatrixConditions": 5000,
+      "groups": {
+        "number": 1000,
+        "items": 1000,
+        "time": 500,
+        "statistics": 500,
+        "realtime": 500,
+        "invalid-ui": 500,
+        "backup": 400,
+        "draft": 200,
+        "invalid-backup": 200,
+        "records": 200
+      },
+      "deterministicCasesSha256": "457b270076394dc62cf908e0cf5a25053c18c3d65d10e9f8ee5793200a25d3b7",
+      "limitations": [
+        "DOM and storage doubles; no physical devices or rendered browsers",
+        "No claim of 5,000 independent implementation changes",
+        "No network access needed by the matrix"
+      ],
+      "status": "passed"
+    }
+  ],
+  "fixes": [
+    "Malformed unrelated or article links no longer abort valid border article discovery.",
+    "Damaged compact provenance at startup no longer discards valid personal input values and border records; valid provenance and raw recovery retained."
+  ],
+  "regressions": {
+    "startupRecoveryCases": 10,
+    "finalRecoveryAndBorderAuthTestEntries": 12,
+    "additionalBroadTestEntries": 109,
+    "broadCoverage": [
+      "calculation and exact coin/item rounding",
+      "historical archive filtering and pagination",
+      "display settings and colors",
+      "contact messages, images, retry and isolation",
+      "live border validation and write authorization"
+    ],
+    "archiveRows": 1918,
+    "archiveRankTriples": 34522,
+    "analyticsScenarioConditions": 1000,
+    "privateServiceWorkerRoutingConditions": 56
+  },
+  "baselineVisualVerification": {
+    "sourceCommit": "c390943485532cdb8281f5eeabe4bcaabd01bf7d",
+    "distinctAuthorCssConditions": 10000,
+    "minimumMeasuredAuthorCssContrast": 6.253026986074784,
+    "localChromium": {
+      "profiles": 8,
+      "passed": 8,
+      "failed": 0,
+      "checks": 608,
+      "method": "Local Chromium desktop/phone emulation with Japanese font; physical iPhone/Android/Safari unavailable",
+      "results": [
+        {
+          "width": 320,
+          "theme": "light",
+          "checks": 77,
+          "status": "passed",
+          "initialHudOverflow": []
+        },
+        {
+          "width": 320,
+          "theme": "dark",
+          "checks": 77,
+          "status": "passed",
+          "initialHudOverflow": []
+        },
+        {
+          "width": 390,
+          "theme": "light",
+          "checks": 77,
+          "status": "passed",
+          "initialHudOverflow": []
+        },
+        {
+          "width": 390,
+          "theme": "dark",
+          "checks": 77,
+          "status": "passed",
+          "initialHudOverflow": []
+        },
+        {
+          "width": 768,
+          "theme": "light",
+          "checks": 75,
+          "status": "passed",
+          "initialHudOverflow": []
+        },
+        {
+          "width": 768,
+          "theme": "dark",
+          "checks": 75,
+          "status": "passed",
+          "initialHudOverflow": []
+        },
+        {
+          "width": 1280,
+          "theme": "light",
+          "checks": 75,
+          "status": "passed",
+          "initialHudOverflow": []
+        },
+        {
+          "width": 1280,
+          "theme": "dark",
+          "checks": 75,
+          "status": "passed",
+          "initialHudOverflow": []
+        }
+      ],
+      "failures": []
+    },
+    "stylesUnchangedByFixes": true
+  },
+  "isolatedBuiltWorker": [
+    "Owner-only analytics, escaped labels and combined filters",
+    "Private five-image multipart persistence, indexed readback, retry and cross-browser authorization"
+  ],
+  "updatedOfflineCache": "v26",
+  "sourceSHA256": {
+    "calculator/index.html": "8b56c0e60bf0e5397e4013628451cc8c3d4cc56d821837885fe4a56950a4ceb8",
+    "calculator/sw.js": "a9872fe472d554d88f4dd8fc63ae140f83ec17b3008cd403d19b3746c4136028",
+    "lib/border-source.mjs": "bab660d03dfe8363361c64dd482d285205a34501efe690d2c8587c0fb8468a24",
+    "tests/offline-sw-5000.mjs": "e100da381a568c71b4d06fc8835372b95ce9d803f6a4b1bd54dd529bd08f9882",
+    "tests/offline-ui-5000.mjs": "7c9900418f8cc8a8413efbc49fcda77792c5a0350d0b25571ed4ad35e2724f25",
+    "tests/storage-recovery-regressions.mjs": "0ab75898d7d94ed552fec8ef8bcb8866390c6eb9c4203b47d7cae79a0fd3f84b",
+    "tests/daily-borders.mjs": "ce4406220bfd442c84484a8ffdeeaf4aee48a78a7891b2d29d2c898616c50f6c"
+  },
+  "testMaintenance": [
+    "SW preparation now includes public calculation help in fetch/write expectations.",
+    "Backup validation includes all current display fields and decodes compact provenance."
+  ],
+  "limitations": [
+    "No physical iPhone/Android or native Safari picker testing.",
+    "UI/service-worker matrices use controlled DOM/storage/IO doubles, not 10000 independent device sessions.",
+    "Visual baseline verified before these non-layout fixes; CSS remained byte-identical.",
+    "No live border records, personal data, access policy or daily automation settings changed."
+  ]
+}

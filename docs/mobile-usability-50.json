@@ -1,0 +1,310 @@
+{
+  "scope": "全体のセクション順を維持したスマホ向けの50項目改善・点検",
+  "debugCommand": "node --test tests/mobile-debug-50.mjs",
+  "debugCases": 50,
+  "browserRenderingVerified": false,
+  "physicalDevicesVerified": false,
+  "limitations": "この記録は50回の実機・ブラウザ描画検証を意味しません。操作検証はDOM double、表示検証は静的レビューです。",
+  "items": [
+    {
+      "id": "U01",
+      "item": "スマホの背景スクロールを軽量化",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U02",
+      "item": "左の安全余白",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U03",
+      "item": "右の安全余白",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U04",
+      "item": "下の安全余白",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U05",
+      "item": "入力の16px相当文字",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U06",
+      "item": "目標・現在入力の押しやすい高さ",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U07",
+      "item": "目標設定ボタンの操作域",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U08",
+      "item": "デフォルトに戻す操作域",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U09",
+      "item": "リセット操作域",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U10",
+      "item": "詳細設定リンクの操作域",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U11",
+      "item": "デフォルト設定リンクの操作域",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U12",
+      "item": "取消ボタンの操作域",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U13",
+      "item": "現在値増減ボタンの操作域",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U14",
+      "item": "増減ボタン間隔",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U15",
+      "item": "目標選択メニューの文字と操作域",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U16",
+      "item": "締め時刻選択の文字と操作域",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U17",
+      "item": "コア入力の文字と操作域",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U18",
+      "item": "コア数ラベルの読解性",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U19",
+      "item": "コア倍率表示の読解性",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U20",
+      "item": "秒数カウントダウンの文字",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U21",
+      "item": "時刻の基準表示の文字",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U22",
+      "item": "目標設定メニュー見出し",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U23",
+      "item": "残りアイテムの見出し",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U24",
+      "item": "アイテム名・単価の文字",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U25",
+      "item": "アイテム必要数の文字",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U26",
+      "item": "長いアイテム必要数の折り返し",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U27",
+      "item": "正確な残りptの文字と色",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U28",
+      "item": "巨大な残りK表示の収まり",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U29",
+      "item": "目標・現在値ラベルの文字",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U30",
+      "item": "入力形式説明の文字",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U31",
+      "item": "入力日付と時刻の文字",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U32",
+      "item": "目標設定元説明の文字",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U33",
+      "item": "設定元説明のスクロール領域",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U34",
+      "item": "長い通知・ファイル名の折り返し",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U35",
+      "item": "エラー文字の色",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U36",
+      "item": "補助フォームの文字と操作域",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U37",
+      "item": "補助フォームのラベル",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U38",
+      "item": "画面内ナビゲーションの文字と操作域",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U39",
+      "item": "折りたたみ説明の操作域",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U40",
+      "item": "記録表の操作ボタン",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U41",
+      "item": "長い出典リンクの折り返し",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U42",
+      "item": "告知・手動コピー欄の文字と行間",
+      "verification": "静的なCSS・HTMLレビュー",
+      "status": "implemented"
+    },
+    {
+      "id": "U43",
+      "item": "コアのIME保護と完了操作",
+      "verification": "実スクリプトのイベント自動検証",
+      "status": "implemented"
+    },
+    {
+      "id": "U44",
+      "item": "目標・現在値の完了操作",
+      "verification": "実スクリプトのイベント自動検証",
+      "status": "implemented"
+    },
+    {
+      "id": "U45",
+      "item": "補助EnterのIME229保護",
+      "verification": "実スクリプトのイベント自動検証",
+      "status": "implemented"
+    },
+    {
+      "id": "U46",
+      "item": "締め時刻手入力選択の保持と復元",
+      "verification": "実スクリプトのイベント自動検証",
+      "status": "implemented"
+    },
+    {
+      "id": "U47",
+      "item": "入力中ミニメーター非表示と表示領域追従",
+      "verification": "実スクリプトのイベント自動検証",
+      "status": "implemented"
+    },
+    {
+      "id": "U48",
+      "item": "非同期コピーの競合と手動コピー案内",
+      "verification": "実スクリプトのイベント自動検証",
+      "status": "implemented"
+    },
+    {
+      "id": "U49",
+      "item": "記録移動のフォーカス・履歴・動きの軽減",
+      "verification": "実スクリプトのイベント自動検証",
+      "status": "implemented"
+    },
+    {
+      "id": "U50",
+      "item": "ミニメーターの安全余白・操作域と拡大許可",
+      "verification": "実スクリプトのイベント自動検証",
+      "status": "implemented"
+    }
+  ]
+}

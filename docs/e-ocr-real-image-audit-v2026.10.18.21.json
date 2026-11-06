@@ -1,0 +1,41 @@
+{
+  "engine": "native Tesseract 5 with jpn model 4.0.0_best; not browser Tesseract.js 6",
+  "samples": [
+    {
+      "case": 1,
+      "date": "2026-10-05",
+      "close": "24",
+      "rank": "E",
+      "values": [
+        "235",
+        "1.6K",
+        "5.1K"
+      ],
+      "matched": true
+    },
+    {
+      "case": 2,
+      "date": "2026-09-08",
+      "close": "24",
+      "rank": "E",
+      "values": [
+        "258",
+        "1.7K",
+        "4.7K"
+      ],
+      "matched": true
+    },
+    {
+      "case": 3,
+      "date": "2026-09-09",
+      "close": "24",
+      "rank": "E",
+      "values": [
+        "272",
+        "1.9K",
+        "5.0K"
+      ],
+      "matched": true
+    }
+  ]
+}

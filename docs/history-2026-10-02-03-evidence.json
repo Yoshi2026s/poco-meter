@@ -1,0 +1,70 @@
+{
+  "dataDates": [
+    "2026-10-02",
+    "2026-10-03"
+  ],
+  "cutoffs": [
+    "13",
+    "22",
+    "24"
+  ],
+  "ranks": 18,
+  "values": 324,
+  "method": "Reviewed published monthly table images; date labels verified in S-band tables, aligned rows verified across the three rank groups. E is not supplied. Backfill applies only to missing date/cutoff keys after authenticated successful source refresh.",
+  "sources": [
+    {
+      "close": "13",
+      "band": "D1-C3",
+      "sha256": "2578d669c350c209364a69b46eb67738273d983657209345c2e5b7e4fe6b20eb",
+      "imageURL": "https://one-carat.com/campus/wp-content/uploads/c1f97afefd53dea8307e585cad6e142c-24.png"
+    },
+    {
+      "close": "13",
+      "band": "B1-A3",
+      "sha256": "017e163155ab3391bc9e18f48f03bde81f25340f92c9f2e2889a1f18d9a0ab42",
+      "imageURL": "https://one-carat.com/campus/wp-content/uploads/b357748cdd3ad860424e39007354c616-24.png"
+    },
+    {
+      "close": "13",
+      "band": "S1-S6",
+      "sha256": "ce0d4f87890bc32a9a2776439227f07e1f432f8d8d16dc19727beef6a35b0499",
+      "imageURL": "https://one-carat.com/campus/wp-content/uploads/3e1ba05b60eb8a3a389019d47b91be54.png"
+    },
+    {
+      "close": "22",
+      "band": "D1-C3",
+      "sha256": "b895d467aa874a6f36e27491d7278b1468f252c5e2cc63599a9a70595f314b56",
+      "imageURL": "https://one-carat.com/campus/wp-content/uploads/7856587a7aa05ebcc6c237449276365f-24.png"
+    },
+    {
+      "close": "22",
+      "band": "B1-A3",
+      "sha256": "73271bcc99f0212058233a333a2f3b512ba8f7b9bf0d8f05ec11a8a66e296df8",
+      "imageURL": "https://one-carat.com/campus/wp-content/uploads/009ef3d5b350294276ee80769dd89f0d-24.png"
+    },
+    {
+      "close": "22",
+      "band": "S1-S6",
+      "sha256": "be2db18ba9c4b06d3e63aaed642bd685b55d0e997a274cbd1f9c55fa5a056247",
+      "imageURL": "https://one-carat.com/campus/wp-content/uploads/9e7d2c17e9252a43e5d1c449e4cc4506-24.png"
+    },
+    {
+      "close": "24",
+      "band": "D1-C3",
+      "sha256": "8e7cbdb413022d50f7a7842dc41386298f8f1ac83ae69fa704003e44d6bbe65d",
+      "imageURL": "https://one-carat.com/campus/wp-content/uploads/ed9d93c0ca55dcf7558add28c04f595e-24.png"
+    },
+    {
+      "close": "24",
+      "band": "B1-A3",
+      "sha256": "4d942afdf5a3693d697a3fcb50069907684e409437b52f031a7d91973fc4af6f",
+      "imageURL": "https://one-carat.com/campus/wp-content/uploads/3450ebec7249e16b08849edc8efdbac6-24.png"
+    },
+    {
+      "close": "24",
+      "band": "S1-S6",
+      "sha256": "20c31ecbc23b27704ed093c0c1b65ad6a7091e58c6077f610b08a77e50bfc771",
+      "imageURL": "https://one-carat.com/campus/wp-content/uploads/874e415c5f361e5648e0b04d3294b120-24.png"
+    }
+  ]
+}

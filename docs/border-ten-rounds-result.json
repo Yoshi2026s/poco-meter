@@ -1,0 +1,162 @@
+{
+  "matrix": "border",
+  "status": "passed",
+  "plannedRounds": 10,
+  "scenariosPerRound": 1000,
+  "rounds": [
+    {
+      "round": 1,
+      "status": "passed",
+      "executed": 1000,
+      "passed": 1000,
+      "failed": 0,
+      "counts": {
+        "statisticsAndTarget": 400,
+        "sourceParser": 300,
+        "liveMergeValidation": 300
+      },
+      "failures": [],
+      "deterministicCasesSHA256": "824b7404a5dd12fa4f5b9b43bf64fc1862f964d042e1d8d41b4dd2aded245b8f"
+    },
+    {
+      "round": 2,
+      "status": "passed",
+      "executed": 1000,
+      "passed": 1000,
+      "failed": 0,
+      "counts": {
+        "statisticsAndTarget": 400,
+        "sourceParser": 300,
+        "liveMergeValidation": 300
+      },
+      "failures": [],
+      "deterministicCasesSHA256": "0dc3a27cecbf35b0100e29ac82c1c95f0b5263786414dc2f3546e60d8b14bb15"
+    },
+    {
+      "round": 3,
+      "status": "passed",
+      "executed": 1000,
+      "passed": 1000,
+      "failed": 0,
+      "counts": {
+        "statisticsAndTarget": 400,
+        "sourceParser": 300,
+        "liveMergeValidation": 300
+      },
+      "failures": [],
+      "deterministicCasesSHA256": "362ea2d970bf40d2b09f0c245ec1d0307dc200921839924d68fee71d73374d2e"
+    },
+    {
+      "round": 4,
+      "status": "passed",
+      "executed": 1000,
+      "passed": 1000,
+      "failed": 0,
+      "counts": {
+        "statisticsAndTarget": 400,
+        "sourceParser": 300,
+        "liveMergeValidation": 300
+      },
+      "failures": [],
+      "deterministicCasesSHA256": "040d0a0648b9ab52a769eac8363638c0c42afd0c5304609b681ba54076f305e0"
+    },
+    {
+      "round": 5,
+      "status": "passed",
+      "executed": 1000,
+      "passed": 1000,
+      "failed": 0,
+      "counts": {
+        "statisticsAndTarget": 400,
+        "sourceParser": 300,
+        "liveMergeValidation": 300
+      },
+      "failures": [],
+      "deterministicCasesSHA256": "ca4d56f8d1d2c14d40d44ce81d60869382ec8b0f4ee798e9b8efe65721313391"
+    },
+    {
+      "round": 6,
+      "status": "passed",
+      "executed": 1000,
+      "passed": 1000,
+      "failed": 0,
+      "counts": {
+        "statisticsAndTarget": 400,
+        "sourceParser": 300,
+        "liveMergeValidation": 300
+      },
+      "failures": [],
+      "deterministicCasesSHA256": "47684a75db540aa1d8ecea9440cbeb310438f7e0a51f6baa3cf3622cdd99e0a6"
+    },
+    {
+      "round": 7,
+      "status": "passed",
+      "executed": 1000,
+      "passed": 1000,
+      "failed": 0,
+      "counts": {
+        "statisticsAndTarget": 400,
+        "sourceParser": 300,
+        "liveMergeValidation": 300
+      },
+      "failures": [],
+      "deterministicCasesSHA256": "4418ed6fcdb47ba758f0fd7afbb9fe999bfdb3cffda2708c7b6fe176d5f4f4e2"
+    },
+    {
+      "round": 8,
+      "status": "passed",
+      "executed": 1000,
+      "passed": 1000,
+      "failed": 0,
+      "counts": {
+        "statisticsAndTarget": 400,
+        "sourceParser": 300,
+        "liveMergeValidation": 300
+      },
+      "failures": [],
+      "deterministicCasesSHA256": "a29166f11f3ddb20227f90a138fdd36f632501dcbb30625ddfb63cba56782336"
+    },
+    {
+      "round": 9,
+      "status": "passed",
+      "executed": 1000,
+      "passed": 1000,
+      "failed": 0,
+      "counts": {
+        "statisticsAndTarget": 400,
+        "sourceParser": 300,
+        "liveMergeValidation": 300
+      },
+      "failures": [],
+      "deterministicCasesSHA256": "b8e095e7d3ae71f0fb347358d0b29ee0181fbf08306042f5176ab4a60fae7814"
+    },
+    {
+      "round": 10,
+      "status": "passed",
+      "executed": 1000,
+      "passed": 1000,
+      "failed": 0,
+      "counts": {
+        "statisticsAndTarget": 400,
+        "sourceParser": 300,
+        "liveMergeValidation": 300
+      },
+      "failures": [],
+      "deterministicCasesSHA256": "0a23f3dbbd876fd20d7da9e5d2ddf08d5f1d91ad1d51cccb4d35624c5658dac4"
+    }
+  ],
+  "executedScenarios": 10000,
+  "passedScenarios": 10000,
+  "failedScenarios": 0,
+  "sourceSHA256": {
+    "calculator/index.html": "d9ca1265397fe40718f58289c453820941f58142ca493c0da33e0da0b711befc",
+    "calculator/sw.js": "1eaed532d414e78ac2cadbc808799263310e3ff8b33dd1d1d22dfaf21ebf48fd",
+    "lib/border-source.mjs": "f8998dd405fed407697d35f8337d9529b60321fb7d39187c3687bd7a9bf1f75a",
+    "lib/border-store.mjs": "4f3e9f503af8e7e56415e5080933d9edcac760593b3282a5d9a834514e082244",
+    "lib/contact-store.mjs": "d3c8fb94e7e20615fc5d2ea9a256bc9446a01055621d2bde14c6696cf6b7896d"
+  },
+  "limitation": "Shipped source functions, DOM doubles, isolated SQLite and in-memory object storage. No rendered browser, physical phone, production writes, prediction accuracy, or independent verification of all live source values.",
+  "durationMs": 1145,
+  "sourceUnchangedDuringRun": true,
+  "distinctScenariosAcrossRounds": 10000
+}

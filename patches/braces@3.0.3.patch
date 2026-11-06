@@ -1,0 +1,31 @@
+diff --git a/index.js b/index.js
+index d222c13b579d2d476dc26d692219dbaee1665b88..e636fea498dbcce6c8f1ce8681c0cf6053eac6b6 100644
+--- a/index.js
++++ b/index.js
+@@ -4,6 +4,17 @@ const stringify = require('./lib/stringify');
+ const compile = require('./lib/compile');
+ const expand = require('./lib/expand');
+ const parse = require('./lib/parse');
++// Project hardening for GHSA-vfj7-8cjw-p6xm: bound input before recursive AST consumers.
++function boundedPattern(input) {
++  if (typeof input !== 'string') return input;
++  if (input.length > 16384) throw new RangeError('Brace pattern exceeds project size limit');
++  let depth = 0;
++  for (const character of input) {
++    if (character === '{' && ++depth > 64) throw new RangeError('Brace pattern exceeds project nesting limit');
++    if (character === '}') depth = Math.max(0, depth - 1);
++  }
++  return input;
++}
+ 
+ /**
+  * Expand the given pattern or create a regex-compatible string.
+@@ -55,7 +66,7 @@ const braces = (input, options = {}) => {
+  * @api public
+  */
+ 
+-braces.parse = (input, options = {}) => parse(input, options);
++braces.parse = (input, options = {}) => parse(boundedPattern(input), options);
+ 
+ /**
+  * Creates a braces string from an AST, or an AST node.

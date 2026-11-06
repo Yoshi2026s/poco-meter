@@ -1,0 +1,450 @@
+{
+  "scope": "10 distinct HUD improvement/reproduction/verification cycles plus regression suites",
+  "kind": "shipped code in DOM, geometry, media-API doubles and authored CSS audits; real devices/browser painting/app launch unverified",
+  "sourceSha256": "15dd991f291d9e2e75acd68c64d0a11bcb79934441774e05d112a5bbf46afb58",
+  "serviceWorkerSha256": "d472b37047b8c5c265a21e0ab35981237c2f7db65cf425f767502844d2797067",
+  "startedAt": "2026-10-11T05:10:22.626691+00:00",
+  "finishedAt": "2026-10-11T05:11:14.376265+00:00",
+  "cycleCount": 10,
+  "cycles": [
+    {
+      "cycle": 1,
+      "area": "別タブの常時表示ON/OFF",
+      "change": "storageイベントのHUD設定を保存し直さず反映し、OFF時に小窓を停止。既存保存キーを維持。",
+      "verification": [
+        {
+          "cycle": 1,
+          "file": "tests/hud-preference-sync.mjs",
+          "pattern": "second tab|HUD storage|Local HUD",
+          "exitCode": 0,
+          "counts": {
+            "tests": 5,
+            "pass": 5,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "elapsedMs": 2506,
+          "sourceUnchanged": true
+        }
+      ]
+    },
+    {
+      "cycle": 2,
+      "area": "小窓方式の再読込",
+      "change": "通常/互換の選択を独立した新しいキーに保存。互換準備も保存し、操作中の方式変更を防止。",
+      "verification": [
+        {
+          "cycle": 2,
+          "file": "tests/hud-preference-sync.mjs",
+          "pattern": "video|compatibility|mode",
+          "exitCode": 0,
+          "counts": {
+            "tests": 5,
+            "pass": 5,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "elapsedMs": 3526,
+          "sourceUnchanged": true
+        }
+      ]
+    },
+    {
+      "cycle": 3,
+      "area": "動画の一時停止・再生終了",
+      "change": "一時停止を明示し、起動リンクを無効化。小窓と映像を保持して新しいタップで再生を復旧。終了時は資源を解放。停止中の描画を抑制。",
+      "verification": [
+        {
+          "cycle": 3,
+          "file": "tests/hud-playback-health.mjs",
+          "pattern": null,
+          "exitCode": 0,
+          "counts": {
+            "tests": 10,
+            "pass": 10,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "elapsedMs": 4328,
+          "sourceUnchanged": true
+        }
+      ]
+    },
+    {
+      "cycle": 4,
+      "area": "起動待ち中の映像エラー",
+      "change": "まだ応答していないWebKit起動要求を全解放経路で隔離。遅い旧要求が新しい映像を表示中扱いにする競合を防止。",
+      "verification": [
+        {
+          "cycle": 4,
+          "file": "tests/hud-native-recovery.mjs",
+          "pattern": "pending WebKit",
+          "exitCode": 0,
+          "counts": {
+            "tests": 2,
+            "pass": 2,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "elapsedMs": 1235,
+          "sourceUnchanged": true
+        }
+      ]
+    },
+    {
+      "cycle": 5,
+      "area": "小窓の実際の終了と復帰",
+      "change": "標準/WebKitの終了を実状態・終了イベントで8秒まで確認。閉じ損ねた小窓は再準備を禁止し再終了操作を提供。起動リンク/タブ復帰も実状態を確認。再生復旧timeout時の空小窓を終了。",
+      "verification": [
+        {
+          "cycle": 5,
+          "file": "tests/hud-native-recovery.mjs",
+          "pattern": "native exit|WebKit inline|missed|App-launch",
+          "exitCode": 0,
+          "counts": {
+            "tests": 8,
+            "pass": 8,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "elapsedMs": 5120,
+          "sourceUnchanged": true
+        }
+      ]
+    },
+    {
+      "cycle": 6,
+      "area": "キーボード・低い画面の表示範囲",
+      "change": "全HUDを可視画面高に収め、アイテム小窓の高さも予約。目標・現在値も固定パネル内スクロールで可視化。",
+      "verification": [
+        {
+          "cycle": 6,
+          "file": "tests/hud-focus-errors.mjs",
+          "pattern": "low keyboard",
+          "exitCode": 0,
+          "counts": {
+            "tests": 2,
+            "pass": 2,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "elapsedMs": 1243,
+          "sourceUnchanged": true
+        }
+      ]
+    },
+    {
+      "cycle": 7,
+      "area": "スマホの他アプリ起動パネル",
+      "change": "起動設定を開いただけで入力欄にフォーカスしキーボードを出さない。デフォルトPocochaの起動導線を画面内に保ち、閉じる操作へフォーカス。",
+      "verification": [
+        {
+          "cycle": 7,
+          "file": "tests/hud-focus-errors.mjs",
+          "pattern": "app settings on a phone",
+          "exitCode": 0,
+          "counts": {
+            "tests": 1,
+            "pass": 1,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "elapsedMs": 861,
+          "sourceUnchanged": true
+        }
+      ]
+    },
+    {
+      "cycle": 8,
+      "area": "動画の手動操作・準備失敗時の復旧",
+      "change": "ソースがある動画を表示しフォーカス可能にする。映像がない場合は隠れた動画ではなく準備ボタンへ移動し手順を案内。",
+      "verification": [
+        {
+          "cycle": 8,
+          "file": "tests/hud-focus-errors.mjs",
+          "pattern": "Manual video",
+          "exitCode": 0,
+          "counts": {
+            "tests": 2,
+            "pass": 2,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "elapsedMs": 1264,
+          "sourceUnchanged": true
+        }
+      ]
+    },
+    {
+      "cycle": 9,
+      "area": "常時表示OFF後のアイテム小窓",
+      "change": "アイテム小窓を閉じた際、非表示のボタンへ戻さず、表示中の常時表示ONボタンへフォーカスを戻す。",
+      "verification": [
+        {
+          "cycle": 9,
+          "file": "tests/hud-focus-errors.mjs",
+          "pattern": "Closing the item window",
+          "exitCode": 0,
+          "counts": {
+            "tests": 1,
+            "pass": 1,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "elapsedMs": 883,
+          "sourceUnchanged": true
+        }
+      ]
+    },
+    {
+      "cycle": 10,
+      "area": "常時表示内の入力エラー",
+      "change": "PCでも目標・現在値の説明文を表示。上乗せ率に局所エラーと読み上げ関連付け/検証状態を追加し、訂正・未確定入力を整合させる。",
+      "verification": [
+        {
+          "cycle": 10,
+          "file": "tests/hud-focus-errors.mjs",
+          "pattern": "Desktop HUD|HUD buffer",
+          "exitCode": 0,
+          "counts": {
+            "tests": 4,
+            "pass": 4,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "elapsedMs": 2274,
+          "sourceUnchanged": true
+        }
+      ]
+    }
+  ],
+  "allPassed": true,
+  "suiteExecutions": 22,
+  "passedNamedOrFileTests": 347,
+  "regressions": [
+    {
+      "cycle": null,
+      "file": "tests/floating-hud.mjs",
+      "pattern": null,
+      "exitCode": 0,
+      "counts": {
+        "tests": 54,
+        "pass": 54,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "elapsedMs": 22237,
+      "sourceUnchanged": true
+    },
+    {
+      "cycle": null,
+      "file": "tests/fixed-panel-focus.mjs",
+      "pattern": null,
+      "exitCode": 0,
+      "counts": {
+        "tests": 13,
+        "pass": 13,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "elapsedMs": 4545,
+      "sourceUnchanged": true
+    },
+    {
+      "cycle": null,
+      "file": "tests/mobile-debug-50.mjs",
+      "pattern": null,
+      "exitCode": 0,
+      "counts": {
+        "tests": 48,
+        "pass": 48,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "elapsedMs": 12595,
+      "sourceUnchanged": true
+    },
+    {
+      "cycle": null,
+      "file": "tests/custom-display.mjs",
+      "pattern": null,
+      "exitCode": 0,
+      "counts": {
+        "tests": 27,
+        "pass": 27,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "elapsedMs": 37528,
+      "sourceUnchanged": true
+    },
+    {
+      "cycle": null,
+      "file": "tests/display-settings.mjs",
+      "pattern": null,
+      "exitCode": 0,
+      "counts": {
+        "tests": 19,
+        "pass": 19,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "elapsedMs": 13495,
+      "sourceUnchanged": true
+    },
+    {
+      "cycle": null,
+      "file": "tests/reference-colors.mjs",
+      "pattern": null,
+      "exitCode": 0,
+      "counts": {
+        "tests": 17,
+        "pass": 17,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "elapsedMs": 4137,
+      "sourceUnchanged": true
+    },
+    {
+      "cycle": null,
+      "file": "tests/color-state-regressions.mjs",
+      "pattern": null,
+      "exitCode": 0,
+      "counts": {
+        "tests": 11,
+        "pass": 11,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "elapsedMs": 5675,
+      "sourceUnchanged": true
+    },
+    {
+      "cycle": null,
+      "file": "tests/calculation-engine.mjs",
+      "pattern": null,
+      "exitCode": 0,
+      "counts": {
+        "tests": 16,
+        "pass": 16,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "elapsedMs": 1207,
+      "sourceUnchanged": true
+    },
+    {
+      "cycle": null,
+      "file": "tests/items-core-input.mjs",
+      "pattern": null,
+      "exitCode": 0,
+      "counts": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "elapsedMs": 768,
+      "sourceUnchanged": true
+    },
+    {
+      "cycle": null,
+      "file": "tests/offline-ui-50.mjs",
+      "pattern": null,
+      "exitCode": 0,
+      "counts": {
+        "tests": 50,
+        "pass": 50,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "elapsedMs": 15028,
+      "sourceUnchanged": true
+    },
+    {
+      "cycle": null,
+      "file": "tests/offline-sw-50.mjs",
+      "pattern": null,
+      "exitCode": 0,
+      "counts": {
+        "tests": 50,
+        "pass": 50,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "elapsedMs": 283,
+      "sourceUnchanged": true
+    },
+    {
+      "cycle": null,
+      "file": "tests/github-meter-export.mjs",
+      "pattern": null,
+      "exitCode": 0,
+      "counts": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "elapsedMs": 257,
+      "sourceUnchanged": true
+    }
+  ],
+  "sourceUnchanged": true,
+  "baseSourceCommit": "8fe8e580b4aef375d12ddb00c86e363b2a998c6b",
+  "build": {
+    "status": "succeeded",
+    "entrypoint": "dist/server/index.js",
+    "sha256": "a90f67588fdb4ae906860b644bad8f6e44280cead7032197d54c2f25c0a92208"
+  },
+  "publicationTargets": {
+    "sites": "https://poco-meter.freefreelife2000.chatgpt.site",
+    "github": "https://pococha2026.github.io/poco-meter/"
+  },
+  "serviceWorkerCache": "v34"
+}

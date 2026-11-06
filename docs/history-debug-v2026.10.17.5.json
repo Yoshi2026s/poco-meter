@@ -1,0 +1,152 @@
+{
+  "status": "passed",
+  "plannedRounds": 10,
+  "files": [
+    "tests/history-navigation.mjs",
+    "tests/history-response.mjs",
+    "tests/history-calendar.mjs",
+    "tests/history-card-copy.mjs",
+    "tests/history-storage.mjs",
+    "tests/history-archive.mjs",
+    "tests/history-search.mjs",
+    "tests/history-independent.mjs",
+    "tests/history-page-ui.mjs",
+    "tests/github-meter-export.mjs",
+    "tests/border-client-precision.mjs",
+    "tests/border-read-cache.mjs",
+    "tests/offline-sw-50.mjs",
+    "tests/security-hardening.mjs"
+  ],
+  "excludedTest": "10000 distinct filter/date/pagination/unit conditions (superseded by separate 10M audit)",
+  "sourceSHA256": {
+    "calculator/history-core.mjs": "cf6a99adb633dbe71adebbe63147309fb8619adff715373e13fad7ca1ea8926c",
+    "calculator/history-ui.mjs": "d0781fd1e21472dcc8a735aeac9024a6e92ff4b2bc2a0d8eaa53fcff31a3f82a",
+    "calculator/history-page-template.html": "d1b7b4dc55c88acaa84b81553200e6258191171f9f2d4a74bd501f5362b63265",
+    "calculator/border-history.html": "effd7dbd2ddbee7e80618ce7e0d93611cfe958a1a830aa8c7bb48e851676b61c",
+    "calculator/index.html": "ba5fc9baa5df69f9ea1a85d7d49a20bac99eb800ae9c8444ae4dcbcd922a4185",
+    "calculator/sw.js": "ffe9ea87ac6731538da61947618f6718df8895d7e459a7a46556290b040f649b",
+    "scripts/prepare-github-meter.mjs": "779ee8208cb0a93575d3ddded6fc3a3e175f6e691ddae84eebb38b3dfdeeee0e",
+    "tests/history-navigation.mjs": "4bd5002c5337f588802443c69c86397b0104251f479ff1d5d9cebe639defabe7",
+    "tests/history-response.mjs": "55fec0cd62b02209ae45693be018f907361aa84fdb53542be73a45f90ef57436",
+    "tests/history-calendar.mjs": "7eee3bd90c216a419500b59d4ec95ac746a0753cd7633aecb7d6ec5015a4c818",
+    "tests/history-card-copy.mjs": "75b53139a43c4a9ab6a002cd064422927d325e30e0c36e4ad098dafb80c2ed71",
+    "tests/history-storage.mjs": "f838fae0422871d2cf9890ad031fbcd6605b45d164d5d0c3cc30fe0ec507f536",
+    "tests/history-archive.mjs": "22a6b6689fc97a0dbd9a3340430c8535cf5ed4e115502014e1e94f3785a8660c",
+    "tests/history-search.mjs": "cf9b26daddab9968ab5b40d774dd9d6079e5bb526c567b5d95f2d02a0505c888",
+    "tests/history-independent.mjs": "dfcbd12c9c69c314e927b901eeb4920b6e52f36cec76648d18098bbbf3334270",
+    "tests/history-page-ui.mjs": "d835e17939b7d0d068f38cdcda21baa920a84a1113b753763775f3728ebcf4ef",
+    "tests/github-meter-export.mjs": "04fc115e52c73719dc007b66e4ed3634dbcf529204d1308b2bc3d11f78b67a4e",
+    "tests/border-client-precision.mjs": "69df17e0b7e2e4fbb2d2e448441b2055800f19bbe976ef5ac1e8ec87b3640de6",
+    "tests/border-read-cache.mjs": "964ef17672b67c943b836b66e17b1e1524d075143319911e74a2fc6c80b2be26",
+    "tests/offline-sw-50.mjs": "dea2c366de18241feee059e5b66f9168549c2f69f6fd3feec2f2dffea10dc6f6",
+    "tests/security-hardening.mjs": "4b9c110cd05f48a88cc8f12e91a569d27d5eb6905bdc951a7f77383de999337d"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "status": "passed",
+      "tests": 164,
+      "passed": 164,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 23910,
+      "exitCode": 0
+    },
+    {
+      "round": 2,
+      "status": "passed",
+      "tests": 164,
+      "passed": 164,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 24118,
+      "exitCode": 0
+    },
+    {
+      "round": 3,
+      "status": "passed",
+      "tests": 164,
+      "passed": 164,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 23484,
+      "exitCode": 0
+    },
+    {
+      "round": 4,
+      "status": "passed",
+      "tests": 164,
+      "passed": 164,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 24172,
+      "exitCode": 0
+    },
+    {
+      "round": 5,
+      "status": "passed",
+      "tests": 164,
+      "passed": 164,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 23871,
+      "exitCode": 0
+    },
+    {
+      "round": 6,
+      "status": "passed",
+      "tests": 164,
+      "passed": 164,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 23486,
+      "exitCode": 0
+    },
+    {
+      "round": 7,
+      "status": "passed",
+      "tests": 164,
+      "passed": 164,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 23353,
+      "exitCode": 0
+    },
+    {
+      "round": 8,
+      "status": "passed",
+      "tests": 164,
+      "passed": 164,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 22937,
+      "exitCode": 0
+    },
+    {
+      "round": 9,
+      "status": "passed",
+      "tests": 164,
+      "passed": 164,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 23178,
+      "exitCode": 0
+    },
+    {
+      "round": 10,
+      "status": "passed",
+      "tests": 164,
+      "passed": 164,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 23700,
+      "exitCode": 0
+    }
+  ],
+  "limitation": "Fresh Node processes, shipped code, DOM doubles, simulated network and service worker; no physical iPhone or Safari rendering.",
+  "durationMs": 236241,
+  "sourceUnchanged": true,
+  "executedTests": 1640,
+  "passedTests": 1640,
+  "failedTests": 0
+}

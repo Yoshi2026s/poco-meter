@@ -1,0 +1,22 @@
+name: メーター計算・ボーダー保存の検証
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: 計算・コア数入力・保存認証・履歴検索を検証
+        run: |
+          node tests/calculation-engine.mjs
+          node tests/items-core-input.mjs
+          node tests/border-write-auth.mjs
+          node tests/history-search.mjs

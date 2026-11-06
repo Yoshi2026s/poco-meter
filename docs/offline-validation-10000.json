@@ -1,0 +1,84 @@
+{
+  "request": "スマホでオフラインで使いやすいよう全体を改良、デバッグ10,000回",
+  "reviewRound": 3,
+  "status": "passed",
+  "distinctConditions": 10000,
+  "countMeaning": "10,000 different deterministic conditions, not 10,000 implementation edits or physical-device cycles",
+  "ui": {
+    "file": "tests/offline-ui-5000.mjs",
+    "conditions": 5000,
+    "nodeTestBatches": 10,
+    "groups": {
+      "number": 1000,
+      "items": 1000,
+      "time": 500,
+      "statistics": 500,
+      "realtime": 500,
+      "invalid-ui": 500,
+      "backup": 400,
+      "draft": 200,
+      "invalid-backup": 200,
+      "records": 200
+    },
+    "caseSha256": "e7e2cbd28e05db3c8c782ce94a50e3fb257eeeeb5b99441024069a8a543a0aac",
+    "status": "passed"
+  },
+  "worker": {
+    "file": "tests/offline-sw-5000.mjs",
+    "conditions": 5000,
+    "individuallyNamedTests": 5000,
+    "groups": {
+      "shell": 1024,
+      "message": 1024,
+      "navigation": 1536,
+      "asset": 1024,
+      "concurrency": 360,
+      "routing": 32
+    },
+    "caseSha256": "a9c5aa631db66cf9af318b510f393b5f3ad05c41664e01caf2bf1a37b2da415f",
+    "status": "passed"
+  },
+  "regressions": {
+    "previousCases": 320,
+    "newFocusedCases": 37,
+    "totalCases": 357,
+    "status": "passed",
+    "file": "tests/offline-round3-fixes.mjs"
+  },
+  "dailyBorderRegression": "passed",
+  "actualChanges": [
+    "Validate and normalize targetOrigin before imported settings reach storage or rendering; keep legacy omitted period compatible.",
+    "Normalize corrupted stored targetOrigin at startup while preserving original recovery data.",
+    "Report draft cleanup failures after successful record save or rank deletion.",
+    "Abort/invalidate earlier FileReaders after paste/date changes, replacement/cancellation or import confirmation.",
+    "Keep file-read start date/cutoff and reject late results after context changes.",
+    "Return unchanged record lists before enumerating/sorting all dates; include rank for accurate edit labels.",
+    "Index coverage/chart records by date instead of scanning all days for each date.",
+    "Skip timer-driven border redraw in collapsed sections and refresh on opening.",
+    "Remove one duplicate accessible-name assignment without changing its name."
+  ],
+  "implementationSha256": {
+    "calculator/index.html": "b4bf60683bda8bc64ccaa6370b9c17bd9a9c75e3a38ee95d4eb03f4b8a32afbf",
+    "calculator/sw.js": "9a83e96a4dd59970be30d8e21203419c81c830f0b44875ec66f4bd5748748386"
+  },
+  "limits": [
+    "Service-worker and UI checks execute real shipped scripts with controlled IO, DOM, storage and clocks.",
+    "No rendered browser, physical iPhone/Android, native share dialog, speed or battery measurement.",
+    "First offline preparation requires online use in each browser/standalone context; storage removal/eviction may remove saved values.",
+    "localStorage conflict checks are not a transactional multi-tab lock; multi-key restore can partially fail and reports failures.",
+    "Fetch abort does not cancel an unsettled CacheStorage operation; preparation can remain waiting in that case.",
+    "Unavailable control-browser skill was confirmed; no alternative browser control path was substituted."
+  ],
+  "officialReferences": [
+    "https://developer.mozilla.org/en-US/docs/Web/API/FileReader/abort",
+    "https://developer.mozilla.org/en-US/docs/Web/API/ExtendableEvent/waitUntil"
+  ],
+  "validatedAt": "2026-10-04T05:45:09+09:00",
+  "nodeTestRunner": {
+    "matrixTests": 5010,
+    "matrixFailures": 0,
+    "matrixCancelled": 0,
+    "matrixSkipped": 0,
+    "explanation": "5,000 worker tests plus 10 UI batches containing 5,000 distinct UI conditions"
+  }
+}

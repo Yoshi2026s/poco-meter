@@ -1,0 +1,17 @@
+.contact-inbox-grid{display:grid;grid-template-columns:minmax(220px,1fr) minmax(0,2fr);gap:24px}
+.contact-thread-list,.contact-message-list{list-style:none;padding:0;margin:12px 0;display:grid;gap:12px;min-width:0}
+.contact-thread-list .admin-button{display:flex;flex-direction:column;align-items:flex-start;width:100%;text-align:left;white-space:normal;gap:6px}
+.contact-thread-list [aria-current=true]{border-color:var(--admin-text);box-shadow:inset 4px 0 var(--admin-text)}
+.contact-thread-list time,.contact-message-list time{font-size:14px;color:var(--admin-muted)}
+.contact-message-list li{border:1px solid var(--admin-line);border-radius:12px;padding:14px;min-width:0}
+.contact-message-list li[data-author=owner]{border-left:4px solid var(--admin-text)}
+.contact-message-list time{display:block;margin:4px 0}
+.contact-message-list p{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.7;margin:10px 0 0}
+.contact-reply-form{display:grid;gap:10px;margin-top:20px;min-width:0}
+.contact-reply-form textarea{width:100%;box-sizing:border-box;min-width:0;font:inherit;font-size:16px;background:var(--admin-card);color:var(--admin-text);border:1px solid var(--admin-line);border-radius:10px;padding:12px;resize:vertical}
+.contact-admin button:disabled{opacity:.6;cursor:wait}
+@media(max-width:700px){.contact-inbox-grid{grid-template-columns:minmax(0,1fr)}.contact-thread-list{max-height:260px;overflow:auto}.contact-admin header{gap:14px;align-items:flex-start}}
+
+.contact-admin-attachment{display:block;margin-top:12px;color:var(--admin-text);overflow-wrap:anywhere}
+.contact-admin-attachment img{display:block;max-width:100%;max-height:360px;width:auto;height:auto;object-fit:contain;border:1px solid var(--admin-line);border-radius:8px}
+.contact-admin-attachment span{display:block;margin-top:6px}

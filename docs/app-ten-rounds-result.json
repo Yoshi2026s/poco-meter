@@ -1,0 +1,183 @@
+{
+  "matrix": "app",
+  "status": "passed",
+  "plannedRounds": 10,
+  "scenariosPerRound": 10000,
+  "rounds": [
+    {
+      "round": 1,
+      "status": "passed",
+      "executed": 10000,
+      "passed": 10000,
+      "failed": 0,
+      "counts": {
+        "pointParsingAndExactDisplay": 4000,
+        "coinItemAndFractionalPaceRounding": 3000,
+        "jstCutoffsAndFractionalCountdown": 2000,
+        "desktopAndPhoneSynchronizedDOMHandlers": 500,
+        "contactFilesAndPrivacy": 500
+      },
+      "failures": [],
+      "deterministicCasesSHA256": "e78401e84d755dd2251dfdb22fcd1a56458dc88c6ad1169f7f53edaa002ef76c"
+    },
+    {
+      "round": 2,
+      "status": "passed",
+      "executed": 10000,
+      "passed": 10000,
+      "failed": 0,
+      "counts": {
+        "pointParsingAndExactDisplay": 4000,
+        "coinItemAndFractionalPaceRounding": 3000,
+        "jstCutoffsAndFractionalCountdown": 2000,
+        "desktopAndPhoneSynchronizedDOMHandlers": 500,
+        "contactFilesAndPrivacy": 500
+      },
+      "failures": [],
+      "deterministicCasesSHA256": "1b6f726b7853a7d0be97695b9a8ce2731c345856fd69f48959256a0e52180c82"
+    },
+    {
+      "round": 3,
+      "status": "passed",
+      "executed": 10000,
+      "passed": 10000,
+      "failed": 0,
+      "counts": {
+        "pointParsingAndExactDisplay": 4000,
+        "coinItemAndFractionalPaceRounding": 3000,
+        "jstCutoffsAndFractionalCountdown": 2000,
+        "desktopAndPhoneSynchronizedDOMHandlers": 500,
+        "contactFilesAndPrivacy": 500
+      },
+      "failures": [],
+      "deterministicCasesSHA256": "9fd1a9d4f1be33c45b42dc134df79d179891fd1aa31e883738054d9f55c6e355"
+    },
+    {
+      "round": 4,
+      "status": "passed",
+      "executed": 10000,
+      "passed": 10000,
+      "failed": 0,
+      "counts": {
+        "pointParsingAndExactDisplay": 4000,
+        "coinItemAndFractionalPaceRounding": 3000,
+        "jstCutoffsAndFractionalCountdown": 2000,
+        "desktopAndPhoneSynchronizedDOMHandlers": 500,
+        "contactFilesAndPrivacy": 500
+      },
+      "failures": [],
+      "deterministicCasesSHA256": "43f429c692380aaa3d8ecbf82f0dfa5ca8b4dc7a995ca15e0664a493737181e3"
+    },
+    {
+      "round": 5,
+      "status": "passed",
+      "executed": 10000,
+      "passed": 10000,
+      "failed": 0,
+      "counts": {
+        "pointParsingAndExactDisplay": 4000,
+        "coinItemAndFractionalPaceRounding": 3000,
+        "jstCutoffsAndFractionalCountdown": 2000,
+        "desktopAndPhoneSynchronizedDOMHandlers": 500,
+        "contactFilesAndPrivacy": 500
+      },
+      "failures": [],
+      "deterministicCasesSHA256": "09b44fa3d93af2270c5f05038a52f821120939551a5d6570fcd73e682ed73404"
+    },
+    {
+      "round": 6,
+      "status": "passed",
+      "executed": 10000,
+      "passed": 10000,
+      "failed": 0,
+      "counts": {
+        "pointParsingAndExactDisplay": 4000,
+        "coinItemAndFractionalPaceRounding": 3000,
+        "jstCutoffsAndFractionalCountdown": 2000,
+        "desktopAndPhoneSynchronizedDOMHandlers": 500,
+        "contactFilesAndPrivacy": 500
+      },
+      "failures": [],
+      "deterministicCasesSHA256": "d4caaafee8bc205fa9fd67680eddc7afd43dbaf112b5f627a685cabeeb017882"
+    },
+    {
+      "round": 7,
+      "status": "passed",
+      "executed": 10000,
+      "passed": 10000,
+      "failed": 0,
+      "counts": {
+        "pointParsingAndExactDisplay": 4000,
+        "coinItemAndFractionalPaceRounding": 3000,
+        "jstCutoffsAndFractionalCountdown": 2000,
+        "desktopAndPhoneSynchronizedDOMHandlers": 500,
+        "contactFilesAndPrivacy": 500
+      },
+      "failures": [],
+      "deterministicCasesSHA256": "9bb89e15137d3ec2491c5ee62dc2ab7ed1ee22c459d3216c2365ac8ad6bd5760"
+    },
+    {
+      "round": 8,
+      "status": "passed",
+      "executed": 10000,
+      "passed": 10000,
+      "failed": 0,
+      "counts": {
+        "pointParsingAndExactDisplay": 4000,
+        "coinItemAndFractionalPaceRounding": 3000,
+        "jstCutoffsAndFractionalCountdown": 2000,
+        "desktopAndPhoneSynchronizedDOMHandlers": 500,
+        "contactFilesAndPrivacy": 500
+      },
+      "failures": [],
+      "deterministicCasesSHA256": "5acd4d6276b00c8374a06c0d92fab17e03c2afe2d3a3de036ea2497999bfd281"
+    },
+    {
+      "round": 9,
+      "status": "passed",
+      "executed": 10000,
+      "passed": 10000,
+      "failed": 0,
+      "counts": {
+        "pointParsingAndExactDisplay": 4000,
+        "coinItemAndFractionalPaceRounding": 3000,
+        "jstCutoffsAndFractionalCountdown": 2000,
+        "desktopAndPhoneSynchronizedDOMHandlers": 500,
+        "contactFilesAndPrivacy": 500
+      },
+      "failures": [],
+      "deterministicCasesSHA256": "87aaaa09e2f86ca6128e0f4704544015264991a495f4db3e9b82132c8d27b56c"
+    },
+    {
+      "round": 10,
+      "status": "passed",
+      "executed": 10000,
+      "passed": 10000,
+      "failed": 0,
+      "counts": {
+        "pointParsingAndExactDisplay": 4000,
+        "coinItemAndFractionalPaceRounding": 3000,
+        "jstCutoffsAndFractionalCountdown": 2000,
+        "desktopAndPhoneSynchronizedDOMHandlers": 500,
+        "contactFilesAndPrivacy": 500
+      },
+      "failures": [],
+      "deterministicCasesSHA256": "a5877885655efd9dc8e30c24ee4869d4474aae39b82d080fdd31d6f71586096c"
+    }
+  ],
+  "executedScenarios": 100000,
+  "passedScenarios": 100000,
+  "failedScenarios": 0,
+  "sourceSHA256": {
+    "calculator/index.html": "d9ca1265397fe40718f58289c453820941f58142ca493c0da33e0da0b711befc",
+    "calculator/sw.js": "1eaed532d414e78ac2cadbc808799263310e3ff8b33dd1d1d22dfaf21ebf48fd",
+    "lib/border-source.mjs": "f8998dd405fed407697d35f8337d9529b60321fb7d39187c3687bd7a9bf1f75a",
+    "lib/border-store.mjs": "4f3e9f503af8e7e56415e5080933d9edcac760593b3282a5d9a834514e082244",
+    "lib/contact-store.mjs": "d3c8fb94e7e20615fc5d2ea9a256bc9446a01055621d2bde14c6696cf6b7896d"
+  },
+  "limitation": "Shipped source functions, DOM doubles, isolated SQLite and in-memory object storage. No rendered browser, physical phone, production writes, prediction accuracy, or independent verification of all live source values.",
+  "isolatedWorkerConcurrency": 4,
+  "durationMs": 223344,
+  "sourceUnchangedDuringRun": true,
+  "distinctScenariosAcrossRounds": 100000
+}

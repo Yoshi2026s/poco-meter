@@ -1,0 +1,192 @@
+{
+  "scope": "Remove all external-app display, launch, media, help and settings; retain page HUD",
+  "verificationLimit": "DOM and authored CSS audits; real-browser rendering not tested",
+  "startedAt": "2026-10-11T06:23:58.756898+00:00",
+  "finishedAt": "2026-10-11T06:24:40.538177+00:00",
+  "sourceSha256": "c34ca6e304a54446070ed53d42ee7aaff1994da62c7975599ba7958309ba6421",
+  "serviceWorkerSha256": "9c66891f8a7503ef75f8f70a2fbaec91cdd95814e2fbaa1d02803ac9f5ecb7c6",
+  "serviceWorkerCache": "v35",
+  "builtWorkerSha256": "b03d3338be819a93fc0698c8b4ee3b20293eb89d82d685ad8ac5e924a33a2052",
+  "releaseHash": "1d1901f70c44ac044417a3c84da885ec7e3e0bff12551002f776c469f7f50a6d",
+  "allPassed": true,
+  "suiteExecutions": 13,
+  "passedNamedOrFileTests": 265,
+  "absentFeatureMarkers": {
+    "source": [],
+    "githubGenerated": [],
+    "releaseDecoded": []
+  },
+  "allSevenReleaseContentsEmbeddedInWorker": true,
+  "sourceUnchanged": true,
+  "results": [
+    {
+      "file": "tests/retired-external-app-features.mjs",
+      "exitCode": 0,
+      "counts": {
+        "tests": 6,
+        "pass": 6,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "elapsedMs": 3494,
+      "sourceUnchanged": true
+    },
+    {
+      "file": "tests/hud-preference-sync.mjs",
+      "exitCode": 0,
+      "counts": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "elapsedMs": 2638,
+      "sourceUnchanged": true
+    },
+    {
+      "file": "tests/hud-focus-errors.mjs",
+      "exitCode": 0,
+      "counts": {
+        "tests": 7,
+        "pass": 7,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "elapsedMs": 3753,
+      "sourceUnchanged": true
+    },
+    {
+      "file": "tests/fixed-panel-focus.mjs",
+      "exitCode": 0,
+      "counts": {
+        "tests": 8,
+        "pass": 8,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "elapsedMs": 3818,
+      "sourceUnchanged": true
+    },
+    {
+      "file": "tests/mobile-debug-50.mjs",
+      "exitCode": 0,
+      "counts": {
+        "tests": 48,
+        "pass": 48,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "elapsedMs": 13846,
+      "sourceUnchanged": true
+    },
+    {
+      "file": "tests/custom-display.mjs",
+      "exitCode": 0,
+      "counts": {
+        "tests": 27,
+        "pass": 27,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "elapsedMs": 37985,
+      "sourceUnchanged": true
+    },
+    {
+      "file": "tests/display-settings.mjs",
+      "exitCode": 0,
+      "counts": {
+        "tests": 19,
+        "pass": 19,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "elapsedMs": 14471,
+      "sourceUnchanged": true
+    },
+    {
+      "file": "tests/reference-colors.mjs",
+      "exitCode": 0,
+      "counts": {
+        "tests": 17,
+        "pass": 17,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "elapsedMs": 5090,
+      "sourceUnchanged": true
+    },
+    {
+      "file": "tests/color-state-regressions.mjs",
+      "exitCode": 0,
+      "counts": {
+        "tests": 11,
+        "pass": 11,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "elapsedMs": 6245,
+      "sourceUnchanged": true
+    },
+    {
+      "file": "tests/calculation-engine.mjs",
+      "exitCode": 0,
+      "counts": {
+        "tests": 16,
+        "pass": 16,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "elapsedMs": 1245,
+      "sourceUnchanged": true
+    },
+    {
+      "file": "tests/offline-ui-50.mjs",
+      "exitCode": 0,
+      "counts": {
+        "tests": 50,
+        "pass": 50,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "elapsedMs": 15885,
+      "sourceUnchanged": true
+    },
+    {
+      "file": "tests/offline-sw-50.mjs",
+      "exitCode": 0,
+      "counts": {
+        "tests": 50,
+        "pass": 50,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "elapsedMs": 284,
+      "sourceUnchanged": true
+    },
+    {
+      "file": "tests/github-meter-export.mjs",
+      "exitCode": 0,
+      "counts": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "elapsedMs": 278,
+      "sourceUnchanged": true
+    }
+  ]
+}

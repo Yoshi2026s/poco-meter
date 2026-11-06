@@ -1,0 +1,836 @@
+{
+  "requestedAt": "2026-10-04T04:51:22+09:00",
+  "completedAt": "2026-10-03T20:13:17.475Z",
+  "round": 2,
+  "count": 100,
+  "meaning": "今回の追加改善・点検100項目と追加デバッグ100件。100回の実機試験や100個の独立した画面変更とは異なります。",
+  "layout": "現状のメーターと補助メニューの順序・配置を維持。保存方法は既存メニューへ追加。",
+  "changes": [
+    "新しいページ表示とキャッシュ保存を分離",
+    "版別キャッシュと世代番号・直列保存で古い応答による上書きを抑止",
+    "準備処理の重複を抑止し準備日時を表示",
+    "アイコン等の遅延・通信失敗・不正MIMEに対応",
+    "既存workerの更新確認と切替時の古い応答の無効化",
+    "保存前の他画面変更検出と保存領域削除への対応",
+    "同じ値の重複保存を削減",
+    "下書きの数値文字列を256文字まで正確に保持",
+    "取込・削除で対応する古い下書きを削除",
+    "JSONに表示設定と下書きを含め旧形式との互換を維持",
+    "対応ブラウザにファイル共有による保存を追加",
+    "オフライン起動の準備状況と入力保存の失敗を区別"
+  ],
+  "regression": {
+    "newCases": 100,
+    "existingCases": 220,
+    "totalPassed": 320,
+    "dailyBorderRegression": "passed"
+  },
+  "limitations": [
+    "スマホ実機・ネイティブ共有画面・ブラウザ描画は未検証。",
+    "保存領域が削除された場合は準備・記録を失う場合がある。",
+    "保存の競合検出は全ての同時書込みを保証するトランザクションではない。",
+    "保存容量不足で下書き削除が失敗した場合は残存データがあることを表示する。"
+  ],
+  "items": [
+    {
+      "id": "001",
+      "criterion": "v2 01 new shell writes remain isolated from the installed v1 release",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 01 new shell writes remain isolated from the installed v1 release",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "002",
+      "criterion": "v2 02 a v2 offline navigation cannot reuse a shell from v1",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 02 a v2 offline navigation cannot reuse a shell from v1",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "003",
+      "criterion": "v2 03 old release alone reports the new namespace as unprepared",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 03 old release alone reports the new namespace as unprepared",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "004",
+      "criterion": "v2 04 prepared v2 activation removes prior shells while preserving unrelated data",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 04 prepared v2 activation removes prior shells while preserving unrelated data",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "005",
+      "criterion": "v2 05 a failed new install retains the previous release and does not activate",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 05 a failed new install retains the previous release and does not activate",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "006",
+      "criterion": "v2 06 a quota failure preparing v2 cannot overwrite the v1 release",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 06 a quota failure preparing v2 cannot overwrite the v1 release",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "007",
+      "criterion": "v2 07 a corrupt new release preserves v1 during activation",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 07 a corrupt new release preserves v1 during activation",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "008",
+      "criterion": "v2 08 failed cache enumeration leaves both releases recoverable",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 08 failed cache enumeration leaves both releases recoverable",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "009",
+      "criterion": "v2 09 failure deleting an old namespace leaves the new shell usable",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 09 failure deleting an old namespace leaves the new shell usable",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "010",
+      "criterion": "v2 10 asset fallback does not mix icons from an older release",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 10 asset fallback does not mix icons from an older release",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "011",
+      "criterion": "v2 11 stalled cache opening does not delay an arrived root response",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 11 stalled cache opening does not delay an arrived root response",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "012",
+      "criterion": "v2 12 stalled cache writing does not delay an arrived root response",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 12 stalled cache writing does not delay an arrived root response",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "013",
+      "criterion": "v2 13 background shell validation does not delay a fresh navigation",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 13 background shell validation does not delay a fresh navigation",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "014",
+      "criterion": "v2 14 a fresh root bypasses potentially stalled reads of existing storage",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 14 a fresh root bypasses potentially stalled reads of existing storage",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "015",
+      "criterion": "v2 15 navigation lifetime remains pending until its independent write completes",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 15 navigation lifetime remains pending until its independent write completes",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "016",
+      "criterion": "v2 16 a rejected background write permits a later navigation to refresh storage",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 16 a rejected background write permits a later navigation to refresh storage",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "017",
+      "criterion": "v2 17 a second shell put cannot overtake a blocked first put",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 17 a second shell put cannot overtake a blocked first put",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "018",
+      "criterion": "v2 18 an older navigation arriving last cannot replace a completed newer shell",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 18 an older navigation arriving last cannot replace a completed newer shell",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "019",
+      "criterion": "v2 19 out of order completion of three roots preserves the newest successful generation",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 19 out of order completion of three roots preserves the newest successful generation",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "020",
+      "criterion": "v2 20 a failed newer write does not prohibit an older successful response",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 20 a failed newer write does not prohibit an older successful response",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "021",
+      "criterion": "v2 21 slow validation of an earlier write cannot overwrite a later saved shell",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 21 slow validation of an earlier write cannot overwrite a later saved shell",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "022",
+      "criterion": "v2 22 preparation reserves generation before fetching and cannot replace a newer root",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 22 preparation reserves generation before fetching and cannot replace a newer root",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "023",
+      "criterion": "v2 23 preparation started after a root keeps its newer shell when the root arrives late",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 23 preparation started after a root keeps its newer shell when the root arrives late",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "024",
+      "criterion": "v2 24 saved timestamp reflects the eventual serialized write rather than fetch start",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 24 saved timestamp reflects the eventual serialized write rather than fetch start",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "025",
+      "criterion": "v2 25 saved responses retain content headers while leaving source headers and body intact",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 25 saved responses retain content headers while leaving source headers and body intact",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "026",
+      "criterion": "v2 26 status reports the persisted timestamp rather than status request time",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 26 status reports the persisted timestamp rather than status request time",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "027",
+      "criterion": "v2 27 a readable legacy-format current shell has ready status and empty timestamp",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 27 a readable legacy-format current shell has ready status and empty timestamp",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "028",
+      "criterion": "v2 28 failed preparation reports the existing timestamp without manufacturing a new one",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 28 failed preparation reports the existing timestamp without manufacturing a new one",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "029",
+      "criterion": "v2 29 simultaneous preparation callers share one in flight promise",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 29 simultaneous preparation callers share one in flight promise",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "030",
+      "criterion": "v2 30 preparation coalescing lasts through the optional asset phase",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 30 preparation coalescing lasts through the optional asset phase",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "031",
+      "criterion": "v2 31 concurrent prepare messages share IO but reply with each original request id",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 31 concurrent prepare messages share IO but reply with each original request id",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "032",
+      "criterion": "v2 32 install and an overlapping prepare message share preparation before skipping waiting",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 32 install and an overlapping prepare message share preparation before skipping waiting",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "033",
+      "criterion": "v2 33 rejected preparation clears the coalescing slot and permits a network retry",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 33 rejected preparation clears the coalescing slot and permits a network retry",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "034",
+      "criterion": "v2 34 completed preparation can refresh again with a new timestamp",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 34 completed preparation can refresh again with a new timestamp",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "035",
+      "criterion": "v2 35 shared invalid shell rejection leaves preparation retryable for both clients",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 35 shared invalid shell rejection leaves preparation retryable for both clients",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "036",
+      "criterion": "v2 36 optional asset storage failure keeps prepared status and timestamp accurate",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 36 optional asset storage failure keeps prepared status and timestamp accurate",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "037",
+      "criterion": "v2 37 hung optional assets share preparation until abort and then permit retry",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 37 hung optional assets share preparation until abort and then permit retry",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "038",
+      "criterion": "v2 38 preparation recovers its write queue after a shared quota rejection",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 38 preparation recovers its write queue after a shared quota rejection",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "039",
+      "criterion": "v2 39 a hung icon request uses its saved icon exactly at three seconds",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 39 a hung icon request uses its saved icon exactly at three seconds",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "040",
+      "criterion": "v2 40 asset server errors use the current valid manifest instead of the error body",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 40 asset server errors use the current valid manifest instead of the error body",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "041",
+      "criterion": "v2 41 an asset server error without saved data remains the real server response",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 41 an asset server error without saved data remains the real server response",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "042",
+      "criterion": "v2 42 offline icon fallback rejects a saved HTML response",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 42 offline icon fallback rejects a saved HTML response",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "043",
+      "criterion": "v2 43 offline manifest fallback rejects generic JSON rather than manifest MIME",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 43 offline manifest fallback rejects generic JSON rather than manifest MIME",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "044",
+      "criterion": "v2 44 fallback MIME validation rejects a prefix lookalike rather than serving an invalid icon",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 44 fallback MIME validation rejects a prefix lookalike rather than serving an invalid icon",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "045",
+      "criterion": "v2 45 disabled cache storage returns a network-error response for an offline asset",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 45 disabled cache storage returns a network-error response for an offline asset",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "046",
+      "criterion": "v2 46 failed asset cache reads return a network error without rejecting respondWith",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 46 failed asset cache reads return a network error without rejecting respondWith",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "047",
+      "criterion": "v2 47 a timed out asset with no cache keeps waiting for the actual network asset",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 47 a timed out asset with no cache keeps waiting for the actual network asset",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "048",
+      "criterion": "v2 48 late network rejection after timed icon fallback does not invalidate that response",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 48 late network rejection after timed icon fallback does not invalidate that response",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "049",
+      "criterion": "v2 49 a fresh asset bypasses blocked storage and clears its fallback timer",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 49 a fresh asset bypasses blocked storage and clears its fallback timer",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "050",
+      "criterion": "v2 50 simultaneous timed asset fallbacks keep separate timers and cache keys",
+      "action": "起動・更新・キャッシュの改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-sw-50.mjs :: v2 50 simultaneous timed asset fallbacks keep separate timers and cache keys",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "051",
+      "criterion": "V01 storageイベント前でも他画面の新しい記録を上書きしない",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V01 storageイベント前でも他画面の新しい記録を上書きしない",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "052",
+      "criterion": "V02 イベント前の保存領域削除をpagehideで復活させない",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V02 イベント前の保存領域削除をpagehideで復活させない",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "053",
+      "criterion": "V03 clearのnullキー通知で自動保存と下書き保存を停止",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V03 clearのnullキー通知で自動保存と下書き保存を停止",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "054",
+      "criterion": "V04 sessionStorage等の別保存領域通知は無視",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V04 sessionStorage等の別保存領域通知は無視",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "055",
+      "criterion": "V05 同じ値を背景・再表示のたびに書き込まない",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V05 同じ値を背景・再表示のたびに書き込まない",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "056",
+      "criterion": "V06 bfcache復帰で保存済みデータの変更を検出",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V06 bfcache復帰で保存済みデータの変更を検出",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "057",
+      "criterion": "V07 保存前の読み取り例外でも画面の計算を継続",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V07 保存前の読み取り例外でも画面の計算を継続",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "058",
+      "criterion": "V08 一時的な保存失敗から次の有効入力で回復",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V08 一時的な保存失敗から次の有効入力で回復",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "059",
+      "criterion": "V09 下書きもイベント前の別画面変更を検出",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V09 下書きもイベント前の別画面変更を検出",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "060",
+      "criterion": "V10 下書き競合時もこの画面の入力をJSONへ控えられる",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V10 下書き競合時もこの画面の入力をJSONへ控えられる",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "061",
+      "criterion": "V11 128文字を超えるK付き数値の意味を再起動で保つ",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V11 128文字を超えるK付き数値の意味を再起動で保つ",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "062",
+      "criterion": "V12 下書きの256文字ちょうどを切り詰めない",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V12 下書きの256文字ちょうどを切り詰めない",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "063",
+      "criterion": "V13 257文字以上は無言で切り詰めて保存しない",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V13 257文字以上は無言で切り詰めて保存しない",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "064",
+      "criterion": "V14 別締め・別ランクの下書きで現在欄を上書きしない",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V14 別締め・別ランクの下書きで現在欄を上書きしない",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "065",
+      "criterion": "V15 CSV取込後は一致する古い下書きを消し取込値を表示",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V15 CSV取込後は一致する古い下書きを消し取込値を表示",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "066",
+      "criterion": "V16 CSV取込で別ランクの下書きは残す",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V16 CSV取込で別ランクの下書きは残す",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "067",
+      "criterion": "V17 旧JSONバックアップ復元後は同じ記録の古い下書きを消す",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V17 旧JSONバックアップ復元後は同じ記録の古い下書きを消す",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "068",
+      "criterion": "V18 新JSONに含めた未確定下書きは記録と分けて復元",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V18 新JSONに含めた未確定下書きは記録と分けて復元",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "069",
+      "criterion": "V19 下書きだけの対応JSONも既存記録を保って結合",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V19 下書きだけの対応JSONも既存記録を保って結合",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "070",
+      "criterion": "V20 不正な下書き付きJSONは記録も変更しない",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V20 不正な下書き付きJSONは記録も変更しない",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "071",
+      "criterion": "V21 不正な表示設定付きJSONは記録も変更しない",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V21 不正な表示設定付きJSONは記録も変更しない",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "072",
+      "criterion": "V22 JSONバックアップに色と太さを含める",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V22 JSONバックアップに色と太さを含める",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "073",
+      "criterion": "V23 表示設定のない旧バックアップでは現在の色を保持",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V23 表示設定のない旧バックアップでは現在の色を保持",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "074",
+      "criterion": "V24 表示設定だけ保存失敗した場合も復元メッセージに明記",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V24 表示設定だけ保存失敗した場合も復元メッセージに明記",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "075",
+      "criterion": "V25 日付単位の削除で全ランクの下書きを端末から消す",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V25 日付単位の削除で全ランクの下書きを端末から消す",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "076",
+      "criterion": "V26 ランク単位の削除では他ランクの記録・下書きを保持",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V26 ランク単位の削除では他ランクの記録・下書きを保持",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "077",
+      "criterion": "V27 下書き取消の保存失敗を成功と表示しない",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V27 下書き取消の保存失敗を成功と表示しない",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "078",
+      "criterion": "V28 バックアップ下書きの上限・型・日付を厳密に検証",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V28 バックアップ下書きの上限・型・日付を厳密に検証",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "079",
+      "criterion": "V29 取込成功後の下書き削除失敗は再起動の注意を表示",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V29 取込成功後の下書き削除失敗は再起動の注意を表示",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "080",
+      "criterion": "V30 他画面の表示設定変更を保存し返さず反映",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V30 他画面の表示設定変更を保存し返さず反映",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "081",
+      "criterion": "V31 対応端末だけ既存の保存方法に共有を追加",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V31 対応端末だけ既存の保存方法に共有を追加",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "082",
+      "criterion": "V32 非対応端末では共有の選択肢を表示しない",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V32 非対応端末では共有の選択肢を表示しない",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "083",
+      "criterion": "V33 このファイルを共有できない場合は手動コピーを提示",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V33 このファイルを共有できない場合は手動コピーを提示",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "084",
+      "criterion": "V34 共有JSONの形式・ファイル名・内容を保持",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V34 共有JSONの形式・ファイル名・内容を保持",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "085",
+      "criterion": "V35 全記録CSVを共有してもBOMと締め列を保持",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V35 全記録CSVを共有してもBOMと締め列を保持",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "086",
+      "criterion": "V36 選択期間CSVの共有に対象期間と計算根拠を保持",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V36 選択期間CSVの共有に対象期間と計算根拠を保持",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "087",
+      "criterion": "V37 共有成功でも保存済みとは断定しない",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V37 共有成功でも保存済みとは断定しない",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "088",
+      "criterion": "V38 AbortErrorで勝手に別のダウンロードを開始しない",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V38 AbortErrorで勝手に別のダウンロードを開始しない",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "089",
+      "criterion": "V39 共有拒否は選択済みのJSONを手動コピーへ残す",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V39 共有拒否は選択済みのJSONを手動コピーへ残す",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "090",
+      "criterion": "V40 遅い共有応答で後から行ったファイル保存を上書きしない",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V40 遅い共有応答で後から行ったファイル保存を上書きしない",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "091",
+      "criterion": "V41 Fileが使えなくなった場合も共有失敗を閉じ込める",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V41 Fileが使えなくなった場合も共有失敗を閉じ込める",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "092",
+      "criterion": "V42 同期的な共有例外でも忙しい状態を解除",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V42 同期的な共有例外でも忙しい状態を解除",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "093",
+      "criterion": "V43 不正な保存方法を共有機能へ渡さない",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V43 不正な保存方法を共有機能へ渡さない",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "094",
+      "criterion": "V44 既存workerがある起動でも更新を確認し準備状況を表示",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V44 既存workerがある起動でも更新を確認し準備状況を表示",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "095",
+      "criterion": "V45 更新登録失敗でも既存の検証済みキャッシュを使用",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V45 更新登録失敗でも既存の検証済みキャッシュを使用",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "096",
+      "criterion": "V46 worker切替時に古い応答を無視して新しい準備状況を確認",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V46 worker切替時に古い応答を無視して新しい準備状況を確認",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "097",
+      "criterion": "V47 正しい準備日時だけJSTで表示し未来の値は無視",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V47 正しい準備日時だけJSTで表示し未来の値は無視",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "098",
+      "criterion": "V48 オフライン起動準備と入力保存失敗を区別",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V48 オフライン起動準備と入力保存失敗を区別",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "099",
+      "criterion": "V49 共有画面の待機中でもメーター入力を更新できる",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V49 共有画面の待機中でもメーター入力を更新できる",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    },
+    {
+      "id": "100",
+      "criterion": "V50 新しい保存方法も既存メニュー内に収め主要要素順を維持",
+      "action": "入力・下書き・バックアップ・スマホ保存の改善と点検",
+      "status": "passed",
+      "evidence": "tests/offline-v2-ui-50.mjs :: V50 新しい保存方法も既存メニュー内に収め主要要素順を維持",
+      "verification": "実コードによる自動検証。通信・キャッシュ・DOM・保存・共有APIは模擬環境。"
+    }
+  ]
+}
