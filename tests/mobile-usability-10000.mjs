@@ -29,7 +29,7 @@ function input(p,id,value,type='input'){const el=p.element(id);el.value=String(v
 function saved(p){return JSON.parse(p.stored.get(KEY));}
 function check(name,run){run();regressions.push(name);}
 
-check('All 37 native option previews survive timer sync and commit once on blur',()=>{
+check('All 42 native option previews survive timer sync and commit once on blur',()=>{
  let count=0;
  for(const id of nativeIds){
   const p=page(),el=p.element(id),original=el.value,personal=p.stored.get(KEY);
@@ -44,7 +44,7 @@ check('All 37 native option previews survive timer sync and commit once on blur'
    count++;
   }
  }
- assert.equal(count,37);
+ assert.equal(count,42); // +5 aggregation periods (前日・2日前・3日前・直近7日・直近14日)
 });
 check('All committed native options reach their real change handlers and survive blur/tick',()=>{
  let count=0;
@@ -63,7 +63,7 @@ check('All committed native options reach their real change handlers and survive
    count++;
   }
  }
- assert.equal(count,37);
+ assert.equal(count,42); // +5 aggregation periods (前日・2日前・3日前・直近7日・直近14日)
 });
 check('Core local validation preserves the previous valid value, invalid Enter retains focus, correction clears error',()=>{
  const p=page();input(p,'coreCountTop','40');
