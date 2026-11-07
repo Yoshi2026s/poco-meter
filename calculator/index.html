@@ -1852,7 +1852,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
     
     <div class="target-preview"><div><span><span id="candidateLabel">選んだ期間から算出した目標候補</span> <small>（推測）</small></span><strong class="candidate-value num" id="candidateValue">—</strong></div><button class="main" id="applyCandidate">この候補を目標に設定</button></div>
     <div class="pickgrid" hidden>
-      <div><label for="pickPeriod">集計期間</label><select id="pickPeriod" class="sm"><option value="30d">直近30日</option><option value="month">当月</option><option value="prev">先月</option><option value="3m">3か月</option><option value="all">全期間</option></select></div>
+      <div><label for="pickPeriod">集計期間</label><select id="pickPeriod" class="sm"><option value="d1">前日</option><option value="d2">2日前</option><option value="d3">3日前</option><option value="7d">直近7日</option><option value="14d">直近14日</option><option value="30d">直近30日</option><option value="month">当月</option><option value="prev">先月</option><option value="3m">3か月</option><option value="all">全期間</option></select></div>
       <div><label for="pickRank">ランク</label><select id="pickRank" class="sm num"></select></div>
       <div><label for="pickBorder">設定する目標のボーダー</label><select id="pickBorder" class="sm num"><option value="0" selected>±0</option><option value="1">+1</option><option value="2">+2</option><option value="">手入力</option></select></div>
     </div>
@@ -2241,8 +2241,12 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
   var displaySettings=standardDisplaySettings();
   try{var displayRaw=JSON.parse(localStorage.getItem(DISPLAY_KEY)||'null');if(isRecord(displayRaw)){var storedColor=displayColor(displayRaw.color);if(Object.prototype.hasOwnProperty.call(DISPLAY_COLORS,storedColor))displaySettings.color=storedColor;if(DISPLAY_WEIGHTS.indexOf(displayRaw.weight)>=0)displaySettings.weight=displayRaw.weight;else if(displayRaw.weight==='heavy')displaySettings.weight='bold';if(DISPLAY_THEMES.indexOf(displayRaw.theme)>=0)displaySettings.theme=displayRaw.theme;else displaySettings.theme='light';['background','hudBackground','listColor','numberColor'].forEach(function(key){var choices=DISPLAY_CUSTOM[key==='listColor'?'list':key==='numberColor'?'number':'background'];if(Object.prototype.hasOwnProperty.call(choices,displayRaw[key]))displaySettings[key]=displayRaw[key];});}}catch(e){}
   var RANKS=['E','D1','D2','D3','C1','C2','C3','B1','B2','B3','A1','A2','A3','S1','S2','S3','S4','S5','S6'];
+  // Aggregation periods. Recent windows end yesterday (JST); d1-d3 are single days.
+  var PERIOD_KEYS=['d1','d2','d3','7d','14d','30d','month','prev','3m','all'];
+  var RECENT_PERIODS={d1:{days:1,back:0},d2:{days:1,back:1},d3:{days:1,back:2},'7d':{days:7,back:0},'14d':{days:14,back:0},'30d':{days:30,back:0}};
+  var PERIOD_LABELS={d1:'前日',d2:'2日前',d3:'3日前','7d':'直近7日','14d':'直近14日','30d':'直近30日',month:'当月',prev:'先月','3m':'直近3か月',all:'全期間'};
   var MAX_VALUE=Math.floor(Number.MAX_SAFE_INTEGER/25);
-  var state={target:'',current:'0',deadline:'22:00',endTime:'',items:[],presets:[],coreCount:'0',rank:'S2',period:'30d',pick:'',log:{},seedVer:0,provenance:{},asOfDate:'',targetMethod:'p75',bufferPct:0,roundUnit:1,targetOrigin:null,snapshotVersion:'',analysisBorder:null,goalDefaults:null,goalDefaultsVersion:0,borderSync:null};
+  var state={target:'',current:'0',deadline:'22:00',endTime:'',items:[],presets:[],coreCount:'0',rank:'S1',period:'30d',pick:'',log:{},seedVer:0,provenance:{},asOfDate:'',targetMethod:'p75',bufferPct:0,roundUnit:1,targetOrigin:null,snapshotVersion:'',analysisBorder:null,goalDefaults:null,goalDefaultsVersion:0,borderSync:null};
   // Compact repeated provenance without dropping historical or personal records.
   function packStoredState(value){
     var packed=Object.assign({},value),pool=[],indices=new Map(),refs={};
@@ -2287,8 +2291,8 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
   state.target=state.target===''?'':String(parseNum(state.target));state.current=String(parseNum(state.current));
   if(toMins(state.deadline)===null){state.deadline='22:00';loadWarning=true;}
   if(state.endTime!==''&&toMins(state.endTime)===null){state.endTime='';loadWarning=true;}
-  if(RANKS.indexOf(state.rank)<0){state.rank='S2';loadWarning=true;}
-  if(['30d','all','3m','prev','month','est'].indexOf(state.period)<0){state.period='30d';loadWarning=true;}
+  if(RANKS.indexOf(state.rank)<0){state.rank='S1';loadWarning=true;}
+  if(PERIOD_KEYS.indexOf(state.period)<0&&state.period!=='est'){state.period='30d';loadWarning=true;}
   if(state.period==='est')state.period='30d';
   if(['mean','median','p75','max','min'].indexOf(state.targetMethod)<0)state.targetMethod='p75';
   if(typeof state.bufferPct!=='number'||!Number.isFinite(state.bufferPct)||state.bufferPct<0||state.bufferPct>50||Math.abs(state.bufferPct*10-Math.round(state.bufferPct*10))>1e-7){state.bufferPct=0;loadWarning=true;}
@@ -2299,7 +2303,9 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
   if(state.targetOrigin!==null&&state.targetOrigin!==undefined&&loadedOrigin===null)loadWarning=true;
   state.targetOrigin=loadedOrigin;
   try{state.goalDefaults=state.goalDefaults===null?standardGoalDefaults():cleanGoalDefaults(state.goalDefaults);}catch(e){state.goalDefaults=standardGoalDefaults();loadWarning=true;}
-  if(state.goalDefaultsVersion!==2){if(state.targetMethod==='mean')state.targetMethod='p75';if(state.goalDefaults.targetMethod==='mean')state.goalDefaults.targetMethod='p75';state.goalDefaultsVersion=2;}
+  if(state.goalDefaultsVersion!==2&&state.goalDefaultsVersion!==3){if(state.targetMethod==='mean')state.targetMethod='p75';if(state.goalDefaults.targetMethod==='mean')state.goalDefaults.targetMethod='p75';state.goalDefaultsVersion=2;}
+  // v3 (2026-11): the standard default rank is S1. Defaults saved unchanged from the old standard (rank S2) move to S1; customised defaults are kept.
+  if(state.goalDefaultsVersion===2){var oldStandard=Object.assign(standardGoalDefaults(),{rank:'S2'}),gd=state.goalDefaults;if(Object.keys(oldStandard).every(function(k){return JSON.stringify(gd[k])===JSON.stringify(oldStandard[k]);}))gd.rank='S1';state.goalDefaultsVersion=3;}
   var phoneDefaultsOnOpen=!!(window.matchMedia&&window.matchMedia('(max-width:700px)').matches);
   if(phoneDefaultsOnOpen){state.target='';state.current='0';state.currentSavedAt=Date.now();}
   if(state.goalDefaults.applyOnLoad||phoneDefaultsOnOpen)assignGoalDefaults(state.goalDefaults);
@@ -2466,14 +2472,14 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
     function invalid(){if(strict)throw new Error('目標設定時の情報が正しくありません');return null;}
     if(!isRecord(value)||['recent','analysis','reference'].indexOf(value.kind)<0||!Number.isSafeInteger(value.value)||value.value<=0||value.value>MAX_VALUE)return invalid();
     if(value.kind==='reference')return typeof value.label==='string'&&value.label.length<=256?{kind:'reference',value:value.value,label:value.label}:invalid();
-    if(typeof value.periodLabel!=='string'||value.periodLabel.length>256||!validDate(value.start)||!validDate(value.end)||value.start>value.end||RANKS.indexOf(value.rank)<0||['13','22','24'].indexOf(value.close)<0||[0,1,2].indexOf(value.border)<0||['mean','median','p75','max','min'].indexOf(value.method)<0||!Number.isSafeInteger(value.n)||value.n<=0||typeof value.buffer!=='number'||!Number.isFinite(value.buffer)||value.buffer<0||value.buffer>50||Math.abs(value.buffer*10-Math.round(value.buffer*10))>1e-7||[1,100,1000,10000].indexOf(value.unit)<0||value.period!==undefined&&['30d','all','3m','prev','month'].indexOf(value.period)<0)return invalid();
+    if(typeof value.periodLabel!=='string'||value.periodLabel.length>256||!validDate(value.start)||!validDate(value.end)||value.start>value.end||RANKS.indexOf(value.rank)<0||['13','22','24'].indexOf(value.close)<0||[0,1,2].indexOf(value.border)<0||['mean','median','p75','max','min'].indexOf(value.method)<0||!Number.isSafeInteger(value.n)||value.n<=0||typeof value.buffer!=='number'||!Number.isFinite(value.buffer)||value.buffer<0||value.buffer>50||Math.abs(value.buffer*10-Math.round(value.buffer*10))>1e-7||[1,100,1000,10000].indexOf(value.unit)<0||value.period!==undefined&&PERIOD_KEYS.indexOf(value.period)<0)return invalid();
     var clean={};['kind','value','periodLabel','start','end','rank','close','border','method','n','buffer','unit'].forEach(function(k){clean[k]=value[k];});clean.period=value.period===undefined?'30d':value.period;return clean;
   }
-  function standardGoalDefaults(){return {period:'30d',rank:'S2',pick:0,targetMethod:'p75',bufferPct:0,roundUnit:1,deadline:'22:00',coreCount:'0',target:'',asOfDate:'',applyOnLoad:false};}
+  function standardGoalDefaults(){return {period:'30d',rank:'S1',pick:0,targetMethod:'p75',bufferPct:0,roundUnit:1,deadline:'22:00',coreCount:'0',target:'',asOfDate:'',applyOnLoad:false};}
   function cleanGoalDefaults(value){
     if(!isRecord(value))throw new Error('デフォルト値の形式が正しくありません。');
     var clean={},keys=Object.keys(standardGoalDefaults());keys.forEach(function(k){clean[k]=value[k];});
-    if(['30d','month','prev','3m','all'].indexOf(clean.period)<0||RANKS.indexOf(clean.rank)<0||(clean.pick!==''&&[0,1,2].indexOf(clean.pick)<0)||['mean','median','p75','max','min'].indexOf(clean.targetMethod)<0)throw new Error('期間・ランク・ボーダー・算出方法を選んでください。');
+    if(PERIOD_KEYS.indexOf(clean.period)<0||RANKS.indexOf(clean.rank)<0||(clean.pick!==''&&[0,1,2].indexOf(clean.pick)<0)||['mean','median','p75','max','min'].indexOf(clean.targetMethod)<0)throw new Error('期間・ランク・ボーダー・算出方法を選んでください。');
     if(typeof clean.bufferPct!=='number'||!Number.isFinite(clean.bufferPct)||clean.bufferPct<0||clean.bufferPct>50||Math.abs(clean.bufferPct*10-Math.round(clean.bufferPct*10))>1e-7)throw new Error('上乗せ率は0〜50％（小数1桁まで）で入力してください。');
     if([1,100,1000,10000].indexOf(clean.roundUnit)<0)throw new Error('切り上げ単位を選んでください。');
     if(typeof clean.deadline!=='string'||toMins(clean.deadline)===null)throw new Error('締め時間を入力してください。');
@@ -2731,17 +2737,18 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
   var statsCache={},studioSignature='',editorContext='',borderSignature='',dataRevision=0;
   var automaticTargetSignature='',automaticGoalNotice='',automaticDataMissing=false;
   var METHOD_LABELS={mean:'平均値',median:'中央値',p75:'上位25％の境界値',max:'期間内の最大値',min:'期間内の最小値'};
-  function recentWindow(ms){
-    var now=jstNow(ms),yesterday=Date.UTC(now.y,now.m-1,now.d)-864e5;
-    var end=state.asOfDate&&validDate(state.asOfDate)?Date.parse(state.asOfDate+'T00:00:00Z'):yesterday;end=Math.min(end,yesterday);
-    var dates=[];for(var i=29;i>=0;i--)dates.push(new Date(end-i*864e5).toISOString().slice(0,10));return {start:dates[0],end:dates[29],dates:dates};
+  function recentWindow(ms,period){
+    var spec=RECENT_PERIODS[period||'30d']||RECENT_PERIODS['30d'],now=jstNow(ms),yesterday=Date.UTC(now.y,now.m-1,now.d)-864e5;
+    // The custom last day (集計最終日) applies to the 30-day window only.
+    var end=(period||'30d')==='30d'&&state.asOfDate&&validDate(state.asOfDate)?Date.parse(state.asOfDate+'T00:00:00Z'):yesterday;end=Math.min(end,yesterday)-spec.back*864e5;
+    var dates=[];for(var i=spec.days-1;i>=0;i--)dates.push(new Date(end-i*864e5).toISOString().slice(0,10));return {start:dates[0],end:dates[dates.length-1],dates:dates};
   }
   function recentStats(rank,idx){
     var win=recentWindow();win.period='30d';win.excludeLegacy=true;return statsForWindow(win,rank,idx);
   }
   function analysisWindow(rank){
     var analysisRecords=analysisLog(rank);
-    if(state.period==='30d'){var recent=recentWindow();recent.period='30d';recent.excludeLegacy=true;return recent;}
+    if(RECENT_PERIODS[state.period]){var recent=recentWindow(undefined,state.period);recent.period=state.period;recent.excludeLegacy=true;return recent;}
     var yesterday=todayMs()-864e5,end=new Date(yesterday).toISOString().slice(0,10),start,dates=[];
     if(state.period==='all'){dates=Object.keys(analysisRecords).filter(function(d){return validDate(d)&&d<=end&&validTriple(analysisRecords[d][rank]);}).sort();start=dates.length?dates[0]:end;}
     else{if(state.period==='prev'){start=prevYM()+'-01';end=new Date(Date.parse(jstYM()+'-01T00:00:00Z')-864e5).toISOString().slice(0,10);}else start=(state.period==='3m'?last3YM()[2]:jstYM())+'-01';for(var ms=Date.parse(start+'T00:00:00Z'),last=Date.parse(end+'T00:00:00Z');ms<=last;ms+=864e5)dates.push(new Date(ms).toISOString().slice(0,10));}
@@ -2885,7 +2892,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
     var pr=$('pickRank');
     RANKS.slice().reverse().forEach(function(k){var o=document.createElement('option');o.value=k;o.textContent=k;pr.appendChild(o);});
     pr.onchange=function(){state.rank=this.value;$('rank').value=this.value;save();update();};
-    $('pickPeriod').onchange=function(){if(['30d','month','prev','3m','all'].indexOf(this.value)<0)return;state.period=this.value;save();update();};
+    $('pickPeriod').onchange=function(){if(PERIOD_KEYS.indexOf(this.value)<0)return;state.period=this.value;save();update();};
     $('pickBorder').onchange=function(){state.pick=this.value===''?'':+this.value;if(state.pick!=='')state.analysisBorder=state.pick;applyPick();if(state.pick===''){scrollToControl($('manualGoal'),'center');$('target').focus();}};
   })();
   function applyPick(){
@@ -2916,7 +2923,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
   }
   function applyRecentTarget(stats,calc){setCalculatedTarget(stats,calc);automaticTargetSignature=automaticGoalSignature();automaticGoalNotice='';save();update();}
   function syncPick(){
-    if(document.activeElement!==$('pickPeriod'))$('pickPeriod').value=(['30d','all','3m','prev','month','est'].indexOf(state.period)>=0)?state.period:'30d';
+    if(document.activeElement!==$('pickPeriod'))$('pickPeriod').value=PERIOD_KEYS.indexOf(state.period)>=0?state.period:'30d';
     if(document.activeElement!==$('pickRank'))$('pickRank').value=state.rank;
     if(document.activeElement!==$('pickBorder'))$('pickBorder').value=(state.pick===undefined||state.pick===null)?'':String(state.pick);
     syncQuickTargetControls();
@@ -2937,7 +2944,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
   function recordDay(d){return validDate(d)&&Date.parse(d+'T00:00:00Z')<todayMs();}
   function last30(){var win=recentWindow(),f=function(d){return validDate(d)&&d>=win.start&&d<=win.end;};f.recent=true;return f;}
   function periodFilter(){var win=analysisWindow(state.rank),filter=function(d){return validDate(d)&&d>=win.start&&d<=win.end;};filter.recent=win.excludeLegacy;return filter;}
-  function periodName(){return {'30d':'直近30日',month:'当月',prev:'先月','3m':'直近3か月',all:'全期間',est:'推定対象記録'}[state.period]||'全記録';}
+  function periodName(){return PERIOD_LABELS[state.period]||(state.period==='est'?'推定対象記録':'全記録');}
   function rangeFor(rank,idx,filterYM){
     var r=null;
     Object.keys(LOG()).forEach(function(d){
@@ -3188,7 +3195,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
   function validateBackupSettings(cfg){
     if(!isRecord(cfg))throw new Error('バックアップの設定が正しくありません');
     cleanTargetOrigin(cfg.targetOrigin,true);
-    if(readNumber(cfg.target)===null||readNumber(cfg.current)===null||toMins(cfg.deadline)===null||(cfg.endTime!==''&&toMins(cfg.endTime)===null)||RANKS.indexOf(cfg.rank)<0||['30d','all','3m','prev','month'].indexOf(cfg.period)<0||['mean','median','p75','max','min'].indexOf(cfg.targetMethod)<0||typeof cfg.bufferPct!=='number'||cfg.bufferPct<0||cfg.bufferPct>50||!Number.isFinite(cfg.bufferPct)||Math.abs(cfg.bufferPct*10-Math.round(cfg.bufferPct*10))>1e-7||[1,100,1000,10000].indexOf(cfg.roundUnit)<0||(cfg.asOfDate!==''&&(!validDate(cfg.asOfDate)||cfg.asOfDate>=new Date(todayMs()).toISOString().slice(0,10))))throw new Error('バックアップの設定値が正しくありません');
+    if(readNumber(cfg.target)===null||readNumber(cfg.current)===null||toMins(cfg.deadline)===null||(cfg.endTime!==''&&toMins(cfg.endTime)===null)||RANKS.indexOf(cfg.rank)<0||PERIOD_KEYS.indexOf(cfg.period)<0||['mean','median','p75','max','min'].indexOf(cfg.targetMethod)<0||typeof cfg.bufferPct!=='number'||cfg.bufferPct<0||cfg.bufferPct>50||!Number.isFinite(cfg.bufferPct)||Math.abs(cfg.bufferPct*10-Math.round(cfg.bufferPct*10))>1e-7||[1,100,1000,10000].indexOf(cfg.roundUnit)<0||(cfg.asOfDate!==''&&(!validDate(cfg.asOfDate)||cfg.asOfDate>=new Date(todayMs()).toISOString().slice(0,10))))throw new Error('バックアップの設定値が正しくありません');
     if(cfg.analysisBorder!==undefined&&((typeof cfg.analysisBorder!=='number'&&typeof cfg.analysisBorder!=='string')||!/^[012]$/.test(String(cfg.analysisBorder))))throw new Error('バックアップの分析ボーダーが正しくありません');
     if(cfg.coreCount!==undefined&&readCoreCount(cfg.coreCount)===null)throw new Error('バックアップのコア数は0〜1000の整数で指定してください');
     if(cfg.pick!==undefined&&cfg.pick!==''&&((typeof cfg.pick!=='number'&&typeof cfg.pick!=='string')||!/^[012]$/.test(String(cfg.pick))))throw new Error('バックアップの目標ボーダーが正しくありません');
@@ -3570,7 +3577,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
   function goalDefaultDraftChanged(){return goalDefaultInputSignature()!==goalDefaultsSavedSignature;}
   function renderGoalDefaultDraft(){
     $('goalDefaultsDraftNote').hidden=!goalDefaultDraftChanged();
-    var d=state.goalDefaults,periods={'30d':'直近30日',month:'当月',prev:'先月','3m':'3か月',all:'全期間'},border=d.pick===''?'手入力':BLABEL[d.pick];
+    var d=state.goalDefaults,periods=Object.assign({},PERIOD_LABELS,{'3m':'3か月'}),border=d.pick===''?'手入力':BLABEL[d.pick];
     $('goalDefaultsSavedSummary').textContent='保存済み：'+periods[d.period]+' / '+d.rank+' '+border+' / '+METHOD_LABELS[d.targetMethod]+' / '+d.deadline+' / 上乗せ'+d.bufferPct+'％';
   }
   function goalDefaultMessage(text,error){var status=$('goalDefaultsStatus');status.className=error?'toast err':'toast';status.textContent=text;}
