@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {engine,pageEngine,plain} from './calculator-harness.mjs';
 
 const sourceURL='https://one-carat.com/campus/archives/89496';
-const row=(checkedAt,ranks={S2:[100,200,300]})=>({date:'2026-10-02',close:'22',sourceURL,ranks,
+const row=(checkedAt,ranks={S1:[100,200,300]})=>({date:'2026-10-02',close:'22',sourceURL,ranks,
   ...(checkedAt===undefined?{}:{checkedAt})});
 const packet=records=>({serverDate:'2026-10-03',sync:{status:'ok'},records});
 function emptyEngine(){const e=engine();e.state.log={};e.state.log13={};e.state.log24={};e.state.provenance={};return e;}
@@ -25,12 +25,12 @@ test('Same source values refresh their confirmation timestamp and absent legacy 
   const e=emptyEngine();
   assert.equal(e.mergeLiveBorders(packet([row('2026-10-03T00:00:00Z')])),1);
   assert.equal(e.mergeLiveBorders(packet([row('2026-10-03T06:00:00+00:00')])),1);
-  assert.equal(e.state.provenance['22']['2026-10-02'].S2.checkedAt,'2026-10-03T06:00:00.000Z');
+  assert.equal(e.state.provenance['22']['2026-10-02'].S1.checkedAt,'2026-10-03T06:00:00.000Z');
   assert.equal(e.mergeLiveBorders(packet([row('2026-10-03T01:00:00Z')])),0);
-  assert.equal(e.state.provenance['22']['2026-10-02'].S2.checkedAt,'2026-10-03T06:00:00.000Z');
+  assert.equal(e.state.provenance['22']['2026-10-02'].S1.checkedAt,'2026-10-03T06:00:00.000Z');
   assert.equal(e.mergeLiveBorders(packet([row(undefined)])),0);
-  assert.equal(e.state.provenance['22']['2026-10-02'].S2.checkedAt,'2026-10-03T06:00:00.000Z');
-  assert.deepEqual(Array.from(e.state.log['2026-10-02'].S2),[100,200,300]);
+  assert.equal(e.state.provenance['22']['2026-10-02'].S1.checkedAt,'2026-10-03T06:00:00.000Z');
+  assert.deepEqual(Array.from(e.state.log['2026-10-02'].S1),[100,200,300]);
 });
 
 test('A malformed confirmation timestamp rejects every source row before any record changes',()=>{
@@ -62,18 +62,18 @@ test('Malformed sync timestamps reject packets atomically and cannot restore a v
 
 test('Remote confirmation updates preserve user-owned values and their original metadata',()=>{
   const e=emptyEngine();
-  e.state.log={'2026-10-02':{S2:[11,22,33]}};
-  e.state.provenance={'22':{'2026-10-02':{S2:{origin:'manual',source:'手入力',checkedAt:'2026-10-03'}}}};
+  e.state.log={'2026-10-02':{S1:[11,22,33]}};
+  e.state.provenance={'22':{'2026-10-02':{S1:{origin:'manual',source:'手入力',checkedAt:'2026-10-03'}}}};
   const before=plain(e.state.provenance);
   assert.equal(e.mergeLiveBorders(packet([row('2026-10-03T06:00:00Z')])),0);
-  assert.deepEqual(Array.from(e.state.log['2026-10-02'].S2),[11,22,33]);
+  assert.deepEqual(Array.from(e.state.log['2026-10-02'].S1),[11,22,33]);
   assert.deepEqual(plain(e.state.provenance),before);
 });
 
 test('Latest source status excludes current and future records while retaining them for later review',()=>{
-  const baseline=plain(engine().state),log={'2026-10-02':{S2:[100,200,300]},
-    '2026-10-03':{S2:[200,300,400]},'2026-11-01':{S2:[300,400,500]}};
-  const provenance={'22':Object.fromEntries(Object.keys(log).map(date=>[date,{S2:{origin:'remote',source:sourceURL}}]))};
+  const baseline=plain(engine().state),log={'2026-10-02':{S1:[100,200,300]},
+    '2026-10-03':{S1:[200,300,400]},'2026-11-01':{S1:[300,400,500]}};
+  const provenance={'22':Object.fromEntries(Object.keys(log).map(date=>[date,{S1:{origin:'remote',source:sourceURL}}]))};
   const p=pageEngine({...baseline,seedVer:3,seedVer13:1,snapshotVersion:'2026-10-02-v3',
     log,log13:{},log24:{},provenance,pick:0},{navigator:{onLine:false}});
   assert.match(p.element('borderSyncStatus').textContent,/最新 2026-10-02/);
@@ -81,8 +81,8 @@ test('Latest source status excludes current and future records while retaining t
   assert.doesNotMatch(p.element('borderSyncStatus').textContent,/前日分未取得/);
   assert.equal(p.element('target').value,'100');
   const saved=JSON.parse(p.stored.get('pococha-meter-calc-v1'));
-  assert.deepEqual(saved.log['2026-10-03'].S2,[200,300,400]);
-  assert.deepEqual(saved.log['2026-11-01'].S2,[300,400,500]);
+  assert.deepEqual(saved.log['2026-10-03'].S1,[200,300,400]);
+  assert.deepEqual(saved.log['2026-11-01'].S1,[300,400,500]);
 });
 
 test('Successful source confirmation labels missing previous-day records using the API day when the device date is wrong',async()=>{

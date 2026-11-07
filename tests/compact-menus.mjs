@@ -6,7 +6,7 @@ const KEY='pococha-meter-calc-v1';
 const cfg=extra=>({...plain(engine().state),seedVer:3,seedVer13:1,
   snapshotVersion:'2026-10-02-v3',goalDefaultsVersion:2,goalDefaults:{...plain(engine().state.goalDefaults),applyOnLoad:false},
   target:'1001',current:'50',pick:'',bufferPct:0,targetMethod:'mean',
-  log:{'2026-09-30':{S2:[100,200,300]},'2026-10-02':{S2:[300,400,500]}},
+  log:{'2026-09-30':{S1:[100,200,300]},'2026-10-02':{S1:[300,400,500]}},
   log13:{},log24:{},provenance:{},...extra});
 const page=extra=>pageEngine(cfg(extra),{navigator:{onLine:false}});
 const input=(p,id,value,type='input')=>{p.element(id).value=String(value);p.element(id).dispatchEvent(new Event(type));};

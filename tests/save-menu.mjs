@@ -7,9 +7,9 @@ import {engine,pageEngine,plain,html} from './calculator-harness.mjs';
 const key='pococha-meter-calc-v1';
 const settings=()=>({...plain(engine().state),seedVer:3,seedVer13:1,
   snapshotVersion:'2026-10-02-v3',goalDefaultsVersion:1,target:'1001',current:'0',pick:'',
-  log:{'2026-10-02':{S2:[100,200,300]},'2026-09-30':{S2:[500,600,700]}},
-  log13:{'2026-10-01':{S1:[1,2,3]}},log24:{'2026-10-01':{B1:[10,20,30]}},
-  presets:[{name:'旧目標',val:400}],provenance:{'22':{'2026-09-30':{S2:{origin:'legacy',source:'旧版'}}}}});
+  log:{'2026-10-02':{S1:[100,200,300]},'2026-09-30':{S1:[500,600,700]}},
+  log13:{'2026-10-01':{S2:[1,2,3]}},log24:{'2026-10-01':{B1:[10,20,30]}},
+  presets:[{name:'旧目標',val:400}],provenance:{'22':{'2026-09-30':{S1:{origin:'legacy',source:'旧版'}}}}});
 const choose=(p,id,value)=>{p.element(id).value=value;p.element(id).dispatchEvent(new Event('change'));};
 function setup(extra={}){
   const files=[],copies=[];
@@ -31,11 +31,11 @@ test('保存する3種類はファイルとコピーで同じ内容を出力す�
       const backup=JSON.parse(text);assert.equal(backup.formatVersion,4);
       assert.deepEqual(backup.presets,before.presets);assert.equal(backup.settings.target,'1001');
     }else if(kind==='csvAll'){
-      assert.match(text,/2026-10-01,S1,1,2,3,13/);assert.match(text,/2026-10-02,S2,100,200,300,22/);
-      assert.match(text,/2026-10-01,B1,10,20,30,24/);assert.doesNotMatch(text,/2026-09-30,S2/);
+      assert.match(text,/2026-10-01,S2,1,2,3,13/);assert.match(text,/2026-10-02,S1,100,200,300,22/);
+      assert.match(text,/2026-10-01,B1,10,20,30,24/);assert.doesNotMatch(text,/2026-09-30,S1/);
     }else{
-      assert.match(text,/status,source,selected_border/);assert.match(text,/2026-10-02,S2,100,200,300,22,recorded/);
-      assert.match(text,/2026-09-30,S2,,,,22,legacy_excluded/);assert.doesNotMatch(text,/,S1,1,2,3,13/);
+      assert.match(text,/status,source,selected_border/);assert.match(text,/2026-10-02,S1,100,200,300,22,recorded/);
+      assert.match(text,/2026-09-30,S1,,,,22,legacy_excluded/);assert.doesNotMatch(text,/,S2,1,2,3,13/);
     }
   }
   const after=JSON.parse(p.stored.get(key));
@@ -70,8 +70,8 @@ test('後から実行したファイル保存の結果を古いコピー失敗�
 });
 
 test('選択期間の保存説明はランク・集計期間の変更に即連動する',()=>{
-  const {p}=setup();choose(p,'saveContent','csvPeriod');choose(p,'quickRank','S1');choose(p,'quickPeriod','month');
-  assert.match(p.element('saveExportHelp').textContent,/当月.*S1/);
+  const {p}=setup();choose(p,'saveContent','csvPeriod');choose(p,'quickRank','S2');choose(p,'quickPeriod','month');
+  assert.match(p.element('saveExportHelp').textContent,/当月.*S2/);
 });
 
 test('削除対象のDOMを参照せず、時計更新と保存互換を維持する',()=>{
