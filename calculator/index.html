@@ -1833,6 +1833,18 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 <div class="main-sub-menus" id="mainSubMenus" role="region" aria-label="補助メニュー">
   <div class="menus-toolbar" id="menusToolbar"><span id="menuSummary">補助メニュー</span><button type="button" id="collapseAllMenus" aria-controls="sectionBody-1 sectionBody-2 sectionBody-3 sectionBody-4 sectionBody-5 displaySettings">すべて折りたたむ</button></div>
   <div class="secondary-menus" aria-label="補助メニュー">
+  <section class="card collapsed" id="borderTargets" data-collapse-key="📊 ボーダー別の必要量">
+    <h2>📊 ボーダー別の必要量（<span class="closeLbl">22時締め</span>）</h2>
+    <div class="section-body" id="sectionBody-3" hidden>
+    <div style="max-width:220px"><label for="rank">ランク</label>
+      <select id="rank"></select></div>
+    <div class="rows" id="borders" style="margin-top:12px"></div>
+    
+
+<p class="hint" id="avgNote"></p>
+</div>
+  </section>
+
   <section class="pick card studio collapsed" id="targetStudio" data-collapse-key="目標の自動計算・分析">
     <h2>📈 <span id="analysisHeading">目標詳細設定</span></h2>
     <div class="section-body" id="sectionBody-1" hidden>
@@ -1900,6 +1912,19 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 </div>
   </section>
 
+  <section class="card collapsed">
+    <h2>🎁 アイテム換算</h2>
+    <div class="section-body" id="sectionBody-5" hidden>
+    <div class="rows" id="items"></div>
+    <div class="add">
+      <input id="itemName" placeholder="アイテム名" aria-label="アイテム名">
+      <input id="itemVal" type="text" inputmode="decimal" placeholder="1個あたり" aria-label="1個あたりのメーター">
+      <button class="main" id="addItem">追加</button>
+    </div>
+    <p class="hint">1個あたりのメーター値は、実際の配信で確認した数値を登録してください。</p>
+      </div>
+  </section>
+
   <section class="card collapsed" data-collapse-key="✏️ メーター入力">
     <h2>⚙️ 時刻・加減算</h2>
     <div class="section-body" id="sectionBody-2" hidden>
@@ -1911,18 +1936,6 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
     <select id="coreCount" hidden aria-hidden="true" tabindex="-1"></select><div id="coreBonus" hidden></div>
 
 <p id="adjustStatus" class="toast" role="status"></p>
-</div>
-  </section>
-
-  <section class="card collapsed" id="borderTargets" data-collapse-key="📊 ボーダー別の必要量">
-    <h2>📊 ボーダー別の必要量（<span class="closeLbl">22時締め</span>）</h2>
-    <div class="section-body" id="sectionBody-3" hidden>
-    <div style="max-width:220px"><label for="rank">ランク</label>
-      <select id="rank"></select></div>
-    <div class="rows" id="borders" style="margin-top:12px"></div>
-    
-
-<p class="hint" id="avgNote"></p>
 </div>
   </section>
 
@@ -2022,20 +2035,6 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 
 <span class="toast" id="importMsg" role="status"></span><p id="offlineFileMsg" class="toast" role="status"></p>
 </div>
-  </section>
-
-
-  <section class="card collapsed">
-    <h2>🎁 アイテム換算</h2>
-    <div class="section-body" id="sectionBody-5" hidden>
-    <div class="rows" id="items"></div>
-    <div class="add">
-      <input id="itemName" placeholder="アイテム名" aria-label="アイテム名">
-      <input id="itemVal" type="text" inputmode="decimal" placeholder="1個あたり" aria-label="1個あたりのメーター">
-      <button class="main" id="addItem">追加</button>
-    </div>
-    <p class="hint">1個あたりのメーター値は、実際の配信で確認した数値を登録してください。</p>
-      </div>
   </section>
 
 
