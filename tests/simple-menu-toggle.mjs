@@ -14,7 +14,9 @@ for(const skip of [true,false])test(`Auxiliary menus are inside the simple menu,
  const p=pageEngine(settings(),{navigator:{onLine:false},skipCalculatorInitialization:skip});
  const before=p.stored.get(key);
  assert.ok(p.element('mini').classList.contains('show'));assert.equal(p.element('mini').getAttribute('aria-hidden'),'false');
- for(const id of ['mainTools','mainSubMenus','menusToolbar','targetStudio','borderTargets','copyRemaining'])assert.ok(p.element(id).closest('#mini'),id);
+ for(const id of ['mainTools','copyRemaining'])assert.ok(p.element(id).closest('#mini'),id);
+ for(const id of ['menusToolbar','targetStudio','borderTargets'])assert.ok(p.element(id).closest('#mainSubMenus'),id);
+ assert.ok(html.indexOf('id="mini"')<html.indexOf('id="mainSubMenus"')&&html.indexOf('id="mainSubMenus"')<html.indexOf('<div class="wrap">'),'auxiliary menus follow the simple menu');
  assert.equal(p.stored.get(key),before,'layout does not rewrite saved calculator data');
 });
 test('Detailed-meter targets are redirected to the simple-menu fields',()=>{

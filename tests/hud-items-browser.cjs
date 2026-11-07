@@ -14,7 +14,7 @@ const buttons=await page.evaluate(()=>[...document.querySelectorAll('#mini butto
 for(const b of buttons)assert.ok(b.h>=44,JSON.stringify(b));
 // Integrated menus: auxiliary menus are inside the simple menu, the duplicated detailed meter is hidden.
 assert.equal(await page.locator('#fullMeterMenu').isVisible(),false,'detailed meter hidden');assert.equal(await page.locator('header.card').isVisible(),true);
-assert.equal(await page.locator('#mainSubMenus').evaluate(e=>!!e.closest('#mini')),true);assert.equal(await page.locator('#menusToolbar').isVisible(),true);
+assert.equal(await page.evaluate(()=>{const a=document.getElementById('mini').getBoundingClientRect(),b=document.getElementById('mainSubMenus').getBoundingClientRect();return Math.abs(a.x-b.x)<1&&Math.abs(a.width-b.width)<1&&b.y>=a.bottom&&b.y-a.bottom<=16;}),true,'auxiliary menus continue directly below the simple menu');assert.equal(await page.locator('#menusToolbar').isVisible(),true);
 for(const id of ['#pickPeriod','#pickRank','#pickBorder','#targetMethod','#bufferPct'])assert.equal(await page.locator(id).isVisible(),false,'duplicate hidden '+id);
 await page.locator('#openMiniTargetDetails').click();assert.equal(await page.locator('#roundUnit').isVisible(),true,'goal details open inside the simple menu');
 await page.locator('#displaySettings > summary').click();assert.equal(await page.locator('.display-settings-panel').isVisible(),true);await page.keyboard.press('Escape');assert.equal(await page.locator('.display-settings-panel').isVisible(),false);

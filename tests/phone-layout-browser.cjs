@@ -108,7 +108,7 @@ async function step(p){await p.waitForTimeout(80);}
   assert.equal(await p.locator('#currentMini').inputValue(),'あ','ticker preserves IME composition');assert.equal((await p.locator('#remain').innerText()).trim(),'375K');
   await p.locator('#currentMini').evaluate(e=>{e.value='１２６０００';e.dispatchEvent(new CompositionEvent('compositionend',{bubbles:true,data:'１２６０００'}));});await p.locator('#currentMini').press('Enter');assert.equal((await p.locator('#remain').innerText()).trim(),'374K');assert.equal(await p.locator('#currentTop').inputValue(),'126,000');
   await p.locator('#miniUndoCurrent').click();assert.equal(await p.locator('#currentMini').inputValue(),'125,000');
-  await p.locator('#resetTop').click();assert.equal(await p.locator('#currentMini').inputValue(),'0');assert.equal((await p.locator('#miniR').innerText()).trim(),'500K');
+  await p.locator('#resetCurrentMini').click();assert.equal(await p.locator('#currentMini').inputValue(),'0');assert.equal((await p.locator('#miniR').innerText()).trim(),'500K');
   await fill(p,'#currentMini','126K');await p.locator('#currentMini').press('Enter');
   assert.equal(await p.evaluate(()=>JSON.parse(localStorage.getItem('pococha-meter-calc-v1')).current),'126000','HUD edit is saved');assert.equal(await p.locator('#currentTop').inputValue(),'126,000');
   // Opening on a phone resets the current value to its default (see storage-recovery-regressions).
@@ -152,7 +152,7 @@ async function step(p){await p.waitForTimeout(80);}
   opened=await open(390,path.join(ROOT,'calculator/index.html'),{defaultsOnly:true});const p=opened.p;
   assert.equal(await p.locator('#coreCountTop').inputValue(),'0');assert.equal(await p.locator('#coreBonusTop').innerText(),'100%');
   const base=await p.evaluate(()=>JSON.parse(localStorage.getItem('pococha-meter-calc-v1')));assert.equal(base.goalDefaults.coreCount,'0');
-  await p.locator('#openGoalDefaults').click();await p.locator('#standardGoalDefaults').click();assert.equal(await p.locator('#defaultCore').inputValue(),'0');
+  await p.locator('#openMiniTargetDetails').click();await p.locator('#goalDefaultsPanel > summary').click();await p.locator('#standardGoalDefaults').click();assert.equal(await p.locator('#defaultCore').inputValue(),'0');
   await opened.context.close();opened=null;
   for(const core of [undefined,'invalid','0','40','45']){
    const state={...base,coreCount:core,goalDefaults:{...base.goalDefaults,rank:'S3',coreCount:'55',applyOnLoad:false},goalDefaultsVersion:0};

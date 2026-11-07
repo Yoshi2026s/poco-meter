@@ -13,7 +13,9 @@ function input(p,id,value){const field=p.element(id);field.focus();field.value=v
 
 test('Auxiliary menus live inside the simple menu and the duplicated detailed meter stays hidden',()=>{
   const p=pageEngine(undefined,{navigator:{onLine:false}});
-  for(const id of ['targetStudio','borderTargets','menusToolbar','copyRemaining','appliedContext'])assert.ok(p.element(id).closest('#mini'),id+' inside the simple menu');
+  for(const id of ['copyRemaining','appliedContext'])assert.ok(p.element(id).closest('#mini'),id+' inside the simple menu');
+  for(const id of ['targetStudio','borderTargets','menusToolbar'])assert.ok(p.element(id).closest('#mainSubMenus'),id+' in the auxiliary menus');
+  assert.ok(html.indexOf('id="mini"')<html.indexOf('id="mainSubMenus"')&&html.indexOf('id="mainSubMenus"')<html.indexOf('<div class="wrap">'),'auxiliary menus follow the simple menu directly');
   assert.match(html,/<details class="main-meter-menu" id="fullMeterMenu" hidden aria-hidden="true">/);
   assert.equal(p.element('itemsWindow').hidden,false,'The item estimate stays visible');
   // Duplicated goal controls in the detailed goal settings are hidden in favour of the simple-menu selects.

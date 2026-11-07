@@ -1729,14 +1729,15 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 :root body #mini.main-screen .main-tools .pace b{font-size:16px!important;color:var(--number-ink,var(--teal))!important}
 :root body #mini.main-screen .main-tools :is(#paceNote,#summaryStatus,#currentActionMsg,#manualTargetMsg){margin:0;font-size:12px!important}
 :root body #mini.main-screen .main-tools :is(#paceNote,#summaryStatus,#currentActionMsg,#manualTargetMsg):empty{display:none}
-:root body #mini.main-screen .main-sub-menus{display:flex;flex-direction:column;gap:8px}
-:root body #mini.main-screen .main-sub-menus .menus-toolbar{margin:0;align-items:center}
-:root body #mini.main-screen .main-sub-menus #menuSummary{font-size:14px!important;font-weight:800;color:var(--ink)!important}
-:root body #mini.main-screen .main-sub-menus #collapseAllMenus{min-height:44px}
-:root body #mini.main-screen .main-sub-menus .secondary-menus{margin:0}
-:root body #mini.main-screen .main-sub-menus .secondary-menus>section.card{margin:0;box-shadow:none}
-:root body #mini.main-screen .main-sub-menus .secondary-menus .sectionToggle{min-height:48px;font-size:15px!important;font-weight:800}
-:root body #mini.main-screen .main-sub-menus .secondary-menus .sectionToggle :is(.section-title,.section-title *){font-size:15px!important;font-weight:800}
+:root body #mainSubMenus.main-sub-menus{display:flex;flex-direction:column;gap:8px;box-sizing:border-box;width:min(760px,calc(100% - 20px));margin:0 auto 12px;padding:0}
+@media (max-width:359px){:root body #mainSubMenus.main-sub-menus{width:calc(100% - 12px)}}
+:root body #mainSubMenus.main-sub-menus .menus-toolbar{margin:0;align-items:center}
+:root body #mainSubMenus.main-sub-menus #menuSummary{font-size:14px!important;font-weight:800;color:var(--ink)!important}
+:root body #mainSubMenus.main-sub-menus #collapseAllMenus{min-height:44px}
+:root body #mainSubMenus.main-sub-menus .secondary-menus{margin:0}
+:root body #mainSubMenus.main-sub-menus .secondary-menus>section.card{margin:0;box-shadow:none}
+:root body #mainSubMenus.main-sub-menus .secondary-menus .sectionToggle{min-height:48px;font-size:15px!important;font-weight:800}
+:root body #mainSubMenus.main-sub-menus .secondary-menus .sectionToggle :is(.section-title,.section-title *){font-size:15px!important;font-weight:800}
 /* Wider screens: one row of goal conditions */
 @media (min-width:560px){
   :root body #mini.main-screen .mini-goal-menu{grid-template-columns:repeat(6,minmax(0,1fr))!important}
@@ -1773,11 +1774,11 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
   :root body #liveMeter #remainingSummary :is(.meter-deadline label,.meter-core label){font-size:12px!important;line-height:1.4!important}
   :root body :is(#todayTimeLabel,#manualTargetMode,#currentSavedTime,#menuSummary,#formulaLine,a.offline-source,#candidateLabel+small,.goal-defaults-date small){font-size:12px!important}
   :root body #liveMeter .goal-inputs #manualTargetMode{font-size:12px!important}
-  :root body #mini :is(#coreNote,#candidateLabel,#candidateLabel+small,#editorScope,.chart-legend span,.brow .bline .v,.brow .bline span){font-size:12px!important}
-  :root body :is(.wrap,#mini) :is(#analysisRows,#logList) button{min-width:44px!important;min-height:44px!important}
-  :root body :is(.wrap,#mini) details>summary{min-height:44px;box-sizing:border-box}
-  :root body :is(.wrap,#mini) .goal-defaults-start{min-height:44px}
-  :root body :is(.wrap,#mini) .goal-defaults-start input{width:22px;height:22px;flex-basis:22px}
+  :root body :is(#mini,#mainSubMenus) :is(#coreNote,#candidateLabel,#candidateLabel+small,#editorScope,.chart-legend span,.brow .bline .v,.brow .bline span){font-size:12px!important}
+  :root body :is(.wrap,#mini,#mainSubMenus) :is(#analysisRows,#logList) button{min-width:44px!important;min-height:44px!important}
+  :root body :is(.wrap,#mini,#mainSubMenus) details>summary{min-height:44px;box-sizing:border-box}
+  :root body :is(.wrap,#mini,#mainSubMenus) .goal-defaults-start{min-height:44px}
+  :root body :is(.wrap,#mini,#mainSubMenus) .goal-defaults-start input{width:22px;height:22px;flex-basis:22px}
 }
 /* Slim status bar while the main screen is scrolled away (other menus open): remaining goal and countdown stay in view. */
 .sticky-status{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 6px);z-index:55;transform:translateX(-50%);display:flex;align-items:baseline;gap:6px 14px;box-sizing:border-box;width:min(560px,calc(100% - 20px));padding:6px 12px;border:1px solid var(--line);border-radius:12px;background:var(--paper);color:var(--ink);box-shadow:0 6px 18px #0005;pointer-events:none;font-variant-numeric:tabular-nums}
@@ -1827,7 +1828,9 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 
 <p class="hint" id="autoTargetStatus" role="status" hidden></p><p id="currentActionMsg" class="toast" role="status"></p><p class="hint" id="paceNote"></p><p id="summaryStatus" class="toast" role="status"></p>
 </section>
-<div class="main-sub-menus" id="mainSubMenus">
+
+</div>
+<div class="main-sub-menus" id="mainSubMenus" role="region" aria-label="補助メニュー">
   <div class="menus-toolbar" id="menusToolbar"><span id="menuSummary">補助メニュー</span><button type="button" id="collapseAllMenus" aria-controls="sectionBody-1 sectionBody-2 sectionBody-3 sectionBody-4 sectionBody-5 displaySettings">すべて折りたたむ</button></div>
   <div class="secondary-menus" aria-label="補助メニュー">
   <section class="pick card studio collapsed" id="targetStudio" data-collapse-key="目標の自動計算・分析">
@@ -2040,7 +2043,6 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 
 
   </div>
-</div>
 </div>
 <div class="sticky-status" id="stickyStatus" hidden aria-hidden="true"><span>目標まであと<b id="stickyR">-</b></span><span>締めまで<b id="stickyT">-</b></span></div>
 <div class="wrap">

@@ -14,7 +14,7 @@ for(const [deadline,before,after] of [
  p.setNow(after);p.tick(1000);
  for(const id of ['periodNotice','periodNoticeActions','miniPeriodReview'])assert.equal(p.element(id).hidden,false,id);
  assert.equal(saved(p).current,'700');assert.equal(saved(p).target,'1000');
- p.element('miniPeriodReview').click();assert.equal(p.document.activeElement,p.element('currentTop'));
+ p.element('miniPeriodReview').click();assert.equal(p.document.activeElement,p.element('currentMini'),'review goes to the simple-menu current field (detailed meter is hidden)');
  assert.equal(saved(p).current,'700');
  p.element('resetPeriodCurrent').click();assert.equal(saved(p).current,'0');assert.equal(saved(p).target,'1000');
  for(const id of ['periodNotice','periodNoticeActions','miniPeriodReview'])assert.equal(p.element(id).hidden,true,id);
@@ -22,8 +22,8 @@ for(const [deadline,before,after] of [
 });
 test('Invalid current input never dismisses the period review; a valid update does',()=>{
  const p=pageEngine({...base(),currentSavedAt:Date.parse('2026-10-02T20:00:00+09:00')},{navigator:{onLine:false}});
- p.element('reviewPeriodCurrent').click();assert.equal(p.document.activeElement,p.element('currentTop'));
- const input=p.element('currentTop');input.value='-1';input.dispatchEvent(new Event('input'));p.tick(1000);
+ p.element('reviewPeriodCurrent').click();assert.equal(p.document.activeElement,p.element('currentMini'));
+ const input=p.element('currentMini');input.value='-1';input.dispatchEvent(new Event('input'));p.tick(1000);
  assert.equal(p.element('periodNotice').hidden,false);assert.equal(saved(p).current,'700');
  input.value='200';input.dispatchEvent(new Event('input'));assert.equal(saved(p).current,'200');assert.equal(p.element('periodNoticeActions').hidden,true);
 });
