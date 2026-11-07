@@ -1679,6 +1679,11 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 :root body #mini.main-screen .mini-label-row .mini-reset{flex:0 0 auto!important;width:auto!important;min-width:64px!important;padding:4px 10px!important}
 :root body #mini.main-screen .mini-input label{font-size:13px!important;line-height:1.4;font-weight:700;color:var(--sub)!important;margin:0!important}
 :root body #mini.main-screen :is(#targetMini,#currentMini){width:100%!important;min-height:52px!important;height:52px!important;padding:6px 10px!important;border-radius:10px!important;font-size:20px!important;line-height:1.2;font-weight:800;text-align:left}
+:root body #mini.main-screen .mini-input-box{position:relative;display:block;min-width:0}
+:root body #mini.main-screen .mini-input-box>#targetMini{display:block}
+/* Tiny note drawn inside the target box (bottom edge) so no other layout moves. */
+:root body #mini.main-screen .target-update-note{position:absolute;left:11px;right:8px;bottom:3px;margin:0;font-size:9px!important;line-height:1.2;font-weight:600;letter-spacing:0;color:var(--sub)!important;opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none}
+:root body #mini.main-screen #targetMini{padding-bottom:13px!important;padding-top:1px!important}
 :root body #mini.main-screen .mini-target-actions{display:flex!important;gap:6px;flex-wrap:nowrap}
 :root body #mini.main-screen .mini-input .mini-action{flex:1 1 0;width:auto!important;min-width:0!important;min-height:44px!important;height:auto!important;margin:0!important;padding:4px 2px!important;border-radius:8px!important;font-size:13px!important;line-height:1.3;letter-spacing:0;white-space:nowrap!important;overflow:hidden;text-overflow:ellipsis}
 :root body #mini.main-screen :is(#targetMiniError,#currentMiniError){grid-column:1/-1;margin:0;font-size:13px!important;line-height:1.5;color:var(--red)!important}
@@ -1800,7 +1805,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 <time id="miniNow" class="num" title="現在日時・日本時間（時刻同期を確認中）"><span id="miniTimeLabel">時刻を確認中</span><b id="miniNowTime"></b>
 <span id="miniNowDate" hidden></span>
 </time><div class="main-progress"><div class="main-progress-bar" aria-hidden="true"><span id="miniFill"></span></div><span id="miniPct" class="num" aria-label="目標の達成率">0%</span></div></div>
-<div class="main-inputs"><div class="mini-input mini-target" id="miniTargetField"><div class="mini-label-row"><label for="targetMini">目標値</label><button type="button" class="mini-action mini-reset" id="resetTargetMini" aria-label="目標値をリセット">リセット</button></div><input class="num" id="targetMini" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="未設定" aria-describedby="targetMiniError inputStatus"><div class="mini-target-actions"><button type="button" class="mini-action" id="restoreTargetMini" aria-label="目標値をデフォルトに戻す">デフォルト</button><button type="button" class="mini-action" id="openMiniTargetDetails" aria-controls="sectionBody-1" aria-label="目標値の詳細設定を開く">詳細設定</button></div></div>
+<div class="main-inputs"><div class="mini-input mini-target" id="miniTargetField"><div class="mini-label-row"><label for="targetMini">目標値</label><button type="button" class="mini-action mini-reset" id="resetTargetMini" aria-label="目標値をリセット">リセット</button></div><div class="mini-input-box"><input class="num" id="targetMini" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="未設定" aria-describedby="targetMiniError targetUpdateNote inputStatus"><small class="target-update-note" id="targetUpdateNote" title="ボーダーの自動取得は毎日5時・17時頃（日本時間）。目標の自動計算に反映されます。">自動更新 毎日5時・17時頃</small></div><div class="mini-target-actions"><button type="button" class="mini-action" id="restoreTargetMini" aria-label="目標値をデフォルトに戻す">デフォルト</button><button type="button" class="mini-action" id="openMiniTargetDetails" aria-controls="sectionBody-1" aria-label="目標値の詳細設定を開く">詳細設定</button></div></div>
 <div class="mini-input mini-current" id="miniCurrentField"><div class="mini-label-row"><label for="currentMini">現在値</label><button type="button" class="mini-action mini-reset" id="resetCurrentMini" aria-label="現在値をリセット">リセット</button></div><input class="num" id="currentMini" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="0" aria-describedby="currentMiniError inputStatus"><div class="mini-target-actions"><button type="button" class="mini-action" id="miniUndoCurrent" disabled aria-label="直前の現在値に戻す">戻す</button></div></div>
 <small id="targetMiniError" hidden role="status" aria-live="polite"></small>
 <small id="currentMiniError" hidden role="status" aria-live="polite"></small>
@@ -2541,10 +2546,31 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
     var elapsed=clockElapsed(),valid=elapsed!==null&&elapsed>=0&&elapsed<=300000;
     if(valid){var error=Math.ceil((clockSample.uncertaintyMs+elapsed*.0001)/1000),status=clockState==='failed'?'前回同期・再同期失敗':clockBusy?'再同期中':'同期済み';return {primary:'Pocochaサーバー時刻',secondary:'日本時間・'+status,accuracy:'通信誤差目安 ±'+error+'秒',description:'Pococha公式サイトのHTTP応答時刻を基準に日本時間で計算。'+status+'。通信誤差の目安は約±'+error+'秒。Pocochaアプリ内部の時計との一致は未確認。'};}
     var status=clockBusy||clockState==='pending'?'サーバー時刻を取得中':clockSample?'同期切れ・未同期':'サーバー時刻未同期';
-    return {primary:'端末時計・日本時間',secondary:status,accuracy:'誤差：未確認（端末時刻）',description:'端末時計（日本時間）で計算。'+status+'。'};
+    var drift=deviceDriftText();
+    return {primary:'端末時計・日本時間',secondary:status,accuracy:drift||'誤差：未確認（端末時刻）',description:'端末時計（日本時間）で計算。'+status+'。'+(drift?'端末時計は'+drift+'。公開サーバーの時刻（標準時）と比べた値で、Pococha内部の時計との差ではありません。':'')};
   }
   function renderClockBasis(){var basis=clockBasis(),label=basis.primary==='Pocochaサーバー時刻'?basis.primary:'端末時刻';$('todayTimeLabel').textContent=label;$('miniTimeLabel').textContent=label;$('clockTimeSource').textContent=basis.primary;$('clockSyncStatus').textContent=basis.secondary;$('clockAccuracy').textContent=basis.accuracy;$('miniClockAccuracy').textContent=basis.accuracy;$('clockAccuracy').title=basis.description;$('miniClockAccuracy').title=basis.description;$('clockTimeBasis').title=basis.description;$('today').title=basis.description;$('miniNow').title=basis.description;}
+  // Device clock drift against the hosting server's HTTP Date (standard time). Same-origin, so the header is readable.
+  // Date has 1-second resolution; each sample bounds the offset, and several samples are intersected.
+  var deviceDrift=null,deviceDriftBusy=false,deviceDriftAt=0;
+  function deviceDriftText(){
+    if(!deviceDrift||Date.now()-deviceDriftAt>3600000)return '';
+    var lo=deviceDrift.lo,hi=deviceDrift.hi,margin=Math.max(1,Math.ceil((hi-lo)/2000)),mid=Math.round((lo+hi)/2000);
+    if(lo<=0&&hi>=0)return '標準時との差 ±'+margin+'秒以内';
+    return '標準時より'+Math.abs(mid)+'秒'+(mid>0?'進み':'遅れ')+'（±'+margin+'）';
+  }
+  function measureDeviceDrift(force){
+    if(deviceDriftBusy||typeof fetch!=='function'||!window.location||!/^https?:$/.test(window.location.protocol||''))return Promise.resolve(false);
+    if(!force&&deviceDrift&&Date.now()-deviceDriftAt<600000)return Promise.resolve(false);
+    deviceDriftBusy=true;var lo=-Infinity,hi=Infinity,samples=0;
+    function sample(){var t0=Date.now();return fetch('meter.webmanifest?clock='+t0,{method:'HEAD',cache:'no-store',credentials:'same-origin'}).then(function(response){var t1=Date.now(),server=Date.parse(response.headers.get('date')||'');if(!Number.isFinite(server)||t1-t0>3000)return;
+      // device - server lies in [t0-(server+1000), t1-server]
+      lo=Math.max(lo,t0-server-1000);hi=Math.min(hi,t1-server);samples++;});}
+    var chain=Promise.resolve();for(var i=0;i<4;i++)chain=chain.then(sample).then(function(){return new Promise(function(r){setTimeout(r,260);});});
+    return chain.then(function(){if(samples&&lo<=hi){deviceDrift={lo:lo,hi:hi};deviceDriftAt=Date.now();renderClockBasis();return true;}return false;}).catch(function(){return false;}).finally(function(){deviceDriftBusy=false;});
+  }
   function syncPocochaClock(force){
+    measureDeviceDrift(force);
     var started=clockMonotonic(),elapsed=clockElapsed();
     if(clockBusy)return Promise.resolve(false);
     if(started===null){clockState='failed';renderClockBasis();return Promise.resolve(false);}
