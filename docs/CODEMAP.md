@@ -20,8 +20,8 @@
 | 範囲 | 内容 |
 | --- | --- |
 | 21–1655 | CSS（最後の `<style>` 末尾の「2026-11 main screen」がメイン画面の最新の見た目） |
-| 1656–2039 | 画面のHTML（`#mini` がシンプルメニュー＝メイン画面。`#itemsWindow`（アイテム目安）・`#mainMenuNav`（その他のメニューのボタン）を含む） |
-| 2040–2103 | `simple-menu-controller`（アイテム目安の表示、その他のメニューの開閉 `window.pocochaMainMenus`） |
+| 1656–2039 | 画面のHTML（`#mini` がシンプルメニュー＝メイン画面。`#itemsWindow`（アイテム目安）・`#mainTools`（コピー・換算・ペース）を含む。直後の `#mainSubMenus` が補助メニューの各セクション。`#fullMeterMenu` は非表示の内部状態） |
+| 2040–2103 | `simple-menu-controller`（アイテム目安の表示、状態バー、互換用 `window.pocochaMainMenus`） |
 | 2104–3807 | 本体スクリプト |
 | 3811–3913 | アクセス統計（Pages版の作成時に外す） |
 

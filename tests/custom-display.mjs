@@ -251,7 +251,7 @@ test('HUD setting validates backups and follows cross-tab changes without echoin
 });
 test('All HUD backgrounds keep normal, invalid and disabled controls readable in mixed themes',()=>{
  const {p}=setup(),audit=createAudit({root:p.document.documentElement,nodes:p.nodes});p.element('itemsWindow').hidden=false;
- const ids=['miniL','miniT','miniNowTime','mainMenuToggle','targetMini','currentMini','miniBuffer','miniPeriod','coreCountItems'];
+ const ids=['miniL','miniT','miniNowTime','copyRemaining','targetMini','currentMini','miniBuffer','miniPeriod','coreCountItems'];
  for(const theme of ['light','dark'])for(const hud of p.element('hudBackgroundColor').options.map(o=>o.value))for(const number of p.element('numberColor').options.map(o=>o.value)){
   change(p,'screenTheme',theme);change(p,'hudBackgroundColor',hud);change(p,'numberColor',number);
   const ctx={theme,accent:'standard',weight:'bold',width:390,pointer:'coarse'};

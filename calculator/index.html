@@ -1667,14 +1667,16 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 :root body #mini.main-screen .main-progress-bar{flex:1;height:10px;border-radius:5px;background:var(--line);overflow:hidden}
 :root body #mini.main-screen #miniFill{display:block;height:100%;width:0;border-radius:5px;background:var(--number-ink,var(--teal));transition:width .3s}
 :root body #mini.main-screen #miniPct{min-width:3.2em;text-align:right;font-size:14px!important;font-weight:800;color:var(--ink)!important;font-variant-numeric:tabular-nums}
-:root body #mini.main-screen .mini-quick-add{grid-column:1/-1;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-top:4px}
+:root body #mini.main-screen .mini-quick-add{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:4px}
 :root body #mini.main-screen .mini-quick-add button{min-width:0;min-height:44px;margin:0;padding:4px 2px;border:1px solid var(--line);border-radius:8px;font-size:14px!important;font-weight:800;line-height:1.2;white-space:nowrap;font-variant-numeric:tabular-nums;touch-action:manipulation}
-:root body #mini.main-screen .mini-quick-add button:disabled{opacity:1;color:var(--sub)!important;background:transparent!important;box-shadow:none!important;border-style:dashed;cursor:default}
+:root body #mini.main-screen #miniUndoCurrent:disabled{opacity:1;color:var(--sub)!important;background:transparent!important;box-shadow:none!important;border-style:dashed;cursor:default}
 :root body #mini.main-screen .mini-action-msg{grid-column:1/-1;margin:0;font-size:13px!important;line-height:1.5;color:var(--success)!important}
 :root body #mini.main-screen .mini-action-msg:empty{display:none}
 /* Inputs */
 :root body #mini.main-screen .main-inputs{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 10px}
 :root body #mini.main-screen .mini-input{display:flex!important;flex-direction:column;gap:4px;min-width:0;grid-row:auto!important;grid-column:auto!important}
+:root body #mini.main-screen .mini-label-row{display:flex;align-items:center;justify-content:space-between;gap:6px;min-height:44px}
+:root body #mini.main-screen .mini-label-row .mini-reset{flex:0 0 auto!important;width:auto!important;min-width:64px!important;padding:4px 10px!important}
 :root body #mini.main-screen .mini-input label{font-size:13px!important;line-height:1.4;font-weight:700;color:var(--sub)!important;margin:0!important}
 :root body #mini.main-screen :is(#targetMini,#currentMini){width:100%!important;min-height:52px!important;height:52px!important;padding:6px 10px!important;border-radius:10px!important;font-size:20px!important;line-height:1.2;font-weight:800;text-align:left}
 :root body #mini.main-screen .mini-target-actions{display:flex!important;gap:6px;flex-wrap:nowrap}
@@ -1708,29 +1710,43 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 :root body #mini.main-screen #itemsWindowRow .coin-card:first-child span{font-size:14px!important}
 :root body #mini.main-screen #itemsWindowRow .coin-card:first-child b{font-size:24px!important}
 /* Menu buttons */
-:root body #mini.main-screen .main-menu-nav{display:flex;flex-direction:column;gap:8px}
-:root body #mini.main-screen .main-menu-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-:root body #mini.main-screen .main-menu-nav :is(button,a){display:flex;align-items:center;justify-content:center;box-sizing:border-box;width:100%;min-width:0;min-height:48px;margin:0;padding:6px 10px;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink)!important;font-size:14px!important;line-height:1.3;font-weight:700;text-align:center;text-decoration:none;white-space:normal;touch-action:manipulation}
-:root body #mini.main-screen .main-menu-nav .main-menu-toggle{border-color:var(--teal);color:var(--teal)!important;font-size:15px!important}
-:root body #mini.main-screen .main-menu-nav .main-menu-link::after{content:'›';margin-left:6px;font-size:18px;line-height:1}
-:root body #mini.main-screen .main-menu-nav :is(button,a):focus-visible{outline:3px solid var(--teal);outline-offset:2px}
-@media (pointer:fine){:root body #mini.main-screen .main-menu-nav :is(button,a):hover{border-color:var(--teal)}}
-/* Other menus: hidden until opened */
-body:not(.menus-open) .wrap>:is(#menusReturn,header.card,.history-portal,#fullMeterMenu,#menusToolbar,.secondary-menus){display:none!important}
-.menus-return{position:fixed;right:calc(env(safe-area-inset-right,0px) + 12px);bottom:calc(env(safe-area-inset-bottom,0px) + 12px);z-index:60;display:flex;margin:0}
-body.menus-open .wrap{padding-bottom:84px!important}
-.menus-return button{min-height:48px;padding:6px 16px;border:1px solid var(--teal);border-radius:24px;background:var(--paper);color:var(--teal);font-size:15px;font-weight:800;box-shadow:0 4px 14px #0004}
-/* Wider screens: one row of goal conditions, 3 menu columns */
+/* Integrated menus: the detailed meter duplicates the simple menu and stays hidden; tools and sub menus live inside the simple menu. */
+#fullMeterMenu{display:none!important}
+:root body #mini.main-screen .main-tools{display:flex;flex-direction:column;gap:8px;padding:10px 12px;border:1px solid var(--line);border-radius:12px}
+:root body #mini.main-screen .main-tools #appliedContext{margin:0;font-size:12px!important;line-height:1.5;color:var(--sub)!important}
+:root body #mini.main-screen .main-tools #appliedContext:empty{display:none}
+:root body #mini.main-screen .main-tools .meter-tools{margin:0}
+:root body #mini.main-screen .main-tools #copyRemaining{width:100%;min-height:44px;margin:0;font-size:14px!important;font-weight:800}
+:root body #mini.main-screen .main-tools .item-conversion-tools{display:flex;flex-direction:column;gap:6px;margin:0}
+:root body #mini.main-screen .main-tools details{margin:0;border:1px solid var(--line);border-radius:10px;padding:0 10px}
+:root body #mini.main-screen .main-tools details>summary{display:flex;align-items:center;min-height:44px;font-size:14px!important;font-weight:700;cursor:pointer}
+:root body #mini.main-screen .main-tools details>summary::before{content:'▸';margin-right:6px;transition:transform .15s}
+:root body #mini.main-screen .main-tools details[open]>summary::before{transform:rotate(90deg)}
+:root body #mini.main-screen .main-tools details .hint{font-size:12px!important;line-height:1.6}
+:root body #mini.main-screen .main-tools .pace{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:0 0 10px}
+:root body #mini.main-screen .main-tools .pace>div{display:flex;flex-direction:column;gap:2px;padding:6px 8px;border:1px solid var(--line);border-radius:8px}
+:root body #mini.main-screen .main-tools .pace span{font-size:12px!important;color:var(--sub)!important}
+:root body #mini.main-screen .main-tools .pace b{font-size:16px!important;color:var(--number-ink,var(--teal))!important}
+:root body #mini.main-screen .main-tools :is(#paceNote,#summaryStatus,#currentActionMsg,#manualTargetMsg){margin:0;font-size:12px!important}
+:root body #mini.main-screen .main-tools :is(#paceNote,#summaryStatus,#currentActionMsg,#manualTargetMsg):empty{display:none}
+:root body #mainSubMenus.main-sub-menus{display:flex;flex-direction:column;gap:8px;box-sizing:border-box;width:min(760px,calc(100% - 20px));margin:0 auto 12px;padding:0}
+@media (max-width:359px){:root body #mainSubMenus.main-sub-menus{width:calc(100% - 12px)}}
+:root body #mainSubMenus.main-sub-menus .menus-toolbar{margin:0;align-items:center}
+:root body #mainSubMenus.main-sub-menus #menuSummary{font-size:14px!important;font-weight:800;color:var(--ink)!important}
+:root body #mainSubMenus.main-sub-menus #collapseAllMenus{min-height:44px}
+:root body #mainSubMenus.main-sub-menus .secondary-menus{margin:0}
+:root body #mainSubMenus.main-sub-menus .secondary-menus>section.card{margin:0;box-shadow:none}
+:root body #mainSubMenus.main-sub-menus .secondary-menus .sectionToggle{min-height:48px;font-size:15px!important;font-weight:800}
+:root body #mainSubMenus.main-sub-menus .secondary-menus .sectionToggle :is(.section-title,.section-title *){font-size:15px!important;font-weight:800}
+/* Wider screens: one row of goal conditions */
 @media (min-width:560px){
   :root body #mini.main-screen .mini-goal-menu{grid-template-columns:repeat(6,minmax(0,1fr))!important}
-  :root body #mini.main-screen .main-menu-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
   :root body #mini.main-screen #itemsWindowRow{grid-template-columns:1.4fr repeat(4,minmax(0,1fr))!important}
   :root body #mini.main-screen #itemsWindowRow .coin-card:first-child{grid-column:auto;flex-direction:column;justify-content:center}
   :root body #mini.main-screen #itemsWindowRow .coin-card:first-child b{font-size:20px!important}
 }
 @media (max-width:399px){
   :root body #mini.main-screen .mini-input .mini-action{font-size:12px!important}
-  :root body #mini.main-screen .main-menu-nav :is(button,a){font-size:13px!important;padding:6px 6px}
   :root body #mini.main-screen #itemsWindowRow .coin-card:not(:first-child){padding:6px 1px!important}
   :root body #mini.main-screen #itemsWindowRow .coin-card:not(:first-child) b{font-size:14px!important;letter-spacing:-.02em}
   :root body #mini.main-screen #itemsWindowRow .coin-card b .item-unit{margin-left:1px}
@@ -1742,6 +1758,8 @@ body.menus-open .wrap{padding-bottom:84px!important}
   :root body #mini.main-screen #itemsWindowRow{grid-template-columns:repeat(2,minmax(0,1fr))!important}
   :root body #mini.main-screen #miniR{font-size:24px!important}
   :root body #mini.main-screen #miniT{font-size:21px!important}
+  :root body #mini.main-screen .mini-target-actions .mini-action{padding:4px 0!important;letter-spacing:-.04em}
+  :root body #mini.main-screen .main-inputs{column-gap:8px}
 }
 :root body #mini.main-screen #itemsWindowRow .coin-card b .item-unit{font-size:12px!important}
 /* 2026-11 round 2: the other menus on phones / touch screens. Readable text is 12px or larger, touch targets 44px. */
@@ -1756,10 +1774,11 @@ body.menus-open .wrap{padding-bottom:84px!important}
   :root body #liveMeter #remainingSummary :is(.meter-deadline label,.meter-core label){font-size:12px!important;line-height:1.4!important}
   :root body :is(#todayTimeLabel,#manualTargetMode,#currentSavedTime,#menuSummary,#formulaLine,a.offline-source,#candidateLabel+small,.goal-defaults-date small){font-size:12px!important}
   :root body #liveMeter .goal-inputs #manualTargetMode{font-size:12px!important}
-  :root body .wrap :is(#analysisRows,#logList) button{min-width:44px!important;min-height:44px!important}
-  :root body .wrap details>summary{min-height:44px;box-sizing:border-box}
-  :root body .wrap .goal-defaults-start{min-height:44px}
-  :root body .wrap .goal-defaults-start input{width:22px;height:22px;flex-basis:22px}
+  :root body :is(#mini,#mainSubMenus) :is(#coreNote,#candidateLabel,#candidateLabel+small,#editorScope,.chart-legend span,.brow .bline .v,.brow .bline span){font-size:12px!important}
+  :root body :is(.wrap,#mini,#mainSubMenus) :is(#analysisRows,#logList) button{min-width:44px!important;min-height:44px!important}
+  :root body :is(.wrap,#mini,#mainSubMenus) details>summary{min-height:44px;box-sizing:border-box}
+  :root body :is(.wrap,#mini,#mainSubMenus) .goal-defaults-start{min-height:44px}
+  :root body :is(.wrap,#mini,#mainSubMenus) .goal-defaults-start input{width:22px;height:22px;flex-basis:22px}
 }
 /* Slim status bar while the main screen is scrolled away (other menus open): remaining goal and countdown stay in view. */
 .sticky-status{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 6px);z-index:55;transform:translateX(-50%);display:flex;align-items:baseline;gap:6px 14px;box-sizing:border-box;width:min(560px,calc(100% - 20px));padding:6px 12px;border:1px solid var(--line);border-radius:12px;background:var(--paper);color:var(--ink);box-shadow:0 6px 18px #0005;pointer-events:none;font-variant-numeric:tabular-nums}
@@ -1770,8 +1789,8 @@ body.menus-open .wrap{padding-bottom:84px!important}
 :root body .sticky-status #stickyT{color:var(--red)!important}
 .sticky-status span:last-child{margin-left:auto}
 @media print{.sticky-status{display:none!important}}
-@media (prefers-reduced-motion:reduce){.menus-return button,#mainMenuNav :is(button,a),#miniFill{transition:none!important}}
-@media print{#mainMenuNav,.menus-return{display:none!important}}
+@media (prefers-reduced-motion:reduce){#miniFill{transition:none!important}}
+
 </style>
 </head>
 <body>
@@ -1781,139 +1800,17 @@ body.menus-open .wrap{padding-bottom:84px!important}
 <time id="miniNow" class="num" title="現在日時・日本時間（時刻同期を確認中）"><span id="miniTimeLabel">時刻を確認中</span><b id="miniNowTime"></b>
 <span id="miniNowDate" hidden></span>
 </time><div class="main-progress"><div class="main-progress-bar" aria-hidden="true"><span id="miniFill"></span></div><span id="miniPct" class="num" aria-label="目標の達成率">0%</span></div></div>
-<div class="main-inputs"><div class="mini-input mini-target" id="miniTargetField"><label for="targetMini">目標値</label><input class="num" id="targetMini" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="未設定" aria-describedby="targetMiniError inputStatus"><div class="mini-target-actions"><button type="button" class="mini-action" id="restoreTargetMini" aria-label="目標値をデフォルトに戻す">デフォルト</button><button type="button" class="mini-action" id="openMiniTargetDetails" aria-controls="sectionBody-1" aria-label="目標値の詳細設定を開く">詳細設定</button></div></div>
-<div class="mini-input mini-current" id="miniCurrentField"><label for="currentMini">現在値</label><input class="num" id="currentMini" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="0" aria-describedby="currentMiniError inputStatus"><div class="mini-target-actions"><button type="button" class="mini-action" id="resetCurrentMini" aria-label="現在値をリセット">リセット</button></div></div>
+<div class="main-inputs"><div class="mini-input mini-target" id="miniTargetField"><div class="mini-label-row"><label for="targetMini">目標値</label><button type="button" class="mini-action mini-reset" id="resetTargetMini" aria-label="目標値をリセット">リセット</button></div><input class="num" id="targetMini" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="未設定" aria-describedby="targetMiniError inputStatus"><div class="mini-target-actions"><button type="button" class="mini-action" id="restoreTargetMini" aria-label="目標値をデフォルトに戻す">デフォルト</button><button type="button" class="mini-action" id="openMiniTargetDetails" aria-controls="sectionBody-1" aria-label="目標値の詳細設定を開く">詳細設定</button></div></div>
+<div class="mini-input mini-current" id="miniCurrentField"><div class="mini-label-row"><label for="currentMini">現在値</label><button type="button" class="mini-action mini-reset" id="resetCurrentMini" aria-label="現在値をリセット">リセット</button></div><input class="num" id="currentMini" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="0" aria-describedby="currentMiniError inputStatus"><div class="mini-target-actions"><button type="button" class="mini-action" id="miniUndoCurrent" disabled aria-label="直前の現在値に戻す">戻す</button></div></div>
 <small id="targetMiniError" hidden role="status" aria-live="polite"></small>
 <small id="currentMiniError" hidden role="status" aria-live="polite"></small>
-<div class="mini-quick-add" role="group" aria-label="現在値をワンタップで加減算"><button type="button" id="miniSub1k" aria-label="現在値から1,000 ptを引く">−1K</button><button type="button" id="miniAdd1k" aria-label="現在値に1,000 ptを足す">+1K</button><button type="button" id="miniAdd10k" aria-label="現在値に10,000 ptを足す">+10K</button><button type="button" id="miniAdd100k" aria-label="現在値に100,000 ptを足す">+100K</button><button type="button" id="miniUndoCurrent" disabled aria-label="直前の現在値に戻す">戻す</button></div>
+<div class="mini-quick-add" role="group" aria-label="現在値をワンタップで加減算"><button type="button" id="miniSub1k" aria-label="現在値から1,000 ptを引く">−1K</button><button type="button" id="miniAdd1k" aria-label="現在値に1,000 ptを足す">+1K</button><button type="button" id="miniAdd10k" aria-label="現在値に10,000 ptを足す">+10K</button><button type="button" id="miniAdd100k" aria-label="現在値に100,000 ptを足す">+100K</button></div>
 <p id="miniActionMsg" class="mini-action-msg" role="status" aria-live="polite"></p></div>
 <div class="mini-goal-menu" id="miniGoalMenu" role="group" aria-label="目標設定メニュー"><div class="goal-field"><label for="miniPeriod">集計期間</label><select id="miniPeriod" aria-label="集計期間"></select></div><div class="goal-field"><label for="miniRank">ランク</label><select id="miniRank" aria-label="ランク"></select></div><div class="goal-field"><label for="miniBorder">ボーダー</label><select id="miniBorder" aria-label="設定する目標のボーダー"></select></div><div class="goal-field"><label for="miniMethod">算出方法</label><select id="miniMethod" aria-label="算出方法"></select></div><div class="goal-field"><label for="miniBuffer">上乗せ％</label><input id="miniBuffer" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" aria-label="上乗せ率（％）" title="上乗せ率（％）" aria-describedby="miniBufferError inputStatus"></div><div class="goal-field"><label for="miniClose">締め時間</label><select id="miniClose" aria-label="締め時間" tabindex="0"><option value="13:00">13時〆</option><option value="22:00" selected>22時〆</option><option value="00:00">24時〆</option><option value="custom">手入力</option></select></div></div>
 <small id="miniBufferError" hidden role="status" aria-live="polite"></small>
 <!-- phone-current:end -->
 <section id="itemsWindow" aria-labelledby="itemsWindowTitle" aria-describedby="itemsWindowDescription"><div class="items-window-head"><h2 id="itemsWindowTitle">残りアイテムの目安</h2><div class="items-core"><label for="coreCountItems">現コア数</label><input id="coreCountItems" class="num" type="text" inputmode="numeric" enterkeyhint="done" autocomplete="off" placeholder="0" aria-label="現コア数（0〜1000人）" aria-describedby="coreCountItemsError inputStatus" value="0"></div></div><small id="coreCountItemsError" class="items-core-error" hidden></small><p id="itemsWindowDescription">目標メーターまでの残りコイン・アイテム数</p><div id="itemsWindowRow"></div></section>
-<nav class="main-menu-nav" id="mainMenuNav" aria-label="その他のメニュー"><button type="button" class="main-menu-toggle" id="mainMenuToggle" aria-expanded="false" aria-controls="mainMenus">その他のメニューを開く</button><div class="main-menu-grid"><button type="button" id="navFullMeter" data-open-menu="fullMeterMenu">詳細メーター・入力</button><button type="button" id="navMenus" data-open-menu="menusToolbar">目標・記録・換算</button><button type="button" id="navDisplay" data-open-menu="displaySettings">表示設定</button><button type="button" id="navUsage" data-open-menu="toolUsage">使い方・更新</button><a class="main-menu-link" id="mainHistoryLink" href="#">過去ボーダー表</a><a class="main-menu-link" id="mainEBorderLink" href="#">E帯ボーダー</a></div></nav>
-</div>
-<div class="sticky-status" id="stickyStatus" hidden aria-hidden="true"><span>目標まであと<b id="stickyR">-</b></span><span>締めまで<b id="stickyT">-</b></span></div>
-<div class="wrap">
-  <div class="menus-return" id="menusReturn"><button type="button" id="closeMainMenus">← シンプルメニューに戻る</button></div>
-  <header class="card">
-    <div class="header-main">
-      <h1>ポコメーター番長</h1>
-      <details class="tool-usage" id="toolUsage">
-      <summary id="toolUsageSummary">使い方</summary><div class="header-help-panel">
-      <div class="tool-usage-content" id="toolUsageText">
-        <h3>基本の3ステップ</h3><ol><li>締め時間と現コア数を合わせる。</li><li>目標値、現在値の順に入力する。数値は入力時に反映されます。</li><li>残り・達成率・必要量を確認する。</li></ol>
-        <p>K＝1,000、万＝10,000。全角数字も使えます。現在値は加減算や「戻す」で調整できます。目標欄を空にしても設定済みの目標は保持され、リセットで消去します。「戻す」で目標のリセットを1回取り消せます。</p>
-        <h3>過去の記録から目標を作る</h3><p>ボーダーを±0・+1・+2から選ぶと、締め時間・集計期間・ランク・算出方法・上乗せ率・切り上げ単位の変更を目標と残りへ即反映します。上乗せは0〜50％、小数1桁まで。ボーダーの「手入力」は入力した目標を基準に計算します。コア数の変更は必要コイン・アイテム数へ即反映します。算出できない条件では理由を表示し、直前の目標を使用します。</p>
-        <p>集計は昨日以前の記録が対象。未登録日は0で補いません。直近30日は旧版参考値を除外し、他の期間には含めます。統計は過去の目安で、当日のボーダーを予測・保証するものではありません。</p>
-        <p>日別ボーダーは毎日自動取得します。画面を開いた時と表示中も最新の取得データを確認します。自動算出中の目標・残り・アイテム目安へ反映し、手入力の目標と記録は保持します。更新元の掲載時刻により、最新データ日が昨日より前になる場合があります。</p><h3>記録・保存・移行</h3><p>「記録」で日別値を登録。CSV・ExcelのコピーやJSONを貼り付け、内容を確認して「記録する」で確定します。日別値は±0≦+1≦+2で3つそろえてください。CSV形式：日付,ランク,±0,+1,+2,締め時間。</p>
-        <p>バックアップJSONには設定・記録・アイテムを含みます。読み込みは既存へ結合し、同じ締め時間・日付・ランクはバックアップの値で上書きします。「保存メニュー」でJSONバックアップ、全記録CSV、選択期間CSVと保存方法を選べます。全記録CSVは旧版参考値を除外し、選択期間CSVは現在の条件で集計した記録と根拠を出力します。端末移行にはJSONを使い、端末に保存できたことを確認してください。</p>
-        <h3>iPhone・Androidで使う</h3><p>iPhoneはSafari、AndroidはChromeなどのブラウザでこのURLを開いてください。初回は通信できる状態で開き、保存メニューの「オフラインで使う」で準備完了を確認してください。準備後は通信なしでも開き直して計算できます。ホーム画面に追加した場合は、そのアイコンからも一度オンラインで開いてください。入力内容は端末・ブラウザごとに保存されます。別の端末へ移す場合はJSONバックアップを読み込んでください。</p>
-        <p>現在日時・残り時間はPococha公式サイトの応答時刻に合わせ、日本時間で表示します。初回・画面復帰・通信復帰と表示中の1分ごとに確認します。取得できない場合は前回の同期時刻を最大5分使い、その後は「端末時計・未同期」と表示します。通信による秒単位の誤差があり、Pocochaアプリ内部の時計との一致は確認できません。締め時刻を過ぎても現在値は自動で消えないため、新しい期間の値へ更新してください。</p>
-        <h3>換算・便利機能</h3><p>必要コインは残りポイント÷（4×コア倍率）の切り上げです。笹ﾊﾟﾝﾀﾞ・花火・馬車は各アイテムだけで満たす必要数で、合計して投げる個数ではありません。実際の獲得ポイントを保証しません。登録アイテムは実測した1個あたりのポイントで計算し、コア倍率を重ねません。</p>
-        <p>主画面の「残りをコピー」で現在の数値をコピーできます。保存済みのデフォルト値は「デフォルト値に戻す」で適用できます。</p>
-        <p><a class="manual-link" href="#manualGoal">目標へ</a><a class="manual-link" href="#recordEditor">記録へ</a><a class="manual-link" href="#backupTools">保存・移行へ</a></p>
-      </div>
-    </div></details>
-      <a class="method-help-link" id="calculationMethodsLink" href="/calculation-methods" target="_blank" rel="noopener noreferrer">算出方法の説明</a>
-      <!-- display-settings-menu:start -->
-      <details class="display-settings" id="displaySettings"><summary>表示設定</summary>
-        <div class="display-settings-panel">
-          <div class="display-settings-grid">
-            <div><label for="screenTheme">画面の明るさ</label><select id="screenTheme"><option value="dark">暗い表示</option><option value="light">明るい表示</option></select></div>
-            <div><label for="screenColor">画面の色</label><select id="screenColor"><option value="standard">標準</option><option value="blue">ブルー</option><option value="green">グリーン</option><option value="purple">パープル</option><option value="pink">ピンク</option><option value="black">黒</option></select></div>
-            <div><label for="backgroundColor">全体の背景色</label><select id="backgroundColor" aria-describedby="backgroundHelp"><option value="theme">標準</option><option value="black">黒</option><option value="gray">グレー</option><option value="blue">ブルー</option><option value="green">グリーン</option><option value="purple">パープル</option><option value="pink">ピンク</option><option value="red">レッド</option><option value="orange">オレンジ</option><option value="gold">ゴールド</option></select></div>
-            <div><label for="hudBackgroundColor">シンプルメニューの背景色</label><select id="hudBackgroundColor"><option value="theme">標準</option><option value="black">黒</option><option value="gray">グレー</option><option value="blue">ブルー</option><option value="green">グリーン</option><option value="purple">パープル</option><option value="pink">ピンク</option><option value="red">レッド</option><option value="orange">オレンジ</option><option value="gold">ゴールド</option></select></div>
-            <div><label for="listColor">リスト内の色</label><select id="listColor"><option value="white">白</option><option value="black">黒</option><option value="gray">グレー</option><option value="blue">ブルー</option><option value="green">グリーン</option><option value="purple">パープル</option><option value="pink">ピンク</option><option value="red">レッド</option><option value="orange">オレンジ</option><option value="gold">ゴールド</option></select></div>
-            <div><label for="numberColor">数字の色</label><select id="numberColor"><option value="black">モノクロ</option><option value="gray">グレー</option><option value="blue">ブルー</option><option value="green">グリーン</option><option value="purple">パープル</option><option value="pink">ピンク</option><option value="red">レッド</option><option value="orange">オレンジ</option><option value="gold">ゴールド</option><option value="cyan">シアン</option></select></div>
-            <div><label for="textWeight">全体の文字の太さ</label><select id="textWeight"><option value="ultra">極太文字</option><option value="bold">太文字</option><option value="standard">普通</option><option value="thin">細文字</option></select></div>
-            <div><label for="displayPreset">おすすめ配色</label><select id="displayPreset"><option value="">設定パターンを選ぶ</option><option value="default">デフォルト設定（太文字）</option><option value="clear">見やすい標準</option><option value="blue">爽やかブルー</option><option value="blueNight">夜用ブルー</option><option value="pink">やさしいピンク</option><option value="green">落ち着くグリーン</option><option value="purple">夜用パープル</option><option value="mono">くっきりモノクロ</option></select></div>
-          </div>
-          <p class="hint">全体とシンプルメニューの背景色は別々に選べます。選ぶとすぐ反映し、この端末に保存します。</p>
-          <p id="backgroundHelp" class="hint" hidden>全体を黒背景にすると、主画面の文字や入力欄も暗い表示になります。</p>
-          <div class="display-settings-actions"><button type="button" id="restoreDisplaySettings">標準の表示に戻す</button></div>
-          
-        </div>
-
-<p class="toast" id="displaySettingsStatus" role="status" aria-live="polite" aria-atomic="true"></p>
-</details>
-      <!-- display-settings-menu:end -->
-      <button type="button" id="refreshPage" aria-label="ページ全体を再読み込みする" title="ページ全体を再読み込み">更新</button>
-      <span class="ylogo-update" id="toolUpdatedDate" title="ツール本体の最終更新日時とバージョン（ボーダーデータの更新日時とは別）"><span>更新時間</span><time class="num" datetime="2026-10-23T23:54:26+09:00">2026/10/23 23:54:26</time><span class="num" id="toolVersion">最終更新バージョン：v2026.10.23.3</span></span>
-    </div>
-  </header>
-  <p class="hint" id="borderSyncStatus" role="status" style="font-size:.68rem;margin:5px 2px 8px;line-height:1.5">ボーダー確認中…</p>
-  
-  <div class="history-portal"><a href="https://poco-meter.freefreelife2000.chatgpt.site/e-border.html" class="manual-link" id="eBorderPortalLink"><span class="history-portal-text"><span class="history-portal-title">E帯のボーダーを保存・管理</span><span class="hint">画像の一括取込・編集・削除・未記録日を確認</span></span><span aria-hidden="true">›</span></a></div>
-  <div class="history-portal"><a href="/border-history" class="manual-link" id="historyPortalLink"><span aria-hidden="true">🗂️</span><span class="history-portal-text"><span class="history-portal-title">過去のボーダー表を開く</span><span class="hint">ランク別カレンダー／日付検索／カードをコピー</span></span><span class="history-portal-arrow" aria-hidden="true">›</span></a></div>
-  
-  <div class="period-notice-actions" id="periodNoticeActions" hidden><button type="button" id="reviewPeriodCurrent">現在値を確認・入力</button><button type="button" id="resetPeriodCurrent">0にリセット</button></div>
-
-  <p id="inputStatus" class="toast" role="status" aria-live="polite" hidden></p>
-  <details class="main-meter-menu" id="fullMeterMenu"><summary>詳細メーター・入力メニュー</summary>
-  <div class="meter card" id="liveMeter" role="region" aria-label="目標までの残り・入力・必要アイテム">
-    <div id="remainingSummary">
-      <div class="remaining-items-head">
-        <div class="remainbox">
-          <div class="goal-clock-row">
-            <time class="date num meter-now" id="today" title="現在日時・日本時間（時刻同期を確認中）"><span class="current-datetime-label" id="todayTimeLabel">時刻を確認中</span><b id="todayTime"></b>
-<span id="todayDate" hidden></span><span id="todayYear" hidden></span>
-</time>
-            <div class="goal-remaining">
-              <p class="remain-label" id="remainLabel">目標まであと</p>
-              <p class="remain num" id="remain" aria-describedby="remainExact">—</p>
-            </div>
-          </div>
-          <div class="meter-progress-row">
-          <div class="compact-deadline-controls">
-            <div class="deadline-countdown" id="deadlineCountdown"><span id="leftLabel">締めまで</span><div class="countdown-value"><span class="countdown-prefix" id="remainingTimePrefix">残り</span><b class="num" id="left" aria-describedby="leftLabel remainingTimePrefix clockTimeBasis">--:--:--</b></div><small class="clock-time-basis" id="clockTimeBasis"><span id="clockTimeSource">端末時計・日本時間</span><span id="clockAccuracy">誤差：未確認</span><button type="button" id="clockSyncNow" aria-label="Pocochaサーバー時刻を再同期"><span id="clockSyncStatus">サーバー時刻を確認中</span></button></small></div>
-            <div class="deadline-core-pair">
-            <div class="meter-deadline"><label for="closeSel">締め時間</label><select id="closeSel" class="closesel" aria-label="締め時間"><option value="13:00">13時〆</option><option value="22:00">22時〆</option><option value="00:00">24時〆</option><option value="custom">手入力</option></select></div>
-            <div class="core-quick meter-core"><label for="coreCountTop">現コア数</label><div class="core-quick-values"><input class="sm num" id="coreCountTop" type="text" inputmode="numeric" enterkeyhint="done" autocomplete="off" aria-describedby="coreBonusTop coreInputError inputStatus" placeholder="0" aria-label="現コア数（0〜1000人）" value="0"><span class="bonus num" id="coreBonusTop" aria-label="コアボ倍率">100%</span><small class="core-bonus-caption">コアボ</small></div><small id="coreInputError" class="local-input-error" hidden></small></div>
-            </div>
-          </div>
-          <div class="tubewrap"><div class="tube" id="progressMeter" role="progressbar" aria-label="目標の達成率" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="fill" id="fill"></div></div><span class="pct" id="pct">0%</span></div>
-          </div>
-          <p class="remain-exact num" id="remainExact">目標未設定</p>
-        </div>
-          <div class="quick-target-selects" id="quickTargetControls" role="group" aria-labelledby="quickTargetHeading">
-            <h3 id="quickTargetHeading">目標設定メニュー</h3>
-            <select id="quickPeriod" aria-label="集計期間"></select>
-            <select id="quickRank" class="num" aria-label="ランク"></select>
-            <select id="quickBorder" class="num" aria-label="設定する目標のボーダー"></select>
-            <select id="quickMethod" aria-label="算出方法"></select>
-            <div class="quick-buffer"><label for="quickBufferPct">上乗せ率</label><div class="quick-buffer-control"><input id="quickBufferPct" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" value="0" aria-label="上乗せ率（％）" aria-describedby="quickBufferError inputStatus"><span aria-hidden="true">％</span></div><small id="quickBufferError" class="local-input-error" hidden></small></div>
-          </div>
-    <div id="remainingItems" role="region" aria-labelledby="remainingItemsHeading" aria-describedby="remainingItemsDescription">
-
-    <h3 class="overview-subtitle" id="remainingItemsHeading">残りアイテムの目安</h3>
-    <p class="hint" id="remainingItemsDescription">目標メーターまでの残りコイン・アイテム数</p>
-    <div class="coins">
-      <div class="coin-card"><span>💰 必要コイン</span><b id="coinNeed">—</b></div>
-      <div class="coin-card"><span>🐶🐱 犬・猫（55）</span><b id="dogcatNeed">—</b></div>
-      <div class="coin-card"><span>🐼 笹ﾊﾟﾝﾀﾞ（111）</span><b id="pandaNeed">—</b></div>
-      <div class="coin-card"><span>🎆 花火（1,080）</span><b id="hanabiNeed">—</b></div>
-      <div class="coin-card"><span>🎃 馬車（5,555）</span><b id="bashaNeed">—</b></div>
-    </div>
-    </div>
-      </div>
-    </div>
-    
-    <div class="goal-inputs">
-    <div class="manual-goal" id="manualGoal">
-      <div class="lblrow"><label for="target">目標値</label><span class="mode-pill" id="manualTargetMode">手入力</span><div class="goal-reset-actions"><button type="button" id="restoreGoalDefaults">デフォルト値に戻す</button><button type="button" class="x" data-reset="target" aria-label="目標値をリセット">リセット</button></div></div>
-      <div class="manual-goal-controls"><input class="big num" id="target" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" aria-describedby="manualTargetHelp inputStatus" placeholder="例 500K / 50万"><button type="button" class="main" id="applyManualTarget">設定</button></div>
-      <div class="goal-setting-links"><button type="button" id="openBorderTargets" class="border-target-link" aria-controls="sectionBody-1">詳細設定</button><button type="button" id="openGoalDefaults" class="border-target-link" aria-controls="goalDefaultsPanel">デフォルト値設定</button></div>
-      <p class="hint short-input-help" id="manualTargetHelp">K・万・全角数字OK／入力時に反映</p><div class="goal-tools"><button type="button" id="undoTarget" disabled>戻す</button></div>
-      
-      
-
-<p class="hint goal-context" id="appliedContext" tabindex="0" aria-label="目標設定時の条件"></p><p id="manualTargetMsg" class="toast" role="status"></p>
-</div>
-      <div class="curbox"><div class="curlbl"><label for="currentTop">現在値</label><button class="x" id="resetTop" aria-label="現在値をリセット">リセット</button></div>
-        <input class="num" id="currentTop" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="0">
-        <div class="curbtns"><button data-addtop="-1000" aria-label="現在値から1,000 ptを引く">−1K</button><button data-addtop="1000" aria-label="現在値に1,000 ptを足す">+1K</button><button data-addtop="10000" aria-label="現在値に10,000 ptを足す">+10K</button><button data-addtop="100000" aria-label="現在値に100,000 ptを足す">+100K</button></div><div class="current-tools"><button type="button" class="undo-current" id="undoCurrent" disabled aria-label="直前の現在値に戻す">戻す</button><small id="currentSavedTime" class="current-time num"></small></div></div>
-    </div>
+<section class="main-tools" id="mainTools" aria-label="目標の条件・コピー・換算"><p class="hint goal-context" id="appliedContext" tabindex="0" aria-label="目標設定時の条件"></p><p id="manualTargetMsg" class="toast" role="status"></p>
     <div class="meter-tools"><button type="button" id="copyRemaining">残りをコピー</button></div><textarea id="summaryText" readonly hidden aria-label="手動コピー用の現在の残り"></textarea>
     
     <div class="item-conversion-tools">
@@ -1930,9 +1827,10 @@ body.menus-open .wrap{padding-bottom:84px!important}
     </details>
 
 <p class="hint" id="autoTargetStatus" role="status" hidden></p><p id="currentActionMsg" class="toast" role="status"></p><p class="hint" id="paceNote"></p><p id="summaryStatus" class="toast" role="status"></p>
-</div>
+</section>
 
-  </details>
+</div>
+<div class="main-sub-menus" id="mainSubMenus" role="region" aria-label="補助メニュー">
   <div class="menus-toolbar" id="menusToolbar"><span id="menuSummary">補助メニュー</span><button type="button" id="collapseAllMenus" aria-controls="sectionBody-1 sectionBody-2 sectionBody-3 sectionBody-4 sectionBody-5 displaySettings">すべて折りたたむ</button></div>
   <div class="secondary-menus" aria-label="補助メニュー">
   <section class="pick card studio collapsed" id="targetStudio" data-collapse-key="目標の自動計算・分析">
@@ -1941,14 +1839,14 @@ body.menus-open .wrap{padding-bottom:84px!important}
     <div class="studio-head"><p class="eyebrow">目標の自動計算・分析</p><span class="coverage-pill" id="dataBadge">記録を確認中</span></div>
     
     <div class="target-preview"><div><span><span id="candidateLabel">選んだ期間から算出した目標候補</span> <small>（推測）</small></span><strong class="candidate-value num" id="candidateValue">—</strong></div><button class="main" id="applyCandidate">この候補を目標に設定</button></div>
-    <div class="pickgrid">
+    <div class="pickgrid" hidden>
       <div><label for="pickPeriod">集計期間</label><select id="pickPeriod" class="sm"><option value="30d">直近30日</option><option value="month">当月</option><option value="prev">先月</option><option value="3m">3か月</option><option value="all">全期間</option></select></div>
       <div><label for="pickRank">ランク</label><select id="pickRank" class="sm num"></select></div>
       <div><label for="pickBorder">設定する目標のボーダー</label><select id="pickBorder" class="sm num"><option value="0" selected>±0</option><option value="1">+1</option><option value="2">+2</option><option value="">手入力</option></select></div>
     </div>
     <div class="builder-controls">
-      <div><label for="targetMethod">目標の算出方法</label><select id="targetMethod"><option value="mean">平均値</option><option value="median">中央値</option><option value="p75" selected>上位25％の境界値</option><option value="max">期間内の最大値</option><option value="min">期間内の最小値</option></select></div>
-      <div><label for="bufferPct">上乗せ率（％）</label><input id="bufferPct" type="text" inputmode="decimal" value="0" autocomplete="off"></div>
+      <div hidden><label for="targetMethod">目標の算出方法</label><select id="targetMethod"><option value="mean">平均値</option><option value="median">中央値</option><option value="p75" selected>上位25％の境界値</option><option value="max">期間内の最大値</option><option value="min">期間内の最小値</option></select></div>
+      <div hidden><label for="bufferPct">上乗せ率（％）</label><input id="bufferPct" type="text" inputmode="decimal" value="0" autocomplete="off"></div>
       <div><label for="roundUnit">目標を切り上げる単位</label><select id="roundUnit"><option value="1">1ポイント</option><option value="100">100ポイント</option><option value="1000">1,000ポイント</option><option value="10000">10,000ポイント</option></select></div>
     </div>
     <div class="buffer-quick" aria-label="上乗せ率を選ぶ"><button data-buffer="0">上乗せなし</button><button data-buffer="5">＋5％</button><button data-buffer="10">＋10％</button><button data-buffer="20">＋20％</button></div>
@@ -2145,6 +2043,132 @@ body.menus-open .wrap{padding-bottom:84px!important}
 
 
   </div>
+</div>
+<div class="sticky-status" id="stickyStatus" hidden aria-hidden="true"><span>目標まであと<b id="stickyR">-</b></span><span>締めまで<b id="stickyT">-</b></span></div>
+<div class="wrap">
+  <header class="card">
+    <div class="header-main">
+      <h1>ポコメーター番長</h1>
+      <details class="tool-usage" id="toolUsage">
+      <summary id="toolUsageSummary">使い方</summary><div class="header-help-panel">
+      <div class="tool-usage-content" id="toolUsageText">
+        <h3>基本の3ステップ</h3><ol><li>締め時間と現コア数を合わせる。</li><li>目標値、現在値の順に入力する。数値は入力時に反映されます。</li><li>残り・達成率・必要量を確認する。</li></ol>
+        <p>K＝1,000、万＝10,000。全角数字も使えます。現在値は加減算や「戻す」で調整できます。目標欄を空にしても設定済みの目標は保持され、リセットで消去します。「戻す」で目標のリセットを1回取り消せます。</p>
+        <h3>過去の記録から目標を作る</h3><p>ボーダーを±0・+1・+2から選ぶと、締め時間・集計期間・ランク・算出方法・上乗せ率・切り上げ単位の変更を目標と残りへ即反映します。上乗せは0〜50％、小数1桁まで。ボーダーの「手入力」は入力した目標を基準に計算します。コア数の変更は必要コイン・アイテム数へ即反映します。算出できない条件では理由を表示し、直前の目標を使用します。</p>
+        <p>集計は昨日以前の記録が対象。未登録日は0で補いません。直近30日は旧版参考値を除外し、他の期間には含めます。統計は過去の目安で、当日のボーダーを予測・保証するものではありません。</p>
+        <p>日別ボーダーは毎日自動取得します。画面を開いた時と表示中も最新の取得データを確認します。自動算出中の目標・残り・アイテム目安へ反映し、手入力の目標と記録は保持します。更新元の掲載時刻により、最新データ日が昨日より前になる場合があります。</p><h3>記録・保存・移行</h3><p>「記録」で日別値を登録。CSV・ExcelのコピーやJSONを貼り付け、内容を確認して「記録する」で確定します。日別値は±0≦+1≦+2で3つそろえてください。CSV形式：日付,ランク,±0,+1,+2,締め時間。</p>
+        <p>バックアップJSONには設定・記録・アイテムを含みます。読み込みは既存へ結合し、同じ締め時間・日付・ランクはバックアップの値で上書きします。「保存メニュー」でJSONバックアップ、全記録CSV、選択期間CSVと保存方法を選べます。全記録CSVは旧版参考値を除外し、選択期間CSVは現在の条件で集計した記録と根拠を出力します。端末移行にはJSONを使い、端末に保存できたことを確認してください。</p>
+        <h3>iPhone・Androidで使う</h3><p>iPhoneはSafari、AndroidはChromeなどのブラウザでこのURLを開いてください。初回は通信できる状態で開き、保存メニューの「オフラインで使う」で準備完了を確認してください。準備後は通信なしでも開き直して計算できます。ホーム画面に追加した場合は、そのアイコンからも一度オンラインで開いてください。入力内容は端末・ブラウザごとに保存されます。別の端末へ移す場合はJSONバックアップを読み込んでください。</p>
+        <p>現在日時・残り時間はPococha公式サイトの応答時刻に合わせ、日本時間で表示します。初回・画面復帰・通信復帰と表示中の1分ごとに確認します。取得できない場合は前回の同期時刻を最大5分使い、その後は「端末時計・未同期」と表示します。通信による秒単位の誤差があり、Pocochaアプリ内部の時計との一致は確認できません。締め時刻を過ぎても現在値は自動で消えないため、新しい期間の値へ更新してください。</p>
+        <h3>換算・便利機能</h3><p>必要コインは残りポイント÷（4×コア倍率）の切り上げです。笹ﾊﾟﾝﾀﾞ・花火・馬車は各アイテムだけで満たす必要数で、合計して投げる個数ではありません。実際の獲得ポイントを保証しません。登録アイテムは実測した1個あたりのポイントで計算し、コア倍率を重ねません。</p>
+        <p>主画面の「残りをコピー」で現在の数値をコピーできます。保存済みのデフォルト値は「デフォルト値に戻す」で適用できます。</p>
+        <p><a class="manual-link" href="#manualGoal">目標へ</a><a class="manual-link" href="#recordEditor">記録へ</a><a class="manual-link" href="#backupTools">保存・移行へ</a></p>
+      </div>
+    </div></details>
+      <a class="method-help-link" id="calculationMethodsLink" href="/calculation-methods" target="_blank" rel="noopener noreferrer">算出方法の説明</a>
+      <!-- display-settings-menu:start -->
+      <details class="display-settings" id="displaySettings"><summary>表示設定</summary>
+        <div class="display-settings-panel">
+          <div class="display-settings-grid">
+            <div><label for="screenTheme">画面の明るさ</label><select id="screenTheme"><option value="dark">暗い表示</option><option value="light">明るい表示</option></select></div>
+            <div><label for="screenColor">画面の色</label><select id="screenColor"><option value="standard">標準</option><option value="blue">ブルー</option><option value="green">グリーン</option><option value="purple">パープル</option><option value="pink">ピンク</option><option value="black">黒</option></select></div>
+            <div><label for="backgroundColor">全体の背景色</label><select id="backgroundColor" aria-describedby="backgroundHelp"><option value="theme">標準</option><option value="black">黒</option><option value="gray">グレー</option><option value="blue">ブルー</option><option value="green">グリーン</option><option value="purple">パープル</option><option value="pink">ピンク</option><option value="red">レッド</option><option value="orange">オレンジ</option><option value="gold">ゴールド</option></select></div>
+            <div><label for="hudBackgroundColor">シンプルメニューの背景色</label><select id="hudBackgroundColor"><option value="theme">標準</option><option value="black">黒</option><option value="gray">グレー</option><option value="blue">ブルー</option><option value="green">グリーン</option><option value="purple">パープル</option><option value="pink">ピンク</option><option value="red">レッド</option><option value="orange">オレンジ</option><option value="gold">ゴールド</option></select></div>
+            <div><label for="listColor">リスト内の色</label><select id="listColor"><option value="white">白</option><option value="black">黒</option><option value="gray">グレー</option><option value="blue">ブルー</option><option value="green">グリーン</option><option value="purple">パープル</option><option value="pink">ピンク</option><option value="red">レッド</option><option value="orange">オレンジ</option><option value="gold">ゴールド</option></select></div>
+            <div><label for="numberColor">数字の色</label><select id="numberColor"><option value="black">モノクロ</option><option value="gray">グレー</option><option value="blue">ブルー</option><option value="green">グリーン</option><option value="purple">パープル</option><option value="pink">ピンク</option><option value="red">レッド</option><option value="orange">オレンジ</option><option value="gold">ゴールド</option><option value="cyan">シアン</option></select></div>
+            <div><label for="textWeight">全体の文字の太さ</label><select id="textWeight"><option value="ultra">極太文字</option><option value="bold">太文字</option><option value="standard">普通</option><option value="thin">細文字</option></select></div>
+            <div><label for="displayPreset">おすすめ配色</label><select id="displayPreset"><option value="">設定パターンを選ぶ</option><option value="default">デフォルト設定（太文字）</option><option value="clear">見やすい標準</option><option value="blue">爽やかブルー</option><option value="blueNight">夜用ブルー</option><option value="pink">やさしいピンク</option><option value="green">落ち着くグリーン</option><option value="purple">夜用パープル</option><option value="mono">くっきりモノクロ</option></select></div>
+          </div>
+          <p class="hint">全体とシンプルメニューの背景色は別々に選べます。選ぶとすぐ反映し、この端末に保存します。</p>
+          <p id="backgroundHelp" class="hint" hidden>全体を黒背景にすると、主画面の文字や入力欄も暗い表示になります。</p>
+          <div class="display-settings-actions"><button type="button" id="restoreDisplaySettings">標準の表示に戻す</button></div>
+          
+        </div>
+
+<p class="toast" id="displaySettingsStatus" role="status" aria-live="polite" aria-atomic="true"></p>
+</details>
+      <!-- display-settings-menu:end -->
+      <button type="button" id="refreshPage" aria-label="ページ全体を再読み込みする" title="ページ全体を再読み込み">更新</button>
+      <span class="ylogo-update" id="toolUpdatedDate" title="ツール本体の最終更新日時とバージョン（ボーダーデータの更新日時とは別）"><span>更新時間</span><time class="num" datetime="2026-10-23T23:54:26+09:00">2026/10/23 23:54:26</time><span class="num" id="toolVersion">最終更新バージョン：v2026.10.23.3</span></span>
+    </div>
+  </header>
+  <p class="hint" id="borderSyncStatus" role="status" style="font-size:.68rem;margin:5px 2px 8px;line-height:1.5">ボーダー確認中…</p>
+  
+  <div class="history-portal"><a href="https://poco-meter.freefreelife2000.chatgpt.site/e-border.html" class="manual-link" id="eBorderPortalLink"><span class="history-portal-text"><span class="history-portal-title">E帯のボーダーを保存・管理</span><span class="hint">画像の一括取込・編集・削除・未記録日を確認</span></span><span aria-hidden="true">›</span></a></div>
+  <div class="history-portal"><a href="/border-history" class="manual-link" id="historyPortalLink"><span aria-hidden="true">🗂️</span><span class="history-portal-text"><span class="history-portal-title">過去のボーダー表を開く</span><span class="hint">ランク別カレンダー／日付検索／カードをコピー</span></span><span class="history-portal-arrow" aria-hidden="true">›</span></a></div>
+  
+  <div class="period-notice-actions" id="periodNoticeActions" hidden><button type="button" id="reviewPeriodCurrent">現在値を確認・入力</button><button type="button" id="resetPeriodCurrent">0にリセット</button></div>
+
+  <p id="inputStatus" class="toast" role="status" aria-live="polite" hidden></p>
+  <details class="main-meter-menu" id="fullMeterMenu" hidden aria-hidden="true"><summary>詳細メーター・入力メニュー</summary>
+  <div class="meter card" id="liveMeter" role="region" aria-label="目標までの残り・入力・必要アイテム">
+    <div id="remainingSummary">
+      <div class="remaining-items-head">
+        <div class="remainbox">
+          <div class="goal-clock-row">
+            <time class="date num meter-now" id="today" title="現在日時・日本時間（時刻同期を確認中）"><span class="current-datetime-label" id="todayTimeLabel">時刻を確認中</span><b id="todayTime"></b>
+<span id="todayDate" hidden></span><span id="todayYear" hidden></span>
+</time>
+            <div class="goal-remaining">
+              <p class="remain-label" id="remainLabel">目標まであと</p>
+              <p class="remain num" id="remain" aria-describedby="remainExact">—</p>
+            </div>
+          </div>
+          <div class="meter-progress-row">
+          <div class="compact-deadline-controls">
+            <div class="deadline-countdown" id="deadlineCountdown"><span id="leftLabel">締めまで</span><div class="countdown-value"><span class="countdown-prefix" id="remainingTimePrefix">残り</span><b class="num" id="left" aria-describedby="leftLabel remainingTimePrefix clockTimeBasis">--:--:--</b></div><small class="clock-time-basis" id="clockTimeBasis"><span id="clockTimeSource">端末時計・日本時間</span><span id="clockAccuracy">誤差：未確認</span><button type="button" id="clockSyncNow" aria-label="Pocochaサーバー時刻を再同期"><span id="clockSyncStatus">サーバー時刻を確認中</span></button></small></div>
+            <div class="deadline-core-pair">
+            <div class="meter-deadline"><label for="closeSel">締め時間</label><select id="closeSel" class="closesel" aria-label="締め時間"><option value="13:00">13時〆</option><option value="22:00">22時〆</option><option value="00:00">24時〆</option><option value="custom">手入力</option></select></div>
+            <div class="core-quick meter-core"><label for="coreCountTop">現コア数</label><div class="core-quick-values"><input class="sm num" id="coreCountTop" type="text" inputmode="numeric" enterkeyhint="done" autocomplete="off" aria-describedby="coreBonusTop coreInputError inputStatus" placeholder="0" aria-label="現コア数（0〜1000人）" value="0"><span class="bonus num" id="coreBonusTop" aria-label="コアボ倍率">100%</span><small class="core-bonus-caption">コアボ</small></div><small id="coreInputError" class="local-input-error" hidden></small></div>
+            </div>
+          </div>
+          <div class="tubewrap"><div class="tube" id="progressMeter" role="progressbar" aria-label="目標の達成率" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="fill" id="fill"></div></div><span class="pct" id="pct">0%</span></div>
+          </div>
+          <p class="remain-exact num" id="remainExact">目標未設定</p>
+        </div>
+          <div class="quick-target-selects" id="quickTargetControls" role="group" aria-labelledby="quickTargetHeading">
+            <h3 id="quickTargetHeading">目標設定メニュー</h3>
+            <select id="quickPeriod" aria-label="集計期間"></select>
+            <select id="quickRank" class="num" aria-label="ランク"></select>
+            <select id="quickBorder" class="num" aria-label="設定する目標のボーダー"></select>
+            <select id="quickMethod" aria-label="算出方法"></select>
+            <div class="quick-buffer"><label for="quickBufferPct">上乗せ率</label><div class="quick-buffer-control"><input id="quickBufferPct" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" value="0" aria-label="上乗せ率（％）" aria-describedby="quickBufferError inputStatus"><span aria-hidden="true">％</span></div><small id="quickBufferError" class="local-input-error" hidden></small></div>
+          </div>
+    <div id="remainingItems" role="region" aria-labelledby="remainingItemsHeading" aria-describedby="remainingItemsDescription">
+
+    <h3 class="overview-subtitle" id="remainingItemsHeading">残りアイテムの目安</h3>
+    <p class="hint" id="remainingItemsDescription">目標メーターまでの残りコイン・アイテム数</p>
+    <div class="coins">
+      <div class="coin-card"><span>💰 必要コイン</span><b id="coinNeed">—</b></div>
+      <div class="coin-card"><span>🐶🐱 犬・猫（55）</span><b id="dogcatNeed">—</b></div>
+      <div class="coin-card"><span>🐼 笹ﾊﾟﾝﾀﾞ（111）</span><b id="pandaNeed">—</b></div>
+      <div class="coin-card"><span>🎆 花火（1,080）</span><b id="hanabiNeed">—</b></div>
+      <div class="coin-card"><span>🎃 馬車（5,555）</span><b id="bashaNeed">—</b></div>
+    </div>
+    </div>
+      </div>
+    </div>
+    
+    <div class="goal-inputs">
+    <div class="manual-goal" id="manualGoal">
+      <div class="lblrow"><label for="target">目標値</label><span class="mode-pill" id="manualTargetMode">手入力</span><div class="goal-reset-actions"><button type="button" id="restoreGoalDefaults">デフォルト値に戻す</button><button type="button" class="x" data-reset="target" aria-label="目標値をリセット">リセット</button></div></div>
+      <div class="manual-goal-controls"><input class="big num" id="target" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" aria-describedby="manualTargetHelp inputStatus" placeholder="例 500K / 50万"><button type="button" class="main" id="applyManualTarget">設定</button></div>
+      <div class="goal-setting-links"><button type="button" id="openBorderTargets" class="border-target-link" aria-controls="sectionBody-1">詳細設定</button><button type="button" id="openGoalDefaults" class="border-target-link" aria-controls="goalDefaultsPanel">デフォルト値設定</button></div>
+      <p class="hint short-input-help" id="manualTargetHelp">K・万・全角数字OK／入力時に反映</p><div class="goal-tools"><button type="button" id="undoTarget" disabled>戻す</button></div>
+      
+      
+
+
+</div>
+      <div class="curbox"><div class="curlbl"><label for="currentTop">現在値</label><button class="x" id="resetTop" aria-label="現在値をリセット">リセット</button></div>
+        <input class="num" id="currentTop" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="0">
+        <div class="curbtns"><button data-addtop="-1000" aria-label="現在値から1,000 ptを引く">−1K</button><button data-addtop="1000" aria-label="現在値に1,000 ptを足す">+1K</button><button data-addtop="10000" aria-label="現在値に10,000 ptを足す">+10K</button><button data-addtop="100000" aria-label="現在値に100,000 ptを足す">+100K</button></div><div class="current-tools"><button type="button" class="undo-current" id="undoCurrent" disabled aria-label="直前の現在値に戻す">戻す</button><small id="currentSavedTime" class="current-time num"></small></div></div>
+    </div>
+
+</div>
+
+  </details>
+
 
   <footer>無断転載・転用・再配布禁止<br>ブラウザ内で計算する非公式ツールです。入力内容は端末内で処理し、ブラウザへ保存を試みます。大切な記録はバックアップを保存してください。
     <div class="footer-support">
@@ -2175,43 +2199,27 @@ body.menus-open .wrap{padding-bottom:84px!important}
   }
   function render(){
     mini.classList.add('show');mini.classList.remove('hud-collapsed');mini.setAttribute('aria-hidden','false');
-    ['targetMini','currentMini','restoreTargetMini','openMiniTargetDetails','resetCurrentMini','miniPeriod','miniRank','miniBorder','miniMethod','miniBuffer','miniClose'].forEach(function(id){var el=document.getElementById(id);if(el)el.tabIndex=0;});
+    ['targetMini','currentMini','restoreTargetMini','openMiniTargetDetails','resetTargetMini','resetCurrentMini','miniPeriod','miniRank','miniBorder','miniMethod','miniBuffer','miniClose'].forEach(function(id){var el=document.getElementById(id);if(el)el.tabIndex=0;});
     document.documentElement.style.setProperty('--meter-hud-height','0px');document.documentElement.style.setProperty('--items-window-height','0px');
   }
-  // Other menus stay closed at start and open only from a button or explicit navigation.
-  var toggle=document.getElementById('mainMenuToggle'),menusOpen=false;
-  function setMenusOpen(value){
-    menusOpen=!!value;document.body.classList.toggle('menus-open',menusOpen);
-    if(toggle){toggle.setAttribute('aria-expanded',String(menusOpen));toggle.textContent=menusOpen?'その他のメニューを閉じる':'その他のメニューを開く';}
-    if(!menusOpen){var panel=document.getElementById('displaySettings');if(panel&&panel.open)panel.open=false;}
-    if(typeof renderBar==='function')renderBar();
-  }
+  // 2026-11: the auxiliary menus are integrated into the simple menu; nothing is hidden behind a separate menu.
   function scrollToNode(node){if(!node||typeof node.scrollIntoView!=='function')return;var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;node.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});}
   function openMenu(id){
     var target=document.getElementById(id);if(!target)return;
-    var wasOpen=menusOpen;setMenusOpen(true);
     if(target.tagName==='DETAILS')target.open=true;
-    if(id==='displaySettings'){displayFromMain=!wasOpen;var summary=target.querySelector('summary');if(summary)summary.focus({preventScroll:true});return;}
-    scrollToNode(id==='toolUsage'?target.closest('header')||target:target);
-    var focusTarget=target.tagName==='DETAILS'?target.querySelector('summary'):target.querySelector('button, summary, a');
-    if(focusTarget)focusTarget.focus({preventScroll:true});
+    if(id==='displaySettings'){var summary=target.querySelector('summary');if(summary)summary.focus({preventScroll:true});return;}
+    scrollToNode(target);
   }
-  var displayFromMain=false,displayPanel=document.getElementById('displaySettings');
-  if(displayPanel)displayPanel.addEventListener('toggle',function(){if(displayPanel.open||!displayFromMain)return;displayFromMain=false;setMenusOpen(false);var origin=document.getElementById('navDisplay');if(origin)origin.focus({preventScroll:true});});
-  if(toggle)toggle.onclick=function(){if(menusOpen){setMenusOpen(false);}else{openMenu('menusToolbar');}};
-  ['navFullMeter','navMenus','navDisplay','navUsage'].forEach(function(id){var button=document.getElementById(id);if(button)button.onclick=function(){openMenu(button.getAttribute('data-open-menu'));};});
-  var back=document.getElementById('closeMainMenus');
-  if(back)back.onclick=function(){setMenusOpen(false);scrollToNode(mini);if(toggle)toggle.focus({preventScroll:true});};
-  [['mainHistoryLink','historyPortalLink'],['mainEBorderLink','eBorderPortalLink']].forEach(function(pair){var link=document.getElementById(pair[0]),source=document.getElementById(pair[1]);if(link&&source)link.setAttribute('href',source.getAttribute('href'));});
-  // Status bar: shown only while other menus are open and the main screen has scrolled out of view.
-  var bar=document.getElementById('stickyStatus'),barR=document.getElementById('stickyR'),barT=document.getElementById('stickyT'),miniOut=false,barTimer=0;
+  // Status bar: shown while the remaining goal and countdown have scrolled out of view.
+  var bar=document.getElementById('stickyStatus'),barR=document.getElementById('stickyR'),barT=document.getElementById('stickyT'),hero=mini.querySelector('.main-hero'),heroOut=false,barTimer=0;
   function copyBar(){var r=document.getElementById('miniR'),t=document.getElementById('miniT');if(r&&barR.textContent!==r.textContent)barR.textContent=r.textContent;if(t&&barT.textContent!==t.textContent)barT.textContent=t.textContent;}
-  function renderBar(){if(!bar)return;var show=menusOpen&&miniOut;if(bar.hidden===show)bar.hidden=!show;clearInterval(barTimer);if(show){copyBar();barTimer=setInterval(copyBar,200);}}
-  if(bar&&'IntersectionObserver' in window)new IntersectionObserver(function(entries){entries.forEach(function(entry){miniOut=!entry.isIntersecting&&entry.boundingClientRect.top<0;});renderBar();}).observe(mini);
-  window.pocochaMainMenus={open:function(){setMenusOpen(true);},close:function(){setMenusOpen(false);},isOpen:function(){return menusOpen;},openMenu:openMenu};
+  function renderBar(){if(!bar)return;var show=heroOut;if(bar.hidden===show)bar.hidden=!show;clearInterval(barTimer);if(show){copyBar();barTimer=setInterval(copyBar,200);}}
+  if(bar&&hero&&'IntersectionObserver' in window)new IntersectionObserver(function(entries){entries.forEach(function(entry){heroOut=!entry.isIntersecting&&entry.boundingClientRect.top<0;});renderBar();}).observe(hero);
+  // Kept for the calculator script: menus are always available inside the simple menu.
+  window.pocochaMainMenus={open:function(){},close:function(){},isOpen:function(){return true;},openMenu:openMenu};
   // Compatibility for the calculator script: both menus are always on.
   window.pocochaSimpleMenuController={isEnabled:function(){return true;},setEnabled:function(){render();},isItemsEnabled:function(){return true;},setItemsEnabled:function(){renderItems();},renderItems:renderItems};
-  renderItems();render();setMenusOpen(false);
+  renderItems();render();
 })();
 </script>
 <script>
@@ -3672,7 +3680,8 @@ body.menus-open .wrap{padding-bottom:84px!important}
   function scrollToControl(target,block){if(target&&target.id==='manualGoal'&&window.matchMedia&&window.matchMedia('(max-width:700px)').matches)target=$('target');if(target)target.scrollIntoView({behavior:window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:block||'nearest'});}
   function revealMenuTarget(id,focus){
     var target=$(id);if(!target)return;
-    if(window.pocochaMainMenus&&target.closest('.wrap')&&target!==$('inputStatus'))window.pocochaMainMenus.open();
+    // The detailed meter duplicates the simple menu and stays hidden; send its targets to the simple-menu fields.
+    if(target.closest('#fullMeterMenu')){id=/current/i.test(id)||target.closest('.curbox')?'currentMini':'targetMini';target=$(id);}
     var sec=target.closest('section.card');if(sec){setSectionCollapsed(sec,false);save();}
     for(var ancestor=target;ancestor;ancestor=ancestor.parentNode){if(ancestor.tagName==='DETAILS'){ancestor.open=true;ancestor.setAttribute('open','');}}
     scrollToControl(target,'start');
@@ -3706,7 +3715,7 @@ body.menus-open .wrap{padding-bottom:84px!important}
   if(phoneLayoutQuery){if(phoneLayoutQuery.addEventListener)phoneLayoutQuery.addEventListener('change',syncPhoneLayout);else if(phoneLayoutQuery.addListener)phoneLayoutQuery.addListener(syncPhoneLayout);}
   syncPhoneLayout();
   function isEditingField(el){return !!el&&['INPUT','SELECT','TEXTAREA'].indexOf(el.tagName)>=0;}
-  function syncMiniVisibility(){var editing=isEditingField(document.activeElement),phone=phoneLayoutQuery&&phoneLayoutQuery.matches,show=true;var viewport=window.visualViewport,offset=phone&&viewport?Math.max(0,window.innerHeight-viewport.height-viewport.offsetTop):0,top=phone&&viewport?Math.max(0,viewport.offsetTop||0):0;document.documentElement.style.setProperty('--meter-keyboard-offset',offset+'px');document.documentElement.style.setProperty('--meter-viewport-top',top+'px');document.body.classList.toggle('editing-field',editing);var visibleHeight=viewport&&viewport.height||window.innerHeight;if(Number.isFinite(visibleHeight)&&visibleHeight>0)document.documentElement.style.setProperty('--meter-visible-height',visibleHeight+'px');syncItemsWindow();$('mini').classList.add('show');$('mini').setAttribute('aria-hidden','false');['targetMini','currentMini','restoreTargetMini','openMiniTargetDetails','resetCurrentMini','miniPeriod','miniRank','miniBorder','miniMethod','miniBuffer','miniClose'].forEach(function(id){$(id).tabIndex=0;});document.documentElement.style.setProperty('--meter-hud-height','0px');document.documentElement.style.setProperty('--hud-bottom',$('mini').getBoundingClientRect().bottom+'px');}
+  function syncMiniVisibility(){var editing=isEditingField(document.activeElement),phone=phoneLayoutQuery&&phoneLayoutQuery.matches,show=true;var viewport=window.visualViewport,offset=phone&&viewport?Math.max(0,window.innerHeight-viewport.height-viewport.offsetTop):0,top=phone&&viewport?Math.max(0,viewport.offsetTop||0):0;document.documentElement.style.setProperty('--meter-keyboard-offset',offset+'px');document.documentElement.style.setProperty('--meter-viewport-top',top+'px');document.body.classList.toggle('editing-field',editing);var visibleHeight=viewport&&viewport.height||window.innerHeight;if(Number.isFinite(visibleHeight)&&visibleHeight>0)document.documentElement.style.setProperty('--meter-visible-height',visibleHeight+'px');syncItemsWindow();$('mini').classList.add('show');$('mini').setAttribute('aria-hidden','false');['targetMini','currentMini','restoreTargetMini','openMiniTargetDetails','resetTargetMini','resetCurrentMini','miniPeriod','miniRank','miniBorder','miniMethod','miniBuffer','miniClose'].forEach(function(id){$(id).tabIndex=0;});document.documentElement.style.setProperty('--meter-hud-height','0px');document.documentElement.style.setProperty('--hud-bottom',$('mini').getBoundingClientRect().bottom+'px');}
   function keepMiniInputVisible(){var el=document.activeElement;if(!isEditingField(el))return;if(el.closest('#mini, #itemsWindow, #selectWindow, .display-settings-panel')){el.scrollIntoView({behavior:'auto',block:'nearest'});return;}if(!(phoneLayoutQuery&&phoneLayoutQuery.matches)){scrollToControl(el,'nearest');return;}el.scrollIntoView({behavior:'auto',block:'nearest'});var rect=el.getBoundingClientRect(),top=$('mini').getBoundingClientRect().bottom+8,viewport=window.visualViewport,bottom=(viewport?viewport.height+viewport.offsetTop:window.innerHeight)-8;if(rect.top<top)window.scrollBy({top:rect.top-top,behavior:'auto'});else if(rect.bottom>bottom)window.scrollBy({top:rect.bottom-bottom,behavior:'auto'});}
   function settleMiniInput(){clearTimeout(mobileScrollTimer);mobileScrollTimer=setTimeout(function(){syncMiniVisibility();keepMiniInputVisible();},80);}
   document.addEventListener('focusin',function(){phoneHudFocusId=['targetMini','currentMini'].indexOf(document.activeElement.id)>=0?document.activeElement.id:'';syncMiniVisibility();if(window.matchMedia&&window.matchMedia('(max-width:700px)').matches)settleMiniInput();});document.addEventListener('focusout',function(e){if((e.target===$('currentMini')||e.target===$('targetMini'))&&phoneLayoutQuery&&phoneLayoutQuery.matches)phoneHudFocusId='';setTimeout(syncMiniVisibility,0);});
@@ -3718,6 +3727,7 @@ body.menus-open .wrap{padding-bottom:84px!important}
   $('miniUndoCurrent').onclick=function(){var undone=undoCurrent();showMiniAction(undone===false?'戻す操作はありません。':'現在値を直前の値に戻しました。');};
   // Tapping a main-screen number selects it, so a new value replaces the old one without deleting digits by hand.
   ['targetMini','currentMini','coreCountItems'].forEach(function(id){$(id).addEventListener('focus',function(){var el=this;setTimeout(function(){if(document.activeElement===el&&el.value&&typeof el.select==='function')el.select();},0);});});
+  $('resetTargetMini').onclick=function(){if(typeof window.confirm==='function'&&!window.confirm('目標値をリセットしますか？'))return;var reset=document.querySelector('[data-reset="target"]');if(reset)reset.click();showMiniAction($('manualTargetMsg').textContent||'目標値をリセットしました。');};
   var miniActionTimer=0;function showMiniAction(text){var msg=$('miniActionMsg');msg.textContent=text||'';clearTimeout(miniActionTimer);if(text)miniActionTimer=setTimeout(function(){msg.textContent='';},5000);}
   syncMiniVisibility();
   // バックアップ

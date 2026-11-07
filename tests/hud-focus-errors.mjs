@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {pageEngine,plain} from './calculator-harness.mjs';
+import {pageEngine,plain,html} from './calculator-harness.mjs';
 import {createAudit} from './theme-cascade.mjs';
 
 test.afterEach(()=>global.gc?.());
@@ -11,14 +11,16 @@ test.afterEach(()=>global.gc?.());
 const desktop={theme:'dark',accent:'standard',weight:'standard',width:1280,pointer:'fine'};
 function input(p,id,value){const field=p.element(id);field.focus();field.value=value;field.dispatchEvent(new Event('input'));return field;}
 
-test('Closing the other menus returns focus to the visible menu toggle',()=>{
+test('Auxiliary menus live inside the simple menu and the duplicated detailed meter stays hidden',()=>{
   const p=pageEngine(undefined,{navigator:{onLine:false}});
-  p.element('mainMenuToggle').click();assert.equal(p.document.body.classList.contains('menus-open'),true);
-  p.element('closeMainMenus').focus();p.element('closeMainMenus').click();
-  assert.equal(p.document.body.classList.contains('menus-open'),false);
-  assert.equal(p.document.activeElement?.id,'mainMenuToggle');
-  assert.equal(p.element('mainMenuToggle').getAttribute('aria-expanded'),'false');
+  for(const id of ['copyRemaining','appliedContext'])assert.ok(p.element(id).closest('#mini'),id+' inside the simple menu');
+  for(const id of ['targetStudio','borderTargets','menusToolbar'])assert.ok(p.element(id).closest('#mainSubMenus'),id+' in the auxiliary menus');
+  assert.ok(html.indexOf('id="mini"')<html.indexOf('id="mainSubMenus"')&&html.indexOf('id="mainSubMenus"')<html.indexOf('<div class="wrap">'),'auxiliary menus follow the simple menu directly');
+  assert.match(html,/<details class="main-meter-menu" id="fullMeterMenu" hidden aria-hidden="true">/);
   assert.equal(p.element('itemsWindow').hidden,false,'The item estimate stays visible');
+  // Duplicated goal controls in the detailed goal settings are hidden in favour of the simple-menu selects.
+  assert.match(html,/<div class="pickgrid" hidden>/);
+  for(const id of ['targetMethod','bufferPct'])assert.match(html,new RegExp('<div hidden><label for="'+id+'">'),id);
 });
 
 for(const [id,errorId] of [['targetMini','targetMiniError'],['currentMini','currentMiniError']])test('Desktop HUD '+id+' exposes its local error without relying on border color',()=>{
