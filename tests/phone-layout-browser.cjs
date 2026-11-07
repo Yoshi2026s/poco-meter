@@ -24,12 +24,9 @@ async function open(width,file,config={}){
  await p.addStyleTag({content:css+'body{font-family:"Noto Sans JP",sans-serif!important}'+(config.scale===2?'html{font-size:32px}':'')});
  await p.evaluate(()=>document.fonts.ready);
  await p.evaluate(c=>{for(const [id,value] of [['screenTheme',c.theme||'dark'],['textWeight',c.weight||'bold']]){const e=document.getElementById(id);e.value=value;e.dispatchEvent(new Event('change',{bubbles:true}));}},config);
- // The detailed meter menu is closed by default (see compact-menus); open it as a user would.
- // Other menus are closed behind the simple menu (main screen) by default; open them as a user would.
- await p.evaluate(()=>{if(window.pocochaMainMenus)window.pocochaMainMenus.open();const menu=document.getElementById('fullMeterMenu');if(menu)menu.open=true;});
  if(config.defaultsOnly)return {context,p,errors};
- await fill(p,'#coreCountTop','40');await fill(p,'#target','500K');await p.locator('#applyManualTarget').click();await fill(p,'#currentTop','125K');
- await p.locator('#currentTop').blur();await p.evaluate(()=>window.scrollTo(0,0));await p.waitForTimeout(80);
+ await fill(p,'#coreCountItems','40');await p.locator('#coreCountItems').press('Enter');await fill(p,'#targetMini','500K');await p.locator('#targetMini').press('Enter');await fill(p,'#currentMini','125K');
+ await p.locator('#currentMini').press('Enter');await p.locator('#currentMini').blur();await p.evaluate(()=>window.scrollTo(0,0));await p.waitForTimeout(80);
  return {context,p,errors};
 }
 async function geometry(p){return p.evaluate(()=>{
@@ -44,64 +41,37 @@ async function step(p){await p.waitForTimeout(80);}
  browser=await chromium.launch({headless:true,executablePath:binary,args:['--no-sandbox','--disable-dev-shm-usage','--disable-gpu']});
  for(const config of cases){let context;try{
   const opened=await open(config.width,path.join(ROOT,'calculator/index.html'),config);context=opened.context;const p=opened.p;
-  assert.equal((await p.locator('#remain').innerText()).trim(),'375K');
-  assert.equal((await p.locator('#pct').innerText()).trim(),'25%');
-  assert.equal(await p.locator('#mini').getAttribute('aria-hidden'),'false','HUD visible at page top');assert.ok(await p.locator('#mini').isVisible());for(const id of ['#miniSub1k','#miniAdd1k','#miniAdd10k','#miniAdd100k','#miniUndoCurrent']){const box=await p.locator(id).boundingBox();assert.ok(box&&box.height>=44,'quick add tap target '+id);}assert.equal(await p.locator('#mainMenuToggle').getAttribute('aria-expanded'),'true');
-  assert.equal(await p.locator('#miniR').innerText(),await p.locator('#remain').innerText());
+  // 2026-11 (integrated): the simple menu is the only visible meter; the duplicated detailed meter stays hidden.
+  assert.equal((await p.locator('#miniR').innerText()).trim(),'375K');assert.equal((await p.locator('#miniPct').innerText()).trim(),'25%');
+  assert.equal(await p.locator('#mini').getAttribute('aria-hidden'),'false','simple menu visible at page top');assert.ok(await p.locator('#mini').isVisible());assert.equal(await p.locator('#fullMeterMenu').isVisible(),false,'detailed meter hidden');
+  for(const id of ['#miniSub1k','#miniAdd1k','#miniAdd10k','#miniAdd100k','#miniUndoCurrent','#copyRemaining','#collapseAllMenus']){const box=await p.locator(id).boundingBox();assert.ok(box&&box.height>=44,'tap target '+id);}
   assert.ok(await p.locator('#miniNow').isVisible(),'HUD current datetime visible');assert.equal(await p.locator('#miniNowDate').innerText(),'2026/10/05（月）');const hudClock=await p.locator('#miniNowTime').innerText();
   const countdown=await p.locator('#miniT').innerText();await p.clock.runFor(1000);assert.notEqual(await p.locator('#miniT').innerText(),countdown,'HUD countdown ticks');assert.equal(await p.locator('#miniT').innerText(),await p.locator('#left').innerText());
   assert.notEqual(await p.locator('#miniNowTime').innerText(),hudClock,'HUD clock ticks');assert.equal(await p.locator('#miniNowTime').innerText(),await p.locator('#todayTime').innerText());assert.equal(await p.locator('#miniNow').getAttribute('datetime'),await p.locator('#today').getAttribute('datetime'));assert.equal(await p.locator('#miniNow').getAttribute('aria-label'),await p.locator('#today').getAttribute('aria-label'));
   const hudStyle=await p.evaluate(()=>{const mini=document.getElementById('mini'),probe=document.createElement('span');mini.appendChild(probe);const color=name=>{probe.style.setProperty('color','var('+name+')','important');return getComputedStyle(probe).color;};const red=color('--red'),green=color('--success');probe.remove();const css=getComputedStyle(document.getElementById('miniT'));return {red,green,countdownColor:css.color,countdownFont:parseFloat(css.fontSize),clockColor:getComputedStyle(document.getElementById('miniNowTime')).color,dateColor:getComputedStyle(document.getElementById('miniNowDate')).color,bg:getComputedStyle(mini).backgroundColor};});
   assert.equal(hudStyle.countdownColor,hudStyle.red,'countdown remains red');assert.ok(hudStyle.countdownFont>=18,'HUD countdown is larger');assert.equal(hudStyle.clockColor,hudStyle.green,'clock remains green');assert.equal(hudStyle.dateColor,hudStyle.green,'date remains green');
-  const g=await geometry(p),b=g.boxes;
-  assert.ok(g.documentWidth<=g.viewport+1,'page overflows '+JSON.stringify(g));
-  assert.equal(b['#todayTime'].whiteSpace,'nowrap');assert.equal(b['#left'].whiteSpace,'nowrap');
-  assert.ok(b['#todayTime'].height<=parseFloat(b['#todayTime'].line)*1.1,'clock wraps');
-  assert.ok(b['.compact-deadline-controls'].bottom<=Math.min(b['#today'].y,b['#quickTargetControls'].y),'deadline, closing time and core precede clock/settings');
-  assert.ok(b['#left'].right<=b['#closeSel'].x&&b['#closeSel'].right<=b['#coreCountTop'].x,'three closing controls are one horizontal row');
-  const middle=r=>r.y+r.height/2;assert.ok(Math.abs(middle(b['#left'])-middle(b['#closeSel']))<3&&Math.abs(middle(b['#closeSel'])-middle(b['#coreCountTop']))<1,'closing values align in one row');
-  assert.equal(await p.locator('#remainingSummary .remaining-items-head').evaluate(e=>e.firstElementChild.className),'compact-deadline-controls','phone reading order starts with closing controls');
-  assert.ok(await p.locator('#currentMini').isVisible(),'HUD current input visible');assert.equal(await p.locator('#currentMini').getAttribute('tabindex'),'0');assert.equal(await p.locator('#currentMini').inputValue(),'125,000');
-  assert.ok(await p.locator('#targetMini').isVisible(),'HUD target input visible');assert.equal(await p.locator('#targetMini').getAttribute('tabindex'),'0');assert.equal(await p.locator('#targetMini').inputValue(),'500,000');
-  const targetHud=await p.locator('#targetMini').boundingBox(),currentHud=await p.locator('#currentMini').boundingBox();assert.ok(Math.abs(targetHud.y-currentHud.y)<1&&targetHud.x+targetHud.width<=currentHud.x,'HUD inputs share a simple row');
-  for(const selector of ['#miniNowDate','#miniNowTime','#miniT'])assert.equal(await p.locator(selector).evaluate(e=>e.scrollWidth<=e.clientWidth+1),true,'HUD text fits '+selector);
-  const hud=await p.locator('#mini').boundingBox(),hudInput=await p.locator('#currentMini').boundingBox();assert.ok(hudInput.height>=44,'HUD touch input height');assert.ok(hudInput.x>=hud.x&&hudInput.x+hudInput.width<=hud.x+hud.width,'HUD field stays within viewport');
-  assert.ok(b['#quickTargetControls'].x>=b['.remainbox'].right-1,'settings are right of meter');
-  const menus=[];for(const id of ['#quickPeriod','#quickRank','#quickBorder','#quickMethod'])menus.push(await p.locator(id).boundingBox());for(let i=1;i<menus.length;i++){assert.ok(Math.abs(menus[i].x-menus[0].x)<1&&menus[i].y>=menus[i-1].y+menus[i-1].height,'menus stack vertically');}
-  assert.ok(b['#todayTime'].y>=b['#todayDate'].bottom-1,'clock is below date');assert.ok(b['#left'].x>=b['#leftLabel'].right-1&&b['#left'].x-b['#leftLabel'].right<9,'countdown directly right of label');assert.ok(b['#left'].bottom>b['#leftLabel'].y&&b['#leftLabel'].bottom>b['#left'].y,'countdown stays on same row');
-  assert.ok(b['#remainingItems'].y>=b['#currentTop'].bottom-1,'items follow current value');assert.equal(await p.locator('#remainingItems').evaluate(e=>e.previousElementSibling.className),'curbox','items directly follow current input group');
-  assert.ok(Math.abs(b['#remainingItems'].width-b['.goal-inputs'].width)<2,'items use full width');
-  assert.ok(Math.abs(b['#currentTop'].y-b['#target'].y)<1,'target and current input share one row');assert.ok(b['#currentTop'].x>=b['#target'].right,'input groups do not overlap');
-  assert.ok(g.closeTextNeed<=b['#closeSel'].width+1,'closing choice clipped '+g.closeTextNeed+' > '+b['#closeSel'].width);
-  for(const id of ['#closeSel','#coreCountTop']){assert.ok(b[id].height>=44,'touch control height (2026-11: 44px or more) '+id);assert.ok(parseFloat(b[id].font)>=16,'input avoids iOS focus zoom '+id);}
-  for(const id of ['#target','#currentTop'])assert.ok(b[id].height>=44,'touch height '+id);
-  for(const selector of ['#quickPeriod','#quickRank','#quickBorder','#quickMethod','#quickBufferPct']){const rect=await p.locator(selector).boundingBox();assert.ok(rect.height>=44,'goal menu touch height (2026-11: 44px or more) '+selector);}
-  if(config.scale===1)for(const row of g.coins){assert.ok(row.label<=row.labelLine*1.1,'item label wraps unnecessarily');assert.ok(row.number<=row.numberLine*1.1,'item count wraps unnecessarily');}
-  for(const id of ['-1000','1000','10000','100000'])assert.equal(await p.locator('[data-addtop="'+id+'"]').isVisible(),false,'phone increment controls removed');
-  await fill(p,'#currentTop','126K');await p.locator('#currentTop').blur();assert.equal((await p.locator('#remain').innerText()).trim(),'374K');assert.equal((await p.locator('#miniR').innerText()).trim(),'374K');
-  assert.equal(await p.locator('#currentMini').inputValue(),'126,000','main edit synchronizes HUD');
-  await fill(p,'#currentMini','127K');assert.equal((await p.locator('#remain').innerText()).trim(),'373K');assert.equal(await p.locator('#currentTop').inputValue(),'127,000');assert.equal(await p.locator('#current').inputValue(),'127,000');
-  await p.locator('#currentMini').press('Enter');assert.equal(await p.locator('#currentMini').inputValue(),'127,000');
-  assert.equal(await p.evaluate(()=>JSON.parse(localStorage.getItem('pococha-meter-calc-v1')).current),'127000','HUD edits save same state');
-  await p.locator('#undoCurrent').click();assert.equal((await p.locator('#remain').innerText()).trim(),'374K');assert.equal(await p.locator('#currentMini').inputValue(),'126,000');
-  await fill(p,'#currentTop','125K');await p.locator('#currentTop').blur();assert.equal((await p.locator('#remain').innerText()).trim(),'375K');assert.equal((await p.locator('#miniR').innerText()).trim(),'375K');
-  await fill(p,'#targetMini','600K');assert.equal((await p.locator('#remain').innerText()).trim(),'475K');assert.equal(await p.locator('#target').inputValue(),'600,000');await p.locator('#targetMini').press('Enter');assert.equal(await p.locator('#targetMini').inputValue(),'600,000');assert.equal(await p.evaluate(()=>JSON.parse(localStorage.getItem('pococha-meter-calc-v1')).target),'600000');assert.equal((await p.locator('#miniR').innerText()).trim(),'475K');await fill(p,'#target','500K');await p.locator('#applyManualTarget').click();
-  await p.evaluate(()=>window.scrollTo(0,document.querySelector('#remain').getBoundingClientRect().bottom+scrollY+4));await step(p);
-  assert.equal(await p.locator('#mini').getAttribute('aria-hidden'),'false','HUD remains visible while summary is visible');
-  await p.evaluate(()=>window.scrollTo(0,document.querySelector('#remainingSummary').getBoundingClientRect().bottom+scrollY+4));await step(p);
-  assert.equal(await p.locator('#mini').getAttribute('aria-hidden'),'false','HUD when summary leaves viewport');
-  // 2026-11: the simple menu is the main screen in normal flow (not fixed); it scrolls away with the page.
-  const mini=await p.locator('#mini').boundingBox();assert.ok(mini.y+mini.height<=0,'main screen scrolls with the page instead of covering the menus');
-  await p.locator('#currentTop').focus();await p.clock.runFor(100);await step(p);
-  const focused=await p.locator('#currentTop').boundingBox();assert.ok(focused.y>=0&&focused.y+focused.height<=844,'focused input is in view');
-  assert.equal(await p.evaluate(()=>{const r=document.getElementById('currentTop').getBoundingClientRect();return document.elementFromPoint(r.left+r.width/2,r.top+r.height/2)?.id;}),'currentTop','nothing covers the focused input');
-  await p.locator('#currentTop').blur();await p.evaluate(()=>window.scrollTo(0,document.documentElement.scrollHeight));await step(p);assert.ok(await p.locator('#closeMainMenus').isVisible(),'return button visible at footer');
-  const back=await p.locator('#closeMainMenus').boundingBox();assert.ok(back.height>=44&&back.x+back.width<=config.width,'return button reachable');
-  await p.locator('#currentTop').blur();await p.evaluate(()=>window.scrollTo(0,0));await step(p);
+  const g=await geometry(p);assert.ok(g.documentWidth<=g.viewport+1,'page overflows '+JSON.stringify(g));
+  for(const selector of ['#miniNowTime','#miniT'])assert.equal(await p.locator(selector).evaluate(e=>e.scrollWidth<=e.clientWidth+1),true,'text fits '+selector);
+  assert.ok(await p.locator('#currentMini').isVisible());assert.equal(await p.locator('#currentMini').getAttribute('tabindex'),'0');assert.equal(await p.locator('#currentMini').inputValue(),'125,000');
+  assert.ok(await p.locator('#targetMini').isVisible());assert.equal(await p.locator('#targetMini').getAttribute('tabindex'),'0');assert.equal(await p.locator('#targetMini').inputValue(),'500,000');
+  const targetHud=await p.locator('#targetMini').boundingBox(),currentHud=await p.locator('#currentMini').boundingBox();assert.ok(Math.abs(targetHud.y-currentHud.y)<1&&targetHud.x+targetHud.width<=currentHud.x,'inputs share a row');
+  for(const id of ['#targetMini','#currentMini','#miniPeriod','#miniRank','#miniBorder','#miniMethod','#miniBuffer','#miniClose','#coreCountItems']){const box=await p.locator(id).boundingBox();assert.ok(box.height>=44,'touch height '+id);assert.ok(await p.locator(id).evaluate(e=>parseFloat(getComputedStyle(e).fontSize))>=16,'no iOS focus zoom '+id);}
+  const order=await p.evaluate(()=>['.main-hero','.main-inputs','#miniGoalMenu','#itemsWindow','#mainTools','#mainSubMenus'].map(s=>document.querySelector(s).getBoundingClientRect().y));for(let i=1;i<order.length;i++)assert.ok(order[i]>order[i-1],'simple menu reading order');
+  if(config.scale===1)for(const row of await p.evaluate(()=>[...document.querySelectorAll('#itemsWindowRow .coin-card')].map(e=>({w:e.clientWidth,s:e.scrollWidth}))))assert.ok(row.s<=row.w,'item card fits');
+  await fill(p,'#currentMini','127K');await p.locator('#currentMini').press('Enter');assert.equal((await p.locator('#miniR').innerText()).trim(),'373K');assert.equal(await p.locator('#currentMini').inputValue(),'127,000');
+  assert.equal(await p.evaluate(()=>JSON.parse(localStorage.getItem('pococha-meter-calc-v1')).current),'127000','simple-menu edits are saved');
+  await p.locator('#miniUndoCurrent').click();assert.equal((await p.locator('#miniR').innerText()).trim(),'375K');assert.equal(await p.locator('#currentMini').inputValue(),'125,000');
+  await fill(p,'#targetMini','600K');await p.locator('#targetMini').press('Enter');assert.equal((await p.locator('#miniR').innerText()).trim(),'475K');assert.equal(await p.evaluate(()=>JSON.parse(localStorage.getItem('pococha-meter-calc-v1')).target),'600000');
+  await fill(p,'#targetMini','500K');await p.locator('#targetMini').press('Enter');
+  // Scrolling into the integrated sub menus shows the status bar; nothing covers a focused field.
+  await p.locator('#targetStudio .sectionToggle').click();await p.evaluate(()=>window.scrollTo(0,document.getElementById('mainSubMenus').getBoundingClientRect().top+scrollY));await p.clock.runFor(300);await step(p);
+  assert.equal(await p.locator('#stickyStatus').isVisible(),true,'status bar while the hero is out of view');assert.equal((await p.locator('#stickyR').innerText()).trim(),'375K');
+  await p.locator('#roundUnit').focus();await step(p);assert.equal(await p.evaluate(()=>{const r=document.getElementById('roundUnit').getBoundingClientRect();return document.elementFromPoint(r.left+r.width/2,r.top+r.height/2)?.id;}),'roundUnit','nothing covers the focused field');
+  await p.locator('#roundUnit').blur();await p.evaluate(()=>window.scrollTo(0,0));await p.clock.runFor(300);await step(p);assert.equal(await p.locator('#stickyStatus').isVisible(),false,'status bar hidden at top');
   if(config.scale===1&&[320,390,430].includes(config.width)&&config.weight==='bold')await p.screenshot({path:path.join(OUT,'phone-'+config.width+'-'+config.theme+'.png'),fullPage:true,animations:'disabled'});
-  await fill(p,'#target','514.421K');await p.locator('#applyManualTarget').click();await fill(p,'#currentTop','100K');await p.locator('#currentTop').blur();assert.equal((await p.locator('#remain').innerText()).trim(),'414.421K');
-  assert.equal(await p.locator('#remain').evaluate(e=>e.scrollWidth<=e.clientWidth+1),true,'typical long K value fits available space');
-  await fill(p,'#target','9007199254740991');await fill(p,'#currentTop','0');await p.locator('#currentTop').blur();
+  await fill(p,'#targetMini','514.421K');await p.locator('#targetMini').press('Enter');await fill(p,'#currentMini','100K');await p.locator('#currentMini').press('Enter');assert.equal((await p.locator('#miniR').innerText()).trim(),'414.421K');
+  assert.equal(await p.locator('#miniR').evaluate(e=>e.scrollWidth<=e.clientWidth+1),true,'typical long K value fits available space');
+  await fill(p,'#targetMini','9007199254740991');await p.locator('#targetMini').press('Enter');await fill(p,'#currentMini','0');await p.locator('#currentMini').press('Enter');
   const long=await geometry(p);assert.ok(long.documentWidth<=long.viewport+1,'large numbers overflow');
   assert.deepEqual(opened.errors,[],'runtime errors');
   results.push({config,status:'passed',geometry:g});console.log('PASS '+JSON.stringify(config));
@@ -137,7 +107,7 @@ async function step(p){await p.waitForTimeout(80);}
   await p.locator('#currentMini').evaluate(e=>{e.value='あ';e.dispatchEvent(new InputEvent('input',{bubbles:true,isComposing:true,data:'あ'}));});await p.clock.runFor(1000);
   assert.equal(await p.locator('#currentMini').inputValue(),'あ','ticker preserves IME composition');assert.equal((await p.locator('#remain').innerText()).trim(),'375K');
   await p.locator('#currentMini').evaluate(e=>{e.value='１２６０００';e.dispatchEvent(new CompositionEvent('compositionend',{bubbles:true,data:'１２６０００'}));});await p.locator('#currentMini').press('Enter');assert.equal((await p.locator('#remain').innerText()).trim(),'374K');assert.equal(await p.locator('#currentTop').inputValue(),'126,000');
-  await p.locator('#undoCurrent').click();assert.equal(await p.locator('#currentMini').inputValue(),'125,000');
+  await p.locator('#miniUndoCurrent').click();assert.equal(await p.locator('#currentMini').inputValue(),'125,000');
   await p.locator('#resetTop').click();assert.equal(await p.locator('#currentMini').inputValue(),'0');assert.equal((await p.locator('#miniR').innerText()).trim(),'500K');
   await fill(p,'#currentMini','126K');await p.locator('#currentMini').press('Enter');
   assert.equal(await p.evaluate(()=>JSON.parse(localStorage.getItem('pococha-meter-calc-v1')).current),'126000','HUD edit is saved');assert.equal(await p.locator('#currentTop').inputValue(),'126,000');
@@ -152,8 +122,8 @@ async function step(p){await p.waitForTimeout(80);}
   await fill(p,'#targetMini','500K');await p.locator('#targetMini').press('Enter');assert.equal(await p.locator('#inputStatus').isVisible(),false);assert.equal(await p.locator('#targetMiniError').isVisible(),false);await p.setViewportSize({width:390,height:844});await step(p);
   await fill(p,'#targetMini','0');await p.locator('#targetMini').press('Enter');assert.equal(await p.evaluate(()=>document.activeElement.id),'targetMini');assert.equal((await p.locator('#miniR').innerText()).trim(),'375K','zero draft retains target');
   await fill(p,'#targetMini','６０万');await p.locator('#targetMini').press('Enter');assert.equal(await p.locator('#target').inputValue(),'600,000');assert.equal(await p.locator('#targetMini').inputValue(),'600,000');assert.equal((await p.locator('#miniR').innerText()).trim(),'475K');assert.equal(await p.locator('#targetMiniError').isVisible(),false);
-  await p.locator('[data-reset="target"]').click();assert.equal(await p.locator('#targetMini').inputValue(),'');assert.equal(await p.locator('#target').inputValue(),'');await p.locator('#undoTarget').click();assert.equal(await p.locator('#targetMini').inputValue(),'600,000');
-  await p.locator('#quickBorder').selectOption('0');const auto=await p.locator('#target').inputValue();assert.ok(auto.length>0);assert.equal(await p.locator('#targetMini').inputValue(),auto,'automatic border selection mirrors target');
+  p.once('dialog',d=>d.accept());await p.locator('#resetTargetMini').click();assert.equal(await p.locator('#targetMini').inputValue(),'');assert.equal(await p.locator('#target').inputValue(),'');await p.evaluate(()=>document.getElementById('undoTarget').click());assert.equal(await p.locator('#targetMini').inputValue(),'600,000');
+  await p.locator('#miniBorder').selectOption('0');const auto=await p.locator('#target').inputValue();assert.ok(auto.length>0);assert.equal(await p.locator('#targetMini').inputValue(),auto,'automatic border selection mirrors target');
   await p.locator('#targetMini').focus();await p.locator('#targetMini').dispatchEvent('compositionstart');
   await p.locator('#targetMini').evaluate(e=>{e.value='あ';e.dispatchEvent(new InputEvent('input',{bubbles:true,isComposing:true,data:'あ'}));});
   const before=await p.evaluate(()=>JSON.parse(localStorage.getItem('pococha-meter-calc-v1')).target);
@@ -165,7 +135,7 @@ async function step(p){await p.waitForTimeout(80);}
   // Opening on a phone resets the target to its default; HUD and detailed input stay in sync.
   await p.reload();assert.notEqual(await p.locator('#targetMini').inputValue(),'600,000','phone opening resets target');assert.equal(await p.locator('#targetMini').inputValue(),await p.locator('#target').inputValue());assert.equal(await p.locator('#currentMini').inputValue(),'0');
   assert.equal(await p.evaluate(()=>document.body.classList.contains('menus-open')),false,'other menus closed again after reload');
-  await p.locator('#navFullMeter').click();await p.locator('#restoreGoalDefaults').click();assert.equal(await p.locator('#targetMini').inputValue(),await p.locator('#target').inputValue(),'defaults mirror target');
+  await p.locator('#restoreTargetMini').click();assert.equal(await p.locator('#targetMini').inputValue(),await p.locator('#target').inputValue(),'defaults mirror target');
   assert.deepEqual(opened.errors,[]);results.push({status:'passed',hudTargetValidationAutomaticCompositionPersistence:true});console.log('PASS HUD target validation, auto border, IME, reset/default and persistence');
  }catch(e){failures.push({behavior:'hudTargetInput',error:e.message});console.log('FAIL HUD target '+e.message);}finally{if(opened)await opened.context.close();}}
  {let opened;try{

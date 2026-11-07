@@ -12,12 +12,12 @@ const sizes=await page.evaluate(()=>['targetMini','currentMini','miniPeriod','mi
 for(const s of sizes){assert.ok(s.h>=44,JSON.stringify(s));assert.ok(s.font>=16,JSON.stringify(s));}
 const buttons=await page.evaluate(()=>[...document.querySelectorAll('#mini button:not([hidden]), #mini a')].filter(e=>e.offsetParent).map(e=>({id:e.id||e.textContent,h:e.getBoundingClientRect().height})));
 for(const b of buttons)assert.ok(b.h>=44,JSON.stringify(b));
-// Other menus open from the buttons and close back to the main screen.
-assert.equal(await page.locator('header.card').isVisible(),false,'other menus closed at start');
-await page.locator('#mainMenuToggle').click();assert.equal(await page.locator('header.card').isVisible(),true);assert.equal(await page.locator('#menusToolbar').isVisible(),true);
-await page.locator('#closeMainMenus').click();assert.equal(await page.locator('header.card').isVisible(),false);
-await page.locator('#navFullMeter').click();assert.equal(await page.locator('#liveMeter').isVisible(),true);await page.locator('#mainMenuToggle').click();assert.equal(await page.locator('#liveMeter').isVisible(),false);
-await page.locator('#navDisplay').click();assert.equal(await page.locator('.display-settings-panel').isVisible(),true);await page.keyboard.press('Escape');assert.equal(await page.locator('.display-settings-panel').isVisible(),false);await page.waitForFunction(()=>!document.body.classList.contains('menus-open'),null,{timeout:2000}).catch(()=>{});assert.equal(await page.locator('header.card').isVisible(),false,'closing display settings returns to the main screen');
+// Integrated menus: auxiliary menus are inside the simple menu, the duplicated detailed meter is hidden.
+assert.equal(await page.locator('#fullMeterMenu').isVisible(),false,'detailed meter hidden');assert.equal(await page.locator('header.card').isVisible(),true);
+assert.equal(await page.locator('#mainSubMenus').evaluate(e=>!!e.closest('#mini')),true);assert.equal(await page.locator('#menusToolbar').isVisible(),true);
+for(const id of ['#pickPeriod','#pickRank','#pickBorder','#targetMethod','#bufferPct'])assert.equal(await page.locator(id).isVisible(),false,'duplicate hidden '+id);
+await page.locator('#openMiniTargetDetails').click();assert.equal(await page.locator('#roundUnit').isVisible(),true,'goal details open inside the simple menu');
+await page.locator('#displaySettings > summary').click();assert.equal(await page.locator('.display-settings-panel').isVisible(),true);await page.keyboard.press('Escape');assert.equal(await page.locator('.display-settings-panel').isVisible(),false);
 // Quick add and undo on the main screen.
 await page.locator('#currentMini').fill('100K');await page.locator('#currentMini').blur();await page.locator('#miniAdd10k').click();assert.equal(await page.locator('#currentMini').inputValue(),'110,000');
 await page.locator('#miniUndoCurrent').click();assert.equal(await page.locator('#currentMini').inputValue(),'100,000');
