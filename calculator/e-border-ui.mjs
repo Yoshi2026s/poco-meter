@@ -34,7 +34,7 @@ function render(){
  $('storageSummary').textContent='全記録 '+app.records.length+' / '+E_MAX+'件 ／ '+['13','22','24'].map(c=>c+'時〆 '+app.records.filter(r=>r.close===c).length+'件').join(' ／ ')+(app.lastChangedAt?' · 最終保存 '+new Date(app.lastChangedAt).toLocaleString('ja-JP',{timeZone:'Asia/Tokyo',hour12:false}):' · 追加記録は未保存')+(storageBlocked?' · 保存停止中':'');
  let list;try{list=filtered();}catch(e){$('filterSummary').textContent=e.message;$('records').replaceChildren();$('more').hidden=true;$('count').textContent='条件を確認';return;}
  const closes=filterPrefs().close?[filterPrefs().close]:['13','22','24'],shown=closes.reduce((n,c)=>n+Math.min(visible,list.filter(r=>r.close===c).length),0);
- $('count').textContent=list.length+'件';$('filterSummary').textContent='条件に合う '+list.length+'件中 '+shown+'件を〆時間別に表示。各〆時間は'+visible+'件まで。コピペ・CSVは表示条件に合う全件を含みます。';
+ $('count').textContent=list.length+'件';$('filterSummary').textContent=shown+'件を表示中（締め時間ごとに最大'+visible+'件）。コピー・CSVには検索結果の全件を含みます。';
  $('records').replaceChildren();for(const close of closes){
   const rows=list.filter(r=>r.close===close),saved=app.records.filter(r=>r.close===close),group=node('section',undefined,'close-group');group.setAttribute('data-close',close);group.append(node('h3',close+'時〆 · '+rows.length+'件'));
   group.append(node('p','保存済み全 '+saved.length+'件'+(saved.length?' ／ 最新 '+saved.map(r=>r.date).sort().at(-1):''),'small'));

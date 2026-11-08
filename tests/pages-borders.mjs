@@ -140,6 +140,10 @@ test('the Pages build contains no Sites API, tracker or admin link, and its CSP 
     const index = await readFile(join(dir, 'index.html'), 'utf8');
     assert.ok(index.includes("fetch('./data/borders.json'"));
     assert.ok(index.includes('href="./e-border.html"'));
+    assert.equal([...index.matchAll(/href="\.\/border-history\.html"/g)].length, 1);
+    const usage = index.match(/id="toolUsageText">([\s\S]*?)<\/div>/)?.[1];
+    assert.match(usage, /時計は端末の時刻を日本時間で表示/);
+    assert.doesNotMatch(usage, /Pococha公式サイトの応答時刻/);
     assert.ok(!index.includes('/api/pococha-time'));
     const history = await readFile(join(dir, 'border-history.html'), 'utf8');
     assert.ok(history.includes("fetch('./data/borders.json'"));
