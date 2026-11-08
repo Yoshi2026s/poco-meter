@@ -4,15 +4,14 @@ import {createHash} from 'node:crypto';
 import {pageEngine,html} from './calculator-harness.mjs';
 import {createAudit} from './theme-cascade.mjs';
 
-// Author-CSS/DOM-double audit: 25 real surfaces × 5 widths × 2 themes ×
-// 4 font weights = 1,000 distinct conditions. No browser text shaping or
+// Author-CSS/DOM-double audit: 14 surfaces × 5 widths × 2 themes ×
+// 4 font weights = 560 distinct conditions. No browser text shaping or
 // physical-device rendering is performed. Rem conversion also checks 200%
 // root text size; wrapping/width assertions are source contracts, not pixels.
+// Visible item text is checked in hud-items-browser.cjs.
 const p=pageEngine(undefined,{navigator:{onLine:false}});
 p.element('deadlineCountdown').classList.remove('urgent');
 const q=s=>p.document.querySelector(s);
-const items=Array.from(p.document.querySelectorAll('#remainingSummary .coin-card'));
-assert.equal(items.length,5);
 const surfaces=[
   ['title',q('h1')],['remaining label',q('.remain-label')],
   ['remaining goal',p.element('remain')],['exact remaining',p.element('remainExact')],
@@ -21,12 +20,9 @@ const surfaces=[
   ['deadline label',p.element('leftLabel')],['countdown',p.element('left')],
   ['core bonus',p.element('coreBonusTop')],['core caption',q('.core-bonus-caption')],
   ['goal menu heading',p.element('quickTargetHeading')],
-  ['item heading',p.element('remainingItemsHeading')],
-  ...items.map((n,i)=>['item name '+i,n.querySelector('span')]),
-  ...items.map((n,i)=>['item quantity '+i,n.querySelector('b')]),
   ['deadline control',p.element('closeSel')]
 ];
-assert.equal(surfaces.length,25);
+assert.equal(surfaces.length,14);
 surfaces.forEach(([name,node])=>assert.ok(node,name));
 const audit=createAudit({root:p.document.documentElement,nodes:p.nodes});
 function pixels(value,width,root){
@@ -43,7 +39,7 @@ const hiddenIds=new Set([...html.matchAll(/<[a-z]+\b[^>]*\bid="([^"]+)"[^>]*\shi
 assert.deepEqual([...hiddenIds].filter(id=>surfaces.some(([,n])=>n.id===id)).sort(),['todayDate','todayYear'],'only script-only date parts are hidden');
 function notRendered(node){return hiddenIds.has(node.id);}
 
-test('T01 1,000 font-role, contrast, weight, width and wrapping conditions',()=>{
+test('T01 560 font-role, contrast, weight, width and wrapping conditions',()=>{
   const signatures=new Set();
   for(const width of [280,320,390,700,1280])for(const theme of ['light','dark'])
   for(const [weight,expectedWeight] of [['thin','300'],['standard','400'],['bold','700'],['ultra','900']]){
@@ -61,14 +57,6 @@ test('T01 1,000 font-role, contrast, weight, width and wrapping conditions',()=>
       assert.equal(c['font-weight'],expectedWeight,message+' requested weight');
       assert.equal(c.opacity,'1',message+' opaque text');
       assert.ok(paint.reliable&&paint.ratio>=4.5,message+' contrast '+paint.ratio);
-      if(name.startsWith('item name')||name.startsWith('item quantity')){
-        const expected=name.startsWith('item name')?(width<=360?13:14):(width<=700?16:17);
-        assert.equal(pixels(c['font-size'],width,16),expected,message+' larger item text');
-        assert.equal(c['overflow-wrap'],'anywhere',message);
-        assert.equal(c['white-space'],'normal',message);
-        assert.equal(c['min-width'],'0',message);
-        assert.ok(['100%','10ch'].includes(c['max-width']),message+' bounded item width');
-      }
       if(name==='deadline control')assert.equal(pixels(c['font-size'],width,16),16,message+' control text');
       if(name==='remaining goal'){
         assert.equal(c.width,'max-content',message+' goal includes suffix');
@@ -83,7 +71,7 @@ test('T01 1,000 font-role, contrast, weight, width and wrapping conditions',()=>
       }
     }
   }
-  assert.equal(signatures.size,1000);
+  assert.equal(signatures.size,560);
   console.log(JSON.stringify({typographyConditions:signatures.size,signatureSHA256:createHash('sha256').update([...signatures].join('\n')).digest('hex'),method:'author CSS and DOM double; no rendered geometry'}));
 });
 
