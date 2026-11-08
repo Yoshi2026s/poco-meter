@@ -19,6 +19,17 @@ Claude Code と ChatGPT（Codex など）の共通指示です。
 - ツール本体を変えたら `npm run version:bump` で `PAGES_VERSION`（画面の「最終更新バージョン」）を更新する。データ更新だけでは変えない。
 - push すると「GitHub Pages 公開」が自動で動く。公開の確認は実際のURLで行う。
 
+## ChatGPTで作業するとき
+- 始める前に：既定ブランチ `(root)` の最新、開いているPR・作業ブランチを確認する。同じファイルを触る未マージのPRがあれば、そのPRに乗せず、マージを待つかユーザーに確認する。
+- ブランチは `codex/<内容>`（Claude Code は `claude/…`）。`(root)` へ直接コミットしない。PRは `(root)` 宛て、本文は `.github/pull_request_template.md` の見出しに沿う。
+- 端末（シェル）が使える場合（Codex など）：Node 22 以上で `npm run check` を実行する（依存は acorn を一時フォルダーに自動で入れるだけ。`pnpm install` は不要）。
+- 端末が使えない場合（GitHubコネクターだけ）：テスト・生成・版更新を実行できないため、
+  - 変更は小さく1目的に絞る。`calculator/border-history.html`・`calculator/e-border.html`（生成物）と `PAGES_VERSION` は手で書き換えない。
+  - PRのCI「メーター計算・ボーダー保存の検証」の合否を基準にする（資料だけの変更ではCIは動かない）。
+  - 実行できなかった手順（`npm run pages:prepare`・`npm run version:bump`・`npm run test:extra`・スマホ表示確認）はPR本文の「未確認・残作業」に書き、Claude Code か Codex で仕上げてからマージする。
+- `.openai/hosting.json`・`TRANSFER_TO_CLAUDE.md` は旧Sites時代の記録。Sites公開・本番DB操作には使わない。
+- 作業を終えたら docs/CHANGELOG.md の先頭に1行、状態が変わったら docs/HANDOVER.md を書き換える（Code と同じ）。
+
 ## 変更方針
 - 日本語で報告し、全体レイアウト・既存機能・保存データを維持する。
 - 名称はポコメーター番長。制作者ロゴはYoshi1012、最下段左寄せ、ブルー×ブラック系。
