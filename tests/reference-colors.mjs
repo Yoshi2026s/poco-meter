@@ -20,11 +20,19 @@ for(const theme of ['light','dark'])for(const accent of colors)test(`Reference p
  for(const select of p.nodes.filter(n=>n.tagName==='SELECT'&&n.parentNode.id!=='quickTargetControls')){
    const hud=select.closest('#mini, #itemsWindow'),list=select.closest('.daily-filters, .history-filters, .history-month-bar, .record-mobile-filters');
    const ink=hud?(accent==='black'?'#f5f5f5':'#edf4fd'):list?'#17283a':expected['--ink'],paper=hud?'#000000':list?'#ffffff':expected['--paper'];
-   const c=audit.computed(select,ctx);same(c.color,ink);if(select.closest('#miniGoalMenu'))assert.notDeepEqual(parseColor(c['background-color']),parseColor(paper));else same(c['background-color'],paper);assert.equal(c['color-scheme'],hud?'dark':list?'light':theme);
+   const c=audit.computed(select,ctx);same(c.color,ink);same(c['background-color'],paper);assert.equal(c['color-scheme'],hud?'dark':list?'light':theme);
    for(const option of new Set([select.children[0],select.children.at(-1)].filter(Boolean))){const o=audit.computed(option,ctx);same(o.color,ink);same(o['background-color'],paper);}
    assert.ok(audit.textContrast(select,ctx).ratio>=4.5,select.id+' remains readable');
  }
- for(const id of ['mini','itemsWindow']){assert.equal(p.element(id).getAttribute('data-hud-background-color'),'black');assert.equal(p.element(id).getAttribute('data-hud-theme'),'dark');same(audit.computed(p.element(id),ctx)['background-color'],'#000000');}
+ for(const id of ['mini','itemsWindow']){
+   assert.equal(p.element(id).getAttribute('data-hud-background-color'),'black');
+   assert.equal(p.element(id).getAttribute('data-hud-theme'),'dark');
+ }
+ const hudBackground=audit.computed(p.element('mini'),ctx)['background-color'];
+ const itemsBackground=audit.computed(p.element('itemsWindow'),ctx)['background-color'];
+ same(hudBackground,'#000000');
+ assert.notDeepEqual(parseColor(itemsBackground),parseColor(hudBackground));
+ assert.ok(audit.textContrast(p.element('itemsWindowTitle'),ctx).ratio>=4.5);
  same(audit.computed(p.document.body,ctx)['background-color'],expected['--bg']);
  same(audit.computed(p.element('applyManualTarget'),ctx).color,expected['--on-accent']);
  same(audit.computed(p.element('applyManualTarget'),ctx)['background-color'],expected['--teal']);

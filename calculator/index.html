@@ -1649,7 +1649,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 :root body #mini.main-screen{position:relative!important;left:auto!important;top:auto!important;bottom:auto!important;transform:none!important;z-index:1!important;display:flex!important;flex-direction:column;gap:12px;box-sizing:border-box;width:min(760px,calc(100% - 20px))!important;max-width:none;max-height:none!important;overflow:visible!important;margin:calc(env(safe-area-inset-top,0px) + 10px) auto 12px!important;padding:14px!important;border:1px solid var(--line);border-radius:16px;visibility:visible!important;pointer-events:auto!important;box-shadow:0 8px 24px #0003}
 :root body #mini.main-screen>*{min-width:0;margin:0!important;width:auto!important;max-width:none!important;flex:0 0 auto!important;align-self:stretch!important}
 /* Hero: remaining goal + countdown */
-:root body #mini.main-screen .main-hero{display:grid!important;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:4px 12px;align-items:end;padding-bottom:12px;border-bottom:1px solid var(--line)}
+:root body #mini.main-screen .main-hero{display:grid!important;grid-template-columns:minmax(0,1.15fr) minmax(min-content,1fr);gap:4px 12px;align-items:end;padding-bottom:12px;border-bottom:1px solid var(--line)}
 :root body #mini.main-screen .main-hero :is(.mini-remaining,.mini-countdown){display:flex!important;flex-direction:column;gap:2px;min-width:0;text-align:left!important;grid-row:1;align-self:end}
 :root body #mini.main-screen .mini-remaining{grid-column:1}
 :root body #mini.main-screen .mini-countdown{grid-column:2}
@@ -1767,27 +1767,12 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
   :root body #mini.main-screen .main-inputs{column-gap:8px}
 }
 :root body #mini.main-screen #itemsWindowRow .coin-card b .item-unit{font-size:12px!important}
-/* Keep the selected HUD surface and tint each field by its role. */
-#targetMini{--field-background:var(--meter-field-target)}
-#currentMini{--field-background:var(--meter-field-current)}
-#miniPeriod{--field-background:var(--meter-field-period)}
-#miniRank{--field-background:var(--meter-field-rank)}
-#miniBorder{--field-background:var(--meter-field-border)}
-#miniMethod{--field-background:var(--meter-field-method)}
-#miniBuffer{--field-background:var(--meter-field-buffer)}
-#miniClose{--field-background:var(--meter-field-close)}
-#coreCountItems{--field-background:var(--meter-field-core)}
-
-#itemsWindowRow .coin-card:nth-child(1){--field-background:var(--meter-field-coin)}
-#itemsWindowRow .coin-card:nth-child(2){--field-background:var(--meter-field-dog-cat)}
-#itemsWindowRow .coin-card:nth-child(3){--field-background:var(--meter-field-panda)}
-#itemsWindowRow .coin-card:nth-child(4){--field-background:var(--meter-field-firework)}
-#itemsWindowRow .coin-card:nth-child(5){--field-background:var(--meter-field-carriage)}
-
-:root body #mini.main-screen :is(#targetMini,#currentMini,#miniPeriod,#miniRank,#miniBorder,#miniMethod,#miniBuffer,#miniClose,#coreCountItems):not(:disabled,[aria-invalid="true"]),
-:root body #mini.main-screen #itemsWindowRow .coin-card{
-  background-color:var(--field-background,var(--paper))!important;
-}
+/* Tint each section surface. Controls and item cards keep the shared palette. */
+:root body #mini.main-screen .main-hero{padding:8px;border:1px solid var(--line);border-radius:12px;background:var(--meter-section-overview,var(--paper))!important}
+:root body #mini.main-screen .main-inputs{padding:8px;border:1px solid var(--line);border-radius:12px;background:var(--meter-section-inputs,var(--paper))!important}
+:root body #mini.main-screen .mini-goal-menu{background:var(--meter-section-conditions,var(--paper))!important}
+:root body #mini.main-screen #itemsWindow{background:var(--meter-section-items,var(--paper))!important}
+:root body #mini.main-screen .main-tools{background:var(--meter-section-tools,var(--paper))!important}
 
 /* 2026-11 round 2: the other menus on phones / touch screens. Readable text is 12px or larger, touch targets 44px. */
 @media (max-width:700px),(pointer:coarse){
@@ -2363,20 +2348,16 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
     var number=DISPLAY_CUSTOM.number[displaySettings.numberColor][theme];
     var tokens={ink:ink,muted:muted,sub:muted,text:ink,paper:paper,panel:paper,surface:paper,field:paper,'input-bg':paper,raised:raised,line:line,'control-border':control,teal:teal,'teal-soft':raised,'on-accent':dark?'#07131f':'#ffffff',success:success,'success-bg':dark?'#163c2b':'#e5f5ed',red:red,'error-bg':dark?'#3a1d29':'#fff0f3',amber:amber,'amber-bg':dark?'#3b2c19':'#fff2d6','number-ink':number,'remaining-ink':number,c1:teal,c2:teal,c3:amber,c4:success,c5:amber,c6:teal};
     ['mini','itemsWindow','stickyStatus'].forEach(function(id){var panel=$(id);if(!panel)return;panel.setAttribute('data-hud-background-color',displaySettings.hudBackground);panel.setAttribute('data-hud-theme',theme);panel.style.setProperty('color-scheme',theme);Object.keys(tokens).forEach(function(key){panel.style.setProperty('--'+key,tokens[key]);});});
-    var fieldTints={
-      target:'#3a83f0',current:'#20a874',core:'#9baa39',
-      period:'#a477ef',rank:'#ee9a23',border:'#ee648a',method:'#2bb9c4',buffer:'#e96447',close:'#6e78de',
-      coin:'#dbb42a','dog-cat':'#d38b5a',panda:'#53bd55',firework:'#e057a8',carriage:'#658dd6'
-    };
-    var tintWeight=dark ? .23 : .15;
-    Object.keys(fieldTints).forEach(function(field){
-      var tint=fieldTints[field];
+    var sectionTints={overview:'#3a83f0',inputs:'#20a874',conditions:'#a477ef',items:'#dbb42a',tools:'#2bb9c4'};
+    var tintWeight=dark ? .18 : .12;
+    Object.keys(sectionTints).forEach(function(section){
+      var tint=sectionTints[section];
       var channels=[1,3,5].map(function(start){
         var base=parseInt(paper.slice(start,start+2),16);
         var accent=parseInt(tint.slice(start,start+2),16);
         return Math.round(base+(accent-base)*tintWeight);
       });
-      $('mini').style.setProperty('--meter-field-'+field,'rgb('+channels.join(', ')+')');
+      $('mini').style.setProperty('--meter-section-'+section,'rgb('+channels.join(', ')+')');
     });
     $('hudBackgroundColor').value=displaySettings.hudBackground;
   }
