@@ -1803,6 +1803,42 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 @media print{.sticky-status{display:none!important}}
 @media (prefers-reduced-motion:reduce){#miniFill{transition:none!important}}
 
+
+/* Brand accents are decorative so text keeps its theme contrast. */
+:root{
+  --brand-blue:#2986ff;
+  --brand-emerald:#00bf91;
+  --brand-pink:#f65397;
+}
+@media screen{
+  body{isolation:isolate}
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    pointer-events:none;
+    background:
+      radial-gradient(ellipse at 8% 0%,rgba(41,134,255,.26),transparent 54%),
+      radial-gradient(ellipse at 100% 38%,rgba(246,83,151,.19),transparent 48%),
+      radial-gradient(ellipse at 12% 100%,rgba(0,191,145,.21),transparent 55%);
+  }
+}
+
+@media screen{
+  :root body #mini.main-screen{
+    border-color:var(--brand-blue)!important;
+    box-shadow:0 8px 24px #0610204d,0 0 0 2px #2986ff28!important;
+  }
+  :root body #mainSubMenus .secondary-menus>section.card{
+    box-shadow:inset 4px 0 var(--section-accent,var(--brand-blue))!important;
+  }
+  #mainSubMenus .secondary-menus>section.card:nth-child(3n+2){--section-accent:var(--brand-emerald)}
+  #mainSubMenus .secondary-menus>section.card:nth-child(3n){--section-accent:var(--brand-pink)}
+  :root body .wrap>header.card{border-top-color:var(--brand-blue)!important}
+  :root body .history-portal>a{box-shadow:inset 4px 0 var(--brand-blue)}
+  :root body .history-portal>#eBorderPortalLink{box-shadow:inset 4px 0 var(--brand-emerald)}
+}
 </style>
 </head>
 <body>
@@ -2348,7 +2384,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
     var number=DISPLAY_CUSTOM.number[displaySettings.numberColor][theme];
     var tokens={ink:ink,muted:muted,sub:muted,text:ink,paper:paper,panel:paper,surface:paper,field:paper,'input-bg':paper,raised:raised,line:line,'control-border':control,teal:teal,'teal-soft':raised,'on-accent':dark?'#07131f':'#ffffff',success:success,'success-bg':dark?'#163c2b':'#e5f5ed',red:red,'error-bg':dark?'#3a1d29':'#fff0f3',amber:amber,'amber-bg':dark?'#3b2c19':'#fff2d6','number-ink':number,'remaining-ink':number,c1:teal,c2:teal,c3:amber,c4:success,c5:amber,c6:teal};
     ['mini','itemsWindow','stickyStatus'].forEach(function(id){var panel=$(id);if(!panel)return;panel.setAttribute('data-hud-background-color',displaySettings.hudBackground);panel.setAttribute('data-hud-theme',theme);panel.style.setProperty('color-scheme',theme);Object.keys(tokens).forEach(function(key){panel.style.setProperty('--'+key,tokens[key]);});});
-    var sectionTints={overview:'#ff80ae',inputs:'#39bfff',conditions:'#a36bff',items:'#ffca45',tools:'#27db9e'};
+    var sectionTints={overview:'#ff80ae',inputs:'#39bfff',conditions:'#5d88ff',items:'#27db9e',tools:'#53ded2'};
     var tintWeight=dark ? .24 : .33;
     Object.keys(sectionTints).forEach(function(section){
       var tint=sectionTints[section];

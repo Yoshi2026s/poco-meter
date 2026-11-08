@@ -22,6 +22,34 @@ try {
 main{width:min(860px,100%);margin:auto;padding:20px 16px 32px}header{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}h1{font-size:clamp(1.35rem,5vw,1.8rem);line-height:1.5;margin:0;flex:1 1 240px}h2{font-size:1.125rem;margin:0 0 8px;line-height:1.6}p{margin:8px 0}a{color:var(--accent)}button,.return-link,nav a{display:inline-flex;justify-content:center;align-items:center;min-height:44px;padding:6px 12px;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink);font:inherit;font-size:.875rem;text-decoration:none;cursor:pointer}a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}nav{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}nav a{color:var(--accent)}section{margin:14px 0;padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--paper)}section p:last-child{margin-bottom:0}.muted{color:var(--muted);font-size:.875rem}.example{padding:8px 10px;border-left:3px solid var(--accent);font-variant-numeric:tabular-nums}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}th,td{text-align:left;padding:8px;border-bottom:1px solid var(--line);font-size:.875rem}td:last-child,th:last-child{text-align:right;white-space:nowrap}ul,ol{padding-left:1.5em;margin:8px 0}li{margin:4px 0}
 @media(max-width:360px){main{padding:14px 12px 24px}section{padding:12px}nav a{flex:1 1 90px;padding:5px 8px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}@media print{header button,.return-link,nav{display:none}body{background:#fff;color:#000}section{break-inside:avoid;border-color:#888}.muted{color:#333}}
+
+/* Brand accents are decorative so text keeps its theme contrast. */
+:root{
+  --brand-blue:#2986ff;
+  --brand-emerald:#00bf91;
+  --brand-pink:#f65397;
+}
+@media screen{
+  body{isolation:isolate}
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    pointer-events:none;
+    background:
+      radial-gradient(ellipse at 8% 0%,rgba(41,134,255,.26),transparent 54%),
+      radial-gradient(ellipse at 100% 38%,rgba(246,83,151,.19),transparent 48%),
+      radial-gradient(ellipse at 12% 100%,rgba(0,191,145,.21),transparent 55%);
+  }
+}
+
+@media screen{
+  main>header{box-shadow:inset 0 -3px var(--brand-blue)}
+  main>section{box-shadow:inset 4px 0 var(--brand-blue)}
+  main>section:nth-of-type(3n+2){box-shadow:inset 4px 0 var(--brand-emerald)}
+  main>section:nth-of-type(3n){box-shadow:inset 4px 0 var(--brand-pink)}
+}
 </style>
 </head>
 <body>
