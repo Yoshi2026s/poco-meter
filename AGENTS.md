@@ -41,7 +41,7 @@ Claude Code と ChatGPT（Codex など）の共通指示です。
 ## 検証
 - 統合前の標準チェック：`npm run check`（CIと同じ計算・保存・Pages系テスト＋公開物の作成。出力は合否のみ）。Node 22以上。
 - ネットワークも依存も不要な最小テスト：`npm test`。
-- UI・CSSを変えたとき：`npm run test:extra`（vite系・Playwright画面系、約8分。Playwright と Chromium は既存のものを使う）。typography-balance-1000 は既知の不合格。
+- UI・CSSを変えたとき：`npm run test:extra`（vite系・Playwright画面系、約8分。Playwright と Chromium は既存のものを使う）。メイン画面の残りアイテムは `tests/hud-items-browser.cjs` で360px・700pxの文字欠けとはみ出しを検証する。
 - 関係するテストだけ先に回すときは docs/CODEMAP.md の「テストの選び方」を見る。
 - 取得元を追加するときは、利用規約・robots.txt・転載可否を先に確認する（HAISHIN LAB は無断転載禁止のため不使用）。表画像の読み取り値は、既知の日と全一致した画像からのみ採用し、自信度の低い値は推測で埋めない。
 - スマホ変更では縦持ち、小画面、横持ち、低い画面で操作・保存・再読込後の復元を検証。エミュレーションと物理端末を区別する。
