@@ -2348,8 +2348,8 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
     var number=DISPLAY_CUSTOM.number[displaySettings.numberColor][theme];
     var tokens={ink:ink,muted:muted,sub:muted,text:ink,paper:paper,panel:paper,surface:paper,field:paper,'input-bg':paper,raised:raised,line:line,'control-border':control,teal:teal,'teal-soft':raised,'on-accent':dark?'#07131f':'#ffffff',success:success,'success-bg':dark?'#163c2b':'#e5f5ed',red:red,'error-bg':dark?'#3a1d29':'#fff0f3',amber:amber,'amber-bg':dark?'#3b2c19':'#fff2d6','number-ink':number,'remaining-ink':number,c1:teal,c2:teal,c3:amber,c4:success,c5:amber,c6:teal};
     ['mini','itemsWindow','stickyStatus'].forEach(function(id){var panel=$(id);if(!panel)return;panel.setAttribute('data-hud-background-color',displaySettings.hudBackground);panel.setAttribute('data-hud-theme',theme);panel.style.setProperty('color-scheme',theme);Object.keys(tokens).forEach(function(key){panel.style.setProperty('--'+key,tokens[key]);});});
-    var sectionTints={overview:'#3a83f0',inputs:'#20a874',conditions:'#a477ef',items:'#dbb42a',tools:'#2bb9c4'};
-    var tintWeight=dark ? .18 : .12;
+    var sectionTints={overview:'#ff80ae',inputs:'#39bfff',conditions:'#a36bff',items:'#ffca45',tools:'#27db9e'};
+    var tintWeight=dark ? .24 : .33;
     Object.keys(sectionTints).forEach(function(section){
       var tint=sectionTints[section];
       var channels=[1,3,5].map(function(start){
