@@ -1767,6 +1767,30 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
   :root body #mini.main-screen .main-inputs{column-gap:8px}
 }
 :root body #mini.main-screen #itemsWindowRow .coin-card b .item-unit{font-size:12px!important}
+/* Keep the selected HUD surface and tint each field by its role. */
+#mini.main-screen{--field-tint-weight:15%}
+#mini.main-screen[data-hud-theme="dark"]{--field-tint-weight:23%}
+#targetMini{--field-tint:#3a83f0}
+#currentMini{--field-tint:#20a874}
+#miniPeriod{--field-tint:#a477ef}
+#miniRank{--field-tint:#ee9a23}
+#miniBorder{--field-tint:#ee648a}
+#miniMethod{--field-tint:#2bb9c4}
+#miniBuffer{--field-tint:#e96447}
+#miniClose{--field-tint:#6e78de}
+#coreCountItems{--field-tint:#9baa39}
+
+#itemsWindowRow .coin-card:nth-child(1){--field-tint:#dbb42a}
+#itemsWindowRow .coin-card:nth-child(2){--field-tint:#d38b5a}
+#itemsWindowRow .coin-card:nth-child(3){--field-tint:#53bd55}
+#itemsWindowRow .coin-card:nth-child(4){--field-tint:#e057a8}
+#itemsWindowRow .coin-card:nth-child(5){--field-tint:#658dd6}
+
+:root body #mini.main-screen :is(#targetMini,#currentMini,#miniPeriod,#miniRank,#miniBorder,#miniMethod,#miniBuffer,#miniClose,#coreCountItems):not([aria-invalid="true"]),
+:root body #mini.main-screen #itemsWindowRow .coin-card{
+  background-color:color-mix(in srgb,var(--paper),var(--field-tint) var(--field-tint-weight))!important;
+}
+
 /* 2026-11 round 2: the other menus on phones / touch screens. Readable text is 12px or larger, touch targets 44px. */
 @media (max-width:700px),(pointer:coarse){
   :root body #liveMeter :is(#closeSel,#coreCountTop,#quickPeriod,#quickRank,#quickBorder,#quickMethod,#quickBufferPct){min-height:44px!important;height:44px!important}
