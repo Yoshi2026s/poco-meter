@@ -24,7 +24,15 @@ for(const theme of ['light','dark'])for(const accent of colors)test(`Reference p
    for(const option of new Set([select.children[0],select.children.at(-1)].filter(Boolean))){const o=audit.computed(option,ctx);same(o.color,ink);same(o['background-color'],paper);}
    assert.ok(audit.textContrast(select,ctx).ratio>=4.5,select.id+' remains readable');
  }
- for(const id of ['mini','itemsWindow']){assert.equal(p.element(id).getAttribute('data-hud-background-color'),'black');assert.equal(p.element(id).getAttribute('data-hud-theme'),'dark');same(audit.computed(p.element(id),ctx)['background-color'],'#000000');}
+ for(const id of ['mini','itemsWindow']){
+   assert.equal(p.element(id).getAttribute('data-hud-background-color'),'black');
+   assert.equal(p.element(id).getAttribute('data-hud-theme'),'dark');
+ }
+ const hudBackground=audit.computed(p.element('mini'),ctx)['background-color'];
+ const itemsBackground=audit.computed(p.element('itemsWindow'),ctx)['background-color'];
+ same(hudBackground,'#000000');
+ assert.notDeepEqual(parseColor(itemsBackground),parseColor(hudBackground));
+ assert.ok(audit.textContrast(p.element('itemsWindowTitle'),ctx).ratio>=4.5);
  same(audit.computed(p.document.body,ctx)['background-color'],expected['--bg']);
  same(audit.computed(p.element('applyManualTarget'),ctx).color,expected['--on-accent']);
  same(audit.computed(p.element('applyManualTarget'),ctx)['background-color'],expected['--teal']);
