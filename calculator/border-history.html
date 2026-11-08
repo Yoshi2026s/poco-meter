@@ -10,6 +10,33 @@
 @media(max-width:700px){.primary-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.quick-ranges{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.primary-actions button,.quick-ranges button{min-width:0;width:100%;min-height:44px;padding:8px 6px;white-space:nowrap}}
 
 .meter-calendar-panel{margin:14px 0}.meter-calendar-panel>summary{font-size:1.1rem;color:var(--accent)}.meter-calendar-toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}.meter-calendar-toolbar input{min-width:140px}.meter-calendar-rank{margin:18px 0}.meter-calendar-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px;max-width:100%;overscroll-behavior-x:contain}.meter-calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(126px,1fr));min-width:882px;gap:1px;background:var(--line)}.meter-weekday{background:var(--field);text-align:center;padding:8px;font-weight:700}.meter-day,.meter-blank{background:var(--panel);padding:8px;min-width:0}.meter-day>time{display:block;font-weight:800;color:var(--accent)}.meter-day-record{border-top:1px solid var(--line);padding-top:5px;margin-top:5px}.meter-day-record p{margin:0;font-size:.8rem}.meter-day-record dl{display:grid;grid-template-columns:auto 1fr;gap:2px 6px;margin:4px 0;font-size:.85rem;font-variant-numeric:tabular-nums}.meter-day-record dt{color:var(--sub)}.meter-day-record dd{margin:0;text-align:right;overflow-wrap:anywhere;font-weight:700}.meter-day-record .source{font-size:.75rem}.meter-day-record .source summary{font-size:.75rem;white-space:normal}.meter-calendar-scroll:focus-visible{outline:3px solid var(--accent);outline-offset:2px}@media print{.meter-calendar-scroll{overflow:visible}.meter-calendar-grid{min-width:0;grid-template-columns:repeat(7,minmax(0,1fr))}.meter-calendar-toolbar{display:none}.meter-day-record dl{font-size:8pt}.meter-day{padding:4px}}
+
+/* Brand accents are decorative so text keeps its theme contrast. */
+:root{
+  --brand-blue:#2986ff;
+  --brand-emerald:#00bf91;
+  --brand-pink:#f65397;
+}
+@media screen{
+  body{isolation:isolate}
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    pointer-events:none;
+    background:
+      radial-gradient(ellipse at 8% 0%,rgba(41,134,255,.26),transparent 54%),
+      radial-gradient(ellipse at 100% 38%,rgba(246,83,151,.19),transparent 48%),
+      radial-gradient(ellipse at 12% 100%,rgba(0,191,145,.21),transparent 55%);
+  }
+}
+
+@media screen{
+  body>header{box-shadow:inset 0 4px var(--brand-blue)}
+  #filterPanel{box-shadow:inset 4px 0 var(--brand-emerald)}
+  #meterCalendarPanel{box-shadow:inset 4px 0 var(--brand-pink)}
+}
 </style></head><body><header><div class="nav"><a class="button" id="backCalculator" href="./">← メーター計算へ</a><button id="themeButton" type="button">明るい表示</button></div><h1>過去のボーダー表</h1><p class="sub">日付・ランク・締め時間で過去の記録を検索できます。</p><p class="sub" id="historyVersion">最終更新バージョン：v2026.10.23.3</p></header><main>
 <section class="panel" id="filterPanel" aria-labelledby="filterHeading"><h2 id="filterHeading" tabindex="-1">記録を探す</h2><form id="historyForm"><div class="filters">
 
