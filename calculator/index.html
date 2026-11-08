@@ -3682,18 +3682,18 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
   function closeGoalDefaultsPanel(){
     var menu=$('goalDefaultsPanel'),trigger=goalDefaultsReturnTrigger;goalDefaultsReturnTrigger=null;
     menu.open=false;menu.removeAttribute('open');refreshMenuControls();
-    var destination=trigger||menu.querySelector('summary');destination.focus({preventScroll:!!trigger});if(trigger)scrollToControl(trigger,'center');
+    var destination=trigger||menu.querySelector('summary');destination.focus({preventScroll:true});scrollToControl(destination,trigger?'center':'nearest');
   }
   document.querySelectorAll('details').forEach(function(menu){
     menu.open=false;menu.removeAttribute('open');
     var summary=Array.prototype.find.call(menu.children,function(child){return child.tagName==='SUMMARY';});if(!summary)return;
     var content=menu.id==='displaySettings'?menu.querySelector('.display-settings-panel'):menu.querySelector('.header-help-panel')||menu;
-    var row=menuCloseRow(function(){if(menu.id==='goalDefaultsPanel'){closeGoalDefaultsPanel();return;}menu.open=false;menu.removeAttribute('open');summary.focus({preventScroll:content!==menu});refreshMenuControls();});
+    var row=menuCloseRow(function(){if(menu.id==='goalDefaultsPanel'){closeGoalDefaultsPanel();return;}menu.open=false;menu.removeAttribute('open');summary.focus({preventScroll:true});if(content===menu)scrollToControl(summary,'nearest');refreshMenuControls();});
     if(content===menu)content.appendChild(row);else content.insertBefore(row,content.children[0]||null);
   });
   document.querySelectorAll('section.card').forEach(function(sec){
     var body=sec.querySelector('.section-body'),toggle=sec.querySelector('.sectionToggle');if(!body||!toggle)return;
-    body.appendChild(menuCloseRow(function(){setSectionCollapsed(sec,true);save();toggle.focus();}));
+    body.appendChild(menuCloseRow(function(){setSectionCollapsed(sec,true);save();toggle.focus({preventScroll:true});scrollToControl(toggle,'nearest');}));
   });
   save();
   $('displaySettings').addEventListener('toggle',refreshMenuControls);
