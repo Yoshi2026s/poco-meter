@@ -1768,27 +1768,25 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 }
 :root body #mini.main-screen #itemsWindowRow .coin-card b .item-unit{font-size:12px!important}
 /* Keep the selected HUD surface and tint each field by its role. */
-#mini.main-screen{--field-tint-weight:15%}
-#mini.main-screen[data-hud-theme="dark"]{--field-tint-weight:23%}
-#targetMini{--field-tint:#3a83f0}
-#currentMini{--field-tint:#20a874}
-#miniPeriod{--field-tint:#a477ef}
-#miniRank{--field-tint:#ee9a23}
-#miniBorder{--field-tint:#ee648a}
-#miniMethod{--field-tint:#2bb9c4}
-#miniBuffer{--field-tint:#e96447}
-#miniClose{--field-tint:#6e78de}
-#coreCountItems{--field-tint:#9baa39}
+#targetMini{--field-background:var(--meter-field-target)}
+#currentMini{--field-background:var(--meter-field-current)}
+#miniPeriod{--field-background:var(--meter-field-period)}
+#miniRank{--field-background:var(--meter-field-rank)}
+#miniBorder{--field-background:var(--meter-field-border)}
+#miniMethod{--field-background:var(--meter-field-method)}
+#miniBuffer{--field-background:var(--meter-field-buffer)}
+#miniClose{--field-background:var(--meter-field-close)}
+#coreCountItems{--field-background:var(--meter-field-core)}
 
-#itemsWindowRow .coin-card:nth-child(1){--field-tint:#dbb42a}
-#itemsWindowRow .coin-card:nth-child(2){--field-tint:#d38b5a}
-#itemsWindowRow .coin-card:nth-child(3){--field-tint:#53bd55}
-#itemsWindowRow .coin-card:nth-child(4){--field-tint:#e057a8}
-#itemsWindowRow .coin-card:nth-child(5){--field-tint:#658dd6}
+#itemsWindowRow .coin-card:nth-child(1){--field-background:var(--meter-field-coin)}
+#itemsWindowRow .coin-card:nth-child(2){--field-background:var(--meter-field-dog-cat)}
+#itemsWindowRow .coin-card:nth-child(3){--field-background:var(--meter-field-panda)}
+#itemsWindowRow .coin-card:nth-child(4){--field-background:var(--meter-field-firework)}
+#itemsWindowRow .coin-card:nth-child(5){--field-background:var(--meter-field-carriage)}
 
-:root body #mini.main-screen :is(#targetMini,#currentMini,#miniPeriod,#miniRank,#miniBorder,#miniMethod,#miniBuffer,#miniClose,#coreCountItems):not([aria-invalid="true"]),
+:root body #mini.main-screen :is(#targetMini,#currentMini,#miniPeriod,#miniRank,#miniBorder,#miniMethod,#miniBuffer,#miniClose,#coreCountItems):not(:disabled,[aria-invalid="true"]),
 :root body #mini.main-screen #itemsWindowRow .coin-card{
-  background-color:color-mix(in srgb,var(--paper),var(--field-tint) var(--field-tint-weight))!important;
+  background-color:var(--field-background,var(--paper))!important;
 }
 
 /* 2026-11 round 2: the other menus on phones / touch screens. Readable text is 12px or larger, touch targets 44px. */
@@ -2365,6 +2363,21 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
     var number=DISPLAY_CUSTOM.number[displaySettings.numberColor][theme];
     var tokens={ink:ink,muted:muted,sub:muted,text:ink,paper:paper,panel:paper,surface:paper,field:paper,'input-bg':paper,raised:raised,line:line,'control-border':control,teal:teal,'teal-soft':raised,'on-accent':dark?'#07131f':'#ffffff',success:success,'success-bg':dark?'#163c2b':'#e5f5ed',red:red,'error-bg':dark?'#3a1d29':'#fff0f3',amber:amber,'amber-bg':dark?'#3b2c19':'#fff2d6','number-ink':number,'remaining-ink':number,c1:teal,c2:teal,c3:amber,c4:success,c5:amber,c6:teal};
     ['mini','itemsWindow','stickyStatus'].forEach(function(id){var panel=$(id);if(!panel)return;panel.setAttribute('data-hud-background-color',displaySettings.hudBackground);panel.setAttribute('data-hud-theme',theme);panel.style.setProperty('color-scheme',theme);Object.keys(tokens).forEach(function(key){panel.style.setProperty('--'+key,tokens[key]);});});
+    var fieldTints={
+      target:'#3a83f0',current:'#20a874',core:'#9baa39',
+      period:'#a477ef',rank:'#ee9a23',border:'#ee648a',method:'#2bb9c4',buffer:'#e96447',close:'#6e78de',
+      coin:'#dbb42a','dog-cat':'#d38b5a',panda:'#53bd55',firework:'#e057a8',carriage:'#658dd6'
+    };
+    var tintWeight=dark ? .23 : .15;
+    Object.keys(fieldTints).forEach(function(field){
+      var tint=fieldTints[field];
+      var channels=[1,3,5].map(function(start){
+        var base=parseInt(paper.slice(start,start+2),16);
+        var accent=parseInt(tint.slice(start,start+2),16);
+        return Math.round(base+(accent-base)*tintWeight);
+      });
+      $('mini').style.setProperty('--meter-field-'+field,'rgb('+channels.join(', ')+')');
+    });
     $('hudBackgroundColor').value=displaySettings.hudBackground;
   }
   function applyDisplaySettings(){
