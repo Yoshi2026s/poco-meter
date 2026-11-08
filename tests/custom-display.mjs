@@ -53,7 +53,7 @@ test('Every details menu and section has its own close button; display close sta
   const row=host.children.find(n=>n.className==='menu-close-actions');assert.ok(row,menu.id||menu.className);
   assert.equal(row.children.length,1);assert.equal(row.children[0].getAttribute('type'),'button');assert.equal(row.children[0].textContent,'閉じる');assert.equal(row.children[0].getAttribute('aria-label'),'このメニューを閉じる');
  }
- for(const section of sections)assert.equal(section.querySelector('.section-body').children[0].className,'menu-close-actions');
+ for(const section of sections)assert.equal(section.querySelector('.section-body').children.at(-1).className,'menu-close-actions');
  assert.match(html,/\.display-settings-panel>\.menu-close-actions\{position:sticky;top:0/);
  assert.match(html,/@media print\{\.menu-close-actions,\.pace-details>\.menu-close-actions\{display:none!important\}\}/);
 });
@@ -71,7 +71,7 @@ test('Section close buttons persist the collapsed state and return focus without
  for(const section of p.document.querySelectorAll('section.card')){
   const body=section.querySelector('.section-body'),toggle=section.querySelector('.sectionToggle');
   toggle.dispatchEvent(new Event('click'));assert.equal(body.hidden,false);
-  const before=JSON.parse(data.get(KEY));body.children[0].children[0].click();
+  const before=JSON.parse(data.get(KEY));body.children.at(-1).children[0].click();
   assert.equal(body.hidden,true);assert.ok(section.classList.contains('collapsed'));assert.equal(toggle.getAttribute('aria-expanded'),'false');assert.equal(p.document.activeElement,toggle);
   const saved=JSON.parse(data.get(KEY));
   // Static heading text is not parsed by this DOM double; explicitly keyed
@@ -79,7 +79,7 @@ test('Section close buttons persist the collapsed state and return focus without
   if(section.dataset.sectionKey){assert.equal(saved.collapsed[section.dataset.sectionKey],true);persistedKeys++;}
   for(const field of ['target','current','deadline','coreCount','rank','period','log','items','goalDefaults'])assert.deepEqual(saved[field],before[field]);
  }
- assert.equal(persistedKeys,3);
+ assert.equal(persistedKeys,5);
 });
 test('Closing a nested menu leaves its parent menu and section open',()=>{
  const {p}=setup(),backup=p.element('backupTools'),offline=p.element('offlineTools'),section=backup.closest('section.card');

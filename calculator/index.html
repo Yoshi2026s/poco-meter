@@ -271,7 +271,6 @@ section.collapsed>*:not(h2){display:none!important}
 #itemsWindow{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6px;padding:6px 8px;border-radius:8px}
 .items-window-head{display:contents}
 #itemsWindowTitle{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
-#itemsWindowDescription{grid-column:1/-1;grid-row:2;margin:0;font-size:12px!important;line-height:1.5;white-space:normal;overflow-wrap:anywhere;color:var(--ink)}
 #itemsWindowRow{grid-column:1/-1;grid-row:3;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;min-width:0;padding:0}
 #itemsWindowRow .coin-card{min-width:0;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 6px;margin:0;background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:4px}
 #itemsWindowRow .coin-card span{font-size:11px!important;line-height:1.4;white-space:normal;overflow-wrap:anywhere;max-width:100%;text-align:center;letter-spacing:0}
@@ -1707,7 +1706,6 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 :root body #mini.main-screen #coreCountItems{width:76px!important;min-height:44px!important;height:44px!important;padding:4px 8px!important;border-radius:8px!important;font-size:18px!important;font-weight:800;text-align:center}
 :root body #mini.main-screen #coreCountItemsError{display:block;font-size:13px!important;color:var(--red)!important;margin-top:4px}
 :root body #mini.main-screen #coreCountItemsError[hidden]{display:none!important}
-:root body #mini.main-screen #itemsWindowDescription{margin:4px 0 8px!important;font-size:12px!important;line-height:1.5;color:var(--sub)!important}
 :root body #mini.main-screen #itemsWindowRow{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:6px!important;padding:0!important}
 :root body #mini.main-screen #itemsWindowRow .coin-card{display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:0;min-height:60px;padding:6px 4px!important;margin:0!important;border:1px solid var(--line)!important;border-radius:10px!important;background:var(--paper)!important}
 :root body #mini.main-screen #itemsWindowRow .coin-card:first-child{grid-column:1/-1;flex-direction:row;justify-content:space-between;min-height:52px;padding:6px 12px!important}
@@ -1815,15 +1813,15 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 <div class="mini-goal-menu" id="miniGoalMenu" role="group" aria-label="目標設定メニュー"><div class="goal-field"><label for="miniPeriod">集計期間</label><select id="miniPeriod" aria-label="集計期間"></select></div><div class="goal-field"><label for="miniRank">ランク</label><select id="miniRank" aria-label="ランク"></select></div><div class="goal-field"><label for="miniBorder">ボーダー</label><select id="miniBorder" aria-label="設定する目標のボーダー"></select></div><div class="goal-field"><label for="miniMethod">算出方法</label><select id="miniMethod" aria-label="算出方法"></select></div><div class="goal-field"><label for="miniBuffer">上乗せ％</label><input id="miniBuffer" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" aria-label="上乗せ率（％）" title="上乗せ率（％）" aria-describedby="miniBufferError inputStatus"></div><div class="goal-field"><label for="miniClose">締め時間</label><select id="miniClose" aria-label="締め時間" tabindex="0"><option value="13:00">13時〆</option><option value="22:00" selected>22時〆</option><option value="00:00">24時〆</option><option value="custom">手入力</option></select></div></div>
 <small id="miniBufferError" hidden role="status" aria-live="polite"></small>
 <!-- phone-current:end -->
-<section id="itemsWindow" aria-labelledby="itemsWindowTitle" aria-describedby="itemsWindowDescription"><div class="items-window-head"><h2 id="itemsWindowTitle">残りアイテムの目安</h2><div class="items-core"><label for="coreCountItems">現コア数</label><input id="coreCountItems" class="num" type="text" inputmode="numeric" enterkeyhint="done" autocomplete="off" placeholder="0" aria-label="現コア数（0〜1000人）" aria-describedby="coreCountItemsError inputStatus" value="0"></div></div><small id="coreCountItemsError" class="items-core-error" hidden></small><p id="itemsWindowDescription">目標メーターまでの残りコイン・アイテム数</p><div id="itemsWindowRow"></div></section>
+<section id="itemsWindow" aria-labelledby="itemsWindowTitle"><div class="items-window-head"><h2 id="itemsWindowTitle">残りアイテムの目安</h2><div class="items-core"><label for="coreCountItems">現コア数</label><input id="coreCountItems" class="num" type="text" inputmode="numeric" enterkeyhint="done" autocomplete="off" placeholder="0" aria-label="現コア数（0〜1000人）" aria-describedby="coreCountItemsError inputStatus" value="0"></div></div><small id="coreCountItemsError" class="items-core-error" hidden></small><div id="itemsWindowRow"></div></section>
 <section class="main-tools" id="mainTools" aria-label="目標の条件・コピー・換算"><p class="hint goal-context" id="appliedContext" tabindex="0" aria-label="目標設定時の条件"></p><p id="manualTargetMsg" class="toast" role="status"></p>
     <div class="meter-tools"><button type="button" id="copyRemaining">残りをコピー</button></div><textarea id="summaryText" readonly hidden aria-label="手動コピー用の現在の残り"></textarea>
     
     <div class="item-conversion-tools">
-    <details class="conversion-note"><summary>換算条件（ボーナス<span id="coreNote">＝100%</span>）</summary><p class="hint">参考計算：残りポイント ÷（4 × ボーナス倍率）を切り上げ。各アイテムは、そのアイテムだけで残りを満たす場合の必要数です。アイテム以外の応援は含みません。Pocochaの実際の獲得ポイントを保証する値ではありません。</p></details>
-    <details id="registeredItemNeeds" class="registered-item-needs"><summary id="customItemSummary">登録アイテムのポイント換算</summary><p class="hint">登録した「1個あたりのメーター値」から必要数を算出します。上のコイン価格による換算とは別の目安です。</p><div id="customItemNeeds" class="custom-item-needs" tabindex="0" role="region" aria-label="登録アイテムの必要数"></div></details>
+    <details class="conversion-note"><summary>換算条件（ボーナス<span id="coreNote">＝100%</span>）</summary><p class="hint">必要コインは、残りポイントを（4 × ボーナス倍率）で割って切り上げます。アイテムの個数は、それぞれ単独で目標に届く場合の目安です。</p></details>
+    <details id="registeredItemNeeds" class="registered-item-needs"><summary id="customItemSummary">登録アイテムの必要数</summary><p class="hint">登録した1個あたりのポイントから必要数を計算します。</p><div id="customItemNeeds" class="custom-item-needs" tabindex="0" role="region" aria-label="登録アイテムの必要数"></div></details>
     </div>
-    <details class="pace-details"><summary>必要ペースを見る</summary>
+    <details class="pace-details"><summary>必要ペース</summary>
     <div class="pace num">
       <div><span id="paceBase">残り時間</span><b id="paceTime">-</b></div>
       <div><span>1時間あたり</span><b id="perHour">-</b></div>
@@ -1838,7 +1836,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 </div>
 <div class="main-sub-menus" id="mainSubMenus" role="region" aria-label="補助メニュー">
   <div class="menus-toolbar" id="menusToolbar"><span id="menuSummary">補助メニュー</span><button type="button" id="collapseAllMenus" aria-controls="sectionBody-1 sectionBody-2 sectionBody-3 sectionBody-4 sectionBody-5 displaySettings">すべて折りたたむ</button></div>
-  <div class="secondary-menus" aria-label="補助メニュー">
+  <div class="secondary-menus">
   <section class="card collapsed" id="borderTargets" data-collapse-key="📊 ボーダー別の必要量">
     <h2>📊 ボーダー別の必要量（<span class="closeLbl">22時締め</span>）</h2>
     <div class="section-body" id="sectionBody-3" hidden>
@@ -1854,9 +1852,9 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
   <section class="pick card studio collapsed" id="targetStudio" data-collapse-key="目標の自動計算・分析">
     <h2>📈 <span id="analysisHeading">目標詳細設定</span></h2>
     <div class="section-body" id="sectionBody-1" hidden>
-    <div class="studio-head"><p class="eyebrow">目標の自動計算・分析</p><span class="coverage-pill" id="dataBadge">記録を確認中</span></div>
+    <div class="studio-head"><span class="coverage-pill" id="dataBadge">記録を確認中</span></div>
     
-    <div class="target-preview"><div><span><span id="candidateLabel">選んだ期間から算出した目標候補</span> <small>（推測）</small></span><strong class="candidate-value num" id="candidateValue">—</strong></div><button class="main" id="applyCandidate">この候補を目標に設定</button></div>
+    <div class="target-preview"><div><span><span id="candidateLabel">選んだ期間の目標候補</span></span><strong class="candidate-value num" id="candidateValue">—</strong></div><button class="main" id="applyCandidate">目標に設定</button></div>
     <div class="pickgrid" hidden>
       <div><label for="pickPeriod">集計期間</label><select id="pickPeriod" class="sm"><option value="d1">前日</option><option value="d2">2日前</option><option value="d3">3日前</option><option value="7d">直近7日</option><option value="14d">直近14日</option><option value="30d">直近30日</option><option value="month">当月</option><option value="prev">先月</option><option value="3m">3か月</option><option value="all">全期間</option></select></div>
       <div><label for="pickRank">ランク</label><select id="pickRank" class="sm num"></select></div>
@@ -1902,15 +1900,15 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
     </details>
     <div class="applied-comparison"></div>
     
-    <details class="stats-details"><summary>統計・推移・記録日を確認</summary><div class="stats-grid"><div class="stat-card"><span>平均値</span><b class="num" id="statMean">—</b></div><div class="stat-card"><span>中央値</span><b class="num" id="statMedian">—</b></div><div class="stat-card"><span>上位25％の境界</span><b class="num" id="statP75">—</b></div><div class="stat-card"><span>最小〜最大</span><b class="num" id="statRange">—</b></div></div>
+    <details class="stats-details"><summary>統計とボーダー推移</summary><div class="stats-grid"><div class="stat-card"><span>平均値</span><b class="num" id="statMean">—</b></div><div class="stat-card"><span>中央値</span><b class="num" id="statMedian">—</b></div><div class="stat-card"><span>上位25％の境界</span><b class="num" id="statP75">—</b></div><div class="stat-card"><span>最小〜最大</span><b class="num" id="statRange">—</b></div></div>
     <div class="chart-wrap" id="recentChart" aria-label="選んだ期間のボーダー推移"></div>
     <div class="chart-legend"><span>● 登録あり</span><span>○ 未登録</span><span>▧ 旧版参考値</span></div>
     <div class="coverage-strip" id="coverageStrip" aria-label="選んだ期間の日付を選んで記録を編集"></div>
     <p class="hint">日付をタップすると、その日の記録を編集できます。欠けている日は0として計算しません。</p>
     </details><div class="analysis-actions"><button type="button" id="nextMissing">未登録日の入力へ</button><button type="button" id="copyAnalysis">目標候補と根拠をコピー</button></div>
     <textarea id="analysisText" readonly hidden aria-label="目標候補と集計根拠のコピー用テキスト"></textarea>
-    <details class="daily-analysis"><summary id="dailyAnalysisTitle">選んだ期間の日別記録・出典を確認する</summary><div class="analysis-table-wrap" tabindex="0" role="region" aria-label="日別記録の表。横にスクロールできます"><table><caption id="analysisCaption"></caption><thead><tr><th scope="col">日付</th><th scope="col">±0</th><th scope="col">+1</th><th scope="col">+2</th><th scope="col">集計</th><th scope="col">記録元</th><th scope="col">編集</th></tr></thead><tbody id="analysisRows"></tbody></table></div></details>
-    <details class="date-tools"><summary>対象期間・計算方法について</summary><label for="asOfDate">直近30日の集計最終日（空欄は自動で昨日）</label><input id="asOfDate" type="date"><button id="autoDate">昨日までに戻す</button><p class="hint">直近30日は指定日を含む30暦日です。当月は1日〜昨日、先月は前月の全日、3か月は当月を含む3暦月〜昨日、全期間は昨日以前の登録済み日付です。当日の途中値・未来日は含めません。直近30日は旧版参考値を除外し、他の期間には含めて表示します。中央値は偶数件なら中央2値の平均、上位25％境界は小さい順でceil(件数×0.75)番目。平均は未丸め値で計算し、上乗せ後に指定単位で切り上げます。</p></details>
+    <details class="daily-analysis"><summary id="dailyAnalysisTitle">日別記録と出典</summary><div class="analysis-table-wrap" tabindex="0" role="region" aria-label="日別記録の表。横にスクロールできます"><table><caption id="analysisCaption"></caption><thead><tr><th scope="col">日付</th><th scope="col">±0</th><th scope="col">+1</th><th scope="col">+2</th><th scope="col">集計</th><th scope="col">記録元</th><th scope="col">編集</th></tr></thead><tbody id="analysisRows"></tbody></table></div></details>
+    <details class="date-tools"><summary>直近30日の集計最終日</summary><label for="asOfDate">直近30日の集計最終日（空欄は自動で昨日）</label><input id="asOfDate" type="date"><button id="autoDate">昨日までに戻す</button><p class="hint">指定日を含む30日間を集計します。直近30日の集計では旧版参考値を除きます。</p></details>
     
     <p class="hint target-summary" id="pickNote" role="status">ランク・ボーダーを選んで、目標を設定してください。</p>
 
@@ -1918,8 +1916,8 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 </div>
   </section>
 
-  <section class="card collapsed">
-    <h2>🎁 アイテム換算</h2>
+  <section class="card collapsed" data-collapse-key="🎁 アイテム換算">
+    <h2>🎁 アイテム登録</h2>
     <div class="section-body" id="sectionBody-5" hidden>
     <div class="rows" id="items"></div>
     <div class="add">
@@ -1932,7 +1930,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
   </section>
 
   <section class="card collapsed" data-collapse-key="✏️ メーター入力">
-    <h2>⚙️ 時刻・加減算</h2>
+    <h2>⚙️ 時刻設定・ポイント調整</h2>
     <div class="section-body" id="sectionBody-2" hidden>
     <input id="current" type="hidden"><div class="delta-controls"><label for="adjustAmount">現在値を加減算</label><input id="adjustAmount" type="text" inputmode="decimal" autocomplete="off" value="1K" aria-label="加減算するポイント"><button type="button" id="subtractAmount">引く</button><button type="button" id="addAmount">足す</button></div>
     <div class="fields" style="margin-top:14px">
@@ -1945,10 +1943,9 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 </div>
   </section>
 
-  <section class="card collapsed">
-    <h2>🗂️ ボーダー記録（<span class="closeLbl">22時締め</span>）</h2>
+  <section class="card collapsed" data-collapse-key="🗂️ ボーダー記録">
+    <h2>🗂️ 記録の編集・バックアップ</h2>
     <div class="section-body" id="sectionBody-4" hidden>
-    <p><a class="manual-link" href="/border-history">過去のボーダー表を専用ページで開く</a></p>
     <div id="legacyHistoryViewer" hidden inert aria-hidden="true"><details class="save-menu daily-viewer" id="dailyViewer">
       <summary>過去のボーダーを検索・閲覧</summary>
       <div class="history-view-switch" role="group" aria-label="記録の探し方"><button type="button" id="historyDateView" aria-pressed="true" aria-controls="dailyControls dailyTable">日付で見る</button><button type="button" id="historyPeriodView" aria-pressed="false" aria-controls="historySearch">期間で探す</button></div>
@@ -1992,10 +1989,10 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
       </div>
     </details>
     </div>
-    <div class="record-editor" id="recordEditor"><div class="studio-head"><b>1日分をかんたん登録</b></div><div class="record-grid"><div><label for="editDate">記録日</label><input id="editDate" type="date"></div><div><label for="editZero">±0</label><input id="editZero" type="text" inputmode="decimal" placeholder="例 300K"></div><div><label for="editPlus1">+1</label><input id="editPlus1" type="text" inputmode="decimal" placeholder="例 600K"></div><div><label for="editPlus2">+2</label><input id="editPlus2" type="text" inputmode="decimal" placeholder="例 900K"></div></div><div class="editor-actions"><button class="main" id="saveDay">この日の記録を保存</button><button id="loadDay">保存済みの値を読み込む</button><button id="deleteDay">このランクの記録を削除</button></div><p class="hint">対象は上で選んだランク・締め時間です。3つの値をそろえて入力します。K・万・全角数字も使えます。</p>
+    <div class="record-editor" id="recordEditor"><div class="studio-head"><b>1日分を手入力</b></div><div class="record-grid"><div><label for="editDate">記録日</label><input id="editDate" type="date"></div><div><label for="editZero">±0</label><input id="editZero" type="text" inputmode="decimal" placeholder="例 300K"></div><div><label for="editPlus1">+1</label><input id="editPlus1" type="text" inputmode="decimal" placeholder="例 600K"></div><div><label for="editPlus2">+2</label><input id="editPlus2" type="text" inputmode="decimal" placeholder="例 900K"></div></div><div class="editor-actions"><button class="main" id="saveDay">この日の記録を保存</button><button id="loadDay">保存済みの値を読み込む</button><button id="deleteDay">このランクの記録を削除</button></div><p class="hint">対象は上で選んだランク・締め時間です。3つの値をそろえて入力します。K・万・全角数字も使えます。</p>
 <p id="editorMsg" class="toast" role="status"></p><span id="editorScope"></span>
 </div>
-    <p class="hint" style="margin:0 0 10px">早見表の「前日ランクボーダー」を貼り付けると全ランク分を記録します。「9月23日」などの日付を含めて貼り付ければ、何日分でもまとめて日付ごとに記録できます（日付がない場合は下の対象日で記録）。30日分そろうと「30日」の平均が完成します。</p>
+    <p class="hint" style="margin:0 0 10px">早見表を貼り付けて、複数ランク・複数日をまとめて記録できます。貼り付けた内容に日付がない場合は、下の対象日に記録します。</p>
     <div class="fields one">
       <div style="max-width:220px"><label for="logDate">対象日</label><input id="logDate" type="date"></div>
       <div><label for="paste">ボーダーの貼り付け</label><textarea id="paste" style="min-height:110px" placeholder="【B1】&#10;［±0］114,134　［+1］216,341　［+2］342,210"></textarea></div>
@@ -2005,16 +2002,16 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
     <div class="import-preview" id="importPreview" role="status" hidden></div>
     <div class="copyrow"><button id="previewImport">内容を確認</button><button class="main" id="importBtn">記録する</button></div>
     <details class="saved-records-panel" id="savedRecordsPanel"><summary>保存済み記録</summary>
-    <div class="record-filter"><label for="recordSearch">保存済み記録を探す</label>
+    <div class="record-filter"><label for="recordSearch">日付・ランクで検索</label>
       <div class="record-mobile-filters" id="recordMobileFilters" hidden>
         <div><label for="recordMonthFilter">年月で検索</label><input type="month" id="recordMonthFilter" aria-controls="logList"></div>
         <div><label for="recordDayFilter">日付で検索</label><input type="date" id="recordDayFilter" aria-controls="logList"></div>
         <button type="button" id="recordClearFilters">検索解除・すべて閉じる</button>
         <p class="hint">月をタップして開閉できます。日付を指定すると、その日の記録だけ表示します。</p>
       </div>
-      <input type="search" id="recordSearch" placeholder="日付・ランク（例 10-01 / S1）" autocomplete="off"><small id="recordCount" role="status"></small></div><div class="rows" id="logList" style="margin-top:12px"></div>
+      <input type="search" id="recordSearch" placeholder="例：10-01 / S1" autocomplete="off"><small id="recordCount" role="status"></small></div><div class="rows" id="logList" style="margin-top:12px"></div>
     </details>
-    <details class="save-menu" id="backupTools"><summary>保存メニュー</summary>
+    <details class="save-menu" id="backupTools"><summary>バックアップ・CSV出力</summary>
       <div class="save-menu-grid">
         <div><label for="saveContent">保存する内容</label><select id="saveContent"><option value="backup">JSONバックアップ</option><option value="csvAll">CSV：全記録</option><option value="csvPeriod">CSV：選択期間</option></select></div>
         <div><label for="saveMethod">保存方法</label><select id="saveMethod"><option value="file">ファイル保存</option><option value="copy">コピー</option></select></div>
@@ -2028,7 +2025,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
         <p id="offlineStatus" class="hint" role="status" aria-live="polite" aria-atomic="true">オフライン準備を確認しています…</p>
         <button type="button" id="prepareOffline" aria-describedby="offlineStatus offlineHelp">オフライン準備を確認</button>
         
-        <p id="offlineHelp" class="hint">通信できる状態で「準備完了」を確認してください。iPhoneは共有→ホーム画面に追加、Androidはブラウザのメニュー→ホーム画面に追加／アプリをインストール。そのアイコンからも一度オンラインで開き、準備完了を確認します。オフライン中は保存済みのボーダーで計算し、通信復帰後に更新します。端末の保存領域を削除すると準備・記録も消えるため、JSONバックアップも保存してください。</p>
+        <p id="offlineHelp" class="hint">オンラインで「準備完了」を確認すると、通信なしでも保存済みのボーダーで計算できます。ホーム画面への追加は、iPhoneではSafariの共有メニュー、Androidではブラウザのメニューから行えます。追加したアイコンからも一度オンラインで開いてください。ブラウザのデータを消す前に、JSONバックアップを保存してください。</p>
 
 <p id="offlineStorageStatus" class="hint" role="status"></p>
 </details>
@@ -2037,7 +2034,6 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 <p class="toast" id="bkMsg" role="status" aria-live="polite" aria-atomic="true"></p><p class="hint" id="saveExportHelp"></p>
 </details>
 
-    <p class="hint">同梱記録の出典：LIVER CAMPUS 9月の13時・22時・24時締め早見表と10/01の22時・24時締め記録。出典URLは日別記録・分析CSV・バックアップ内に参照用の文字列として保持しています。</p>
 
 <span class="toast" id="importMsg" role="status"></span><p id="offlineFileMsg" class="toast" role="status"></p>
 </div>
@@ -2057,17 +2053,14 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
       <details class="tool-usage" id="toolUsage">
       <summary id="toolUsageSummary">使い方</summary><div class="header-help-panel">
       <div class="tool-usage-content" id="toolUsageText">
-        <h3>基本の3ステップ</h3><ol><li>締め時間と現コア数を合わせる。</li><li>目標値、現在値の順に入力する。数値は入力時に反映されます。</li><li>残り・達成率・必要量を確認する。</li></ol>
-        <p>K＝1,000、万＝10,000。全角数字も使えます。現在値は加減算や「戻す」で調整できます。目標欄を空にしても設定済みの目標は保持され、リセットで消去します。「戻す」で目標のリセットを1回取り消せます。</p>
-        <h3>過去の記録から目標を作る</h3><p>ボーダーを±0・+1・+2から選ぶと、締め時間・集計期間・ランク・算出方法・上乗せ率・切り上げ単位の変更を目標と残りへ即反映します。上乗せは0〜50％、小数1桁まで。ボーダーの「手入力」は入力した目標を基準に計算します。コア数の変更は必要コイン・アイテム数へ即反映します。算出できない条件では理由を表示し、直前の目標を使用します。</p>
-        <p>集計は昨日以前の記録が対象。未登録日は0で補いません。直近30日は旧版参考値を除外し、他の期間には含めます。統計は過去の目安で、当日のボーダーを予測・保証するものではありません。</p>
-        <p>日別ボーダーは毎日自動取得します。画面を開いた時と表示中も最新の取得データを確認します。自動算出中の目標・残り・アイテム目安へ反映し、手入力の目標と記録は保持します。更新元の掲載時刻により、最新データ日が昨日より前になる場合があります。</p><h3>記録・保存・移行</h3><p>「記録」で日別値を登録。CSV・ExcelのコピーやJSONを貼り付け、内容を確認して「記録する」で確定します。日別値は±0≦+1≦+2で3つそろえてください。CSV形式：日付,ランク,±0,+1,+2,締め時間。</p>
-        <p>バックアップJSONには設定・記録・アイテムを含みます。読み込みは既存へ結合し、同じ締め時間・日付・ランクはバックアップの値で上書きします。「保存メニュー」でJSONバックアップ、全記録CSV、選択期間CSVと保存方法を選べます。全記録CSVは旧版参考値を除外し、選択期間CSVは現在の条件で集計した記録と根拠を出力します。端末移行にはJSONを使い、端末に保存できたことを確認してください。</p>
-        <h3>iPhone・Androidで使う</h3><p>iPhoneはSafari、AndroidはChromeなどのブラウザでこのURLを開いてください。初回は通信できる状態で開き、保存メニューの「オフラインで使う」で準備完了を確認してください。準備後は通信なしでも開き直して計算できます。ホーム画面に追加した場合は、そのアイコンからも一度オンラインで開いてください。入力内容は端末・ブラウザごとに保存されます。別の端末へ移す場合はJSONバックアップを読み込んでください。</p>
-        <p>現在日時・残り時間はPococha公式サイトの応答時刻に合わせ、日本時間で表示します。初回・画面復帰・通信復帰と表示中の1分ごとに確認します。取得できない場合は前回の同期時刻を最大5分使い、その後は「端末時計・未同期」と表示します。通信による秒単位の誤差があり、Pocochaアプリ内部の時計との一致は確認できません。締め時刻を過ぎても現在値は自動で消えないため、新しい期間の値へ更新してください。</p>
-        <h3>換算・便利機能</h3><p>必要コインは残りポイント÷（4×コア倍率）の切り上げです。笹ﾊﾟﾝﾀﾞ・花火・馬車は各アイテムだけで満たす必要数で、合計して投げる個数ではありません。実際の獲得ポイントを保証しません。登録アイテムは実測した1個あたりのポイントで計算し、コア倍率を重ねません。</p>
-        <p>主画面の「残りをコピー」で現在の数値をコピーできます。保存済みのデフォルト値は「デフォルト値に戻す」で適用できます。</p>
-        <p><a class="manual-link" href="#manualGoal">目標へ</a><a class="manual-link" href="#recordEditor">記録へ</a><a class="manual-link" href="#backupTools">保存・移行へ</a></p>
+        <h3>メーターを使う</h3>
+        <ol><li>締め時間と現コア数を合わせます。</li><li>目標値と現在値を入力します。K・万・全角数字も使えます。</li><li>残りポイント・達成率・アイテムの目安を確認します。</li></ol>
+        <p>時計は端末の時刻を日本時間で表示します。締め時間を過ぎたら、現在値を新しい期間の値に更新してください。</p>
+        <h3>ボーダーから目標を設定する</h3>
+        <p>±0・+1・+2を選ぶと、設定した条件で目標を計算します。「手入力」を選ぶと、入力した目標を使います。</p>
+        <h3>記録を移す</h3>
+        <p>別の端末に設定や記録を移すときは、JSONバックアップを使います。読み込むと、締め時間・日付・ランクが同じ記録はバックアップの値で上書きされます。</p>
+        <p><a class="manual-link" href="#targetMini">目標値へ</a><a class="manual-link" href="#recordEditor">記録の編集へ</a><a class="manual-link" href="#backupTools">バックアップへ</a></p>
       </div>
     </div></details>
       <a class="method-help-link" id="calculationMethodsLink" href="/calculation-methods" target="_blank" rel="noopener noreferrer">算出方法の説明</a>
@@ -2093,14 +2086,14 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 <p class="toast" id="displaySettingsStatus" role="status" aria-live="polite" aria-atomic="true"></p>
 </details>
       <!-- display-settings-menu:end -->
-      <button type="button" id="refreshPage" aria-label="ページ全体を再読み込みする" title="ページ全体を再読み込み">更新</button>
-      <span class="ylogo-update" id="toolUpdatedDate" title="ツール本体の最終更新日時とバージョン（ボーダーデータの更新日時とは別）"><span>更新時間</span><time class="num" datetime="2026-10-23T23:54:26+09:00">2026/10/23 23:54:26</time><span class="num" id="toolVersion">最終更新バージョン：v2026.10.23.3</span></span>
+      <button type="button" id="refreshPage" >再読み込み</button>
+      <span class="ylogo-update" id="toolUpdatedDate" title="ツール本体の最終更新日時とバージョン（ボーダーデータの更新日時とは別）"><span>アプリ更新</span><time class="num" datetime="2026-10-23T23:54:26+09:00">2026/10/23 23:54:26</time><span class="num" id="toolVersion">最終更新バージョン：v2026.10.23.3</span></span>
     </div>
   </header>
   <p class="hint" id="borderSyncStatus" role="status" style="font-size:.68rem;margin:5px 2px 8px;line-height:1.5">ボーダー確認中…</p>
   
-  <div class="history-portal"><a href="https://poco-meter.freefreelife2000.chatgpt.site/e-border.html" class="manual-link" id="eBorderPortalLink"><span class="history-portal-text"><span class="history-portal-title">E帯のボーダーを保存・管理</span><span class="hint">画像の一括取込・編集・削除・未記録日を確認</span></span><span aria-hidden="true">›</span></a></div>
-  <div class="history-portal"><a href="/border-history" class="manual-link" id="historyPortalLink"><span aria-hidden="true">🗂️</span><span class="history-portal-text"><span class="history-portal-title">過去のボーダー表を開く</span><span class="hint">ランク別カレンダー／日付検索／カードをコピー</span></span><span class="history-portal-arrow" aria-hidden="true">›</span></a></div>
+  <div class="history-portal"><a href="https://poco-meter.freefreelife2000.chatgpt.site/e-border.html" class="manual-link" id="eBorderPortalLink"><span class="history-portal-text"><span class="history-portal-title">E帯のボーダー記録</span><span class="hint">画像取り込み・手入力・未記録日の確認</span></span><span aria-hidden="true">›</span></a></div>
+  <div class="history-portal"><a href="/border-history" class="manual-link" id="historyPortalLink"><span aria-hidden="true">🗂️</span><span class="history-portal-text"><span class="history-portal-title">過去のボーダー表</span><span class="hint">日付・ランクで検索</span></span><span class="history-portal-arrow" aria-hidden="true">›</span></a></div>
   
   <div class="period-notice-actions" id="periodNoticeActions" hidden><button type="button" id="reviewPeriodCurrent">現在値を確認・入力</button><button type="button" id="resetPeriodCurrent">0にリセット</button></div>
 
@@ -2175,7 +2168,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
   </details>
 
 
-  <footer>無断転載・転用・再配布禁止<br>ブラウザ内で計算する非公式ツールです。入力内容は端末内で処理し、ブラウザへ保存を試みます。大切な記録はバックアップを保存してください。
+  <footer>無断転載・転用・再配布禁止<br>入力は端末内で処理し、このブラウザに保存します。
     <div class="footer-support">
       <details class="tool-disclaimer" id="toolDisclaimer"><summary id="toolDisclaimerSummary">免責事項</summary><div class="header-help-panel"><p id="toolDisclaimerText">本ツールは非公式です。計算結果は目安としてご利用ください。</p>
         <div class="ylogo-bar">
@@ -2882,7 +2875,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
     $('analysisBorder').value=String(idx);
     renderAppliedComparison(s,candidate);
     var sig=JSON.stringify([state.period,state.rank,closeKey(),idx,state.targetMethod,state.bufferPct,state.roundUnit,invalid,dataRevision,s]);if(studioSignature===sig)return;studioSignature=sig;
-    $('analysisHeading').textContent='目標詳細設定';$('candidateLabel').textContent=periodName()+'から算出した目標候補';$('dailyAnalysisTitle').textContent=periodName()+'の日別記録・出典を確認する';$('coverageStrip').setAttribute('aria-label',periodName()+'の日付を選んで記録を編集');$('asOfDate').disabled=state.period!=='30d';$('autoDate').disabled=state.period!=='30d';
+    $('analysisHeading').textContent='目標詳細設定';$('candidateLabel').textContent=periodName()+'の目標候補';$('dailyAnalysisTitle').textContent=periodName()+'の日別記録と出典';$('coverageStrip').setAttribute('aria-label',periodName()+'の日付を選んで記録を編集');$('asOfDate').disabled=state.period!=='30d';$('autoDate').disabled=state.period!=='30d';
     $('scopeLine').textContent=periodName()+' · '+(total?s.window.start.replace(/-/g,'/')+'〜'+s.window.end.replace(/-/g,'/'):'完了した対象日なし')+' · '+closeName()+' · '+state.rank+' '+BLABEL[idx];
     $('dataBadge').textContent=state.period==='all'?s.n+'日登録':s.n+'/'+total+'日';$('dataBadge').className='coverage-pill '+(s.n&&s.n===total?'full':s.n?'partial':'empty');
     $('candidateValue').textContent=candidate?fmt(candidate.target)+' pt':!invalid&&!s.n&&!(state.rank==='E'&&eTargetRecords().failed)?'データ無し':'算出できません';
@@ -3000,7 +2993,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
     var signature=JSON.stringify([state.rank,closeKey(),state.coreCount,cur,baseMins<1?Math.ceil(baseMins*60):Math.floor(baseMins),dataRevision,recentWindow().end,jstYM()]);if(signature===borderSignature)return;borderSignature=signature;
     var el=$('borders');el.innerHTML='';
     var es=estimate(state.rank),ym=jstYM(),mon=avgFor(state.rank,ym),pv=avgFor(state.rank,prevYM()),m3=avgFor(state.rank,last3YM()),all=avgFor(state.rank,null);
-    if(!all){el.innerHTML='<div class="empty">このランクの記録がまだありません。下の「ボーダー記録」から追加してください。</div>';$('avgNote').textContent='';return;}
+    if(!all){el.innerHTML='<div class="empty">このランクの記録がありません。「記録の編集・バックアップ」から追加できます。</div>';$('avgNote').textContent='';return;}
     [0,1,2].forEach(function(i){
       var r=document.createElement('div');r.className='row brow';
       var h=document.createElement('div');h.className='bhead';h.textContent=state.rank+' '+BLABEL[i];r.appendChild(h);
@@ -3319,7 +3312,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
   function renderCustomRemaining(tgt,remain){
     var signature=JSON.stringify([tgt,remain,state.items]);if(signature===customItemSignature)return;customItemSignature=signature;
     var box=$('customItemNeeds'),valid=state.items.filter(function(it){var n=readNumber(String(it.val));return n!==null&&n>0;});box.innerHTML='';
-    $('customItemSummary').textContent='登録アイテムのポイント換算（'+valid.length+'種類）';
+    $('customItemSummary').textContent='登録アイテムの必要数（'+valid.length+'種類）';
     if(!valid.length){var empty=document.createElement('p');empty.className='empty';empty.textContent='アイテム名と1個あたりのメーター値を登録すると、必要数が表示されます。';box.appendChild(empty);var link=document.createElement('a');link.href='#itemName';link.textContent='アイテムを登録する';link.onclick=function(e){e.preventDefault();revealMenuTarget('itemName',true);};box.appendChild(link);return;}
     valid.forEach(function(it){var point=readNumber(String(it.val)),row=document.createElement('div');row.className='custom-needs-row';var label=document.createElement('div'),name=document.createElement('b'),unit=document.createElement('small'),need=document.createElement('span');name.textContent=it.name;unit.textContent='1個あたり '+fmt(point)+' pt';label.appendChild(name);label.appendChild(unit);need.className='num';need.textContent=tgt?fmt(Number((BigInt(remain)+BigInt(point)-1n)/BigInt(point)))+' 個':'目標未設定';row.appendChild(label);row.appendChild(need);box.appendChild(row);});
   }
@@ -3671,7 +3664,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
     if(sec.dataset.sectionKey)state.collapsed[sec.dataset.sectionKey]=collapsed;
     refreshMenuControls();
   }
-  function refreshMenuControls(){var sections=document.querySelectorAll('section.card'),open=Array.prototype.filter.call(sections,function(sec){return !sec.classList.contains('collapsed');}).length;$('collapseAllMenus').disabled=!open&&!$('displaySettings').open;$('menuSummary').textContent='補助メニュー（'+open+' / '+sections.length+'項目を表示）';}
+  function refreshMenuControls(){var open=document.querySelector('section.card:not(.collapsed)');$('collapseAllMenus').disabled=!open&&!$('displaySettings').open;}
   function applyCollapsedPreferences(){document.querySelectorAll('section.card').forEach(function(sec){var value=state.collapsed&&state.collapsed[sec.dataset.sectionKey];setSectionCollapsed(sec,typeof value==='boolean'?value:true);});}
   document.querySelectorAll('section.card').forEach(function(sec,idx){
     var h=sec.querySelector('h2'),key=sec.dataset.collapseKey||h.textContent.replace(/（.*$/,'').trim(),body=sec.querySelector('.section-body');
@@ -3696,11 +3689,11 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
     var summary=Array.prototype.find.call(menu.children,function(child){return child.tagName==='SUMMARY';});if(!summary)return;
     var content=menu.id==='displaySettings'?menu.querySelector('.display-settings-panel'):menu.querySelector('.header-help-panel')||menu;
     var row=menuCloseRow(function(){if(menu.id==='goalDefaultsPanel'){closeGoalDefaultsPanel();return;}menu.open=false;menu.removeAttribute('open');summary.focus({preventScroll:true});refreshMenuControls();});
-    content.insertBefore(row,content===menu?menu.children[1]||null:content.children[0]||null);
+    if(content===menu)content.appendChild(row);else content.insertBefore(row,content.children[0]||null);
   });
   document.querySelectorAll('section.card').forEach(function(sec){
     var body=sec.querySelector('.section-body'),toggle=sec.querySelector('.sectionToggle');if(!body||!toggle)return;
-    body.insertBefore(menuCloseRow(function(){setSectionCollapsed(sec,true);save();toggle.focus({preventScroll:true});}),body.children[0]||null);
+    body.appendChild(menuCloseRow(function(){setSectionCollapsed(sec,true);save();toggle.focus();}));
   });
   save();
   $('displaySettings').addEventListener('toggle',refreshMenuControls);
