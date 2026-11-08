@@ -1,11 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {fileURLToPath} from 'node:url';
 import {pageEngine,html} from './calculator-harness.mjs';
 import {createAudit,parseColor} from './theme-cascade.mjs';
 const colors=['standard','blue','green','purple','pink','black'];
 const page=()=>pageEngine(undefined,{navigator:{onLine:false}});
 const p=page(), audit=createAudit({root:p.document.documentElement,nodes:p.nodes});
-const ref=createAudit({htmlPath:new URL('./fixtures/same-coin-colors.html',import.meta.url).pathname,root:p.document.documentElement,nodes:p.nodes});
+const ref=createAudit({htmlPath:fileURLToPath(new URL('./fixtures/same-coin-colors.html',import.meta.url)),root:p.document.documentElement,nodes:p.nodes});
 const change=(p,id,value)=>{p.element(id).value=value;p.element(id).dispatchEvent(new Event('change'));};
 const resolve=(value,vars)=>value.replace(/var\((--[\w-]+)\)/g,(_,name)=>resolve(vars[name],vars));
 const resolved=vars=>Object.fromEntries(Object.entries(vars).map(([k,v])=>[k,resolve(v,vars)]));
