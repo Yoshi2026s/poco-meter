@@ -47,19 +47,29 @@ async function validShell(response) {
   if (canonicalURL && canonicalURL !== HOME) return false;
   return (await response.clone().text()).includes(APP_MARKER);
 }
+function shellHeaders(response) {
+  const headers = new Headers(response.headers);
+  // The response body contains decoded bytes.
+  headers.delete('content-encoding');
+  headers.delete('content-length');
+  if (FRESH_LAUNCH) headers.set('Cache-Control', 'no-store');
+  return headers;
+}
+function liveShell(response) {
+  // Prevent WebKit from reusing this navigation in its own HTTP cache.
+  return FRESH_LAUNCH && response.status === 200 && !response.redirected
+    ? new Response(response.body, { status: 200, headers: shellHeaders(response) })
+    : response;
+}
 async function cacheShell(response, generation = ++shellGeneration) {
   if (!await validShell(response)) return false;
   // Serialize writes so an old slow response cannot finish after a newer one.
   const write = shellWrites.catch(() => {}).then(async () => {
     if (generation < cachedGeneration) return true;
     const cache = await caches.open(CACHE_NAME);
-    const headers = new Headers(response.headers);
-    // fetch exposes decoded bytes; the reconstructed cached response must not
-    // advertise the original transport compression or compressed byte length.
-    headers.delete('content-encoding');
-    headers.delete('content-length');
+    const headers = shellHeaders(response);
     headers.set('X-Pococha-Saved-At', new Date().toISOString());
-    await cache.put(HOME, new Response(response.clone().body, { status: 200, headers }));
+    await cache.put(HOME, new Response(response.body, { status: 200, headers }));
     cachedGeneration = generation;
     return true;
   });
@@ -119,12 +129,12 @@ async function navigate(request, event) {
     const response = await Promise.race([network, new Promise(resolve => {
       timeout = setTimeout(() => resolve(null), 3000);
     })]);
-    if (response && response.status < 500) return response;
+    if (response && response.status < 500) return liveShell(response);
     const cached = await savedShell();
     if (cached) return cached;
     if (response) return response;
     // No saved shell: keep waiting for the real page rather than a blank screen.
-    return await network;
+    return liveShell(await network);
   } catch (_) {
     const cached = await savedShell();
     if (cached) return cached;

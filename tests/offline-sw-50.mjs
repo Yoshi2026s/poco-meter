@@ -1,6 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { buildPages } from '../scripts/build-pages.mjs';
 import vm from 'node:vm';
 
 // Execute the shipped worker in a fresh realm for each test. No worker logic is
@@ -109,6 +112,7 @@ function harness(options = {}) {
   };
   const self = {
     location: { origin: ORIGIN },
+    registration: { scope: options.scope ?? HOME },
     addEventListener(type, listener) { handlers.set(type, listener); },
     async skipWaiting() { skipped += 1; },
     clients: { async claim() { claimed += 1; } },
@@ -119,7 +123,7 @@ function harness(options = {}) {
     setTimeout(callback, delay) { const id = ++timerId; timers.set(id, { callback, at: now + delay }); return id; },
     clearTimeout(id) { timers.delete(id); },
   });
-  vm.runInContext(workerSource, context, { filename: 'calculator/sw.js' });
+  vm.runInContext(options.source ?? workerSource, context, { filename: 'calculator/sw.js' });
   return {
     entries, operations, calls, timers,
     get skipped() { return skipped; }, get claimed() { return claimed; },
@@ -577,4 +581,34 @@ test('50 fetch handler bypasses query, API, external and non-GET asset requests'
     assert.equal(event.waited.length, 0);
   }
   assert.equal(h.calls.length, 0);
+});
+
+test('Pages launches bypass the hosting and browser caches, retaining the latest offline copy', async () => {
+  const out = await mkdtemp(join(tmpdir(), 'meter-launch-'));
+  try {
+    await buildPages({out});
+    const source = await readFile(join(out, 'meter-sw.js'), 'utf8');
+    const scope = new URL('/poco-meter/', HOME).href;
+    let revision = 0;
+    const h = harness({ source, scope, fetch: async url => {
+      assert.ok(new URL(url).searchParams.get('_meter_launch'));
+      return shell('revision ' + (++revision), { url, headers: {
+        'Content-Type': 'text/html', 'Cache-Control': 'max-age=600',
+      } });
+    } });
+    for (const [path, expected] of [['/poco-meter/', 1], ['/poco-meter/index.html', 2]]) {
+      const launch = h.dispatch('fetch', { request: request(path) });
+      const response = await launch.response;
+      assert.equal(response.headers.get('cache-control'), 'no-store');
+      assert.equal(await response.text(), shell('revision ' + expected).body);
+      await lifetime(launch);
+    }
+    assert.notEqual(h.calls[0].input, h.calls[1].input);
+    h.setFetch(async () => { throw new Error('offline'); });
+    const response = await h.dispatch('fetch', { request: request('/poco-meter/') }).response;
+    assert.equal(response.headers.get('cache-control'), 'no-store');
+    assert.match(await response.text(), /revision 2/);
+  } finally {
+    await rm(out, {recursive: true, force: true});
+  }
 });
