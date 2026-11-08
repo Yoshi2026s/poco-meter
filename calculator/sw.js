@@ -4,6 +4,14 @@ const CACHE_PREFIX = 'pococha-meter-shell-';
 const CACHE_NAME = CACHE_PREFIX + 'v63';
 const APP_MARKER = '<meta name="pococha-app" content="meter-offline-v1">';
 const HOME = new URL('/', self.location.origin).href;
+// The Pages build enables unique startup URLs to bypass the hosting cache.
+const FRESH_LAUNCH = false;
+function freshShellRequest(input) {
+  if (!FRESH_LAUNCH) return input;
+  const url = new URL(typeof input === 'string' ? input : input.url);
+  url.searchParams.set('_meter_launch', Date.now() + '-' + Math.random().toString(36).slice(2));
+  return url.href;
+}
 let shellGeneration = 0, cachedGeneration = 0;
 let shellWrites = Promise.resolve(), preparation = null;
 const METHOD_PATH = '/calculation-methods';
@@ -29,10 +37,14 @@ function shellRequest(request) {
     url.pathname === '/' && !url.search && request.mode === 'navigate';
 }
 async function validShell(response) {
-  if (!response || response.status !== 200 || response.redirected ||
+  if (!response) return false;
+  const finalURL = response.url ? new URL(response.url) : null;
+  if (finalURL && FRESH_LAUNCH) finalURL.searchParams.delete('_meter_launch');
+  const canonicalURL = finalURL?.href || '';
+  if (response.status !== 200 || response.redirected ||
       !['basic', 'default'].includes(response.type) ||
       !/^text\/html(?:;|$)/i.test(response.headers.get('content-type') || '')) return false;
-  if (response.url && response.url !== HOME) return false;
+  if (canonicalURL && canonicalURL !== HOME) return false;
   return (await response.clone().text()).includes(APP_MARKER);
 }
 async function cacheShell(response, generation = ++shellGeneration) {
@@ -67,7 +79,7 @@ async function performPreparation() {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 12000);
   try {
-    const response = await fetch(HOME, { cache: 'no-store', credentials: 'same-origin', signal: controller.signal });
+    const response = await fetch(freshShellRequest(HOME), { cache: 'no-store', credentials: 'same-origin', signal: controller.signal });
     if (!await cacheShell(response, generation)) throw new Error('App shell unavailable');
     // Icons are optional for calculation; their failure must not undo a good shell.
     await Promise.allSettled(ASSETS.map(async path => {
@@ -101,7 +113,7 @@ async function navigate(request, event) {
   const generation = ++shellGeneration;
   // Return an arrived network response immediately. Storage maintenance is
   // independent, so slow phone storage does not delay a fresh page.
-  const network = fetch(request, { cache: 'no-store' });
+  const network = fetch(freshShellRequest(request), { cache: 'no-store' });
   event.waitUntil(network.then(response => cacheShell(response.clone(), generation)).catch(() => {}));
   try {
     const response = await Promise.race([network, new Promise(resolve => {

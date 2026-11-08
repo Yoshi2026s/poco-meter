@@ -1661,6 +1661,8 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 :root body #mini.main-screen #miniClockAccuracy{font-size:12px!important;line-height:1.4;color:var(--sub)!important}
 :root body #mini.main-screen #miniPeriodReview{min-height:44px;font-size:13px!important;margin-top:4px}
 :root body #mini.main-screen #miniNow{grid-column:1/-1!important;grid-row:2!important;display:flex!important;flex-wrap:wrap;align-items:baseline;justify-content:flex-end;gap:2px 8px;text-align:right;margin:2px 0 0;line-height:1.4}
+:root body #mini.main-screen #miniNowDate{font-size:12px!important;color:var(--success)!important;font-variant-numeric:tabular-nums;white-space:nowrap}
+:root body #mini.main-screen #miniClockReading{display:inline-flex;gap:4px;align-items:baseline;white-space:nowrap}
 :root body #mini.main-screen #miniTimeLabel{font-size:12px!important;color:var(--success)!important}
 :root body #mini.main-screen #miniNowTime{font-size:15px!important;color:var(--success)!important;font-variant-numeric:tabular-nums}
 :root body #mini.main-screen .main-progress{grid-column:1/-1;grid-row:3;display:flex;align-items:center;gap:8px;margin-top:6px}
@@ -1802,8 +1804,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 <div class="mini show main-screen" id="mini" role="region" aria-label="シンプルメニュー（メイン画面）" aria-hidden="false">
 <div class="main-hero"><div class="mini-remaining"><span id="miniL">目標まであと</span><b id="miniR" class="num">-</b></div><div class="mini-countdown"><span id="miniDeadlineLabel">締切まで</span><span class="mt" id="miniT">-</span><small class="clock-accuracy" id="miniClockAccuracy">誤差：未確認</small><button type="button" id="miniPeriodReview" hidden>締め後・現在値を確認</button></div>
 <!-- phone-current:start -->
-<time id="miniNow" class="num" title="現在日時・日本時間（時刻同期を確認中）"><span id="miniTimeLabel">時刻を確認中</span><b id="miniNowTime"></b>
-<span id="miniNowDate" hidden></span>
+<time id="miniNow" class="num" title="現在日時・日本時間（時刻同期を確認中）"><span id="miniNowDate"></span><span id="miniClockReading"><span id="miniTimeLabel">時刻を確認中</span> <b id="miniNowTime"></b></span>
 </time><div class="main-progress"><div class="main-progress-bar" aria-hidden="true"><span id="miniFill"></span></div><span id="miniPct" class="num" aria-label="目標の達成率">0%</span></div></div>
 <div class="main-inputs"><div class="mini-input mini-target" id="miniTargetField"><div class="mini-label-row"><label for="targetMini">目標値</label><button type="button" class="mini-action mini-reset" id="resetTargetMini" aria-label="目標値をリセット">リセット</button></div><div class="mini-input-box"><input class="num" id="targetMini" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="未設定" aria-describedby="targetMiniError targetUpdateNote inputStatus"><small class="target-update-note" id="targetUpdateNote" title="ボーダーの自動取得は毎日5時・17時頃（日本時間）。目標の自動計算に反映されます。">自動更新 毎日5時・17時頃</small></div><div class="mini-target-actions"><button type="button" class="mini-action" id="restoreTargetMini" aria-label="目標値をデフォルトに戻す">デフォルト</button><button type="button" class="mini-action" id="openMiniTargetDetails" aria-controls="sectionBody-1" aria-label="目標値の詳細設定を開く">詳細設定</button></div></div>
 <div class="mini-input mini-current" id="miniCurrentField"><div class="mini-label-row"><label for="currentMini">現在値</label><button type="button" class="mini-action mini-reset" id="resetCurrentMini" aria-label="現在値をリセット">リセット</button></div><input class="num" id="currentMini" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="0" aria-describedby="currentMiniError inputStatus"><div class="mini-target-actions"><button type="button" class="mini-action" id="miniUndoCurrent" disabled aria-label="直前の現在値に戻す">戻す</button></div></div>
@@ -3360,7 +3361,9 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
     $('todayYear').textContent=now.y+'年';$('todayDate').textContent=now.m+'/'+now.d+'（'+'日月火水木金土'[now.w]+'）';$('todayTime').textContent=clockTime;
     $('today').setAttribute('datetime',now.y+'-'+String(now.m).padStart(2,'0')+'-'+String(now.d).padStart(2,'0')+'T'+clockTime+'+09:00');
     $('today').setAttribute('aria-label',now.y+'年'+now.m+'月'+now.d+'日（'+'日月火水木金土'[now.w]+'） '+clockTime+' 日本時間。'+clockBasis().primary+'。'+clockBasis().secondary);
-    $('miniNowDate').textContent=now.y+'/'+String(now.m).padStart(2,'0')+'/'+String(now.d).padStart(2,'0')+'（'+'日月火水木金土'[now.w]+'）';$('miniNowTime').textContent=clockTime;
+    var displayDate=now.y+'年'+now.m+'月'+now.d+'日';
+    if($('miniNowDate').textContent!==displayDate)$('miniNowDate').textContent=displayDate;
+    $('miniNowTime').textContent=clockTime;
     $('miniNow').setAttribute('datetime',$('today').getAttribute('datetime'));$('miniNow').setAttribute('aria-label',$('today').getAttribute('aria-label'));
     // 締め時刻の「次の到来」までを計算（13時締め＝当日13時〜翌日13時が1日のメーター）
     var left=period.left;
