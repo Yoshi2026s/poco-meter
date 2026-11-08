@@ -1,6 +1,6 @@
 # ポコメーター番長 引継ぎ（現状）
 
-更新日：2026/11/07（日本時間）
+更新日：2026/11/08（日本時間）
 
 このファイルは「今の状態」だけを書く。経緯は [CHANGELOG.md](CHANGELOG.md)（1変更1行）と
 [archive/HANDOVER-log-2026-11.md](archive/HANDOVER-log-2026-11.md)（11/06〜11/07 の詳細原文）にある。
@@ -30,7 +30,7 @@
 - デフォルトのランクはS1（v2026.11.07.10）。集計期間は 前日・2日前・3日前（各1日分）・直近7日・直近14日・直近30日・当月・先月・3か月・全期間。直近系は昨日（日本時間）まで、集計最終日の指定は直近30日のみ。記録の無い日は補わず「データ無し」。
 
 ## 参照先
-- 開発ルール・検証コマンド：[../AGENTS.md](../AGENTS.md)
+- 開発ルール・検証コマンド（ChatGPTでの作業手順を含む）：[../AGENTS.md](../AGENTS.md)
 - ファイルの場所・関数・テストの選び方：[CODEMAP.md](CODEMAP.md)
 - 画面・計算の要望一覧：[REQUESTS.md](REQUESTS.md)
 - 自動取得の経緯・403の経路：[AUTOMATION_CODE_HANDOVER.md](AUTOMATION_CODE_HANDOVER.md)
