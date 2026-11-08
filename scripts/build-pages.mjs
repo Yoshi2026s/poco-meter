@@ -13,7 +13,7 @@ import {validateData} from '../automation/update-borders-json.mjs';
 const ROOT = fileURLToPath(new URL('../', import.meta.url));
 // Tool version shown on the page. Change only when the tool itself changes
 // (data updates do not change it).
-export const PAGES_VERSION = {version: 'v2026.11.07.11', updatedAt: '2026-11-07T13:26:00+09:00', label: '2026/11/07 13:26:00'};
+export const PAGES_VERSION = {version: 'v2026.11.08.1', updatedAt: '2026-11-08T15:57:00+09:00', label: '2026/11/08 15:57:00'};
 const SITES_ORIGIN = 'https://poco-meter.freefreelife2000.chatgpt.site';
 const COLLECTOR_ORIGIN = 'https://pococha-comment-access.freefreelife2000.chatgpt.site';
 const BORDER_FETCH = "fetch('/api/borders',{cache:'no-cache',credentials:'same-origin',signal:controller.signal})";
@@ -94,7 +94,9 @@ export async function buildPages({root = ROOT, out = resolve(ROOT, '_site')} = {
     'index.html': exportCalculator(calculator),
     'calculation-methods.html': methods.replaceAll('href="/"', 'href="./"'),
     // A new tool version gets a new cache name, so installed copies refresh icons and pages.
-    'meter-sw.js': replaceOnce(exportWorker(worker), "-github';", `-github-${PAGES_VERSION.version}';`),
+    'meter-sw.js': replaceOnce(
+      replaceOnce(exportWorker(worker), 'const FRESH_LAUNCH = false;', 'const FRESH_LAUNCH = true;'),
+      "-github';", `-github-${PAGES_VERSION.version}';`),
     'meter.webmanifest': JSON.stringify(pagesManifest, null, 2) + '\n',
     'border-history.html': exportHistory(history),
     'e-border.html': exportEBorder(eBorder),

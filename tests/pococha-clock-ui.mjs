@@ -116,11 +116,11 @@ test('The synchronized Japanese date and midnight cutoff roll together on the ma
   const c = await clockPage({ deadline: '00:00' });
   await c.reply(sample('2026-10-12T23:59:59+09:00'));
   assertTimes(c.page, '23:59:59', '00:00:01');
-  assert.equal(c.page.element('miniNowDate').textContent, '2026/10/12（月）');
+  assert.equal(c.page.element('miniNowDate').textContent, '2026年10月12日');
   c.advance(1000); c.page.tick(1000);
   assertTimes(c.page, '00:00:00', '24:00:00');
   assert.equal(c.page.element('todayDate').textContent, '10/13（火）');
-  assert.equal(c.page.element('miniNowDate').textContent, '2026/10/13（火）');
+  assert.equal(c.page.element('miniNowDate').textContent, '2026年10月13日');
 });
 
 test('Configured 13:00 and 22:00 cutoffs use the synchronized sample at the exact boundary', async () => {

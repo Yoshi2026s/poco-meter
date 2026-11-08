@@ -4,6 +4,14 @@ const CACHE_PREFIX = 'pococha-meter-shell-';
 const CACHE_NAME = CACHE_PREFIX + 'v63';
 const APP_MARKER = '<meta name="pococha-app" content="meter-offline-v1">';
 const HOME = new URL('/', self.location.origin).href;
+// The Pages build enables unique startup URLs to bypass the hosting cache.
+const FRESH_LAUNCH = false;
+function freshShellRequest(input) {
+  if (!FRESH_LAUNCH) return input;
+  const url = new URL(typeof input === 'string' ? input : input.url);
+  url.searchParams.set('_meter_launch', Date.now() + '-' + Math.random().toString(36).slice(2));
+  return url.href;
+}
 let shellGeneration = 0, cachedGeneration = 0;
 let shellWrites = Promise.resolve(), preparation = null;
 const METHOD_PATH = '/calculation-methods';
@@ -29,11 +37,29 @@ function shellRequest(request) {
     url.pathname === '/' && !url.search && request.mode === 'navigate';
 }
 async function validShell(response) {
-  if (!response || response.status !== 200 || response.redirected ||
+  if (!response) return false;
+  const finalURL = response.url ? new URL(response.url) : null;
+  if (finalURL && FRESH_LAUNCH) finalURL.searchParams.delete('_meter_launch');
+  const canonicalURL = finalURL?.href || '';
+  if (response.status !== 200 || response.redirected ||
       !['basic', 'default'].includes(response.type) ||
       !/^text\/html(?:;|$)/i.test(response.headers.get('content-type') || '')) return false;
-  if (response.url && response.url !== HOME) return false;
+  if (canonicalURL && canonicalURL !== HOME) return false;
   return (await response.clone().text()).includes(APP_MARKER);
+}
+function shellHeaders(response) {
+  const headers = new Headers(response.headers);
+  // The response body contains decoded bytes.
+  headers.delete('content-encoding');
+  headers.delete('content-length');
+  if (FRESH_LAUNCH) headers.set('Cache-Control', 'no-store');
+  return headers;
+}
+function liveShell(response) {
+  // Prevent WebKit from reusing this navigation in its own HTTP cache.
+  return FRESH_LAUNCH && response.status === 200 && !response.redirected
+    ? new Response(response.body, { status: 200, headers: shellHeaders(response) })
+    : response;
 }
 async function cacheShell(response, generation = ++shellGeneration) {
   if (!await validShell(response)) return false;
@@ -41,13 +67,9 @@ async function cacheShell(response, generation = ++shellGeneration) {
   const write = shellWrites.catch(() => {}).then(async () => {
     if (generation < cachedGeneration) return true;
     const cache = await caches.open(CACHE_NAME);
-    const headers = new Headers(response.headers);
-    // fetch exposes decoded bytes; the reconstructed cached response must not
-    // advertise the original transport compression or compressed byte length.
-    headers.delete('content-encoding');
-    headers.delete('content-length');
+    const headers = shellHeaders(response);
     headers.set('X-Pococha-Saved-At', new Date().toISOString());
-    await cache.put(HOME, new Response(response.clone().body, { status: 200, headers }));
+    await cache.put(HOME, new Response(response.body, { status: 200, headers }));
     cachedGeneration = generation;
     return true;
   });
@@ -67,7 +89,7 @@ async function performPreparation() {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 12000);
   try {
-    const response = await fetch(HOME, { cache: 'no-store', credentials: 'same-origin', signal: controller.signal });
+    const response = await fetch(freshShellRequest(HOME), { cache: 'no-store', credentials: 'same-origin', signal: controller.signal });
     if (!await cacheShell(response, generation)) throw new Error('App shell unavailable');
     // Icons are optional for calculation; their failure must not undo a good shell.
     await Promise.allSettled(ASSETS.map(async path => {
@@ -101,18 +123,18 @@ async function navigate(request, event) {
   const generation = ++shellGeneration;
   // Return an arrived network response immediately. Storage maintenance is
   // independent, so slow phone storage does not delay a fresh page.
-  const network = fetch(request, { cache: 'no-store' });
+  const network = fetch(freshShellRequest(request), { cache: 'no-store' });
   event.waitUntil(network.then(response => cacheShell(response.clone(), generation)).catch(() => {}));
   try {
     const response = await Promise.race([network, new Promise(resolve => {
       timeout = setTimeout(() => resolve(null), 3000);
     })]);
-    if (response && response.status < 500) return response;
+    if (response && response.status < 500) return liveShell(response);
     const cached = await savedShell();
     if (cached) return cached;
     if (response) return response;
     // No saved shell: keep waiting for the real page rather than a blank screen.
-    return await network;
+    return liveShell(await network);
   } catch (_) {
     const cached = await savedShell();
     if (cached) return cached;

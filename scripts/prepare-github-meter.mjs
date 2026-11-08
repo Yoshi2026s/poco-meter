@@ -61,8 +61,8 @@ export function exportWorker(source) {
     "const ASSETS = ['meter.webmanifest', 'meter-icon-192.png', 'meter-icon-512.png', 'meter-icon-180.png'].map(path => new URL(path, BASE).pathname).concat(METHOD_PATH, HISTORY_PATH);");
   sw = replaceOnce(sw, "url.pathname === '/' && !url.search && request.mode === 'navigate';",
     "[BASE.pathname, new URL('index.html', BASE).pathname].includes(url.pathname) && !url.search && request.mode === 'navigate';");
-  sw = replaceOnce(sw, 'if (response.url && response.url !== HOME) return false;',
-    "if (response.url && ![HOME, new URL('index.html', BASE).href].includes(response.url)) return false;");
+  sw = replaceOnce(sw, 'if (canonicalURL && canonicalURL !== HOME) return false;',
+    "if (canonicalURL && ![HOME, new URL('index.html', BASE).href].includes(canonicalURL)) return false;");
   sw = replaceOnce(sw, '<a href="/">もう一度開く</a>', '<a href="./">もう一度開く</a>');
   sw = replaceOnce(sw,
     'if (!event.source.url || new URL(event.source.url).origin !== self.location.origin) return;',
