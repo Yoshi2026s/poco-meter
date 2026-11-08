@@ -1658,7 +1658,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 :root body #mini.main-screen #miniR.done{color:var(--success)!important}
 :root body #mini.main-screen #miniT{display:block;font-size:clamp(22px,6.6vw,32px)!important;line-height:1.15;font-weight:800;color:var(--red)!important;white-space:nowrap;font-variant-numeric:tabular-nums}
 :root body #mini.main-screen #miniClockAccuracy{font-size:12px!important;line-height:1.4;color:var(--sub)!important}
-:root body #mini.main-screen #miniPeriodReview{min-height:44px;font-size:13px!important;margin-top:4px}
+:root body #mini.main-screen #miniPeriodReview{min-height:48px;font-size:13px!important;margin-top:4px}
 :root body #mini.main-screen #miniNow{grid-column:1/-1!important;grid-row:2!important;display:flex!important;flex-wrap:wrap;align-items:baseline;justify-content:flex-end;gap:2px 8px;text-align:right;margin:2px 0 0;line-height:1.4}
 :root body #mini.main-screen #miniNowDate{font-size:12px!important;color:var(--success)!important;font-variant-numeric:tabular-nums;white-space:nowrap}
 :root body #mini.main-screen #miniClockReading{display:inline-flex;gap:4px;align-items:baseline;white-space:nowrap}
@@ -1767,8 +1767,15 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
   :root body #mini.main-screen .main-inputs{column-gap:8px}
 }
 :root body #mini.main-screen #itemsWindowRow .coin-card b .item-unit{font-size:12px!important}
-/* Tint each section surface. Controls and item cards keep the shared palette. */
-:root body #mini.main-screen .main-hero{padding:8px;border:1px solid var(--line);border-radius:12px;background:var(--meter-section-overview,var(--paper))!important}
+/* The overview stays black in either screen theme. */
+:root body #mini.main-screen .main-hero{
+  --ink:#f5f5f5;--sub:#cbd5e1;--line:#505d70;
+  --teal:#75d4ff;--success:#b3f0cc;--red:#ffbec8;
+  --number-ink:var(--overview-number-ink,#f5f5f5);
+  --paper:#182638;--raised:#233954;--control-border:#879bae;
+  padding:8px;border:1px solid var(--line);border-radius:12px;background:#000!important;
+}
+/* Tint each remaining section surface. Controls and item cards keep the shared palette. */
 :root body #mini.main-screen .main-inputs{padding:8px;border:1px solid var(--line);border-radius:12px;background:var(--meter-section-inputs,var(--paper))!important}
 :root body #mini.main-screen .mini-goal-menu{background:var(--meter-section-conditions,var(--paper))!important}
 :root body #mini.main-screen #itemsWindow{background:var(--meter-section-items,var(--paper))!important}
@@ -2382,9 +2389,10 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
     var raised=dark?raisedDark[accent]:DISPLAY_COLORS[accent].light,line=lines[accent][theme],control=accent==='black'?(dark?'#999999':'#666666'):(dark?'#879bae':'#64778b');
     var success=dark?'#b3f0cc':'#145737',red=dark?'#ffbec8':'#9d2034',amber=dark?'#ffe1a3':'#704400';
     var number=DISPLAY_CUSTOM.number[displaySettings.numberColor][theme];
+    $('mini').style.setProperty('--overview-number-ink',DISPLAY_CUSTOM.number[displaySettings.numberColor].dark);
     var tokens={ink:ink,muted:muted,sub:muted,text:ink,paper:paper,panel:paper,surface:paper,field:paper,'input-bg':paper,raised:raised,line:line,'control-border':control,teal:teal,'teal-soft':raised,'on-accent':dark?'#07131f':'#ffffff',success:success,'success-bg':dark?'#163c2b':'#e5f5ed',red:red,'error-bg':dark?'#3a1d29':'#fff0f3',amber:amber,'amber-bg':dark?'#3b2c19':'#fff2d6','number-ink':number,'remaining-ink':number,c1:teal,c2:teal,c3:amber,c4:success,c5:amber,c6:teal};
     ['mini','itemsWindow','stickyStatus'].forEach(function(id){var panel=$(id);if(!panel)return;panel.setAttribute('data-hud-background-color',displaySettings.hudBackground);panel.setAttribute('data-hud-theme',theme);panel.style.setProperty('color-scheme',theme);Object.keys(tokens).forEach(function(key){panel.style.setProperty('--'+key,tokens[key]);});});
-    var sectionTints={overview:'#ff80ae',inputs:'#39bfff',conditions:'#5d88ff',items:'#27db9e',tools:'#53ded2'};
+    var sectionTints={inputs:'#39bfff',conditions:'#5d88ff',items:'#27db9e',tools:'#53ded2'};
     var tintWeight=dark ? .24 : .33;
     Object.keys(sectionTints).forEach(function(section){
       var tint=sectionTints[section];
