@@ -16,7 +16,10 @@ async function fill(p,id,value){await p.locator(id).focus();await p.locator(id).
 async function open(width,file,config={}){
  const context=await browser.newContext({viewport:{width,height:844},bypassCSP:true,isMobile:width<=700,hasTouch:width<=700,reducedMotion:'reduce'});
  const p=await context.newPage(),errors=[];p.setDefaultTimeout(5000);p.on('pageerror',e=>errors.push(e.message));
- await p.clock.install({time:new Date('2026-10-04T16:13:40Z')});await p.clock.pauseAt(new Date('2026-10-04T16:13:40Z'));
+ const frozenAt=new Date('2026-10-04T16:13:40Z');
+ // The mock clock starts ticking as soon as it is installed.
+ await p.clock.install({time:new Date(frozenAt.getTime()-10000)});
+ await p.clock.pauseAt(frozenAt);
  if(config.savedState)await p.addInitScript(state=>localStorage.setItem('pococha-meter-calc-v1',JSON.stringify(state)),config.savedState);
  if(config.virtualViewport)await p.addInitScript(()=>{const viewport=new EventTarget();Object.assign(viewport,{height:844,offsetTop:0});Object.defineProperty(window,'visualViewport',{configurable:true,value:viewport});});
  await p.goto('file://'+file);
