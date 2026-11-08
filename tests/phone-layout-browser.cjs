@@ -22,7 +22,7 @@ async function open(width,file,config={}){
  await p.clock.pauseAt(frozenAt);
  if(config.savedState)await p.addInitScript(state=>localStorage.setItem('pococha-meter-calc-v1',JSON.stringify(state)),config.savedState);
  if(config.virtualViewport)await p.addInitScript(()=>{const viewport=new EventTarget();Object.assign(viewport,{height:844,offsetTop:0});Object.defineProperty(window,'visualViewport',{configurable:true,value:viewport});});
- await p.goto('file://'+file);
+ await p.goto('file://'+file,{waitUntil:'domcontentloaded',timeout:15000});
  const css=fs.readFileSync(font,'utf8').replaceAll('url(./files/','url(file://'+path.dirname(font)+'/files/');
  await p.addStyleTag({content:css+'body{font-family:"Noto Sans JP",sans-serif!important}'+(config.scale===2?'html{font-size:32px}':'')});
  await p.evaluate(()=>document.fonts.ready);
