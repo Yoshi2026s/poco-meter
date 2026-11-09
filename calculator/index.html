@@ -1657,17 +1657,17 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 :root body #mini.main-screen #miniR{display:block;font-size:clamp(26px,8.2vw,40px)!important;line-height:1.15;font-weight:800;color:var(--number-ink,var(--teal))!important;white-space:normal;overflow-wrap:anywhere;letter-spacing:0;font-variant-numeric:tabular-nums}
 :root body #mini.main-screen #miniR.done{color:var(--success)!important}
 :root body #mini.main-screen #miniT{display:block;font-size:clamp(22px,6.6vw,32px)!important;line-height:1.15;font-weight:800;color:var(--red)!important;white-space:nowrap;font-variant-numeric:tabular-nums}
-:root body #mini.main-screen #miniClockAccuracy{font-size:12px!important;line-height:1.4;color:var(--sub)!important}
+:root body #mini.main-screen #miniClockAccuracy{grid-column:1/-1;grid-row:3;margin-top:6px;text-align:right;font-size:12px!important;line-height:1.4;color:var(--sub)!important;font-variant-numeric:tabular-nums}
 :root body #mini.main-screen #miniPeriodReview{min-height:48px;font-size:13px!important;margin-top:4px}
 :root body #mini.main-screen #miniNow{grid-column:1/-1!important;grid-row:2!important;display:flex!important;flex-wrap:wrap;align-items:baseline;justify-content:flex-end;gap:2px 8px;text-align:right;margin:2px 0 0;line-height:1.4}
 :root body #mini.main-screen #miniNowDate{font-size:12px!important;color:var(--success)!important;font-variant-numeric:tabular-nums;white-space:nowrap}
 :root body #mini.main-screen #miniClockReading{display:inline-flex;gap:4px;align-items:baseline;white-space:nowrap}
 :root body #mini.main-screen #miniTimeLabel{font-size:12px!important;color:var(--success)!important}
 :root body #mini.main-screen #miniNowTime{font-size:15px!important;color:var(--success)!important;font-variant-numeric:tabular-nums}
-:root body #mini.main-screen .main-progress{grid-column:1/-1;grid-row:3;display:flex;align-items:center;gap:8px;margin-top:6px}
+:root body #mini.main-screen .main-progress{display:flex;align-items:center;gap:8px;min-width:0}
 :root body #mini.main-screen .main-progress-bar{flex:1;height:10px;border-radius:5px;background:var(--line);overflow:hidden}
 :root body #mini.main-screen #miniFill{display:block;height:100%;width:0;border-radius:5px;background:var(--number-ink,var(--teal));transition:width .3s}
-:root body #mini.main-screen #miniPct{min-width:3.2em;text-align:right;font-size:14px!important;font-weight:800;color:var(--ink)!important;font-variant-numeric:tabular-nums}
+:root body #mini.main-screen #miniPct{flex:none;min-width:3.2em;text-align:right;white-space:nowrap;font-size:14px!important;font-weight:800;color:var(--ink)!important;font-variant-numeric:tabular-nums}
 :root body #mini.main-screen .mini-quick-add{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:4px}
 :root body #mini.main-screen .mini-quick-add button{min-width:0;min-height:44px;margin:0;padding:4px 2px;border:1px solid var(--line);border-radius:8px;font-size:14px!important;font-weight:800;line-height:1.2;white-space:nowrap;font-variant-numeric:tabular-nums;touch-action:manipulation}
 :root body #mini.main-screen #miniUndoCurrent:disabled{opacity:1;color:var(--sub)!important;background:transparent!important;box-shadow:none!important;border-style:dashed;cursor:default}
@@ -1792,9 +1792,9 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
   :root body #mini.main-screen .main-hero .mini-countdown{display:contents!important}
   :root body #mini.main-screen #miniDeadlineLabel{grid-area:1 / 3 / auto / span 2}
   :root body #mini.main-screen #miniT{grid-area:2 / 3 / auto / span 2}
-  :root body #mini.main-screen #miniClockAccuracy{grid-area:3 / 1 / auto / span 3}
+  :root body #mini.main-screen #miniClockAccuracy{grid-area:3 / 3 / auto / span 2;align-self:center;margin:0}
   :root body #mini.main-screen #miniNow{grid-column:1/-1!important;grid-row:4!important;justify-content:flex-start;margin:0}
-  :root body #mini.main-screen .main-progress{grid-area:3 / 4;margin:0;gap:4px}
+  :root body #mini.main-screen .main-progress{grid-area:3 / 1 / auto / span 2;align-self:center;gap:4px}
   :root body #mini.main-screen #miniPct{min-width:0}
   :root body #mini.main-screen #miniPeriodReview{grid-area:5 / 1 / auto / -1;margin-top:0}
   :root body #mini.main-screen .main-inputs{gap:2px 6px;padding:4px}
@@ -1838,13 +1838,14 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
   :root body #mini.main-screen .goal-field{position:relative}
   :root body #mini.main-screen .goal-field label{position:absolute;inset:3px 6px auto;color:var(--sub)!important;pointer-events:none;line-height:1.2}
   :root body #mini.main-screen .mini-goal-menu :is(select,input){padding-top:17px!important;padding-bottom:2px!important}
-  :root body #mini.main-screen .mini-goal-menu select{padding-right:14px!important}
+  :root body #mini.main-screen .mini-goal-menu select{padding-right:14px!important;--select-arrow-size:5px;--select-arrow-right-a:8px;--select-arrow-right-b:3px}
 }
 @media (pointer:coarse) and (min-width:560px) and (max-height:350px){
   :root body #mini.main-screen{row-gap:2px;margin-top:calc(env(safe-area-inset-top,0px) + 2px)!important;padding-block:2px!important}
   :root body #mini.main-screen .mini-goal-menu{gap:2px;padding:1px}
   :root body #mini.main-screen .main-inputs{row-gap:1px;padding:2px}
   :root body #mini.main-screen .mini-input{gap:0}
+  :root body #mini.main-screen .target-update-note{inset-inline:6px}
   :root body #mini.main-screen .mini-target-actions{gap:2px}
   :root body #mini.main-screen .mini-target-actions .mini-action{padding-inline:0!important;font-size:12px!important;letter-spacing:-.03em}
   :root body #mini.main-screen .mini-target-actions #restoreTargetMini{flex-grow:1.25}
@@ -1920,11 +1921,12 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 </head>
 <body>
 <div class="mini show main-screen" id="mini" role="region" aria-label="シンプルメニュー（メイン画面）" aria-hidden="false">
-<div class="main-hero"><div class="mini-remaining"><span id="miniL">目標まであと</span><b id="miniR" class="num">-</b></div><div class="mini-countdown"><span id="miniDeadlineLabel">締切まで</span><span class="mt" id="miniT">-</span><small class="clock-accuracy" id="miniClockAccuracy">誤差：未確認</small><button type="button" id="miniPeriodReview" hidden>締め後・現在値を確認</button></div>
+<div class="main-hero"><div class="mini-remaining"><span id="miniL">目標まであと</span><b id="miniR" class="num">-</b></div><div class="mini-countdown"><span id="miniDeadlineLabel">締切まで</span><span class="mt" id="miniT">-</span><div class="main-progress" id="miniProgress" role="progressbar" aria-label="目標の達成率" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="main-progress-bar"><span id="miniFill"></span></div><span id="miniPct" class="num">0%</span></div><button type="button" id="miniPeriodReview" hidden>締め後・現在値を確認</button></div>
+<small class="clock-accuracy" id="miniClockAccuracy">誤差：未確認</small>
 <!-- phone-current:start -->
 <time id="miniNow" class="num" title="現在日時・日本時間（時刻同期を確認中）"><span id="miniNowDate"></span><span id="miniClockReading"><span id="miniTimeLabel">時刻を確認中</span> <b id="miniNowTime"></b></span>
-</time><div class="main-progress"><div class="main-progress-bar" aria-hidden="true"><span id="miniFill"></span></div><span id="miniPct" class="num" aria-label="目標の達成率">0%</span></div></div>
-<div class="main-inputs"><div class="mini-input mini-target" id="miniTargetField"><div class="mini-label-row"><label for="targetMini">目標値</label><button type="button" class="mini-action mini-reset" id="resetTargetMini" aria-label="目標値をリセット">リセット</button></div><div class="mini-input-box"><input class="num" id="targetMini" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="未設定" aria-describedby="targetMiniError targetUpdateNote inputStatus"><small class="target-update-note" id="targetUpdateNote" title="ボーダーの自動取得は毎日5時・17時頃（日本時間）。目標の自動計算に反映されます。">自動更新 毎日5時・17時頃</small></div><div class="mini-target-actions"><button type="button" class="mini-action" id="restoreTargetMini" aria-label="目標値をデフォルトに戻す">デフォルト</button><button type="button" class="mini-action" id="openMiniTargetDetails" aria-controls="sectionBody-1" aria-label="目標値の詳細設定を開く">詳細設定</button></div></div>
+</time></div>
+<div class="main-inputs"><div class="mini-input mini-target" id="miniTargetField"><div class="mini-label-row"><label for="targetMini">目標値</label><button type="button" class="mini-action mini-reset" id="resetTargetMini" aria-label="目標値をリセット">リセット</button></div><div class="mini-input-box"><input class="num" id="targetMini" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="未設定" aria-describedby="targetMiniError targetUpdateNote inputStatus"><small class="target-update-note" id="targetUpdateNote" title="ボーダーの自動取得は毎日5時・17時頃（日本時間）。目標の自動計算に反映されます。">自動更新 5時・17時頃</small></div><div class="mini-target-actions"><button type="button" class="mini-action" id="restoreTargetMini" aria-label="目標値をデフォルトに戻す">デフォルト</button><button type="button" class="mini-action" id="openMiniTargetDetails" aria-controls="sectionBody-1" aria-label="目標値の詳細設定を開く">詳細設定</button></div></div>
 <div class="mini-input mini-current" id="miniCurrentField"><div class="mini-label-row"><label for="currentMini">現在値</label><button type="button" class="mini-action mini-reset" id="resetCurrentMini" aria-label="現在値をリセット">リセット</button></div><input class="num" id="currentMini" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="0" aria-describedby="currentMiniError inputStatus"><div class="mini-target-actions"><button type="button" class="mini-action" id="miniUndoCurrent" disabled aria-label="直前の現在値に戻す">戻す</button></div></div>
 <small id="targetMiniError" hidden role="status" aria-live="polite"></small>
 <small id="currentMiniError" hidden role="status" aria-live="polite"></small>
@@ -3476,8 +3478,9 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
     if($('itemsWindowRow').children.length)syncItemsWindow();
     $('remain').classList.toggle('done',done);
     $('remainLabel').textContent=!tgt?(automaticDataMissing?'目標メーター':'目標を入力'):done?'目標達成':'目標まであと';
-    $('fill').style.width=pct+'%';if($('miniFill')){$('miniFill').style.width=pct+'%';$('miniPct').textContent=pct+'%';}
-    $('progressMeter').setAttribute('aria-valuenow',String(pct));$('progressMeter').setAttribute('aria-valuetext',tgt?pct+'％、現在'+fmt(cur)+' pt、目標'+fmt(tgt)+' pt、残り'+fmt(remain)+' pt':'目標未設定');
+    $('fill').style.width=pct+'%';$('miniFill').style.width=pct+'%';$('miniPct').textContent=pct+'%';
+    var progressText=tgt?pct+'％、現在'+fmt(cur)+' pt、目標'+fmt(tgt)+' pt、残り'+fmt(remain)+' pt':'目標未設定';
+    ['progressMeter','miniProgress'].forEach(function(id){$(id).setAttribute('aria-valuenow',String(pct));$(id).setAttribute('aria-valuetext',progressText);});
     $('fill').classList.toggle('done',done);$('fill').classList.toggle('mid',!done&&pct>=50&&pct<80);$('fill').classList.toggle('hi',!done&&pct>=80);
     $('pct').textContent=pct+'%';
 

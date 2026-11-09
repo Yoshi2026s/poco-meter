@@ -41,14 +41,22 @@ async function checkOverview(page, width, height, checkViewport) {
     const box = selector => document.querySelector(selector).getBoundingClientRect();
     const title = box('#itemsWindowTitle');
     const core = box('.items-core');
+    const progress = box('#miniProgress');
+    const accuracy = box('#miniClockAccuracy');
     return {
       sameRow: title.right <= core.left && title.top < core.bottom && core.top < title.bottom,
+      compact: matchMedia('(max-width:559px), (pointer:coarse) and (min-width:560px) and (max-height:500px)').matches,
+      progressOnLeft: progress.right <= accuracy.left && progress.top < accuracy.bottom && accuracy.top < progress.bottom,
+      gaugeWidth: box('.main-progress-bar').width,
+      progressAboveAccuracy: progress.bottom <= accuracy.top,
       bottom: Math.max(...['.main-hero', '.main-inputs', '#miniGoalMenu', '#itemsWindow'].map(selector => box(selector).bottom)),
       viewportHeight: visualViewport.height,
       scrollY,
     };
   });
   assert.ok(layout.sameRow, `${width}px: the estimate heading and core input share a row`);
+  if (layout.compact) assert.ok(layout.progressOnLeft && layout.gaugeWidth >= 48, `${width}px: the gauge is on the left of the clock accuracy`);
+  else assert.ok(layout.progressAboveAccuracy, `${width}px: the gauge occupies the countdown's former accuracy row`);
   if (checkViewport) {
     assert.equal(layout.scrollY, 0);
     assert.ok(layout.bottom <= layout.viewportHeight, `${width}×${height}: overview ends at ${layout.bottom}px`);
@@ -59,6 +67,13 @@ async function checkOverview(page, width, height, checkViewport) {
 (async()=>{const browser=await chromium.launch({executablePath:process.env.POCOCHA_CHROMIUM||undefined,args:['--no-sandbox']});try{for(const [width,height] of [[320,568],[360,640],[390,844],[700,844],[568,320],[844,390],[1024,850]]){const mobile=width<=700||height<=500;const page=await browser.newPage({viewport:{width,height},reducedMotion:'reduce',bypassCSP:true,isMobile:mobile,hasTouch:mobile});const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.clock.setFixedTime(new Date('2026-10-04T16:13:40Z'));await page.goto('file://'+path.resolve(__dirname,'../calculator/index.html'));
 assert.equal(await page.locator('#itemsWindow').isVisible(),true,'items visible at start');assert.equal(await page.locator('#itemsWindowRow .coin-card').count(),5);
 await checkOverview(page,width,height,mobile);
+if (width <= 359 || (width >= 560 && height <= 350 && mobile)) {
+  const arrow = await page.locator('#miniPeriod').evaluate(select => {
+    const style = getComputedStyle(select);
+    return {padding:parseFloat(style.paddingRight), size:parseFloat(style.backgroundSize), offset:parseFloat(style.getPropertyValue('--select-arrow-right-a'))};
+  });
+  assert.ok(arrow.size > 0 && arrow.offset + arrow.size < arrow.padding, `${width}px: select arrow fits within the reserved padding`);
+}
 for(const id of ['#hudToggle','#itemsHudToggle','#closeItemsWindow'])assert.equal(await page.locator(id).count(),0,'retired '+id);
 const coreCount = page.locator('#coreCountItems');
 for (const value of ['1000', '１０００']) {
@@ -109,4 +124,16 @@ await page.locator('#displaySettings > summary').click();assert.equal(await page
 await page.locator('#currentMini').fill('100K');await page.locator('#currentMini').blur();await page.locator('#miniAdd10k').click();assert.equal(await page.locator('#currentMini').inputValue(),'110,000');
 await page.locator('#miniUndoCurrent').click();assert.equal(await page.locator('#currentMini').inputValue(),'100,000');
 assert.match(await page.locator('#miniPct').innerText(),/^\d+%$/);
+await page.locator('#targetMini').focus();
+await page.locator('#targetMini').fill('500K');
+await page.locator('#targetMini').press('Enter');
+for (const [points, percent] of [['99500','19.9'],['500K','100']]) {
+  await page.locator('#currentMini').focus();
+  await page.locator('#currentMini').fill(points);
+  await page.locator('#currentMini').press('Enter');
+  const gauge = page.getByRole('progressbar', {name:'目標の達成率'});
+  assert.equal(await gauge.getAttribute('aria-valuenow'), percent);
+  assert.equal(await page.locator('#miniPct').innerText(), percent+'%');
+  assert.equal(await page.locator('#miniFill').evaluate(el=>el.style.width), percent+'%');
+}
 assert.deepEqual(errors,[]);await page.close();console.log('passed',width+'x'+height);} }finally{await browser.close();}})().catch(e=>{console.error(e);process.exitCode=1;});
