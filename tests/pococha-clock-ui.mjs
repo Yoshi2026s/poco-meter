@@ -12,31 +12,36 @@ const sample = (time = '2026-10-12T21:59:58+09:00', overrides = {}) => ({
 });
 const settle = async () => { for (let i = 0; i < 16; i++) await Promise.resolve(); };
 
-test('Standard-time sampling aborts when leaving and can restart on return or timeout', async () => {
-  const samples = [];
-  const page = pageEngine(undefined, {navigator:{onLine:false}, fetch:(_url, options) => {
-    if (options?.method !== 'HEAD') return Promise.reject(new Error('offline'));
-    samples.push(options.signal);
-    return new Promise((_, reject) => options.signal.addEventListener('abort', () => reject(new Error('aborted')), {once:true}));
-  }});
-  page.window.location.protocol = 'https:';
-  page.dispatchWindow('focus');
-  await settle();
-  assert.equal(samples.length, 1);
+test('The page delegates standard-time sampling, releases the reply on departure and retries after timeout', async () => {
+  const ports = [], requests = [], fetches = [];
+  class Channel {
+    constructor() {
+      this.port1 = { close() { this.closed = true; } };
+      this.port2 = {};
+      ports.push(this.port1);
+    }
+  }
+  const worker = {postMessage(data, transfer) {
+    if (data.type === 'POCOCHA_CLOCK_MEASURE') requests.push(transfer[0]);
+  }};
+  const page = pageEngine(undefined, {isSecureContext:true, MessageChannel:Channel,
+    navigator:{onLine:true, serviceWorker:{controller:worker, addEventListener(){}}},
+    fetch(url, options) { fetches.push({url, method:options?.method}); return Promise.reject(new Error('offline')); },
+  });
+  assert.equal(requests.length, 1);
   page.dispatchWindow('pagehide');
-  assert.equal(samples[0].aborted, true);
-
+  assert.equal(ports[0].closed, true);
   page.dispatchWindow('pageshow', {persisted:true});
-  await settle();
-  assert.equal(samples.length, 2);
-  assert.equal(samples[1].aborted, false);
-  page.flushTimers(10000);
-  await settle();
-  assert.equal(samples[1].aborted, true);
+  assert.equal(requests.length, 2);
+  page.flushTimers(11000);
+  assert.equal(ports[1].closed, true);
   page.dispatchWindow('focus');
+  assert.equal(requests.length, 3);
+  ports[2].onmessage({data:{lo:-500,hi:500,at:Date.parse('2026-10-03T21:00:00+09:00')}});
+  assert.match(page.element('miniClockAccuracy').textContent,/標準時との差/);
+  assert.equal(ports[2].closed, true);
   await settle();
-  assert.equal(samples.length, 3);
-  page.dispatchWindow('pagehide');
+  assert.equal(fetches.some(request => request.method === 'HEAD'), false);
 });
 
 async function clockPage(settings = {}, capabilities = {}) {

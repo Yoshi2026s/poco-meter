@@ -169,12 +169,45 @@ self.addEventListener('fetch', event => {
   event.respondWith(assetRequest(event.request, url.href));
 
 });
+let clockMeasurement = null;
+async function sampleClock() {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10000);
+  let lo = -Infinity, hi = Infinity;
+  try {
+    for (let i = 0; i < 4 && !controller.signal.aborted; i++) {
+      const started = Date.now(), url = new URL('meter.webmanifest', HOME);
+      url.searchParams.set('clock', started);
+      const response = await fetch(url.href, { method: 'HEAD', cache: 'no-store', mode: 'same-origin',
+        credentials: 'omit', redirect: 'error', signal: controller.signal });
+      const received = Date.now(), server = Date.parse(response.headers.get('date') || '');
+      if (response.ok && Number.isFinite(server) && received >= started && received - started <= 3000) {
+        // HTTP Date has one-second resolution. Intersect the bounds from each sample.
+        lo = Math.max(lo, started - server - 1000);
+        hi = Math.min(hi, received - server);
+      }
+      if (i < 3) await new Promise(resolve => setTimeout(resolve, 260));
+    }
+    return !controller.signal.aborted && Number.isFinite(lo) && lo <= hi ? { lo, hi, at: Date.now() } : null;
+  } catch (_) { return null; }
+  finally { clearTimeout(timeout); }
+}
+
 self.addEventListener('message', event => {
   const data = event.data;
-  if (!event.source || !data || !['POCOCHA_OFFLINE_STATUS', 'POCOCHA_OFFLINE_PREPARE'].includes(data.type) || !Number.isSafeInteger(data.id)) return;
+  if (!event.source || !data) return;
   // Messages from another origin are ignored, even if a client id is supplied.
   try { if (!event.source.url || new URL(event.source.url).origin !== self.location.origin) return; }
   catch (_) { return; }
+  if (data.type === 'POCOCHA_CLOCK_MEASURE') {
+    const port = event.ports?.[0];
+    if (!port) return;
+    // Reloads and tabs can share the same ongoing sample batch.
+    if (!clockMeasurement) clockMeasurement = sampleClock().finally(() => { clockMeasurement = null; });
+    event.waitUntil(clockMeasurement.then(result => port.postMessage(result)).finally(() => port.close()));
+    return;
+  }
+  if (!['POCOCHA_OFFLINE_STATUS', 'POCOCHA_OFFLINE_PREPARE'].includes(data.type) || !Number.isSafeInteger(data.id)) return;
   event.waitUntil((async () => {
     let failed = false;
     if (data.type === 'POCOCHA_OFFLINE_PREPARE') {

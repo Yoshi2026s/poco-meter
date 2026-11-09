@@ -17,7 +17,7 @@ const iife = ast.body.find(node => node.type === 'ExpressionStatement'
   && node.expression.callee.type === 'FunctionExpression');
 assert.ok(iife, 'The calculator initialization must remain an extractable IIFE');
 const statements = iife.expression.callee.body.body;
-const constants = new Set(['automaticDataMissing', 'E_TARGET_SEEDS', 'eTargetCache', 'RANKS', 'deviceDrift', 'deviceDriftController', 'deviceDriftAt', 'PERIOD_KEYS', 'RECENT_PERIODS', 'PERIOD_LABELS', 'MAX_VALUE', 'state', 'storageFailed', 'DISPLAY_COLORS', 'DISPLAY_CUSTOM', 'DISPLAY_WEIGHTS', 'DISPLAY_THEMES', 'fmt', 'fmtK',
+const constants = new Set(['automaticDataMissing', 'E_TARGET_SEEDS', 'eTargetCache', 'RANKS', 'deviceDrift', 'finishDeviceDrift', 'deviceDriftAt', 'PERIOD_KEYS', 'RECENT_PERIODS', 'PERIOD_LABELS', 'MAX_VALUE', 'state', 'storageFailed', 'DISPLAY_COLORS', 'DISPLAY_CUSTOM', 'DISPLAY_WEIGHTS', 'DISPLAY_THEMES', 'fmt', 'fmtK',
   'fmtRemainingK', 'DOGCAT', 'PANDA', 'HANABI', 'BASHA', 'CORE_TIERS',
   'METHOD_LABELS', 'BLABEL', 'offlineReadToken', 'offlineReader', 'offlineReadContext',
   'clockSample', 'clockBusy', 'clockAttemptMono', 'clockState']);
@@ -229,7 +229,7 @@ function pageEngine(settings, capabilities = {}) {
     setTimeout: (callback, delay) => { const id = ++timerId; timers.set(id, { callback, delay }); return id; },
     clearTimeout: id => timers.delete(id), setInterval: (callback, delay) => { const id = ++timerId; intervals.set(id, { callback, delay }); return id; },
     clearInterval: id => intervals.delete(id),
-    AbortController, FileReader:capabilities.FileReader, Blob:capabilities.Blob, File:capabilities.File, URL:capabilities.URL, fetch: capabilities.fetch ?? (() => new Promise(() => {})), console,
+    AbortController, MessageChannel:capabilities.MessageChannel, FileReader:capabilities.FileReader, Blob:capabilities.Blob, File:capabilities.File, URL:capabilities.URL, fetch: capabilities.fetch ?? (() => new Promise(() => {})), console,
   });
   document.dispatchEvent=event=>{dispatch(documentHandlers,event.type,event);return true;};
   const simpleController=html.match(/<script id="simple-menu-controller">([\s\S]*?)<\/script>/)?.[1];
