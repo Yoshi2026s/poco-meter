@@ -5,13 +5,15 @@ export function eHarness({initial=null,failStore=false,clipboardFail=false,lock=
  class Element{
   constructor(tag='div'){this.tagName=tag.toUpperCase();this.children=[];this.listeners=new Map();this.attributes=new Map();this.style={};this.value='';this.checked=false;this.disabled=false;this.hidden=false;this.open=false;this.textContent='';this.classList={toggle:(c,on)=>{const a=new Set((this.className||'').split(/\s+/));on?a.add(c):a.delete(c);this.className=[...a].join(' ');}};}
   append(...items){for(const c of items){if(c&&typeof c==='object'){c.parent=this;this.children.push(c);}else this.children.push(String(c));}if(this.tagName==='SELECT'&&this.children.length===1)this.value=this.children[0].value;}
+  get parentElement(){return this.parent??null;}
+  after(el){if(!this.parent)return;el.remove();el.parent=this.parent;this.parent.children.splice(this.parent.children.indexOf(this)+1,0,el);}
   replaceChildren(...a){this.children=[];this.append(...a);}
   remove(){if(this.parent)this.parent.children=this.parent.children.filter(c=>c!==this);}
   setAttribute(k,v){this.attributes.set(k,String(v));if(k==='id')ids.set(String(v),this);}
   getAttribute(k){return this.attributes.get(k)??null;}
   removeAttribute(k){this.attributes.delete(k);}
   addEventListener(k,fn){if(!this.listeners.has(k))this.listeners.set(k,[]);this.listeners.get(k).push(fn);}
-  async dispatch(k,e={}){const event={target:this,preventDefault(){},...e};if(typeof this['on'+k]==='function')await this['on'+k](event);for(const fn of this.listeners.get(k)||[])await fn(event);}
+  async dispatch(k,e={}){const event={target:this,currentTarget:this,preventDefault(){},...e};if(typeof this['on'+k]==='function')await this['on'+k](event);for(const fn of this.listeners.get(k)||[])await fn(event);}
   focus(){lastFocus=this;}
   select(){this.selected=true;}
   scrollIntoView(){}
@@ -21,6 +23,8 @@ export function eHarness({initial=null,failStore=false,clipboardFail=false,lock=
  for(const m of template.matchAll(/<([\w-]+)\b([^>]*\bid="([^"]+)"[^>]*)>/g)){const el=new Element(m[1]);el.id=m[3];el.hidden=/\bhidden\b/.test(m[2]);el.type=m[2].match(/type="([^"]+)"/)?.[1]||'';ids.set(m[3],el);}
  for(const m of template.matchAll(/<select\b[^>]*id="([^"]+)"[^>]*>([\s\S]*?)<\/select>/g)){const el=ids.get(m[1]);for(const o of m[2].matchAll(/<option(?:\s+value="([^"]*)")?>([^<]*)<\/option>/g)){const op=new Element('option');op.value=o[1]??o[2];op.textContent=o[2];el.append(op);}el.value=el.children[0]?.value||'';}
  const document={body:new Element('body'),head:new Element('head'),visibilityState:'visible',getElementById:id=>{if(!ids.has(id))throw Error('Missing element '+id);return ids.get(id);},createElement:tag=>new Element(tag),addEventListener:(k,fn)=>{if(!docCallbacks.has(k))docCallbacks.set(k,[]);docCallbacks.get(k).push(fn);}};
+ document.body.append(ids.get('recordActions'),ids.get('copyFeedback'),ids.get('records'));
+ ids.get('recordActions').append(ids.get('copy'));
  const store={fail:failStore,getItem:k=>memory.get(k)??null,setItem(k,v){if(this.fail)throw Error('QuotaExceededError');memory.set(k,String(v));writes.push(k);},removeItem:k=>memory.delete(k)};
  class FixedDate extends Date{constructor(...a){super(...(a.length?a:[now]));}static now(){return Date.parse(now);}}
  class Image{set src(v){this._src=v;if(!v)return;const f=objects.get(v)||{};this.file=f;this.width=f.width||828;this.height=f.height||1792;queueMicrotask(()=>f.badImage?this.onerror?.():this.onload?.());}get src(){return this._src;}}
