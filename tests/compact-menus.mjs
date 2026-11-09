@@ -5,7 +5,7 @@ import {createAudit} from './theme-cascade.mjs';
 const KEY='pococha-meter-calc-v1';
 const cfg=extra=>({...plain(engine().state),seedVer:3,seedVer13:1,
   snapshotVersion:'2026-10-02-v3',goalDefaultsVersion:2,goalDefaults:{...plain(engine().state.goalDefaults),applyOnLoad:false},
-  target:'1001',current:'50',pick:'',bufferPct:0,targetMethod:'mean',
+  target:'1001',current:'50',rank:'S1',pick:'',bufferPct:0,targetMethod:'mean',
   log:{'2026-09-30':{S1:[100,200,300]},'2026-10-02':{S1:[300,400,500]}},
   log13:{},log24:{},provenance:{},...extra});
 const page=extra=>pageEngine(cfg(extra),{navigator:{onLine:false}});
@@ -69,7 +69,7 @@ test('Invalid rates retain the last valid target, show one shared error, and rec
 });
 
 test('IME editing is not committed before completion, and applying defaults synchronizes both forms',()=>{
-  const p=page({pick:0,rank:'S1'});
+  const p=page({pick:0});
   p.element('quickBufferPct').dispatchEvent(new Event('compositionstart'));
   input(p,'quickBufferPct','１０');assert.equal(saved(p).bufferPct,0);
   p.element('quickBufferPct').dispatchEvent(new Event('compositionend'));
