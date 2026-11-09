@@ -17,7 +17,7 @@ const iife = ast.body.find(node => node.type === 'ExpressionStatement'
   && node.expression.callee.type === 'FunctionExpression');
 assert.ok(iife, 'The calculator initialization must remain an extractable IIFE');
 const statements = iife.expression.callee.body.body;
-const constants = new Set(['automaticDataMissing', 'E_TARGET_SEEDS', 'eTargetCache', 'RANKS', 'deviceDrift', 'deviceDriftBusy', 'deviceDriftAt', 'PERIOD_KEYS', 'RECENT_PERIODS', 'PERIOD_LABELS', 'MAX_VALUE', 'state', 'storageFailed', 'DISPLAY_COLORS', 'DISPLAY_CUSTOM', 'DISPLAY_WEIGHTS', 'DISPLAY_THEMES', 'fmt', 'fmtK',
+const constants = new Set(['automaticDataMissing', 'E_TARGET_SEEDS', 'eTargetCache', 'RANKS', 'deviceDrift', 'deviceDriftController', 'deviceDriftAt', 'PERIOD_KEYS', 'RECENT_PERIODS', 'PERIOD_LABELS', 'MAX_VALUE', 'state', 'storageFailed', 'DISPLAY_COLORS', 'DISPLAY_CUSTOM', 'DISPLAY_WEIGHTS', 'DISPLAY_THEMES', 'fmt', 'fmtK',
   'fmtRemainingK', 'DOGCAT', 'PANDA', 'HANABI', 'BASHA', 'CORE_TIERS',
   'METHOD_LABELS', 'BLABEL', 'offlineReadToken', 'offlineReader', 'offlineReadContext',
   'clockSample', 'clockBusy', 'clockAttemptMono', 'clockState']);
