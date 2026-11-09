@@ -40,6 +40,31 @@ async function checkVisibleItemText(page, width, target) {
 (async()=>{const browser=await chromium.launch({executablePath:process.env.POCOCHA_CHROMIUM||undefined,args:['--no-sandbox']});try{for(const [width,height] of [[320,568],[360,844],[390,844],[700,844],[844,390],[1024,850]]){const page=await browser.newPage({viewport:{width,height},reducedMotion:'reduce',bypassCSP:true,isMobile:width<=700,hasTouch:width<=700});const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('file://'+path.resolve(__dirname,'../calculator/index.html'));
 assert.equal(await page.locator('#itemsWindow').isVisible(),true,'items visible at start');assert.equal(await page.locator('#itemsWindowRow .coin-card').count(),5);
 for(const id of ['#hudToggle','#itemsHudToggle','#closeItemsWindow'])assert.equal(await page.locator(id).count(),0,'retired '+id);
+const coreCount = page.locator('#coreCountItems');
+for (const value of ['1000', '１０００']) {
+  await coreCount.fill(value);
+  const size = await coreCount.evaluate(input => {
+    const style = getComputedStyle(input);
+    const text = document.createElement('span');
+    text.style.cssText = 'position:absolute;visibility:hidden;white-space:pre';
+    text.style.font = style.font;
+    text.style.fontVariantNumeric = style.fontVariantNumeric;
+    text.style.letterSpacing = style.letterSpacing;
+    text.textContent = input.value;
+    document.body.append(text);
+    const textWidth = text.getBoundingClientRect().width;
+    text.remove();
+    const contentWidth = input.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+    const minHeight = matchMedia('(max-width:700px),(pointer:coarse)').matches ? 48 : 44;
+    return {textWidth, contentWidth, height:input.getBoundingClientRect().height, minHeight};
+  });
+  assert.ok(size.contentWidth >= size.textWidth, `${width}px: all digits of ${value} fit (${JSON.stringify(size)})`);
+  assert.ok(size.height >= size.minHeight, `${width}px: core count field is at least ${size.minHeight}px tall`);
+  await coreCount.blur();
+  assert.equal(await coreCount.inputValue(), '1000');
+}
+await coreCount.fill('0');
+await coreCount.blur();
 const textCheckWidth = width === 360 || width === 700;
 const extremeTarget = '360287970189639';
 const targets = textCheckWidth ? ['500000', '50000000', extremeTarget] : ['500000', extremeTarget];
