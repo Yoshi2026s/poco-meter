@@ -1775,10 +1775,15 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
   --paper:#182638;--raised:#233954;--control-border:#879bae;
   padding:8px;border:1px solid var(--line);border-radius:12px;background:#000!important;
 }
-/* Tint each remaining section surface. Controls and item cards keep the shared palette. */
-:root body #mini.main-screen .main-inputs{padding:8px;border:1px solid var(--line);border-radius:12px;background:var(--meter-section-inputs,var(--paper))!important}
+/* Pastel sections use dark text. Controls and item cards keep the selected palette. */
+:root body #mini.main-screen .main-inputs{padding:8px;border:1px solid var(--line);border-radius:12px;background:#fff5c2!important}
+:root body #mini.main-screen .mini-input label{color:#445466!important}
+:root body #mini.main-screen .mini-action-msg{color:#145737!important}
+:root body #mini.main-screen :is(#targetMiniError,#currentMiniError,#coreCountItemsError){color:#9d2034!important}
+:root body #mini.main-screen #itemsWindow{background:#ffe5ef!important}
+:root body #mini.main-screen #itemsWindowTitle{color:#17283a!important}
+:root body #mini.main-screen .items-core label{color:#445466!important}
 :root body #mini.main-screen .mini-goal-menu{background:var(--meter-section-conditions,var(--paper))!important}
-:root body #mini.main-screen #itemsWindow{background:var(--meter-section-items,var(--paper))!important}
 :root body #mini.main-screen .main-tools{background:var(--meter-section-tools,var(--paper))!important}
 
 /* 2026-11 round 2: the other menus on phones / touch screens. Readable text is 12px or larger, touch targets 44px. */
@@ -2392,7 +2397,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
     $('mini').style.setProperty('--overview-number-ink',DISPLAY_CUSTOM.number[displaySettings.numberColor].dark);
     var tokens={ink:ink,muted:muted,sub:muted,text:ink,paper:paper,panel:paper,surface:paper,field:paper,'input-bg':paper,raised:raised,line:line,'control-border':control,teal:teal,'teal-soft':raised,'on-accent':dark?'#07131f':'#ffffff',success:success,'success-bg':dark?'#163c2b':'#e5f5ed',red:red,'error-bg':dark?'#3a1d29':'#fff0f3',amber:amber,'amber-bg':dark?'#3b2c19':'#fff2d6','number-ink':number,'remaining-ink':number,c1:teal,c2:teal,c3:amber,c4:success,c5:amber,c6:teal};
     ['mini','itemsWindow','stickyStatus'].forEach(function(id){var panel=$(id);if(!panel)return;panel.setAttribute('data-hud-background-color',displaySettings.hudBackground);panel.setAttribute('data-hud-theme',theme);panel.style.setProperty('color-scheme',theme);Object.keys(tokens).forEach(function(key){panel.style.setProperty('--'+key,tokens[key]);});});
-    var sectionTints={inputs:'#39bfff',conditions:'#5d88ff',items:'#27db9e',tools:'#53ded2'};
+    var sectionTints={conditions:'#5d88ff',tools:'#53ded2'};
     var tintWeight=dark ? .24 : .33;
     Object.keys(sectionTints).forEach(function(section){
       var tint=sectionTints[section];
