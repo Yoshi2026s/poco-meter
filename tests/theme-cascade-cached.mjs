@@ -91,6 +91,7 @@ function expand(prop,value){
 function mediaMatches(params,ctx){return splitTop(params).some(branch=>branch.split(/\s+and\s+/i).every(part=>{
   part=part.trim();if(part==='screen'||part==='all')return true;if(part==='print')return false;
   let m=part.match(/^\((min|max)-width:\s*(\d+)px\)$/);if(m)return m[1]==='min'?ctx.width>=+m[2]:ctx.width<=+m[2];
+  m=part.match(/^\(max-height:\s*(\d+)px\)$/);if(m)return (ctx.height??844)<=+m[1];
   m=part.match(/^\(prefers-color-scheme:\s*(dark|light)\)$/);if(m)return ctx.systemTheme===m[1];
   m=part.match(/^\(prefers-reduced-motion:\s*(reduce|no-preference)\)$/);if(m)return !!ctx.reducedMotion===(m[1]==='reduce');
   m=part.match(/^\(pointer:\s*(coarse|fine)\)$/);if(m)return ctx.pointer===m[1];
@@ -185,7 +186,7 @@ export function createAudit({htmlPath=checkout+'/calculator/index.html',root,nod
   function computed(node,input={},pseudo=''){
     let cache=contextCache.get(input);if(!cache){cache={ctx:{theme:'light',accent:'standard',weight:'standard',width:1280,systemTheme:'light',pointer:'fine',...input},memo:new Map()};contextCache.set(input,cache);}
     const {ctx,memo}=cache;
-    const matchKey=JSON.stringify([ctx.theme,ctx.accent,ctx.weight,ctx.width,ctx.systemTheme,ctx.pointer,ctx.reducedMotion,ctx.forcedColors,[...(ctx.states?.entries?.()??[])].map(([n,s])=>[n.id,[...s].sort()])]);
+    const matchKey=JSON.stringify([ctx.theme,ctx.accent,ctx.weight,ctx.width,ctx.height,ctx.systemTheme,ctx.pointer,ctx.reducedMotion,ctx.forcedColors,[...(ctx.states?.entries?.()??[])].map(([n,s])=>[n.id,[...s].sort()])]);
     function run(element,targetPseudo=''){
       const key=element;if(memo.get(key)?.has(targetPseudo))return memo.get(key).get(targetPseudo);
       const parent=targetPseudo?run(element):element.parentNode?run(element.parentNode):null;

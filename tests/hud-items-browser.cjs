@@ -36,9 +36,29 @@ async function checkVisibleItemText(page, width, target) {
   }
 }
 
+async function checkOverview(page, width, height, checkViewport) {
+  const layout = await page.evaluate(() => {
+    const box = selector => document.querySelector(selector).getBoundingClientRect();
+    const title = box('#itemsWindowTitle');
+    const core = box('.items-core');
+    return {
+      sameRow: title.right <= core.left && title.top < core.bottom && core.top < title.bottom,
+      bottom: Math.max(...['.main-hero', '.main-inputs', '#miniGoalMenu', '#itemsWindow'].map(selector => box(selector).bottom)),
+      viewportHeight: visualViewport.height,
+      scrollY,
+    };
+  });
+  assert.ok(layout.sameRow, `${width}px: the estimate heading and core input share a row`);
+  if (checkViewport) {
+    assert.equal(layout.scrollY, 0);
+    assert.ok(layout.bottom <= layout.viewportHeight, `${width}×${height}: overview ends at ${layout.bottom}px`);
+  }
+}
+
 // 2026-11: the simple menu is the main screen; the remaining-items estimate is always shown inside it.
-(async()=>{const browser=await chromium.launch({executablePath:process.env.POCOCHA_CHROMIUM||undefined,args:['--no-sandbox']});try{for(const [width,height] of [[320,568],[360,844],[390,844],[700,844],[844,390],[1024,850]]){const page=await browser.newPage({viewport:{width,height},reducedMotion:'reduce',bypassCSP:true,isMobile:width<=700,hasTouch:width<=700});const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('file://'+path.resolve(__dirname,'../calculator/index.html'));
+(async()=>{const browser=await chromium.launch({executablePath:process.env.POCOCHA_CHROMIUM||undefined,args:['--no-sandbox']});try{for(const [width,height] of [[320,568],[360,640],[390,844],[700,844],[568,320],[844,390],[1024,850]]){const mobile=width<=700||height<=500;const page=await browser.newPage({viewport:{width,height},reducedMotion:'reduce',bypassCSP:true,isMobile:mobile,hasTouch:mobile});const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.clock.setFixedTime(new Date('2026-10-04T16:13:40Z'));await page.goto('file://'+path.resolve(__dirname,'../calculator/index.html'));
 assert.equal(await page.locator('#itemsWindow').isVisible(),true,'items visible at start');assert.equal(await page.locator('#itemsWindowRow .coin-card').count(),5);
+await checkOverview(page,width,height,mobile);
 for(const id of ['#hudToggle','#itemsHudToggle','#closeItemsWindow'])assert.equal(await page.locator(id).count(),0,'retired '+id);
 const coreCount = page.locator('#coreCountItems');
 for (const value of ['1000', '１０００']) {
@@ -72,7 +92,8 @@ for(const target of targets){await page.locator('#targetMini').focus();await pag
 const r=await page.evaluate(()=>({cards:[...document.querySelectorAll('#itemsWindowRow .coin-card')].map(e=>({w:e.clientWidth,scroll:e.scrollWidth,b:e.querySelector('b').getAttribute('data-value')})),sources:['coinNeed','dogcatNeed','pandaNeed','hanabiNeed','bashaNeed'].map(id=>document.getElementById(id).textContent),overflow:document.documentElement.scrollWidth>innerWidth}));
 assert.ok(r.cards.every(x=>x.scroll<=x.w),JSON.stringify({width,target,...r}));assert.deepEqual(r.cards.map(x=>x.b),r.sources,'items mirror calculator values');assert.equal(r.overflow,false,'no horizontal scroll');
 // The existing extreme case exercises value mirroring and overflow; its coin label can ellipsize.
-if(textCheckWidth && target !== extremeTarget)await checkVisibleItemText(page,width,target);}
+if((textCheckWidth && target !== extremeTarget)||(width===320&&target==='500000'))await checkVisibleItemText(page,width,target);
+if(target==='500000'&&mobile){await page.evaluate(()=>scrollTo(0,0));await checkOverview(page,width,height,true);}}
 // Main controls are touchable and use 16px+ text (no iOS zoom on focus).
 const sizes=await page.evaluate(()=>['targetMini','currentMini','miniPeriod','miniRank','miniBorder','miniMethod','miniBuffer','miniClose','coreCountItems'].map(id=>{const e=document.getElementById(id),r=e.getBoundingClientRect();return {id,h:r.height,font:parseFloat(getComputedStyle(e).fontSize)};}));
 for(const s of sizes){assert.ok(s.h>=44,JSON.stringify(s));assert.ok(s.font>=16,JSON.stringify(s));}
