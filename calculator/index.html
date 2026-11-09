@@ -2684,7 +2684,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
   function renderClockBasis(){var basis=clockBasis(),label=basis.primary==='Pocochaサーバー時刻'?basis.primary:'端末時刻';$('todayTimeLabel').textContent=label;$('miniTimeLabel').textContent=label;$('clockTimeSource').textContent=basis.primary;$('clockSyncStatus').textContent=basis.secondary;$('clockAccuracy').textContent=basis.accuracy;$('miniClockAccuracy').textContent=basis.accuracy;$('clockAccuracy').title=basis.description;$('miniClockAccuracy').title=basis.description;$('clockTimeBasis').title=basis.description;$('today').title=basis.description;$('miniNow').title=basis.description;}
   // Device clock drift against the hosting server's HTTP Date (standard time). Same-origin, so the header is readable.
   // Date has 1-second resolution; each sample bounds the offset, and several samples are intersected.
-  var deviceDrift=null,deviceDriftBusy=false,deviceDriftAt=0;
+  var deviceDrift=null,deviceDriftController=null,deviceDriftAt=0;
   function deviceDriftText(){
     if(!deviceDrift||Date.now()-deviceDriftAt>3600000)return '';
     var lo=deviceDrift.lo,hi=deviceDrift.hi,margin=Math.max(1,Math.ceil((hi-lo)/2000)),mid=Math.round((lo+hi)/2000);
@@ -2692,14 +2692,16 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
     return '標準時より'+Math.abs(mid)+'秒'+(mid>0?'進み':'遅れ')+'（±'+margin+'）';
   }
   function measureDeviceDrift(force){
-    if(deviceDriftBusy||typeof fetch!=='function'||!window.location||!/^https?:$/.test(window.location.protocol||''))return Promise.resolve(false);
+    if(deviceDriftController||typeof fetch!=='function'||!window.location||!/^https?:$/.test(window.location.protocol||''))return Promise.resolve(false);
     if(!force&&deviceDrift&&Date.now()-deviceDriftAt<600000)return Promise.resolve(false);
-    deviceDriftBusy=true;var lo=-Infinity,hi=Infinity,samples=0;
-    function sample(){var t0=Date.now();return fetch('meter.webmanifest?clock='+t0,{method:'HEAD',cache:'no-store',credentials:'same-origin'}).then(function(response){var t1=Date.now(),server=Date.parse(response.headers.get('date')||'');if(!Number.isFinite(server)||t1-t0>3000)return;
+    var controller=new AbortController(),lo=-Infinity,hi=Infinity,samples=0;
+    deviceDriftController=controller;
+    var timeout=setTimeout(function(){controller.abort();},10000);
+    function sample(){if(controller.signal.aborted)return;var t0=Date.now();return fetch('meter.webmanifest?clock='+t0,{method:'HEAD',cache:'no-store',credentials:'same-origin',signal:controller.signal}).then(function(response){var t1=Date.now(),server=Date.parse(response.headers.get('date')||'');if(!Number.isFinite(server)||t1-t0>3000)return;
       // device - server lies in [t0-(server+1000), t1-server]
       lo=Math.max(lo,t0-server-1000);hi=Math.min(hi,t1-server);samples++;});}
-    var chain=Promise.resolve();for(var i=0;i<4;i++)chain=chain.then(sample).then(function(){return new Promise(function(r){setTimeout(r,260);});});
-    return chain.then(function(){if(samples&&lo<=hi){deviceDrift={lo:lo,hi:hi};deviceDriftAt=Date.now();renderClockBasis();return true;}return false;}).catch(function(){return false;}).finally(function(){deviceDriftBusy=false;});
+    var chain=Promise.resolve();for(var i=0;i<4;i++)chain=chain.then(sample).then(function(){if(!controller.signal.aborted)return new Promise(function(r){setTimeout(r,260);});});
+    return chain.then(function(){if(!controller.signal.aborted&&samples&&lo<=hi){deviceDrift={lo:lo,hi:hi};deviceDriftAt=Date.now();renderClockBasis();return true;}return false;}).catch(function(){return false;}).finally(function(){clearTimeout(timeout);if(deviceDriftController===controller)deviceDriftController=null;});
   }
   function syncPocochaClock(force){
     measureDeviceDrift(force);
@@ -4058,7 +4060,10 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
     if(event.key===DRAFT_KEY&&event.newValue!==lastDraftRaw){draftConflict=true;setEditorMessage('別の画面で下書きが変更されました。この入力をバックアップしてから再読み込みしてください。','error');return;}
     if(event.key===DISPLAY_KEY){try{displaySettings=event.newValue===null?standardDisplaySettings():cleanDisplaySettings(JSON.parse(event.newValue),true);applyDisplaySettings();$('displaySettingsStatus').className='toast';$('displaySettingsStatus').textContent='別の画面の表示設定を反映しました。';}catch(e){}}
   });
-  window.addEventListener('pagehide',function(){save();});
+  window.addEventListener('pagehide',function(){
+    if(deviceDriftController){var controller=deviceDriftController;deviceDriftController=null;controller.abort();}
+    save();
+  });
   document.addEventListener('visibilitychange',function(){if(document.hidden)save();else checkOffline(false);});
   window.addEventListener('pageshow',function(event){if(event.persisted)save();checkOffline(false);});
   checkOffline(false);

@@ -12,6 +12,33 @@ const sample = (time = '2026-10-12T21:59:58+09:00', overrides = {}) => ({
 });
 const settle = async () => { for (let i = 0; i < 16; i++) await Promise.resolve(); };
 
+test('Standard-time sampling aborts when leaving and can restart on return or timeout', async () => {
+  const samples = [];
+  const page = pageEngine(undefined, {navigator:{onLine:false}, fetch:(_url, options) => {
+    if (options?.method !== 'HEAD') return Promise.reject(new Error('offline'));
+    samples.push(options.signal);
+    return new Promise((_, reject) => options.signal.addEventListener('abort', () => reject(new Error('aborted')), {once:true}));
+  }});
+  page.window.location.protocol = 'https:';
+  page.dispatchWindow('focus');
+  await settle();
+  assert.equal(samples.length, 1);
+  page.dispatchWindow('pagehide');
+  assert.equal(samples[0].aborted, true);
+
+  page.dispatchWindow('pageshow', {persisted:true});
+  await settle();
+  assert.equal(samples.length, 2);
+  assert.equal(samples[1].aborted, false);
+  page.flushTimers(10000);
+  await settle();
+  assert.equal(samples[1].aborted, true);
+  page.dispatchWindow('focus');
+  await settle();
+  assert.equal(samples.length, 3);
+  page.dispatchWindow('pagehide');
+});
+
 async function clockPage(settings = {}, capabilities = {}) {
   let monotonicMs = 1000;
   const calls = [];
