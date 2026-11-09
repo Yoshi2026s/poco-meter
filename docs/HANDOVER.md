@@ -9,7 +9,7 @@
 - 公開：GitHub Pages https://yoshi2026s.github.io/poco-meter/ （既定ブランチ `(root)` への push で自動公開）
 - ボーダー：`data/borders.json`。GitHub Actions が毎日 05:00・17:00 JST に ONE CARAT から取得（記事本文＋月別表画像の2系統）。
 - 旧Sites・署名キー・旧ChatGPTタスクは使わない。旧Sitesには新URLへの移転案内を掲示済み。
-- ツール版：`scripts/build-pages.mjs` の `PAGES_VERSION`（v2026.11.09.6）。
+- ツール版：`scripts/build-pages.mjs` の `PAGES_VERSION`（v2026.11.09.7）。
 
 ## データの状態
 - 初期値は旧Sites公開APIの1951件（〜2026-10-18）。10/19〜11/03 は月別表画像から補完済み（証跡 `db/backfill-2026-10-19-to-11-03-evidence.json`）。

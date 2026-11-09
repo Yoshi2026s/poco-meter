@@ -1691,7 +1691,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 /* Goal conditions: labelled 16px controls */
 :root body #mini.main-screen .mini-goal-menu{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important;grid-row:auto!important;grid-column:auto!important;padding:10px;border:1px solid var(--line);border-radius:12px}
 :root body #mini.main-screen .goal-field{display:flex;flex-direction:column;gap:3px;min-width:0}
-:root body #mini.main-screen .goal-field label{font-size:12px!important;line-height:1.4;font-weight:700;color:var(--sub)!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+:root body #mini.main-screen .goal-field label{font-size:12px!important;line-height:1.4;font-weight:700;color:#445466!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 :root body #mini.main-screen .mini-goal-menu :is(select,input){width:100%!important;min-width:0!important;min-height:44px!important;height:44px!important;margin:0!important;padding:4px 18px 4px 6px!important;letter-spacing:0;border-radius:8px!important;font-size:16px!important;line-height:1.2!important;text-overflow:ellipsis}
 :root body #mini.main-screen .mini-goal-menu input{padding-right:8px!important}
 :root body #mini.main-screen #miniBufferError{font-size:13px!important;color:var(--red)!important}
@@ -1783,7 +1783,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 :root body #mini.main-screen #itemsWindow{background:#ffe5ef!important}
 :root body #mini.main-screen #itemsWindowTitle{color:#17283a!important}
 :root body #mini.main-screen .items-core label{color:#445466!important}
-:root body #mini.main-screen .mini-goal-menu{background:var(--meter-section-conditions,var(--paper))!important}
+:root body #mini.main-screen .mini-goal-menu{background:#e5f6e8!important}
 :root body #mini.main-screen .main-tools{background:var(--meter-section-tools,var(--paper))!important}
 
 /* 2026-11 round 2: the other menus on phones / touch screens. Readable text is 12px or larger, touch targets 44px. */
@@ -2397,7 +2397,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
     $('mini').style.setProperty('--overview-number-ink',DISPLAY_CUSTOM.number[displaySettings.numberColor].dark);
     var tokens={ink:ink,muted:muted,sub:muted,text:ink,paper:paper,panel:paper,surface:paper,field:paper,'input-bg':paper,raised:raised,line:line,'control-border':control,teal:teal,'teal-soft':raised,'on-accent':dark?'#07131f':'#ffffff',success:success,'success-bg':dark?'#163c2b':'#e5f5ed',red:red,'error-bg':dark?'#3a1d29':'#fff0f3',amber:amber,'amber-bg':dark?'#3b2c19':'#fff2d6','number-ink':number,'remaining-ink':number,c1:teal,c2:teal,c3:amber,c4:success,c5:amber,c6:teal};
     ['mini','itemsWindow','stickyStatus'].forEach(function(id){var panel=$(id);if(!panel)return;panel.setAttribute('data-hud-background-color',displaySettings.hudBackground);panel.setAttribute('data-hud-theme',theme);panel.style.setProperty('color-scheme',theme);Object.keys(tokens).forEach(function(key){panel.style.setProperty('--'+key,tokens[key]);});});
-    var sectionTints={conditions:'#5d88ff',tools:'#53ded2'};
+    var sectionTints={tools:'#53ded2'};
     var tintWeight=dark ? .24 : .33;
     Object.keys(sectionTints).forEach(function(section){
       var tint=sectionTints[section];
