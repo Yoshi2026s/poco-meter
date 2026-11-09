@@ -16,7 +16,7 @@ const deferred = () => { let resolve, reject; const promise = new Promise((a, b)
 const presetButton = (p, attr, value) => p.nodes.find(node => node.dataset[attr] === value);
 const section = (p, id) => p.element(id).closest('section.card');
 const openSection = (p, id) => { const sec = section(p, id); if (sec.classList.contains('collapsed')) sec.querySelector('.sectionToggle').click(); return sec; };
-const autoSettings = { pick: 0, log: { '2026-10-02': { S1: [100, 200, 300], S2: [10, 20, 30] } }, provenance: {} };
+const autoSettings = { rank:'S1', pick: 0, log: { '2026-10-02': { S1: [100, 200, 300], S2: [10, 20, 30] } }, provenance: {} };
 
 test('D01 現在値の完了キーで反映して入力を終了', () => {
   const p = page(); p.element('currentTop').focus(); input(p, 'currentTop', '１Ｋ'); press(p, 'currentTop');
@@ -197,5 +197,5 @@ test('D49 拡大を禁止せず左右の安全余白と入力属性を確保', (
 test('D50 全体の項目順・標準デフォルト・保存内容を維持', () => {
   const p = page(); const groups = ['remainingSummary', 'quickTargetControls', 'remainingItems', 'manualGoal', 'currentTop'];
   const order = groups.map(id => html.indexOf(`id="${id}"`)); assert.deepEqual([...order].sort((a, b) => a - b), order);
-  assert.equal(saved(p).rank, 'S1'); assert.equal(saved(p).coreCount, '0'); assert.equal(saved(p).target, '1001'); assert.equal(saved(p).current, '0');
+  assert.equal(saved(p).rank, 'S2'); assert.equal(saved(p).coreCount, '0'); assert.equal(saved(p).target, '1001'); assert.equal(saved(p).current, '0');
 });

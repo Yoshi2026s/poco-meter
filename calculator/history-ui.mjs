@@ -12,7 +12,8 @@ function rebuild(){localRead();try{eCalendarRows=eState(localStorage.getItem(E_K
 function loadPreferences(){let value,restored=false;displayMonth='';try{value=JSON.parse(localStorage.getItem(PREF_KEY)||'null');}catch{}
  const hash=new URLSearchParams(location.hash.slice(1));if([...hash].length)value=Object.fromEntries(hash);
  if(isObject(value)){for(const id of filterIDs){const v=value[id];if(typeof v==='string'&&v.length<=100){if(['query','start','end'].includes(id)||[...$(id).options].some(o=>o.value===v)){$(id).value=v;restored=true;}}}}
- if(!restored){try{const s=JSON.parse(localStorage.getItem(MAIN_KEY)||'null');if(HISTORY_RANKS.includes(s?.rank))$('rank').value=s.rank;else $('rank').value='S1';const c=s?.deadline==='00:00'?'24':s?.deadline?.slice(0,2);$('close').value=HISTORY_CLOSES.includes(c)?c:'22';}catch{$('rank').value='S1';$('close').value='22';}}
+ if(!restored){let s;try{s=JSON.parse(localStorage.getItem(MAIN_KEY)||'null');}catch{}
+  $('rank').value=HISTORY_RANKS.includes(s?.rank)?s.rank:'S2';const c=s?.deadline==='00:00'?'24':typeof s?.deadline==='string'?s.deadline.slice(0,2):'';$('close').value=HISTORY_CLOSES.includes(c)?c:'22';}
  let theme='dark';try{theme=localStorage.getItem(THEME_KEY)||JSON.parse(localStorage.getItem('pococha-meter-display-v1')||'null')?.theme||'dark';}catch{}document.body.classList.toggle('light',theme==='light');syncTheme();return restored;
 }
 function syncTheme(){$('themeButton').textContent=document.body.classList.contains('light')?'暗い表示':'明るい表示';}

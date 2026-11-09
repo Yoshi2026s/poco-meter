@@ -27,7 +27,7 @@ function toggleBusy(){const locked=busy||saving;for(const id of ['chooseImages',
 function render(){
  const selected=prefs();let coverage;
  try{coverage=eCoverage(app.records,selected.rank,selected.close);}catch(e){status(e.message,true);return;}
- $('coverage').textContent='未記録日確認：'+selected.rank+'・'+selected.close+'時締め：直近7日 '+coverage.recorded+' / 7日を記録';
+ $('coverage').textContent=selected.close+'時締め・直近7日：'+coverage.recorded+'日分を記録';
  const matching=eFilter(app.records,selected),latest=matching[0];$('latest').textContent=(latest?'最新記録：'+latest.date:'この条件の記録はまだありません。')+' ／ '+coverage.start+'〜'+coverage.end;
  $('gaps').replaceChildren();for(const d of coverage.missing)$('gaps').append(button(d.slice(5).replace('-','/')+' 未記録',()=>{if(busy||saving)return status('処理完了後に入力してください。',true);const item=addDraft({date:d,...selected,values:['','','']});item?.box.scrollIntoView({block:'start'});}));
  if(!coverage.missing.length)$('gaps').append(node('span','直近7日分がそろっています。','badge'));

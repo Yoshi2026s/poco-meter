@@ -106,8 +106,7 @@ const targets = textCheckWidth ? ['500000', '50000000', extremeTarget] : ['50000
 for(const target of targets){await page.locator('#targetMini').focus();await page.locator('#targetMini').fill(target);await page.locator('#targetMini').blur();await page.locator('#currentMini').focus();await page.locator('#currentMini').fill('0');await page.locator('#currentMini').blur();
 const r=await page.evaluate(()=>({cards:[...document.querySelectorAll('#itemsWindowRow .coin-card')].map(e=>({w:e.clientWidth,scroll:e.scrollWidth,b:e.querySelector('b').getAttribute('data-value')})),sources:['coinNeed','dogcatNeed','pandaNeed','hanabiNeed','bashaNeed'].map(id=>document.getElementById(id).textContent),overflow:document.documentElement.scrollWidth>innerWidth}));
 assert.ok(r.cards.every(x=>x.scroll<=x.w),JSON.stringify({width,target,...r}));assert.deepEqual(r.cards.map(x=>x.b),r.sources,'items mirror calculator values');assert.equal(r.overflow,false,'no horizontal scroll');
-// The existing extreme case exercises value mirroring and overflow; its coin label can ellipsize.
-if((textCheckWidth && target !== extremeTarget)||(width===320&&target==='500000'))await checkVisibleItemText(page,width,target);
+if(textCheckWidth||(width===320&&target==='500000'))await checkVisibleItemText(page,width,target);
 if(target==='500000'&&mobile){await page.evaluate(()=>scrollTo(0,0));await checkOverview(page,width,height,true);}}
 // Main controls are touchable and use 16px+ text (no iOS zoom on focus).
 const sizes=await page.evaluate(()=>['targetMini','currentMini','miniPeriod','miniRank','miniBorder','miniMethod','miniBuffer','miniClose','coreCountItems'].map(id=>{const e=document.getElementById(id),r=e.getBoundingClientRect();return {id,h:r.height,font:parseFloat(getComputedStyle(e).fontSize)};}));

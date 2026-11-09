@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {engine,pageEngine,plain,html} from './calculator-harness.mjs';
-// 2026-11: default rank S1; aggregation periods 前日・2日前・3日前・直近7日・直近14日.
+// Standard rank S2; aggregation periods 前日・2日前・3日前・直近7日・直近14日.
 // The harness clock is 2026-10-03 (JST), so "yesterday" is 2026-10-02.
 const KEY='pococha-meter-calc-v1';
 const saved=p=>JSON.parse(p.stored.get(KEY));
@@ -42,12 +42,23 @@ test('New periods survive reload and invalid periods fall back to 直近30日',(
   for(const period of ['d1','d2','d3','7d','14d']){const p=page({period});assert.equal(p.element('pickPeriod').value,period);}
   const bad=page({period:'5d'});assert.equal(saved(bad).period,'30d');
 });
-test('Default rank is S1 for new data and the standard defaults',()=>{
-  assert.equal(engine().state.rank,'S1');
-  const fresh=pageEngine(undefined,{navigator:{onLine:false}});assert.equal(saved(fresh).goalDefaults.rank,'S1');assert.equal(saved(fresh).goalDefaultsVersion,3);
+test('New and recovered data use S2 for the standard rank',()=>{
+  assert.equal(engine().state.rank,'S2');
+  const fresh=pageEngine(undefined,{navigator:{onLine:false}});
+  assert.equal(fresh.element('miniRank').value,'S2');
+  assert.equal(saved(fresh).goalDefaults.rank,'S2');
+  assert.equal(saved(fresh).goalDefaultsVersion,4);
+  assert.equal(saved(page({rank:'invalid'})).rank,'S2');
 });
-test('Defaults saved unchanged from the old standard move to S1; customised defaults are kept',()=>{
-  const old={...plain(engine().state.goalDefaults),rank:'S2'};
-  const p=page({goalDefaultsVersion:2,goalDefaults:old});assert.equal(saved(p).goalDefaults.rank,'S1');assert.equal(saved(p).goalDefaultsVersion,3);
-  const custom=page({goalDefaultsVersion:2,goalDefaults:{...old,bufferPct:5}});assert.equal(saved(custom).goalDefaults.rank,'S2');assert.equal(saved(custom).goalDefaults.bufferPct,5);
+test('Only the previous standard preset moves to S2; the current rank and saved custom presets survive',()=>{
+  const old={...plain(engine().standardGoalDefaults()),rank:'S1'};
+  const p=page({rank:'A2',goalDefaultsVersion:3,goalDefaults:old});
+  assert.equal(saved(p).rank,'A2');
+  assert.equal(saved(p).goalDefaults.rank,'S2');
+  assert.equal(saved(p).goalDefaultsVersion,4);
+  const custom=page({goalDefaultsVersion:3,goalDefaults:{...old,bufferPct:5}});
+  assert.equal(saved(custom).goalDefaults.rank,'S1');
+  assert.equal(saved(custom).goalDefaults.bufferPct,5);
+  assert.equal(saved(page({goalDefaultsVersion:4,goalDefaults:old})).goalDefaults.rank,'S1');
+  assert.equal(saved(page({goalDefaultsVersion:2,goalDefaults:{...old,rank:'S2'}})).goalDefaults.rank,'S2');
 });
