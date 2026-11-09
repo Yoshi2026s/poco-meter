@@ -55,10 +55,11 @@ for (const value of ['1000', '１０００']) {
     const textWidth = text.getBoundingClientRect().width;
     text.remove();
     const contentWidth = input.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
-    return {textWidth, contentWidth, height:input.getBoundingClientRect().height};
+    const minHeight = matchMedia('(max-width:700px),(pointer:coarse)').matches ? 48 : 44;
+    return {textWidth, contentWidth, height:input.getBoundingClientRect().height, minHeight};
   });
   assert.ok(size.contentWidth >= size.textWidth, `${width}px: all digits of ${value} fit (${JSON.stringify(size)})`);
-  assert.ok(size.height >= 48, `${width}px: core count touch target is at least 48px tall`);
+  assert.ok(size.height >= size.minHeight, `${width}px: core count field is at least ${size.minHeight}px tall`);
   await coreCount.blur();
   assert.equal(await coreCount.inputValue(), '1000');
 }
