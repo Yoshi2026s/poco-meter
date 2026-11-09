@@ -2682,9 +2682,8 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
     return {primary:'端末時計・日本時間',secondary:status,accuracy:drift||'誤差：未確認（端末時刻）',description:'端末時計（日本時間）で計算。'+status+'。'+(drift?'端末時計は'+drift+'。公開サーバーの時刻（標準時）と比べた値で、Pococha内部の時計との差ではありません。':'')};
   }
   function renderClockBasis(){var basis=clockBasis(),label=basis.primary==='Pocochaサーバー時刻'?basis.primary:'端末時刻';$('todayTimeLabel').textContent=label;$('miniTimeLabel').textContent=label;$('clockTimeSource').textContent=basis.primary;$('clockSyncStatus').textContent=basis.secondary;$('clockAccuracy').textContent=basis.accuracy;$('miniClockAccuracy').textContent=basis.accuracy;$('clockAccuracy').title=basis.description;$('miniClockAccuracy').title=basis.description;$('clockTimeBasis').title=basis.description;$('today').title=basis.description;$('miniNow').title=basis.description;}
-  // Device clock drift against the hosting server's HTTP Date (standard time). Same-origin, so the header is readable.
-  // Date has 1-second resolution; each sample bounds the offset, and several samples are intersected.
-  var deviceDrift=null,deviceDriftController=null,deviceDriftAt=0;
+  // Keep network sampling in the service worker so it can outlive a replacing document.
+  var deviceDrift=null,finishDeviceDrift=null,deviceDriftAt=0;
   function deviceDriftText(){
     if(!deviceDrift||Date.now()-deviceDriftAt>3600000)return '';
     var lo=deviceDrift.lo,hi=deviceDrift.hi,margin=Math.max(1,Math.ceil((hi-lo)/2000)),mid=Math.round((lo+hi)/2000);
@@ -2692,16 +2691,22 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
     return '標準時より'+Math.abs(mid)+'秒'+(mid>0?'進み':'遅れ')+'（±'+margin+'）';
   }
   function measureDeviceDrift(force){
-    if(deviceDriftController||typeof fetch!=='function'||!window.location||!/^https?:$/.test(window.location.protocol||''))return Promise.resolve(false);
-    if(!force&&deviceDrift&&Date.now()-deviceDriftAt<600000)return Promise.resolve(false);
-    var controller=new AbortController(),lo=-Infinity,hi=Infinity,samples=0;
-    deviceDriftController=controller;
-    var timeout=setTimeout(function(){controller.abort();},10000);
-    function sample(){if(controller.signal.aborted)return;var t0=Date.now();return fetch('meter.webmanifest?clock='+t0,{method:'HEAD',cache:'no-store',credentials:'same-origin',signal:controller.signal}).then(function(response){var t1=Date.now(),server=Date.parse(response.headers.get('date')||'');if(!Number.isFinite(server)||t1-t0>3000)return;
-      // device - server lies in [t0-(server+1000), t1-server]
-      lo=Math.max(lo,t0-server-1000);hi=Math.min(hi,t1-server);samples++;});}
-    var chain=Promise.resolve();for(var i=0;i<4;i++)chain=chain.then(sample).then(function(){if(!controller.signal.aborted)return new Promise(function(r){setTimeout(r,260);});});
-    return chain.then(function(){if(!controller.signal.aborted&&samples&&lo<=hi){deviceDrift={lo:lo,hi:hi};deviceDriftAt=Date.now();renderClockBasis();return true;}return false;}).catch(function(){return false;}).finally(function(){clearTimeout(timeout);if(deviceDriftController===controller)deviceDriftController=null;});
+    if(finishDeviceDrift||document.hidden||navigator.onLine===false||!offlineSupported()||typeof MessageChannel!=='function')return;
+    if(!force&&deviceDrift&&Date.now()-deviceDriftAt<600000)return;
+    var worker=navigator.serviceWorker.controller;
+    if(!worker)return;
+    var channel=new MessageChannel(),port=channel.port1;
+    var timeout=setTimeout(finish,11000);
+    function finish(){clearTimeout(timeout);port.onmessage=null;port.close();finishDeviceDrift=null;}
+    finishDeviceDrift=finish;
+    port.onmessage=function(event){
+      finish();
+      var data=event.data;
+      if(!data||!Number.isFinite(data.lo)||!Number.isFinite(data.hi)||data.lo>data.hi||!Number.isFinite(data.at))return;
+      deviceDrift={lo:data.lo,hi:data.hi};deviceDriftAt=data.at;renderClockBasis();
+    };
+    try{worker.postMessage({type:'POCOCHA_CLOCK_MEASURE'},[channel.port2]);}
+    catch(e){finish();channel.port2.close();}
   }
   function syncPocochaClock(force){
     measureDeviceDrift(force);
@@ -4039,6 +4044,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
       clearTimeout(request.timer);delete offlineRequests[data.id];request.resolve(data);
     });
     navigator.serviceWorker.addEventListener('controllerchange',function(){offlineRevision++;offlineWorker=navigator.serviceWorker.controller;Object.keys(offlineRequests).forEach(function(id){var request=offlineRequests[id];clearTimeout(request.timer);delete offlineRequests[id];request.reject(new Error('worker changed'));});if(offlineBusy)offlineRecheck=true;else checkOffline(false);});
+    navigator.serviceWorker.addEventListener('controllerchange',function(){if(finishDeviceDrift)finishDeviceDrift();measureDeviceDrift();});
   }
   $('prepareOffline').onclick=function(){
     if(offlineBusy)return;
@@ -4061,7 +4067,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
     if(event.key===DISPLAY_KEY){try{displaySettings=event.newValue===null?standardDisplaySettings():cleanDisplaySettings(JSON.parse(event.newValue),true);applyDisplaySettings();$('displaySettingsStatus').className='toast';$('displaySettingsStatus').textContent='別の画面の表示設定を反映しました。';}catch(e){}}
   });
   window.addEventListener('pagehide',function(){
-    if(deviceDriftController){var controller=deviceDriftController;deviceDriftController=null;controller.abort();}
+    if(finishDeviceDrift)finishDeviceDrift();
     save();
   });
   document.addEventListener('visibilitychange',function(){if(document.hidden)save();else checkOffline(false);});

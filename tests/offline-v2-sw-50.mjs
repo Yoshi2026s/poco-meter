@@ -30,6 +30,7 @@ class FakeResponse {
     this.bodyUsed = false;
     this.readHook = options.readHook;
   }
+  get ok() { return this.status >= 200 && this.status < 300; }
   clone() {
     if (this.bodyUsed) throw new TypeError('Body has already been read');
     return new FakeResponse(this.body, { status: this.status, type: this.type,
@@ -43,6 +44,33 @@ class FakeResponse {
   }
   static error() { return new FakeResponse('', { status: 0, type: 'error' }); }
 }
+test('Clock sampling coalesces across page replacements, stays same-origin and does not touch caches', async () => {
+  const h = harness({fetch: () => new FakeResponse('', {headers:{Date:new Date(EPOCH).toUTCString()}})});
+  const port = () => ({values:[],postMessage(value){this.values.push(value);},close(){this.closed=true;}});
+  const measure = (source, reply) => h.dispatch('message', {source,ports:[reply],data:{type:'POCOCHA_CLOCK_MEASURE'}});
+  const first = port(), second = port(), foreign = port();
+  const events = [measure(client(), first), measure(client(), second)];
+  assert.equal(measure({url:'https://elsewhere.example/'}, foreign).waited.length, 0);
+  await flush();
+  assert.equal(h.calls.length, 1);
+  for (let i = 0; i < 3; i++) await h.advance(260);
+  await Promise.all(events.map(lifetime));
+  assert.equal(h.calls.length, 4);
+  for (const {input,init} of h.calls) {
+    const url = new URL(input);
+    assert.equal(url.origin, ORIGIN);
+    assert.equal(url.pathname, '/meter.webmanifest');
+    assert.equal(init.method, 'HEAD');
+    assert.equal(init.credentials, 'omit');
+  }
+  for (const reply of [first, second]) {
+    assert.equal(reply.closed, true);
+    assert.equal(reply.values[0].lo, -220);
+    assert.equal(reply.values[0].hi, 0);
+  }
+  assert.deepEqual(h.operations, []);
+  assert.equal(h.timers.size, 0);
+});
 function shell(label = 'fresh', options = {}) {
   return new FakeResponse(`<!doctype html>${MARKER}<main>${label}</main>`, {
     url: HOME, type: 'basic', headers: { 'Content-Type': 'text/html; charset=utf-8' }, ...options });
@@ -706,4 +734,25 @@ test('v2 50 simultaneous timed asset fallbacks keep separate timers and cache ke
   assert.equal(h.timers.size, 0);
   iconGate.resolve(asset(ASSETS[1])); manifestGate.resolve(asset(ASSETS[0]));
   await flush();
+});
+
+test('A timed-out clock sample releases the worker so the next page can measure', async () => {
+  const h = harness({fetch: (_url, {signal}) => new Promise((_, reject) => {
+    signal.addEventListener('abort', () => reject(new Error('aborted')), {once:true});
+  })});
+  const replies = [];
+  const measure = () => h.dispatch('message', {source:client(), data:{type:'POCOCHA_CLOCK_MEASURE'},
+    ports:[{postMessage:value=>replies.push(value),close(){}}]});
+  const first = measure();
+  await flush();
+  await h.advance(10000);
+  await lifetime(first);
+  assert.equal(h.calls[0].init.signal.aborted, true);
+  assert.deepEqual(replies, [null]);
+  const second = measure();
+  await flush();
+  assert.equal(h.calls.length, 2);
+  assert.equal(h.calls[1].init.signal.aborted, false);
+  await h.advance(10000);
+  await lifetime(second);
 });
