@@ -91,6 +91,7 @@ function expand(prop,value){
 function mediaMatches(params,ctx){return splitTop(params).some(branch=>branch.split(/\s+and\s+/i).every(part=>{
   part=part.trim();if(part==='screen'||part==='all')return true;if(part==='print')return false;
   let m=part.match(/^\((min|max)-width:\s*(\d+)px\)$/);if(m)return m[1]==='min'?ctx.width>=+m[2]:ctx.width<=+m[2];
+  m=part.match(/^\(max-height:\s*(\d+)px\)$/);if(m)return (ctx.height??844)<=+m[1];
   m=part.match(/^\(prefers-color-scheme:\s*(dark|light)\)$/);if(m)return ctx.systemTheme===m[1];
   m=part.match(/^\(prefers-reduced-motion:\s*(reduce|no-preference)\)$/);if(m)return !!ctx.reducedMotion===(m[1]==='reduce');
   m=part.match(/^\(pointer:\s*(coarse|fine)\)$/);if(m)return ctx.pointer===m[1];
