@@ -66,6 +66,62 @@ test('V42 同期的な共有例外でも忙しい状態を解除',()=>{const {p}
 test('V43 不正な保存方法を共有機能へ渡さない',()=>{const {p,shares}=shareSetup();input(p,'saveMethod','bad','change');p.element('saveExport').click();assert.equal(shares.length,0);assert.match(p.element('bkMsg').textContent,/選んでください/);});
 test('V44 既存workerがある起動でも更新を確認し準備状況を表示',async()=>{const kit=swKit(),{p}=setup({},kit.caps);await flush();assert.equal(kit.registrations.length,1);assert.equal(kit.registrations[0].url,'/meter-sw.js');assert.match(p.element('offlineStatus').textContent,/準備完了/);p.dispatchWindow('pageshow',{persisted:false});await flush();assert.equal(kit.registrations.length,1);});
 test('V45 更新登録失敗でも既存の検証済みキャッシュを使用',async()=>{const kit=swKit({registerError:true}),{p}=setup({},kit.caps);await flush();assert.match(p.element('offlineStatus').textContent,/準備完了/);input(p,'currentTop','800');assert.equal(p.element('remain').textContent,'1.2K');});
+test('初回登録の失敗より先に通信が戻っても、登録を自動でやり直す',async()=>{
+ const kit=swKit(),navigator=kit.caps.navigator;
+ const register=kit.sw.register;
+ let rejectFirst,attempts=0;
+ kit.sw.controller=null;
+ kit.sw.register=(...args)=>++attempts===1?new Promise((_,reject)=>{rejectFirst=reject;}):register(...args);
+ const {p}=setup({},kit.caps);
+ navigator.onLine=false;p.dispatchWindow('offline');
+ navigator.onLine=true;p.dispatchWindow('online');
+ rejectFirst(Error('registration was interrupted'));
+ await flush();
+ assert.equal(attempts,2);
+ assert.match(p.element('offlineStatus').textContent,/準備完了/);
+});
+test('初回のワーカー有効化を待っている間に通信が戻ると、待機が切れる前に登録をやり直す',async()=>{
+ const kit=swKit(),navigator=kit.caps.navigator;
+ let activate,attempts=0;
+ kit.sw.controller=null;
+ kit.sw.ready=new Promise(resolve=>{activate=resolve;});
+ kit.sw.register=()=>{
+  if(++attempts===1)return Promise.resolve({active:null});
+  const registration={active:kit.worker};
+  activate(registration);
+  return Promise.resolve(registration);
+ };
+ const {p}=setup({},kit.caps);
+ await flush();
+ assert.equal(attempts,1);
+ navigator.onLine=false;p.dispatchWindow('offline');
+ navigator.onLine=true;p.dispatchWindow('online');
+ await flush();
+ assert.equal(attempts,2);
+ assert.match(p.element('offlineStatus').textContent,/準備完了/);
+});
+test('復帰直後にまだ失敗予定の登録が返った場合も、準備待ちの期限後に登録をやり直す',async()=>{
+ const kit=swKit(),navigator=kit.caps.navigator;
+ let activate,attempts=0;
+ kit.sw.controller=null;
+ kit.sw.ready=new Promise(resolve=>{activate=resolve;});
+ kit.sw.register=()=>{
+  if(++attempts<3)return Promise.resolve({active:null});
+  const registration={active:kit.worker};
+  activate(registration);
+  return Promise.resolve(registration);
+ };
+ const {p}=setup({},kit.caps);
+ await flush();
+ navigator.onLine=false;p.dispatchWindow('offline');
+ navigator.onLine=true;p.dispatchWindow('online');
+ await flush();
+ assert.equal(attempts,2);
+ p.flushTimers(15000);
+ await flush();
+ assert.equal(attempts,3);
+ assert.match(p.element('offlineStatus').textContent,/準備完了/);
+});
 test('V46 worker切替時に古い応答を無視して新しい準備状況を確認',async()=>{const kit=swKit({manual:true,online:false}),{p}=setup({},kit.caps);const oldId=kit.messages[0].id;const newer={postMessage:data=>kit.reply({type:'POCOCHA_OFFLINE_STATUS',id:data.id,ready:false},newer)};kit.sw.controller=newer;kit.emit('controllerchange');kit.reply({type:'POCOCHA_OFFLINE_STATUS',id:oldId,ready:true});await flush();assert.match(p.element('offlineStatus').textContent,/未準備/);assert.doesNotMatch(p.element('offlineStatus').textContent,/準備完了/);});
 test('V47 正しい準備日時だけJSTで表示し未来の値は無視',async()=>{const a=swKit({online:false,preparedAt:'2026-10-03T11:30:00Z'}),pa=setup({},a.caps).p;await flush();assert.match(pa.element('offlineStatus').textContent,/準備 10-03 20:30/);const b=swKit({online:false,preparedAt:'9999-12-31T00:00:00Z'}),pb=setup({},b.caps).p;await flush();assert.doesNotMatch(pb.element('offlineStatus').textContent,/9999/);});
 test('V48 オフライン起動準備と入力保存失敗を区別',async()=>{const kit=swKit({online:false}),{p}=setup({}, {...kit.caps,localStorage:{getItem:()=>null,setItem:()=>{throw Error();}}});await flush();assert.match(p.element('offlineStatus').textContent,/準備完了/);assert.match(p.element('offlineStatus').textContent,/入力を端末に保存できません/);});

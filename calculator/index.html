@@ -4035,7 +4035,14 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
         if(result.failed)offlineError='最新版を保存できません。通信・空き容量を確認し、もう一度準備してください。';
       }
     }catch(e){if(revision===offlineRevision){offlineReady=false;offlinePreparedAt='';offlineError='準備を確認できません。通信・空き容量を確認し、もう一度お試しください。';}}
-    finally{offlineBusy=false;renderOfflineStatus();if(offlineRecheck){offlineRecheck=false;checkOffline(false);}}
+    finally{
+      offlineBusy=false;renderOfflineStatus();
+      if(offlineRecheck){
+        offlineRecheck=false;
+        if(!offlineReady&&!navigator.serviceWorker.controller)offlineRegistrationAttempted=false;
+        checkOffline(false);
+      }
+    }
   }
   if(offlineSupported()){
     navigator.serviceWorker.addEventListener('message',function(event){
@@ -4056,7 +4063,16 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
     return checkOffline(true);
   };
   window.addEventListener('offline',function(){liveBorderRetry=false;if(liveBorderController)liveBorderController.abort();renderBorderSyncStatus();renderOfflineStatus();});
-  window.addEventListener('online',function(){renderOfflineStatus();if(liveBorderBusy){if(liveBorderController&&liveBorderController.signal.aborted)liveBorderRetry=true;}else syncLiveBorders(true);checkOffline(false);});
+  window.addEventListener('online',function(){
+    renderOfflineStatus();
+    if(liveBorderBusy){if(liveBorderController&&liveBorderController.signal.aborted)liveBorderRetry=true;}else syncLiveBorders(true);
+    if(offlineSupported()&&!navigator.serviceWorker.controller){
+      // A first install interrupted by the outage may still be waiting for ready.
+      offlineRegistrationAttempted=false;
+      if(offlineBusy)refreshOfflineRegistration(false);
+    }
+    if(offlineBusy)offlineRecheck=true;else checkOffline(false);
+  });
   window.addEventListener('storage',function(event){
     if(event.storageArea&&event.storageArea!==localStorage)return;
     if(event.key==='pococha-e-display-v1'){statsCache={};update();return;}
