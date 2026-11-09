@@ -32,17 +32,18 @@ function render(){
  $('gaps').replaceChildren();for(const d of coverage.missing)$('gaps').append(button(d.slice(5).replace('-','/')+' 未記録',()=>{if(busy||saving)return status('処理完了後に入力してください。',true);const item=addDraft({date:d,...selected,values:['','','']});item?.box.scrollIntoView({block:'start'});}));
  if(!coverage.missing.length)$('gaps').append(node('span','直近7日分がそろっています。','badge'));
  $('storageSummary').textContent='全記録 '+app.records.length+' / '+E_MAX+'件 ／ '+['13','22','24'].map(c=>c+'時〆 '+app.records.filter(r=>r.close===c).length+'件').join(' ／ ')+(app.lastChangedAt?' · 最終保存 '+new Date(app.lastChangedAt).toLocaleString('ja-JP',{timeZone:'Asia/Tokyo',hour12:false}):' · 追加記録は未保存')+(storageBlocked?' · 保存停止中':'');
+ resetCopyFeedback();
  let list;try{list=filtered();}catch(e){$('filterSummary').textContent=e.message;$('records').replaceChildren();$('more').hidden=true;$('count').textContent='条件を確認';return;}
  const closes=filterPrefs().close?[filterPrefs().close]:['13','22','24'],shown=closes.reduce((n,c)=>n+Math.min(visible,list.filter(r=>r.close===c).length),0);
  $('count').textContent=list.length+'件';$('filterSummary').textContent=shown+'件を表示中（締め時間ごとに最大'+visible+'件）。コピー・CSVには検索結果の全件を含みます。';
  $('records').replaceChildren();for(const close of closes){
   const rows=list.filter(r=>r.close===close),saved=app.records.filter(r=>r.close===close),group=node('section',undefined,'close-group');group.setAttribute('data-close',close);group.append(node('h3',close+'時〆 · '+rows.length+'件'));
-  group.append(node('p','保存済み全 '+saved.length+'件'+(saved.length?' ／ 最新 '+saved.map(r=>r.date).sort().at(-1):''),'small'));
-  if(!rows.length)group.append(node('p',saved.length?'この表示条件ではデータ無し。日付などの絞り込みを確認してください。':'データ無し','note'));
+  group.append(node('p','全記録 '+saved.length+'件'+(saved.length?' ／ 最新 '+saved.map(r=>r.date).sort().at(-1):''),'small'));
+  if(!rows.length)group.append(node('p',saved.length?'条件に合う記録がありません。':'保存済みの記録がありません。','note'));
   for(const r of rows.slice(0,visible)){
   const box=node('article',undefined,'record');box.append(node('strong',r.date+' · '+eRankLabel(r.rank)+' · '+r.close+'時締め'));
   const values=node('div',undefined,'values');r.values.forEach((v,i)=>{const col=node('span',['±0','＋1','＋2'][i]);col.append(node('b',v));values.append(col);});box.append(values,node('div',r.source+'／画面表示値'+(r.values.some(v=>eValue(v).approx)?'（K・Mは概数）':''),'small'));
-  const actions=node('div',undefined,'actions');actions.append(button('編集',()=>{if(busy||saving)return status('処理完了後に編集してください。',true);if(drafts.some(d=>d.original&&eKey(d.original)===eKey(r)))return status('この記録はすでに編集候補にあります。',true);addDraft({...r,source:'端末で確認した画面表示値'},null,{original:r});}),button('コピペ',()=>copyText(recordText([r]))),button('削除',async()=>{if(busy||saving)return status('処理完了後に削除してください。',true);if(!confirm(r.date+' '+eRankLabel(r.rank)+' '+r.close+'時の記録をごみ箱へ移しますか？'))return;try{const warning=await persist(eRemove(app,eKey(r)));render();status('ごみ箱へ移しました。ごみ箱から取り消せます。'+warning);}catch(e){status('削除できません：'+e.message,true);}},'danger'));box.append(actions);group.append(box);
+  const actions=node('div',undefined,'actions');actions.append(button('編集',()=>{if(busy||saving)return status('処理完了後に編集してください。',true);if(drafts.some(d=>d.original&&eKey(d.original)===eKey(r)))return status('この記録はすでに編集候補にあります。',true);addDraft({...r,source:'端末で確認した画面表示値'},null,{original:r});}),button('コピー',event=>copyText(recordText([r]),event.currentTarget)),button('削除',async()=>{if(busy||saving)return status('処理完了後に削除してください。',true);if(!confirm(r.date+' '+eRankLabel(r.rank)+' '+r.close+'時の記録をごみ箱へ移しますか？'))return;try{const warning=await persist(eRemove(app,eKey(r)));render();status('ごみ箱へ移しました。ごみ箱から取り消せます。'+warning);}catch(e){status('削除できません：'+e.message,true);}},'danger'));box.append(actions);group.append(box);
   }$('records').append(group);
  }
  $('more').hidden=closes.every(c=>list.filter(r=>r.close===c).length<=visible);renderTrash();
@@ -125,8 +126,34 @@ $('more').onclick=()=>{visible+=30;render();};$('trashPanel').addEventListener('
 for(const days of [7,30])$('recent'+days).onclick=()=>{$('filterMonth').value='';$('filterEnd').value=eYesterday();$('filterStart').value=eShift(eYesterday(),1-days);visible=30;saveFilters();render();};
 $('resetFilters').onclick=()=>{for(const id of ['filterRank','filterClose','filterMonth','filterStart','filterEnd'])$(id).value='';$('filterOrder').value='new';$('filterApprox').checked=false;visible=30;saveFilters();render();};
 function recordText(rows){return ['対象日\tランク\t締め\t±0\t＋1\t＋2\t精度',...rows.map(r=>[r.date,eRankLabel(r.rank),r.close,...r.values,r.values.some(v=>eValue(v).approx)?'画面表示値（K/Mは概数）':'画面表示値'].join('\t'))].join('\n');}
-async function copyText(text){const id=++copyId;try{await navigator.clipboard.writeText(text);if(id===copyId)status('記録をコピペできるようコピーしました。');}catch{if(id!==copyId)return;$('copyText').value=text;$('copyFallback').hidden=false;$('copyText').focus();$('copyText').select();status('コピーできないため手動コピペ欄を表示しました。',true);}}
-$('copy').onclick=()=>{try{copyText(recordText(filtered()));}catch(e){status(e.message,true);}};$('closeCopy').onclick=()=>{$('copyFallback').hidden=true;$('copy').focus();};
+let copyTrigger;
+function resetCopyFeedback(){
+ copyId++;
+ copyTrigger=null;
+ $('recordActions').after($('copyFeedback'));
+ $('copyFallback').hidden=true;
+ $('copyStatus').textContent='';
+}
+async function copyText(text,trigger){
+ const id=++copyId;
+ copyTrigger=trigger;
+ trigger.parentElement.after($('copyFeedback'));
+ $('copyFallback').hidden=true;
+ $('copyStatus').textContent='';
+ try{
+  await navigator.clipboard.writeText(text);
+  if(id===copyId)$('copyStatus').textContent='コピーしました。';
+ }catch{
+  if(id!==copyId)return;
+  $('copyStatus').textContent='下のテキストを選択してコピーしてください。';
+  $('copyText').value=text;
+  $('copyFallback').hidden=false;
+  $('copyText').focus();
+  $('copyText').select();
+ }
+}
+$('copy').onclick=event=>{try{copyText(recordText(filtered()),event.currentTarget);}catch(e){resetCopyFeedback();$('copyStatus').textContent=e.message;}};
+$('closeCopy').onclick=()=>{copyTrigger?.focus();$('copyFallback').hidden=true;$('copyStatus').textContent='';};
 function download(name,text,type='application/json'){const url=URL.createObjectURL(new Blob([text],{type:type+';charset=utf-8'})),a=node('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);}
 $('export').onclick=()=>{try{if(storageBlocked)throw Error('保存内容を読み込めないため、復旧欄の「現在の保存内容をそのまま保存」を使ってください。');const snapshot=readStorage().state;flushDrafts();download('pococha-E-backup-'+eToday()+'.json',JSON.stringify({...JSON.parse(eEncode(snapshot)),exportedAt:new Date().toISOString()},null,2));status('端末に保存されている最新の全記録のバックアップ保存を開始しました。入力中の下書きは別のファイル保存を使ってください。');}catch(e){status('バックアップできません：'+e.message,true);}};
 $('csv').onclick=()=>{try{const rows=filtered();if(!rows.length)throw Error('条件に合う記録がありません。');download('pococha-E-records-'+eToday()+'.csv',eCSV(rows),'text/csv');status(rows.length+'件のCSV保存を開始しました。保存先で確認してください。');}catch(e){status(e.message,true);}};

@@ -57,14 +57,22 @@ test('HUD buffer blur retains an invalid draft and its local error while keeping
   assert.equal(JSON.parse(p.stored.get('pococha-meter-calc-v1')).bufferPct,before);
 });
 
-for(const id of ['targetMini','currentMini'])test('HUD '+id+' scrolls inside its panel after a low keyboard viewport resize',()=>{
+for(const id of ['targetMini','currentMini'])test('HUD '+id+' stays visible when the keyboard reduces the visual viewport',()=>{
   const p=pageEngine(undefined,{navigator:{onLine:false},matchMedia:query=>({matches:query.includes('max-width:700px')})});
-  const pageScroll=[];p.window.scrollBy=options=>pageScroll.push(plain(options));p.window.innerHeight=700;
-  p.window.visualViewport.height=120;p.window.visualViewport.offsetTop=0;
-  p.element('mini').getBoundingClientRect=()=>({top:6,bottom:286,height:280});
-  const field=p.element(id);field.getBoundingClientRect=()=>({top:130,bottom:174,height:44});
-  field.focus();p.flushTimers(80);delete field.lastScroll;
+  const field=p.element(id),pageScroll=[];
+  let top=130;
+  field.getBoundingClientRect=()=>({top,bottom:top+44,height:44});
+  p.window.scrollBy=options=>{pageScroll.push(plain(options));top-=options.top;};
+  p.window.innerHeight=700;
+  p.window.visualViewport.height=700;
+  field.focus();p.flushTimers(80);
+  assert.deepEqual(pageScroll,[],'A visible field does not move when focused');
+
+  p.window.visualViewport.height=120;p.window.visualViewport.offsetTop=24;
   p.resizeViewport();p.flushTimers(80);
-  assert.deepEqual(plain(field.lastScroll),{behavior:'auto',block:'nearest'});assert.deepEqual(pageScroll,[]);
+  assert.deepEqual(pageScroll,[{top:38,behavior:'instant'}]);
+  assert.equal(field.getBoundingClientRect().bottom,136);
+  p.resizeViewport();p.flushTimers(80);
+  assert.equal(pageScroll.length,1,'A repeated resize does not move a field that already fits');
   assert.equal(p.document.activeElement?.id,id);assert.equal(p.element('mini').getAttribute('aria-hidden'),'false');
 });

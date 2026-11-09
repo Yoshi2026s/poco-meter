@@ -13,7 +13,7 @@ import {validateData} from '../automation/update-borders-json.mjs';
 const ROOT = fileURLToPath(new URL('../', import.meta.url));
 // Tool version shown on the page. Change only when the tool itself changes
 // (data updates do not change it).
-export const PAGES_VERSION = {version: 'v2026.11.10.2', updatedAt: '2026-11-10T03:57:00+09:00', label: '2026/11/10 03:57:00'};
+export const PAGES_VERSION = {version: 'v2026.11.10.3', updatedAt: '2026-11-10T04:19:00+09:00', label: '2026/11/10 04:19:00'};
 const SITES_ORIGIN = 'https://poco-meter.freefreelife2000.chatgpt.site';
 const COLLECTOR_ORIGIN = 'https://pococha-comment-access.freefreelife2000.chatgpt.site';
 const BORDER_FETCH = "fetch('/api/borders',{cache:'no-cache',credentials:'same-origin',signal:controller.signal})";

@@ -55,12 +55,12 @@ main{width:min(860px,100%);margin:auto;padding:20px 16px 32px}header{display:fle
 </head>
 <body>
 <main>
-<header><h1>目標値の算出方法</h1><a class="return-link" id="returnLink" href="/">メーターに戻る</a><button type="button" id="closePage">このタブを閉じる</button></header>
-<p>選んだ条件の記録から基準値を求め、上乗せ率をかけて、指定した単位で切り上げます。</p>
+<header><h1>目標値の算出方法</h1><a class="return-link" id="returnLink" href="/">メーターに戻る</a></header>
+<p>選んだ条件の記録から基準値を求め、上乗せ分を足し、指定した単位で切り上げます。</p>
 <nav aria-label="算出方法の目次"><a href="#mean">平均値</a><a href="#median">中央値</a><a href="#p75">上位25％の境界値</a><a href="#max">最大値</a><a href="#min">最小値</a></nav>
 <section id="mean"><h2>平均値</h2><p>記録の合計を、記録のある日数で割ります。極端に高い日や低い日があると、その値の影響を受けます。</p><p class="example">例：100・200・300・400・1,000 pt<br>合計2,000 ÷ 5日 ＝ <strong>400 pt</strong></p></section>
 <section id="median"><h2>中央値</h2><p>値を小さい順に並べた時の中央の値です。日数が偶数なら、中央の2つを足して2で割ります。平均値に比べ、1日だけ極端に高い・低い値の影響を受けにくい方法です。</p><p class="example">5日分の例では、中央の3番目 ＝ <strong>300 pt</strong><br>偶数4日で100・200・400・1,000なら、（200 ＋ 400）÷ 2 ＝ 300 pt</p></section>
-<section id="p75"><h2>上位25％の境界値</h2><p>値を小さい順に並べ、日数 × 0.75 を整数へ切り上げた順位の値を使います。このツールでは、順位の間の値を補間しません。平均や中央値より高めの基準になることがあります。</p><p class="example">5日 × 0.75 ＝ 3.75 → 4番目を選択<br>100・200・300・<strong>400</strong>・1,000 → <strong>400 pt</strong></p><p class="muted">「高い方の25％の平均」ではありません。少ない日数では、最大値と同じ値になる場合があります。</p></section>
+<section id="p75"><h2>上位25％の境界値</h2><p>値を小さい順に並べ、日数 × 0.75 を整数へ切り上げた順位の値を使います。このツールでは、順位の間の値を補間しません。平均や中央値より高めの基準になることがあります。</p><p class="example">5日 × 0.75 ＝ 3.75 → 4番目を選択<br>100・200・300・<strong>400</strong>・1,000 → <strong>400 pt</strong></p><p class="muted">記録が少ない場合は、最大値と同じになることがあります。</p></section>
 <section id="max"><h2>期間内の最大値</h2><p>選んだ期間で最も高い値を使います。</p><p class="example">5日分の例では <strong>1,000 pt</strong></p></section>
 <section id="min"><h2>期間内の最小値</h2><p>選んだ期間で最も低い値を使います。</p><p class="example">5日分の例では <strong>100 pt</strong></p></section>
 <section><h2>5つの方法を同じ記録で比較</h2><p class="muted">例の記録：100・200・300・400・1,000 pt。上乗せ前の値です。</p><div class="table-wrap"><table><thead><tr><th scope="col">算出方法</th><th scope="col">基準値</th></tr></thead><tbody><tr><th scope="row">平均値</th><td>400 pt</td></tr><tr><th scope="row">中央値</th><td>300 pt</td></tr><tr><th scope="row">上位25％の境界値</th><td>400 pt</td></tr><tr><th scope="row">期間内の最大値</th><td>1,000 pt</td></tr><tr><th scope="row">期間内の最小値</th><td>100 pt</td></tr></tbody></table></div></section>
@@ -68,7 +68,6 @@ main{width:min(860px,100%);margin:auto;padding:20px 16px 32px}header{display:fle
 <section><h2>集計する記録の範囲</h2><ul><li>選択中の締め時間・ランク・±0／+1／+2に対応する、有効な保存済み記録だけを使います。</li><li>未登録日を0で埋めません。たとえば30日の期間に27日分しかなければ、その27日分で計算します。</li><li>集計は昨日までです。条件に合う記録がない場合、自動目標は未設定になります。</li><li>直近30日は集計最終日を含む30暦日。最終日が空欄なら、日本時間の昨日までです。</li><li>当月は月初〜昨日、先月は前月の全日、3か月は当月を含む3暦月〜昨日、全期間は昨日以前の有効な記録が対象です。</li><li>旧版参考値は直近30日の計算では除外し、他の期間では含めます。</li></ul><p class="muted">「手入力」では、入力した値を目標に使います。過去のボーダーは目安です。</p></section>
 <a class="return-link" href="/">メーターに戻る</a>
 </main>
-<script>document.getElementById('closePage').onclick=function(){window.close();document.getElementById('returnLink').focus();};</script>
 <div class="tool-creator-footer" style="display:block;clear:both;width:100%;max-width:1200px;box-sizing:border-box;margin:24px auto 0;padding:12px 16px 20px;text-align:left;flex-basis:100%"><span class="tool-creator-logo" aria-label="制作者 Yoshi1012" style="display:inline-block;max-width:100%;box-sizing:border-box;padding:8px 18px 9px;border:1px solid #1676bc;border-left:3px solid #36c5ff;border-radius:3px;background:linear-gradient(115deg,#02050b 0%,#0b1d31 55%,#03070e 100%);color:#66d5ff;font-family:Arial,Helvetica,sans-serif;font-size:18px;font-weight:900;font-style:italic;letter-spacing:.08em;line-height:1.3;text-shadow:0 0 8px #008cce;box-shadow:inset 0 1px 0 #24618a,0 3px 12px #001c3c55">Yoshi1012</span></div>
 </body>
 </html>
