@@ -1709,7 +1709,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 :root body #mini.main-screen #itemsWindowRow{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:6px!important;padding:0!important}
 :root body #mini.main-screen #itemsWindowRow .coin-card{display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:0;min-height:60px;padding:6px 4px!important;margin:0!important;border:1px solid var(--line)!important;border-radius:10px!important;background:var(--paper)!important}
 :root body #mini.main-screen #itemsWindowRow .coin-card:first-child{grid-column:1/-1;flex-direction:row;justify-content:space-between;min-height:52px;padding:6px 12px!important}
-:root body #mini.main-screen #itemsWindowRow .coin-card span{font-size:12px!important;line-height:1.4;font-weight:700;color:var(--sub)!important;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+:root body #mini.main-screen #itemsWindowRow .coin-card span{font-size:12px!important;line-height:1.4;font-weight:700;color:var(--sub)!important;text-align:center;white-space:normal;overflow-wrap:anywhere;max-width:100%}
 :root body #mini.main-screen #itemsWindowRow .coin-card b .item-unit{margin-left:2px;font-size:.72em!important;font-weight:700;white-space:nowrap;color:var(--sub)!important}
 :root body #mini.main-screen #itemsWindowRow .coin-card b{font-size:clamp(13px,3.6vw,17px)!important;line-height:1.3;font-weight:800;color:var(--number-ink,var(--teal))!important;text-align:center;white-space:normal;max-width:100%;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
 :root body #mini.main-screen #itemsWindowRow .coin-card:first-child span{font-size:14px!important}
@@ -1921,12 +1921,12 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 </head>
 <body>
 <div class="mini show main-screen" id="mini" role="region" aria-label="シンプルメニュー（メイン画面）" aria-hidden="false">
-<div class="main-hero"><div class="mini-remaining"><span id="miniL">目標まであと</span><b id="miniR" class="num">-</b></div><div class="mini-countdown"><span id="miniDeadlineLabel">締切まで</span><span class="mt" id="miniT">-</span><div class="main-progress" id="miniProgress" role="progressbar" aria-label="目標の達成率" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="main-progress-bar"><span id="miniFill"></span></div><span id="miniPct" class="num">0%</span></div><button type="button" id="miniPeriodReview" hidden>締め後・現在値を確認</button></div>
+<div class="main-hero"><div class="mini-remaining"><span id="miniL">目標まであと</span><b id="miniR" class="num">-</b></div><div class="mini-countdown"><span id="miniDeadlineLabel">締切まで</span><span class="mt" id="miniT">-</span><div class="main-progress" id="miniProgress" role="progressbar" aria-label="目標の達成率" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="main-progress-bar"><span id="miniFill"></span></div><span id="miniPct" class="num">0%</span></div><button type="button" id="miniPeriodReview" hidden>締め後の現在値を確認</button></div>
 <small class="clock-accuracy" id="miniClockAccuracy">誤差：未確認</small>
 <!-- phone-current:start -->
 <time id="miniNow" class="num" title="現在日時・日本時間（時刻同期を確認中）"><span id="miniNowDate"></span><span id="miniClockReading"><span id="miniTimeLabel">時刻を確認中</span> <b id="miniNowTime"></b></span>
 </time></div>
-<div class="main-inputs"><div class="mini-input mini-target" id="miniTargetField"><div class="mini-label-row"><label for="targetMini">目標値</label><button type="button" class="mini-action mini-reset" id="resetTargetMini" aria-label="目標値をリセット">リセット</button></div><div class="mini-input-box"><input class="num" id="targetMini" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="未設定" aria-describedby="targetMiniError targetUpdateNote inputStatus"><small class="target-update-note" id="targetUpdateNote" title="ボーダーの自動取得は毎日5時・17時頃（日本時間）。目標の自動計算に反映されます。">自動更新 5時・17時頃</small></div><div class="mini-target-actions"><button type="button" class="mini-action" id="restoreTargetMini" aria-label="目標値をデフォルトに戻す">デフォルト</button><button type="button" class="mini-action" id="openMiniTargetDetails" aria-controls="sectionBody-1" aria-label="目標値の詳細設定を開く">詳細設定</button></div></div>
+<div class="main-inputs"><div class="mini-input mini-target" id="miniTargetField"><div class="mini-label-row"><label for="targetMini">目標値</label><button type="button" class="mini-action mini-reset" id="resetTargetMini" aria-label="目標値をリセット">リセット</button></div><div class="mini-input-box"><input class="num" id="targetMini" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="未設定" aria-describedby="targetMiniError targetUpdateNote inputStatus"><small class="target-update-note" id="targetUpdateNote" title="ボーダーの自動取得は毎日5時・17時頃（日本時間）。目標の自動計算に反映されます。">自動更新 5時・17時頃</small></div><div class="mini-target-actions"><button type="button" class="mini-action" id="restoreTargetMini" aria-label="既定の目標設定を適用">既定値</button><button type="button" class="mini-action" id="openMiniTargetDetails" aria-controls="sectionBody-1" aria-label="目標値の詳細設定を開く">詳細設定</button></div></div>
 <div class="mini-input mini-current" id="miniCurrentField"><div class="mini-label-row"><label for="currentMini">現在値</label><button type="button" class="mini-action mini-reset" id="resetCurrentMini" aria-label="現在値をリセット">リセット</button></div><input class="num" id="currentMini" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="0" aria-describedby="currentMiniError inputStatus"><div class="mini-target-actions"><button type="button" class="mini-action" id="miniUndoCurrent" disabled aria-label="直前の現在値に戻す">戻す</button></div></div>
 <small id="targetMiniError" hidden role="status" aria-live="polite"></small>
 <small id="currentMiniError" hidden role="status" aria-live="polite"></small>
@@ -1937,7 +1937,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 <!-- phone-current:end -->
 <section id="itemsWindow" aria-labelledby="itemsWindowTitle"><div class="items-window-head"><h2 id="itemsWindowTitle">残りアイテムの目安</h2><div class="items-core"><label for="coreCountItems">現コア数</label><input id="coreCountItems" class="num" type="text" inputmode="numeric" enterkeyhint="done" autocomplete="off" placeholder="0" aria-label="現コア数（0〜1000人）" aria-describedby="coreCountItemsError inputStatus" value="0"></div></div><small id="coreCountItemsError" class="items-core-error" hidden></small><div id="itemsWindowRow"></div></section>
 <section class="main-tools" id="mainTools" aria-label="目標の条件・コピー・換算"><p class="hint goal-context" id="appliedContext" tabindex="0" aria-label="目標設定時の条件"></p><p id="manualTargetMsg" class="toast" role="status"></p>
-    <div class="meter-tools"><button type="button" id="copyRemaining">残りをコピー</button></div><textarea id="summaryText" readonly hidden aria-label="手動コピー用の現在の残り"></textarea>
+    <div class="meter-tools"><button type="button" id="copyRemaining">残りポイントをコピー</button></div><textarea id="summaryText" readonly hidden aria-label="手動コピー用の現在の残り"></textarea>
     
     <div class="item-conversion-tools">
     <details class="conversion-note"><summary>換算条件（ボーナス<span id="coreNote">＝100%</span>）</summary><p class="hint">必要コインは、残りポイントを（4 × ボーナス倍率）で割って切り上げます。アイテムの個数は、それぞれ単独で目標に届く場合の目安です。</p></details>
@@ -1990,10 +1990,10 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
     <div class="buffer-quick" aria-label="上乗せ率を選ぶ"><button data-buffer="0">上乗せなし</button><button data-buffer="5">＋5％</button><button data-buffer="10">＋10％</button><button data-buffer="20">＋20％</button></div>
     
     <div class="analysis-controls"><label for="analysisBorder">選んだ期間の目標ボーダー</label><select id="analysisBorder" class="num"><option value="0">±0</option><option value="1">+1</option><option value="2">+2</option></select><p class="hint">±0・+1・+2の自動目標は、締め時間・期間・ランク・算出方法・上乗せ率・切り上げ単位の変更に即連動します。「手入力」は入力した目標を基準に残りを計算します。記録の保存・取り込み後も自動目標を再計算します。</p></div>
-    <details class="goal-defaults" id="goalDefaultsPanel"><summary>デフォルト値を設定</summary>
-      <p class="hint" id="goalDefaultsHelp">各項目を保存し、必要なときに適用できます。現在値は保持します。</p>
+    <details class="goal-defaults" id="goalDefaultsPanel"><summary>既定の目標設定</summary>
+      <p class="hint" id="goalDefaultsHelp">よく使う目標設定を保存できます。適用しても現在値はそのままです。</p>
       
-      <p class="toast" id="goalDefaultsDraftNote" role="status" aria-live="polite" hidden>編集中の値は未保存です。「デフォルトを保存」で確定します。</p>
+      <p class="toast" id="goalDefaultsDraftNote" role="status" aria-live="polite" hidden>未保存の変更があります。</p>
       <div class="goal-defaults-grid">
         <div><label for="defaultPeriod">集計期間</label><select id="defaultPeriod"></select></div>
         <div><label for="defaultRank">ランク</label><select id="defaultRank"></select></div>
@@ -2006,8 +2006,8 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
         <div id="defaultManualField" hidden><label for="defaultTarget">手入力時の目標値</label><input id="defaultTarget" type="text" inputmode="decimal" autocomplete="off" placeholder="例：500K"></div>
         <div class="goal-defaults-date"><label for="defaultDate">集計最終日</label><input id="defaultDate" type="date"><small>直近30日・空欄は自動で昨日</small></div>
       </div>
-      <label class="goal-defaults-start"><input id="defaultOnLoad" type="checkbox">起動時に保存済みのデフォルトを適用</label>
-      <div class="goal-defaults-actions"><button type="button" id="captureGoalDefaults">今の設定を読み込む</button><button type="button" id="standardGoalDefaults">標準値を読み込む</button><button type="button" class="main" id="saveGoalDefaults">デフォルトを保存</button><button type="button" id="applyGoalDefaults">保存済みの値を適用</button></div>
+      <label class="goal-defaults-start"><input id="defaultOnLoad" type="checkbox">起動時に既定値を適用</label>
+      <div class="goal-defaults-actions"><button type="button" id="captureGoalDefaults">現在の設定を読み込む</button><button type="button" id="standardGoalDefaults">標準設定を読み込む</button><button type="button" class="main" id="saveGoalDefaults">既定値を保存</button><button type="button" id="applyGoalDefaults">既定値を適用</button></div>
       
 
 <p class="hint" id="goalDefaultsSavedSummary"></p><p id="goalDefaultsStatus" class="toast" role="status" aria-live="polite"></p>
@@ -2185,7 +2185,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
         <p><a class="manual-link" href="#targetMini">目標値へ</a><a class="manual-link" href="#recordEditor">記録の編集へ</a><a class="manual-link" href="#backupTools">バックアップへ</a></p>
       </div>
     </div></details>
-      <a class="method-help-link" id="calculationMethodsLink" href="/calculation-methods" target="_blank" rel="noopener noreferrer">算出方法の説明</a>
+      <a class="method-help-link" id="calculationMethodsLink" href="/calculation-methods" target="_blank" rel="noopener noreferrer">目標値の算出方法</a>
       <!-- display-settings-menu:start -->
       <details class="display-settings" id="displaySettings"><summary>表示設定</summary>
         <div class="display-settings-panel">
@@ -2367,7 +2367,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
   var RECENT_PERIODS={d1:{days:1,back:0},d2:{days:1,back:1},d3:{days:1,back:2},'7d':{days:7,back:0},'14d':{days:14,back:0},'30d':{days:30,back:0}};
   var PERIOD_LABELS={d1:'前日',d2:'2日前',d3:'3日前','7d':'直近7日','14d':'直近14日','30d':'直近30日',month:'当月',prev:'先月','3m':'直近3か月',all:'全期間'};
   var MAX_VALUE=Math.floor(Number.MAX_SAFE_INTEGER/25);
-  var state={target:'',current:'0',deadline:'22:00',endTime:'',items:[],presets:[],coreCount:'0',rank:'S1',period:'30d',pick:'',log:{},seedVer:0,provenance:{},asOfDate:'',targetMethod:'p75',bufferPct:0,roundUnit:1,targetOrigin:null,snapshotVersion:'',analysisBorder:null,goalDefaults:null,goalDefaultsVersion:0,borderSync:null};
+  var state={target:'',current:'0',deadline:'22:00',endTime:'',items:[],presets:[],coreCount:'0',rank:'S2',period:'30d',pick:'',log:{},seedVer:0,provenance:{},asOfDate:'',targetMethod:'p75',bufferPct:0,roundUnit:1,targetOrigin:null,snapshotVersion:'',analysisBorder:null,goalDefaults:null,goalDefaultsVersion:0,borderSync:null};
   // Compact repeated provenance without dropping historical or personal records.
   function packStoredState(value){
     var packed=Object.assign({},value),pool=[],indices=new Map(),refs={};
@@ -2412,7 +2412,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
   state.target=state.target===''?'':String(parseNum(state.target));state.current=String(parseNum(state.current));
   if(toMins(state.deadline)===null){state.deadline='22:00';loadWarning=true;}
   if(state.endTime!==''&&toMins(state.endTime)===null){state.endTime='';loadWarning=true;}
-  if(RANKS.indexOf(state.rank)<0){state.rank='S1';loadWarning=true;}
+  if(RANKS.indexOf(state.rank)<0){state.rank='S2';loadWarning=true;}
   if(PERIOD_KEYS.indexOf(state.period)<0&&state.period!=='est'){state.period='30d';loadWarning=true;}
   if(state.period==='est')state.period='30d';
   if(['mean','median','p75','max','min'].indexOf(state.targetMethod)<0)state.targetMethod='p75';
@@ -2424,9 +2424,13 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
   if(state.targetOrigin!==null&&state.targetOrigin!==undefined&&loadedOrigin===null)loadWarning=true;
   state.targetOrigin=loadedOrigin;
   try{state.goalDefaults=state.goalDefaults===null?standardGoalDefaults():cleanGoalDefaults(state.goalDefaults);}catch(e){state.goalDefaults=standardGoalDefaults();loadWarning=true;}
-  if(state.goalDefaultsVersion!==2&&state.goalDefaultsVersion!==3){if(state.targetMethod==='mean')state.targetMethod='p75';if(state.goalDefaults.targetMethod==='mean')state.goalDefaults.targetMethod='p75';state.goalDefaultsVersion=2;}
-  // v3 (2026-11): the standard default rank is S1. Defaults saved unchanged from the old standard (rank S2) move to S1; customised defaults are kept.
-  if(state.goalDefaultsVersion===2){var oldStandard=Object.assign(standardGoalDefaults(),{rank:'S2'}),gd=state.goalDefaults;if(Object.keys(oldStandard).every(function(k){return JSON.stringify(gd[k])===JSON.stringify(oldStandard[k]);}))gd.rank='S1';state.goalDefaultsVersion=3;}
+  if([2,3,4].indexOf(state.goalDefaultsVersion)<0){if(state.targetMethod==='mean')state.targetMethod='p75';if(state.goalDefaults.targetMethod==='mean')state.goalDefaults.targetMethod='p75';}
+  // Move the old S1 preset only when all of its values match the previous standard.
+  if(state.goalDefaultsVersion===3){
+    var oldStandard=Object.assign(standardGoalDefaults(),{rank:'S1'}),gd=state.goalDefaults;
+    if(Object.keys(oldStandard).every(function(k){return gd[k]===oldStandard[k];}))gd.rank='S2';
+  }
+  state.goalDefaultsVersion=4;
   var phoneDefaultsOnOpen=!!(window.matchMedia&&window.matchMedia('(max-width:700px)').matches);
   if(phoneDefaultsOnOpen){state.target='';state.current='0';state.currentSavedAt=Date.now();}
   if(state.goalDefaults.applyOnLoad||phoneDefaultsOnOpen)assignGoalDefaults(state.goalDefaults);
@@ -2608,9 +2612,9 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
     if(typeof value.periodLabel!=='string'||value.periodLabel.length>256||!validDate(value.start)||!validDate(value.end)||value.start>value.end||RANKS.indexOf(value.rank)<0||['13','22','24'].indexOf(value.close)<0||[0,1,2].indexOf(value.border)<0||['mean','median','p75','max','min'].indexOf(value.method)<0||!Number.isSafeInteger(value.n)||value.n<=0||typeof value.buffer!=='number'||!Number.isFinite(value.buffer)||value.buffer<0||value.buffer>50||Math.abs(value.buffer*10-Math.round(value.buffer*10))>1e-7||[1,100,1000,10000].indexOf(value.unit)<0||value.period!==undefined&&PERIOD_KEYS.indexOf(value.period)<0)return invalid();
     var clean={};['kind','value','periodLabel','start','end','rank','close','border','method','n','buffer','unit'].forEach(function(k){clean[k]=value[k];});clean.period=value.period===undefined?'30d':value.period;return clean;
   }
-  function standardGoalDefaults(){return {period:'30d',rank:'S1',pick:0,targetMethod:'p75',bufferPct:0,roundUnit:1,deadline:'22:00',coreCount:'0',target:'',asOfDate:'',applyOnLoad:false};}
+  function standardGoalDefaults(){return {period:'30d',rank:'S2',pick:0,targetMethod:'p75',bufferPct:0,roundUnit:1,deadline:'22:00',coreCount:'0',target:'',asOfDate:'',applyOnLoad:false};}
   function cleanGoalDefaults(value){
-    if(!isRecord(value))throw new Error('デフォルト値の形式が正しくありません。');
+    if(!isRecord(value))throw new Error('既定値を読み込めません。');
     var clean={},keys=Object.keys(standardGoalDefaults());keys.forEach(function(k){clean[k]=value[k];});
     if(PERIOD_KEYS.indexOf(clean.period)<0||RANKS.indexOf(clean.rank)<0||(clean.pick!==''&&[0,1,2].indexOf(clean.pick)<0)||['mean','median','p75','max','min'].indexOf(clean.targetMethod)<0)throw new Error('期間・ランク・ボーダー・算出方法を選んでください。');
     if(typeof clean.bufferPct!=='number'||!Number.isFinite(clean.bufferPct)||clean.bufferPct<0||clean.bufferPct>50||Math.abs(clean.bufferPct*10-Math.round(clean.bufferPct*10))>1e-7)throw new Error('上乗せ率は0〜50％（小数1桁まで）で入力してください。');
@@ -2968,8 +2972,8 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
     else if(state.target==='')$('candidateDifference').textContent='候補を比較して、適用ボタンで目標を設定してください。';
     else{var delta=candidate.target-value;$('candidateDifference').textContent=delta===0?'候補と設定済みの目標は同じ数値です。':'候補は設定済みの目標より '+fmt(Math.abs(delta))+' pt '+(delta>0?'高い':'低い')+'値です。適用するまで目標は変わりません。';}
     var isAnalysis=origin&&(origin.kind==='recent'||origin.kind==='analysis')&&origin.value===value;
-    var context=isAnalysis?'設定時：'+(origin.periodLabel||'直近30日')+' '+origin.start+'〜'+origin.end+' / '+origin.close+'時締め '+origin.rank+' '+BLABEL[origin.border]+' / '+(METHOD_LABELS[origin.method]||'日別統計')+' / '+origin.n+'日分 / 上乗せ'+origin.buffer+'％':origin&&origin.label?'設定時：'+origin.label:'';
-    if(isAnalysis&&(origin.start!==stats.window.start||origin.end!==stats.window.end||origin.close!==closeKey()||origin.rank!==state.rank||origin.border!==analysisIndex()||origin.method!==state.targetMethod||origin.buffer!==state.bufferPct||origin.unit!==state.roundUnit||(origin.period||'30d')!==state.period))context+='。現在の分析条件とは異なります。';
+    var context=isAnalysis?'目標の条件：'+(origin.periodLabel||'直近30日')+' '+origin.start+'〜'+origin.end+'（'+origin.n+'日分） / '+origin.close+'時締め '+origin.rank+' '+BLABEL[origin.border]+' / '+(METHOD_LABELS[origin.method]||'日別統計')+(origin.buffer?' / 上乗せ'+origin.buffer+'％':''):origin&&origin.label?'目標の条件：'+origin.label:'';
+    if(isAnalysis&&(origin.start!==stats.window.start||origin.end!==stats.window.end||origin.close!==closeKey()||origin.rank!==state.rank||origin.border!==analysisIndex()||origin.method!==state.targetMethod||origin.buffer!==state.bufferPct||origin.unit!==state.roundUnit||(origin.period||'30d')!==state.period))context+='。現在の集計条件とは異なります。';
     $('appliedContext').textContent=context;$('appliedContext').title=context;$('appliedContext').setAttribute('aria-label',context||'目標設定時の条件');
   }
   function renderMethodComparison(stats,invalid){
@@ -3758,14 +3762,14 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
   }
   [['defaultPeriod','pickPeriod'],['defaultRank','pickRank'],['defaultBorder','pickBorder'],['defaultMethod','quickMethod'],['defaultRound','roundUnit']].forEach(function(pair){$(pair[0]).innerHTML=$(pair[1]).innerHTML;});
   Array.prototype.forEach.call($('defaultRound').options,function(option){option.textContent=fmt(Number(option.value))+' pt';});
-  document.querySelectorAll('#goalDefaultsPanel input,#goalDefaultsPanel select').forEach(function(el){el.setAttribute('aria-describedby','goalDefaultsHelp goalDefaultsSavedSummary goalDefaultsDraftNote goalDefaultsStatus');el.addEventListener('input',function(){this.setCustomValidity('');this.setAttribute('aria-invalid','false');renderGoalDefaultDraft();goalDefaultMessage('編集中です。「デフォルトを保存」で確定します。',false);});el.addEventListener('change',function(){refreshGoalDefaultFields();renderGoalDefaultDraft();});});
-  $('captureGoalDefaults').onclick=function(){var defaults={};Object.keys(standardGoalDefaults()).forEach(function(k){defaults[k]=state[k];});defaults.coreCount=String(state.coreCount||0);defaults.applyOnLoad=$('defaultOnLoad').checked;syncGoalDefaultInputs(defaults,true);goalDefaultMessage('今の設定を読み込みました。保存するとデフォルトになります。',false);};
-  $('standardGoalDefaults').onclick=function(){syncGoalDefaultInputs(standardGoalDefaults(),true);goalDefaultMessage('標準値を読み込みました。保存するとデフォルトになります。',false);};
-  $('saveGoalDefaults').onclick=function(){try{var defaults=readGoalDefaultInputs(),previous=state.goalDefaults;state.goalDefaults=defaults;if(!save()){state.goalDefaults=previous;renderGoalDefaultDraft();goalDefaultMessage('デフォルトを保存できません。編集内容は未保存です。画面の保存エラーを確認して再保存してください。',true);return;}syncGoalDefaultInputs(defaults);goalDefaultMessage('デフォルトを保存しました。「保存済みの値を適用」で反映できます。',false);}catch(e){goalDefaultMessage(e.message,true);}};
-  $('applyGoalDefaults').onclick=function(){try{var defaults=cleanGoalDefaults(state.goalDefaults);clearTargetResetUndo();delete numericComposing.target;assignGoalDefaults(defaults);automaticTargetSignature='';statsCache={};syncAllInputs();loadEditor();var persisted=save();update();renderGoalDefaultDraft();if(!persisted||storageFailed){goalDefaultMessage('この画面に適用しましたが、端末へ保存できません。画面の保存エラーを確認してください。',true);return;}goalDefaultMessage('保存済みのデフォルトを適用しました。'+(goalDefaultDraftChanged()?'編集中の値は未保存です。':''),false);}catch(e){goalDefaultMessage(e.message,true);}};
+  document.querySelectorAll('#goalDefaultsPanel input,#goalDefaultsPanel select').forEach(function(el){el.setAttribute('aria-describedby','goalDefaultsHelp goalDefaultsSavedSummary goalDefaultsDraftNote goalDefaultsStatus');el.addEventListener('input',function(){this.setCustomValidity('');this.setAttribute('aria-invalid','false');renderGoalDefaultDraft();goalDefaultMessage('',false);});el.addEventListener('change',function(){refreshGoalDefaultFields();renderGoalDefaultDraft();});});
+  $('captureGoalDefaults').onclick=function(){var defaults={};Object.keys(standardGoalDefaults()).forEach(function(k){defaults[k]=state[k];});defaults.coreCount=String(state.coreCount||0);defaults.applyOnLoad=$('defaultOnLoad').checked;syncGoalDefaultInputs(defaults,true);goalDefaultMessage('現在の設定を読み込みました。',false);};
+  $('standardGoalDefaults').onclick=function(){syncGoalDefaultInputs(standardGoalDefaults(),true);goalDefaultMessage('標準設定を読み込みました。',false);};
+  $('saveGoalDefaults').onclick=function(){try{var defaults=readGoalDefaultInputs(),previous=state.goalDefaults;state.goalDefaults=defaults;if(!save()){state.goalDefaults=previous;renderGoalDefaultDraft();goalDefaultMessage('既定値を保存できませんでした。保存エラーを確認してください。',true);return;}syncGoalDefaultInputs(defaults);goalDefaultMessage('既定値を保存しました。',false);}catch(e){goalDefaultMessage(e.message,true);}};
+  $('applyGoalDefaults').onclick=function(){try{var defaults=cleanGoalDefaults(state.goalDefaults);clearTargetResetUndo();delete numericComposing.target;assignGoalDefaults(defaults);automaticTargetSignature='';statsCache={};syncAllInputs();loadEditor();var persisted=save();update();renderGoalDefaultDraft();if(!persisted||storageFailed){goalDefaultMessage('この画面に適用しましたが、端末へ保存できません。画面の保存エラーを確認してください。',true);return;}goalDefaultMessage('既定値を適用しました。'+(goalDefaultDraftChanged()?'未保存の変更は残っています。':''),false);}catch(e){goalDefaultMessage(e.message,true);}};
   $('restoreGoalDefaults').onclick=function(){$('applyGoalDefaults').click();$('summaryStatus').className=$('goalDefaultsStatus').className;$('summaryStatus').textContent=$('goalDefaultsStatus').textContent;};
   syncGoalDefaultInputs(state.goalDefaults);
-  if(phoneDefaultsOnOpen){$('goalDefaultsHelp').textContent='スマホ版は開くたびに保存済みの目標設定を適用し、現在値を0で開始します。';$('defaultOnLoad').parentNode.lastChild.textContent='PC版の起動時にも保存済みのデフォルトを適用';}
+  if(phoneDefaultsOnOpen){$('goalDefaultsHelp').textContent='スマホでは、開くたびに既定値を適用し、現在値は0から始まります。';$('defaultOnLoad').parentNode.lastChild.textContent='PCでも起動時に既定値を適用';}
   syncAllInputs();loadEditor();
 
 

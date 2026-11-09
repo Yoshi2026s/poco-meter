@@ -26,6 +26,13 @@ test('Source-composed page initializes saved preferences, renders at most 20 car
  const p=setup();assert.equal(p.nodes.get('rank').value,'S2');assert.equal(p.nodes.get('close').value,'22');assert.ok(p.nodes.get('results').children.length<=20);assert.match(p.nodes.get('networkStatus').textContent,/オフライン/);assert.equal(p.stored.get(p.key),p.raw);assert.ok(!p.writes.includes(p.key));
  p.click('recent7');p.input('rank','S1');p.input('close','13');p.toggle('calendarPanel',true);p.click('prevMonth');p.click('nextMonth');p.click('clearFilters');p.click('nextPage');assert.ok(p.nodes.get('results').children.length<=20);assert.equal(p.stored.get(p.key),p.raw);
 });
+test('History defaults to S2 without saved filters or a valid calculator rank',()=>{
+ for(const calculatorState of ['null','broken','{"rank":"invalid"}']){
+  const p=setup({calculatorState});assert.equal(p.nodes.get('rank').value,'S2');assert.equal(p.nodes.get('close').value,'22');
+ }
+ assert.equal(setup({calculatorState:{rank:'S1'}}).nodes.get('rank').value,'S1');
+ assert.equal(setup({preferences:{rank:'A2'}}).nodes.get('rank').value,'A2');
+});
 test('Japanese date and rank search, no hits, table mode and invalid range use the real event handlers',()=>{
  const p=setup();p.click('clearFilters');p.input('query','2026/10/3 S2 22時');assert.equal(p.nodes.get('results').children.length,1);assert.equal(p.nodes.get('results').children[0].children[1].children[0].children[1].textContent,'1');
  p.input('units','K');assert.equal(p.nodes.get('results').children[0].children[1].children[0].children[1].textContent,'0K');

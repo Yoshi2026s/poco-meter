@@ -92,7 +92,7 @@ test('A valid cross-tab display setting clears an earlier display-save error col
 test('CSV import with draft-storage failure marks the warning message as an error',()=>{
   const e=make(),p=e.p,date=p.element('editDate').value;
   input(p,'editZero','300K');e.fail.add(DRAFT);
-  p.element('paste').value=date+',S1,300000,600000,900000,22';p.element('importBtn').click();
+  p.element('paste').value=date+','+p.element('miniRank').value+',300000,600000,900000,22';p.element('importBtn').click();
   assert.match(p.element('importMsg').textContent,/下書きの保存を更新できません/);
   checkStatus(e,'importMsg','error');
 });

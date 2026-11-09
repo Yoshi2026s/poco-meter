@@ -69,7 +69,7 @@ test('Invalid rates retain the last valid target, show one shared error, and rec
 });
 
 test('IME editing is not committed before completion, and applying defaults synchronizes both forms',()=>{
-  const p=page({pick:0});
+  const p=page({pick:0,rank:'S1'});
   p.element('quickBufferPct').dispatchEvent(new Event('compositionstart'));
   input(p,'quickBufferPct','１０');assert.equal(saved(p).bufferPct,0);
   p.element('quickBufferPct').dispatchEvent(new Event('compositionend'));
