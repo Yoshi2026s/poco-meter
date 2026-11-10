@@ -13,11 +13,90 @@ import {validateData} from '../automation/update-borders-json.mjs';
 const ROOT = fileURLToPath(new URL('../', import.meta.url));
 // Tool version shown on the page. Change only when the tool itself changes
 // (data updates do not change it).
-export const PAGES_VERSION = {version: 'v2026.11.10.3', updatedAt: '2026-11-10T04:19:00+09:00', label: '2026/11/10 04:19:00'};
+export const PAGES_VERSION = {version: 'v2026.11.10.4', updatedAt: '2026-11-10T17:07:00+09:00', label: '2026/11/10 17:07:00'};
 const SITES_ORIGIN = 'https://poco-meter.freefreelife2000.chatgpt.site';
 const COLLECTOR_ORIGIN = 'https://pococha-comment-access.freefreelife2000.chatgpt.site';
 const BORDER_FETCH = "fetch('/api/borders',{cache:'no-cache',credentials:'same-origin',signal:controller.signal})";
 const BORDER_FETCH_PAGES = "fetch('./data/borders.json',{cache:'no-cache',credentials:'same-origin',signal:controller.signal})";
+
+// Public address of the publication. Used for the share preview and the not-found page.
+export const PUBLIC_URL = 'https://yoshi2026s.github.io/poco-meter/';
+const escapeAttr = text => text.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+// The three sub pages get the same icon, theme colour and a description as the calculator.
+const PAGE_DESCRIPTIONS = {
+  'border-history.html': 'Pocochaの過去のランクボーダーを、日付・ランク・締め時間で検索できます。',
+  'e-border.html': 'E帯のボーダーを画像の取り込みや手入力で記録し、目標の計算に使えます。',
+  'calculation-methods.html': '目標値の算出方法（平均値・中央値・上位25％の境界値・最大値・最小値）と、上乗せ・切り上げの順序を説明します。',
+};
+export function withPageHead(html, name) {
+  for (const present of ['name="description"', 'name="theme-color"', 'rel="icon"', 'rel="apple-touch-icon"']) {
+    if (html.includes(present)) throw new Error('Pages build: ' + name + ' already declares ' + present);
+  }
+  return replaceOnce(html, '<meta charset="utf-8">', '<meta charset="utf-8">' +
+    `<meta name="description" content="${escapeAttr(PAGE_DESCRIPTIONS[name])}">` +
+    '<meta name="theme-color" content="#1E78D6">' +
+    '<link rel="icon" type="image/png" sizes="192x192" href="./meter-icon-192.png">' +
+    '<link rel="apple-touch-icon" href="./meter-icon-180.png">');
+}
+// Link previews (LINE, X and others) read these from the calculator page.
+function sharePreview(html) {
+  const title = html.match(/<title>([^<]+)<\/title>/)?.[1];
+  const description = html.match(/<meta name="description" content="([^"]+)">/)?.[0];
+  if (!title || !description) throw new Error('Pages build: index.html has no title or description');
+  const content = description.match(/content="([^"]+)"/)[1];
+  return replaceOnce(html, description, [description,
+    '<meta property="og:type" content="website">',
+    '<meta property="og:site_name" content="ポコメーター番長">',
+    `<meta property="og:title" content="${title}">`,
+    `<meta property="og:description" content="${content}">`,
+    `<meta property="og:url" content="${PUBLIC_URL}">`,
+    `<meta property="og:image" content="${PUBLIC_URL}meter-icon-512.png">`,
+    '<meta name="twitter:card" content="summary">'].join('\n'));
+}
+// GitHub Pages serves this for unknown addresses under the publication.
+export function notFoundPage() {
+  const home = new URL(PUBLIC_URL).pathname;
+  return `<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#1E78D6">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src 'self'; base-uri 'none'; form-action 'none'">
+<link rel="icon" type="image/png" sizes="192x192" href="${home}meter-icon-192.png">
+<title>ページが見つかりません｜ポコメーター番長</title>
+<style>
+:root{color-scheme:dark;--bg:#080e19;--panel:#121d2c;--text:#f3f7ff;--sub:#c1cddd;--line:#43546c;--accent:#a1d8ff}
+@media(prefers-color-scheme:light){:root{color-scheme:light;--bg:#f4f7fc;--panel:#fff;--text:#1b293d;--sub:#4d607a;--line:#b4c4d8;--accent:#12649a}}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px 16px;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;line-height:1.7}
+main{width:min(520px,100%);padding:24px 20px;border:1px solid var(--line);border-left:4px solid #2986ff;border-radius:12px;background:var(--panel)}
+h1{margin:0 0 8px;font-size:1.3rem;line-height:1.5}
+p{margin:8px 0;color:var(--sub)}
+nav{display:grid;gap:10px;margin-top:18px}
+a{display:flex;align-items:center;justify-content:center;min-height:48px;padding:8px 14px;border:1px solid var(--line);border-radius:8px;color:var(--accent);font-weight:700;text-decoration:none}
+a:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+a.primary{background:#1E78D6;border-color:#1E78D6;color:#fff}
+</style>
+</head>
+<body>
+<main>
+<h1>ページが見つかりません</h1>
+<p>アドレスが変わったか、入力に誤りがある可能性があります。下のリンクから開き直してください。</p>
+<nav aria-label="ポコメーター番長のページ">
+<a class="primary" href="${home}">メーター計算を開く</a>
+<a href="${home}border-history.html">過去のボーダー表</a>
+<a href="${home}e-border.html">E帯のボーダー記録</a>
+<a href="${home}calculation-methods.html">目標値の算出方法</a>
+</nav>
+</main>
+</body>
+</html>
+`;
+}
 
 function replaceOnce(source, from, to) {
   if (source.split(from).length !== 2) throw new Error('Pages build: source changed near ' + String(from).slice(0, 80));
@@ -61,7 +140,7 @@ export function exportCalculator(source, version = PAGES_VERSION) {
   html = replaceOnce(html, '<time class="num" datetime="2026-10-23T23:54:26+09:00">2026/10/23 23:54:26</time>',
     `<time class="num" datetime="${version.updatedAt}">${version.label}</time>`);
   html = replaceOnce(html, '最終更新バージョン：v2026.10.23.3', '最終更新バージョン：' + version.version);
-  return assertClean(sealCalculatorHTML(html), 'index.html');
+  return assertClean(sealCalculatorHTML(sharePreview(html)), 'index.html');
 }
 
 const SOURCE_VERSION = 'v2026.10.23.3';
@@ -71,12 +150,12 @@ function stampVersion(html, name, version) {
 }
 
 export function exportHistory(source, version = PAGES_VERSION) {
-  const html = stampVersion(replaceOnce(source, BORDER_FETCH, BORDER_FETCH_PAGES), 'border-history.html', version);
+  const html = withPageHead(stampVersion(replaceOnce(source, BORDER_FETCH, BORDER_FETCH_PAGES), 'border-history.html', version), 'border-history.html');
   return assertClean(sealCalculatorHTML(html), 'border-history.html');
 }
 
 export function exportEBorder(source, version = PAGES_VERSION) {
-  return assertClean(sealCalculatorHTML(stampVersion(source, 'e-border.html', version)), 'e-border.html');
+  return assertClean(sealCalculatorHTML(withPageHead(stampVersion(source, 'e-border.html', version), 'e-border.html')), 'e-border.html');
 }
 
 export async function buildPages({root = ROOT, out = resolve(ROOT, '_site')} = {}) {
@@ -92,7 +171,7 @@ export async function buildPages({root = ROOT, out = resolve(ROOT, '_site')} = {
   pagesManifest.icons.forEach(icon => { icon.src = './' + icon.src.replace(/^\//, ''); });
   const files = {
     'index.html': exportCalculator(calculator),
-    'calculation-methods.html': methods.replaceAll('href="/"', 'href="./"'),
+    'calculation-methods.html': withPageHead(methods.replaceAll('href="/"', 'href="./"'), 'calculation-methods.html'),
     // A new tool version gets a new cache name, so installed copies refresh icons and pages.
     'meter-sw.js': replaceOnce(
       replaceOnce(exportWorker(worker), 'const FRESH_LAUNCH = false;', 'const FRESH_LAUNCH = true;'),
@@ -101,6 +180,7 @@ export async function buildPages({root = ROOT, out = resolve(ROOT, '_site')} = {
     'border-history.html': exportHistory(history),
     'e-border.html': exportEBorder(eBorder),
     'data/borders.json': borders,
+    '404.html': notFoundPage(),
     '.nojekyll': '',
   };
   for (const size of ['180', '192', '512']) files[`meter-icon-${size}.png`] = Buffer.from(iconData[size], 'base64');

@@ -49,7 +49,8 @@ git switch -c codex/example-task "origin/(root)"
 - 公開：GitHub Pages https://yoshi2026s.github.io/poco-meter/ （既定ブランチ `(root)` への push で自動公開）
 - ボーダー：`data/borders.json`。GitHub Actions が毎日 05:00・17:00 JST に ONE CARAT から取得（記事本文＋月別表画像の2系統）。
 - 旧Sites・署名キー・旧ChatGPTタスクは使わない。旧Sitesには新URLへの移転案内を掲示済み。
-- ツール版：`scripts/build-pages.mjs` の `PAGES_VERSION`（v2026.11.10.3）。
+- ツール版：`scripts/build-pages.mjs` の `PAGES_VERSION`（v2026.11.10.4）。
+- 公開物には `404.html`（存在しないアドレス用の案内）を含む。サブ3画面のアイコン・説明文・テーマ色と、計算画面の共有用タグ（OGP）は `scripts/build-pages.mjs` が公開時に付ける。公開URLは同ファイルの `PUBLIC_URL`。
 
 ## データの状態
 - 初期値は旧Sites公開APIの1951件（〜2026-10-18）。10/19〜11/03 は月別表画像から補完済み（証跡 `db/backfill-2026-10-19-to-11-03-evidence.json`）。
@@ -57,6 +58,7 @@ git switch -c codex/example-task "origin/(root)"
 - 補完した日・取得元に無い日は `data/border-provenance.json` に記録される。
 
 ## 起動と時刻
+- 初めて開いた端末では、公開ボーダーの取得が終わるまで目標欄に「読込中…」と表示する。取得に失敗した場合は「データ無し」に戻る。
 - メイン画面の端末時刻の左に日本時間の年月日を表示。起動時は公開版を取り直し、通信が遅い場合やオフライン時は保存済みの画面を使う。
 - 標準時との差はサービスワーカーが測定する。再読込やタブをまたいで進行中の計測を共有し、10秒で打ち切る。準備中は差を未確認と表示する。初回準備中に通信が切れた場合は、復帰後に登録をやり直して測定する。
 - スマホの上段では達成率ゲージを左、標準時との差を右に表示する。達成率は読み上げにも反映する。
@@ -68,6 +70,8 @@ git switch -c codex/example-task "origin/(root)"
 
 ## 未確認・既知のテスト差
 
+- v2026.11.10.4（初回表示・サブ画面の見出し情報・404）は標準チェックと関連回帰テストに合格し、ローカルで組み立てた公開物をChromiumのスマホ幅で確認した。`npm run test:extra` はvite系10本に合格、Playwright画面系3本はこの端末にPlaywrightが無く未実行。WebKit・実機・公開先での確認は未実施。変更は作業ブランチ `codex/mobile-copy-polish` にpush済みで、`(root)` 宛てPRの統合待ち（最新の `(root)` を合流コミットで取り込み済み）。
+- 旧テスト `offline-ui-50.mjs`（U49）・`offline-sw-5000.mjs`・`offline-ui-5000.mjs`・`offline-reliability-1000.mjs` は標準チェックの対象外で、既定ブランチ `8ae64dc` でも同じ項目が失敗する。
 - 物理端末のSafariとOSキーボードは未確認。
 - 旧 `e-border-100-rounds.mjs` はEランクを無効とする期待値で失敗し、変更前の既定ブランチでも再現した。現行仕様を確認する `e-rank-unified.mjs` は合格。 [PR #33](https://github.com/Yoshi2026s/poco-meter/pull/33)
 
