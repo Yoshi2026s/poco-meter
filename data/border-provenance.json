@@ -213,5 +213,28 @@
    }
   ],
   "addedAt": "2026-11-06T19:03:06.002Z"
+ },
+ {
+  "date": "2026-11-07",
+  "close": "13",
+  "channel": "onecarat-table-image",
+  "status": "added",
+  "ranks": 18,
+  "sourceURL": "https://one-carat.com/campus/archives/90414",
+  "images": [
+   {
+    "url": "https://one-carat.com/campus/wp-content/uploads/c1f97afefd53dea8307e585cad6e142c-57.png",
+    "sha256": "c34cf6f3f52fce94b03d28e04c8b4b7290b1ae8889031f4a93c78f49b1c6ae59"
+   },
+   {
+    "url": "https://one-carat.com/campus/wp-content/uploads/b357748cdd3ad860424e39007354c616-57.png",
+    "sha256": "90457beb89b65f4867fc7dc8de21c28d30e7e3a6c690781125079760de7d588c"
+   },
+   {
+    "url": "https://one-carat.com/campus/wp-content/uploads/ad58771651fdbc5bfb7115ba2710a15c-31.png",
+    "sha256": "948a71782697d8abc43a2a34eb8a39ba766f8f71f6ccef659a657c20be40bd50"
+   }
+  ],
+  "addedAt": "2026-11-10T02:34:04.254Z"
  }
 ]
