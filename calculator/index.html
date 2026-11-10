@@ -2882,7 +2882,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
   async function syncLiveBorders(force){
     if(navigator.onLine===false){renderBorderSyncStatus();return;}
     if(liveBorderBusy||!force&&Date.now()-liveBorderAttempt>=0&&Date.now()-liveBorderAttempt<300000)return;
-    liveBorderBusy=true;liveBorderAttempt=Date.now();renderBorderSyncStatus();
+    liveBorderBusy=true;liveBorderAttempt=Date.now();renderBorderSyncStatus();if(!liveBorderInfo&&automaticDataMissing){syncTargetInputs(false);update();}
     var controller=new AbortController(),timer,abortRequest;liveBorderController=controller;
     try{
       // Bound request and body together. Late responses cannot reach the merge.
@@ -2897,10 +2897,13 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
       liveBorderInfo=cleanBorderSync(Object.assign({},payload.sync,{serverDate:payload.serverDate}));state.borderSync=liveBorderInfo;liveBorderError=false;liveBorderClockMismatch=payload.serverDate!==new Date(todayMs()).toISOString().slice(0,10);
       if(changed){statsCache={};dataRevision++;automaticTargetSignature='';update();}
       save();
-    }catch(e){liveBorderError=true;}finally{clearTimeout(timer);if(abortRequest)controller.signal.removeEventListener('abort',abortRequest);liveBorderBusy=false;liveBorderController=null;renderBorderSyncStatus();if(liveBorderRetry){liveBorderRetry=false;if(navigator.onLine!==false)syncLiveBorders(true);}}
+    }catch(e){liveBorderError=true;}finally{clearTimeout(timer);if(abortRequest)controller.signal.removeEventListener('abort',abortRequest);liveBorderBusy=false;liveBorderController=null;renderBorderSyncStatus();if(borderLoadShown){borderLoadShown=false;syncTargetInputs(false);update();}if(liveBorderRetry){liveBorderRetry=false;if(navigator.onLine!==false)syncLiveBorders(true);}}
   }
   var statsCache={},studioSignature='',editorContext='',borderSignature='',dataRevision=0;
   var automaticTargetSignature='',automaticGoalNotice='',automaticDataMissing=false;
+  // First visit: the published borders are still on their way, so "no data" would be premature.
+  var borderLoadShown=false;
+  function borderFirstLoad(){return liveBorderBusy&&!liveBorderInfo;}
   var METHOD_LABELS={mean:'平均値',median:'中央値',p75:'上位25％の境界値',max:'期間内の最大値',min:'期間内の最小値'};
   function recentWindow(ms,period){
     var spec=RECENT_PERIODS[period||'30d']||RECENT_PERIODS['30d'],now=jstNow(ms),yesterday=Date.UTC(now.y,now.m-1,now.d)-864e5;
@@ -3474,8 +3477,9 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
     var pct=Number(progress>10000n?10000n:progress)/100;
     var done=tgt>0&&remain<=0;
 
-    $('remain').textContent=!tgt?(automaticDataMissing?'データ無し':'—'):done?'達成！':fmtRemainingK(remain);
-    $('remainExact').textContent=!tgt?(automaticDataMissing?'データ無し':'目標未設定'):done?'残り 0 pt ／ 超過 '+fmt(cur-tgt)+' pt':'残り '+fmt(remain)+' pt';
+    var borderLoading=!tgt&&automaticDataMissing&&borderFirstLoad();if(borderLoading)borderLoadShown=true;
+    $('remain').textContent=!tgt?(borderLoading?'読込中…':automaticDataMissing?'データ無し':'—'):done?'達成！':fmtRemainingK(remain);
+    $('remainExact').textContent=!tgt?(borderLoading?'ボーダーを読み込んでいます':automaticDataMissing?'データ無し':'目標未設定'):done?'残り 0 pt ／ 超過 '+fmt(cur-tgt)+' pt':'残り '+fmt(remain)+' pt';
     $('remain').dataset.size=$('remain').textContent.length>12?'long':$('remain').textContent.length>8?'compact':'standard';$('remain').title=$('remainExact').textContent;$('remain').setAttribute('aria-label',$('remainExact').textContent);
     renderCustomRemaining(tgt,remain);
     var ci=coreInfo();
@@ -3606,7 +3610,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
   function isTargetInput(el){return el.id==='target'||el.id==='targetMini';}
   function syncTargetInputs(force){
     var value=state.target===''?'':fmt(parseNum(state.target));
-    ['target','targetMini'].forEach(function(id){var el=$(id);el.placeholder=automaticDataMissing?'データ無し':id==='targetMini'?'未設定':'例 500K / 50万';if(force){if(numericComposing)delete numericComposing[id];flagInput(el,'');}if(force||document.activeElement!==el&&!isNumericComposing(el)&&el.getAttribute('aria-invalid')!=='true')el.value=value;});
+    ['target','targetMini'].forEach(function(id){var el=$(id);el.placeholder=automaticDataMissing?(borderFirstLoad()?'読込中…':'データ無し'):id==='targetMini'?'未設定':'例 500K / 50万';if(force){if(numericComposing)delete numericComposing[id];flagInput(el,'');}if(force||document.activeElement!==el&&!isNumericComposing(el)&&el.getAttribute('aria-invalid')!=='true')el.value=value;});
   }
   function pointInputError(value,key){
     var text=normText(String(value)).trim(),wellFormed=/^((?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d*)?|\.\d+)[ \t]*(万|[kKmM])?$/.test(text);

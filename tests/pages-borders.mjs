@@ -8,7 +8,7 @@ import {join} from 'node:path';
 import {SOURCE_INDEX} from '../lib/border-source.mjs';
 import {scriptSources} from '../lib/browser-security.mjs';
 import {collectFromSource, mergeBorders, validateData, updateBordersFile, MESSAGES} from '../automation/update-borders-json.mjs';
-import {buildPages, PAGES_VERSION} from '../scripts/build-pages.mjs';
+import {buildPages, notFoundPage, PAGES_VERSION, PUBLIC_URL} from '../scripts/build-pages.mjs';
 
 const fixture = Object.fromEntries(await Promise.all(['13', '22', '24', 'category'].map(async n => [n, await readFile(new URL('./fixtures/' + n + '.html', import.meta.url), 'utf8')])));
 const ARTICLES = {
@@ -148,6 +148,22 @@ test('the Pages build contains no Sites API, tracker or admin link, and its CSP 
     const history = await readFile(join(dir, 'border-history.html'), 'utf8');
     assert.ok(history.includes("fetch('./data/borders.json'"));
     assert.deepEqual(JSON.parse(await readFile(join(dir, 'data/borders.json'), 'utf8')).records.length >= 1951, true);
+    // Every page carries a description, theme colour and icons; titles share one form.
+    for (const name of ['index.html', 'border-history.html', 'e-border.html', 'calculation-methods.html']) {
+      const page = await readFile(join(dir, name), 'utf8');
+      for (const pattern of [/<meta name="description" content="[^"]{10,}">/g, /<meta name="theme-color"[^>]*>/g, /<link rel="icon"[^>]*>/g, /<link rel="apple-touch-icon" href="\.\/meter-icon-180\.png">/g]) {
+        assert.equal((page.match(pattern) || []).length, 1, name + ' ' + pattern);
+      }
+      assert.match(page.match(/<title>([^<]+)<\/title>/)[1], /^(?:ポコメーター番長｜.+|.+｜ポコメーター番長)$/, name + ' title');
+    }
+    assert.match(index, /<meta property="og:image" content="https:\/\/yoshi2026s\.github\.io\/poco-meter\/meter-icon-512\.png">/);
+    assert.equal(PUBLIC_URL, 'https://yoshi2026s.github.io/poco-meter/');
+    // The not-found page works at any depth and runs no script.
+    const missing = await readFile(join(dir, '404.html'), 'utf8');
+    assert.equal(missing, notFoundPage());
+    assert.ok(!/<script|href="\.\/|src=/.test(missing));
+    for (const target of ['', 'border-history.html', 'e-border.html', 'calculation-methods.html']) assert.ok(missing.includes('href="/poco-meter/' + target + '"'), '404 link ' + target);
+    for (const target of ['border-history.html', 'e-border.html', 'calculation-methods.html']) assert.ok(result.files.includes(target));
   } finally {
     await rm(dir, {recursive: true, force: true});
   }

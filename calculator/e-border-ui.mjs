@@ -31,7 +31,7 @@ function render(){
  const matching=eFilter(app.records,selected),latest=matching[0];$('latest').textContent=(latest?'最新記録：'+latest.date:'この条件の記録はまだありません。')+' ／ '+coverage.start+'〜'+coverage.end;
  $('gaps').replaceChildren();for(const d of coverage.missing)$('gaps').append(button(d.slice(5).replace('-','/')+' 未記録',()=>{if(busy||saving)return status('処理完了後に入力してください。',true);const item=addDraft({date:d,...selected,values:['','','']});item?.box.scrollIntoView({block:'start'});}));
  if(!coverage.missing.length)$('gaps').append(node('span','直近7日分がそろっています。','badge'));
- $('storageSummary').textContent='全記録 '+app.records.length+' / '+E_MAX+'件 ／ '+['13','22','24'].map(c=>c+'時〆 '+app.records.filter(r=>r.close===c).length+'件').join(' ／ ')+(app.lastChangedAt?' · 最終保存 '+new Date(app.lastChangedAt).toLocaleString('ja-JP',{timeZone:'Asia/Tokyo',hour12:false}):' · 追加記録は未保存')+(storageBlocked?' · 保存停止中':'');
+ $('storageSummary').textContent='全記録 '+app.records.length+' / '+E_MAX+'件 ／ '+['13','22','24'].map(c=>c+'時〆 '+app.records.filter(r=>r.close===c).length+'件').join(' ／ ')+(app.lastChangedAt?' · 最終保存 '+new Date(app.lastChangedAt).toLocaleString('ja-JP',{timeZone:'Asia/Tokyo',hour12:false}):' · この端末で追加した記録はありません')+(storageBlocked?' · 保存停止中':'');
  resetCopyFeedback();
  let list;try{list=filtered();}catch(e){$('filterSummary').textContent=e.message;$('records').replaceChildren();$('more').hidden=true;$('count').textContent='条件を確認';return;}
  const closes=filterPrefs().close?[filterPrefs().close]:['13','22','24'],shown=closes.reduce((n,c)=>n+Math.min(visible,list.filter(r=>r.close===c).length),0);
