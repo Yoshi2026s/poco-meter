@@ -70,7 +70,7 @@ git switch -c codex/example-task "origin/(root)"
 
 ## 未確認・既知のテスト差
 
-- v2026.11.10.4（初回表示・サブ画面の見出し情報・404）は標準チェックと関連回帰テストに合格し、ローカルで組み立てた公開物をChromiumのスマホ幅で確認した。`npm run test:extra` はvite系10本に合格、Playwright画面系3本はこの端末にPlaywrightが無く未実行。WebKit・実機・公開先での確認は未実施。変更は作業ブランチ `codex/mobile-copy-polish` にpush済みで、`(root)` 宛てPRの統合待ち（最新の `(root)` を合流コミットで取り込み済み）。
+- v2026.11.10.4（初回表示・サブ画面の見出し情報・404）は標準チェックと関連回帰テストに合格し、ローカルで組み立てた公開物をChromiumのスマホ幅で確認した。`npm run test:extra` はvite系10本に合格、Playwright画面系3本はこの端末にPlaywrightが無く未実行。[PR #35](https://github.com/Yoshi2026s/poco-meter/pull/35) で統合・公開済み（`cf6a7af`）。公開先ではページを取得して、版・タイトル・アイコン・404ページ・文言の反映を確認した。WebKit・実機と、公開先でのブラウザー操作（「読込中…」の見え方）は未確認。
 - 旧テスト `offline-ui-50.mjs`（U49）・`offline-sw-5000.mjs`・`offline-ui-5000.mjs`・`offline-reliability-1000.mjs` は標準チェックの対象外で、既定ブランチ `8ae64dc` でも同じ項目が失敗する。
 - 物理端末のSafariとOSキーボードは未確認。
 - 旧 `e-border-100-rounds.mjs` はEランクを無効とする期待値で失敗し、変更前の既定ブランチでも再現した。現行仕様を確認する `e-rank-unified.mjs` は合格。 [PR #33](https://github.com/Yoshi2026s/poco-meter/pull/33)
