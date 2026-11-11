@@ -29,7 +29,7 @@ function input(p,id,value,type='input'){const el=p.element(id);el.value=String(v
 function saved(p){return JSON.parse(p.stored.get(KEY));}
 function check(name,run){run();regressions.push(name);}
 
-check('All 42 native option previews survive timer sync and commit once on blur',()=>{
+check('All 41 native option previews survive timer sync and commit once on blur',()=>{
  let count=0;
  for(const id of nativeIds){
   const p=page(),el=p.element(id),original=el.value,personal=p.stored.get(KEY);
@@ -44,7 +44,7 @@ check('All 42 native option previews survive timer sync and commit once on blur'
    count++;
   }
  }
- assert.equal(count,42); // +5 aggregation periods (前日・2日前・3日前・直近7日・直近14日)
+ assert.equal(count,41); // +5 aggregation periods (前日・2日前・3日前・直近7日・直近14日); -1 for the removed 手入力 border option
 });
 check('All committed native options reach their real change handlers and survive blur/tick',()=>{
  let count=0;
@@ -58,12 +58,12 @@ check('All committed native options reach their real change handlers and survive
     assert.equal(p.document.activeElement,p.element('deadline'));assert.equal(el.value,'custom');
    }else{
     assert.equal(String(s[field]),value,id+' committed state');assert.equal(el.value,value,id+' committed display');
-    if(id==='quickBorder'&&value==='')assert.equal(p.document.activeElement,p.element('target'));
+    // 手入力 is no longer a border option; typed targets keep the shown border.
    }
    count++;
   }
  }
- assert.equal(count,42); // +5 aggregation periods (前日・2日前・3日前・直近7日・直近14日)
+ assert.equal(count,41); // +5 aggregation periods (前日・2日前・3日前・直近7日・直近14日); -1 for the removed 手入力 border option
 });
 check('Core local validation preserves the previous valid value, invalid Enter retains focus, correction clears error',()=>{
  const p=page();input(p,'coreCountTop','40');
