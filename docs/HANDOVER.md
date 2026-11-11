@@ -49,7 +49,8 @@ git switch -c codex/example-task "origin/(root)"
 - 公開：GitHub Pages https://yoshi2026s.github.io/poco-meter/ （既定ブランチ `(root)` への push で自動公開）
 - ボーダー：`data/borders.json`。GitHub Actions が毎日 05:00・17:00 JST に ONE CARAT から取得（記事本文＋月別表画像の2系統）。
 - 旧Sites・署名キー・旧ChatGPTタスクは使わない。旧Sitesには新URLへの移転案内を掲示済み。
-- ツール版：`scripts/build-pages.mjs` の `PAGES_VERSION`（v2026.11.11.1）。
+- ツール版：`scripts/build-pages.mjs` の `PAGES_VERSION`（v2026.11.11.2）。
+- メーター画面の並び：最上部にタイトル欄（使い方・目標値の算出方法・表示設定・再読み込み・アプリ更新）、その下にメーター、補助メニュー、E帯・過去ボーダーの入口。タイトル欄は `#titleTop`（`.title-top`）に入り、幅はメーターと同じ。
 - 枠の装飾：4画面のカード枠は青いネオン系の縁取り（二重リング・淡い発光・左の色帯）。色は各ページの `--frame-line`・`--frame-ring`・`--frame-drop`（明るい表示は別値）で調整する。装飾のみで文字色は変えない。
 - 公開物には `404.html`（存在しないアドレス用の案内）を含む。サブ3画面のアイコン・説明文・テーマ色と、計算画面の共有用タグ（OGP）は `scripts/build-pages.mjs` が公開時に付ける。公開URLは同ファイルの `PUBLIC_URL`。
 
