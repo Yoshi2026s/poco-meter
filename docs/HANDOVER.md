@@ -49,7 +49,8 @@ git switch -c codex/example-task "origin/(root)"
 - 公開：GitHub Pages https://yoshi2026s.github.io/poco-meter/ （既定ブランチ `(root)` への push で自動公開）
 - ボーダー：`data/borders.json`。GitHub Actions が毎日 05:00・17:00 JST に ONE CARAT から取得（記事本文＋月別表画像の2系統）。
 - 旧Sites・署名キー・旧ChatGPTタスクは使わない。旧Sitesには新URLへの移転案内を掲示済み。
-- ツール版：`scripts/build-pages.mjs` の `PAGES_VERSION`（v2026.11.10.4）。
+- ツール版：`scripts/build-pages.mjs` の `PAGES_VERSION`（v2026.11.11.1）。
+- 枠の装飾：4画面のカード枠は青いネオン系の縁取り（二重リング・淡い発光・左の色帯）。色は各ページの `--frame-line`・`--frame-ring`・`--frame-drop`（明るい表示は別値）で調整する。装飾のみで文字色は変えない。
 - 公開物には `404.html`（存在しないアドレス用の案内）を含む。サブ3画面のアイコン・説明文・テーマ色と、計算画面の共有用タグ（OGP）は `scripts/build-pages.mjs` が公開時に付ける。公開URLは同ファイルの `PUBLIC_URL`。
 
 ## データの状態
@@ -70,6 +71,7 @@ git switch -c codex/example-task "origin/(root)"
 
 ## 未確認・既知のテスト差
 
+- v2026.11.11.1（カード枠の装飾）は標準チェックと `npm run test:extra` のvite系10本に合格。Playwright画面系3本はこの端末にPlaywrightが無く未実行。ローカルの公開物をChromiumの360・375・700px幅で4画面目視（暗い・明るい表示）。WebKit・実機は未確認。
 - v2026.11.10.4（初回表示・サブ画面の見出し情報・404）は標準チェックと関連回帰テストに合格し、ローカルで組み立てた公開物をChromiumのスマホ幅で確認した。`npm run test:extra` はvite系10本に合格、Playwright画面系3本はこの端末にPlaywrightが無く未実行。[PR #35](https://github.com/Yoshi2026s/poco-meter/pull/35) で統合・公開済み（`cf6a7af`）。公開先ではページを取得して、版・タイトル・アイコン・404ページ・文言の反映を確認した。WebKit・実機と、公開先でのブラウザー操作（「読込中…」の見え方）は未確認。
 - 旧テスト `offline-ui-50.mjs`（U49）・`offline-sw-5000.mjs`・`offline-ui-5000.mjs`・`offline-reliability-1000.mjs` は標準チェックの対象外で、既定ブランチ `8ae64dc` でも同じ項目が失敗する。
 - 物理端末のSafariとOSキーボードは未確認。
