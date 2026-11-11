@@ -1936,6 +1936,12 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 :root body #titleTop>header.card>.header-main>:is(#toolUsage,#displaySettings)>summary,
 :root body #titleTop>header.card>.header-main>:is(#calculationMethodsLink,#refreshPage){box-sizing:border-box;display:flex!important;align-items:center!important;justify-content:center!important;width:100%!important;min-width:0!important;min-height:44px!important;height:100%;margin:0!important;padding:2px 4px!important;font-size:12px!important;line-height:1.25!important;text-align:center!important;white-space:normal!important;overflow-wrap:anywhere;justify-self:stretch!important}
 
+/* Creator tag sits in the footer row, to the right of 免責事項. */
+footer .footer-support>.tool-creator-logo{grid-column:2;grid-row:1;align-self:start;justify-self:stretch;display:flex!important;align-items:center;justify-content:center;width:100%;min-height:44px;margin:0;padding:4px 10px!important;border-radius:8px!important;font-size:15px!important;line-height:1.2!important;text-align:center}
+footer .footer-support>details>summary,footer .footer-support>.tool-creator-logo{box-sizing:border-box;height:44px}
+footer .footer-support>details[open]>summary{height:auto}
+footer .footer-support>details[open]~.tool-creator-logo{grid-row:auto;grid-column:1/-1}
+
 /* Cool frames: neon-blue double ring and soft glow. Decorative only (no background images, so text contrast audits stay reliable). */
 :root{
   --frame-line:rgba(106,218,255,.42);
@@ -2365,7 +2371,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
         <div class="ylogo-bar">
     </div>
       </div></details>
-      
+      <span class="tool-creator-logo" aria-label="制作者 Yoshi1012" style="display:inline-block;max-width:100%;box-sizing:border-box;padding:8px 18px 9px;border:1px solid #1676bc;border-left:3px solid #36c5ff;border-radius:3px;background:linear-gradient(115deg,#02050b 0%,#0b1d31 55%,#03070e 100%);color:#66d5ff;font-family:Arial,Helvetica,sans-serif;font-size:18px;font-weight:900;font-style:italic;letter-spacing:.08em;line-height:1.3;text-shadow:0 0 8px #008cce;box-shadow:inset 0 1px 0 #24618a,0 3px 12px #001c3c55">Yoshi1012</span>
     </div>
   <!-- Pococha1012 security management: start -->
 <a id="pococha-security-management" href="https://pococha-comment-library.freefreelife2000.chatgpt.site/admin/tools/meter" target="_blank" rel="noopener noreferrer">管理ページ</a>
@@ -4311,6 +4317,6 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
   void record();
 })();</script>
 
-<div class="tool-creator-footer" style="display:block;clear:both;width:100%;max-width:1200px;box-sizing:border-box;margin:24px auto 0;padding:12px 16px 20px;text-align:left;flex-basis:100%"><span class="tool-creator-logo" aria-label="制作者 Yoshi1012" style="display:inline-block;max-width:100%;box-sizing:border-box;padding:8px 18px 9px;border:1px solid #1676bc;border-left:3px solid #36c5ff;border-radius:3px;background:linear-gradient(115deg,#02050b 0%,#0b1d31 55%,#03070e 100%);color:#66d5ff;font-family:Arial,Helvetica,sans-serif;font-size:18px;font-weight:900;font-style:italic;letter-spacing:.08em;line-height:1.3;text-shadow:0 0 8px #008cce;box-shadow:inset 0 1px 0 #24618a,0 3px 12px #001c3c55">Yoshi1012</span></div>
+
 </body>
 </html>
