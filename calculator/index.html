@@ -1921,6 +1921,20 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 /* Title card sits above the meter, aligned to the meter width. */
 .title-top{position:relative;z-index:3;box-sizing:border-box;width:min(760px,calc(100% - 20px));margin:10px auto 0}
 .title-top>header.card{margin:0}
+/* Compact title card: row 1 = title + update info, row 2 = four equal buttons. */
+:root body #titleTop>header.card{padding:8px 10px!important;border-radius:14px!important}
+:root body #titleTop>header.card>.header-main:first-child{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:6px!important;align-items:center!important}
+:root body #titleTop>header.card>.header-main>h1{grid-column:1/-1!important;grid-row:1!important;justify-self:start;max-width:46%;margin:0!important;font-size:clamp(1rem,4.4vw,1.2rem)!important;line-height:1.25!important;white-space:nowrap;min-width:0}
+:root body #titleTop>header.card>.header-main>#toolUpdatedDate{grid-column:1/-1!important;grid-row:1!important;max-width:54%!important;justify-self:end;display:flex!important;flex-direction:column!important;align-items:flex-end!important;gap:0!important;margin:0!important;min-width:0;max-width:100%;text-align:right;line-height:1.3!important}
+:root body #titleTop>header.card>.header-main>#toolUpdatedDate>span:first-child{display:none!important}
+:root body #titleTop>header.card>.header-main>#toolUpdatedDate>:is(time,#toolVersion){font-size:10px!important;white-space:nowrap!important}
+:root body #titleTop>header.card>.header-main>#toolUsage{grid-column:1!important;grid-row:2!important}
+:root body #titleTop>header.card>.header-main>#calculationMethodsLink{grid-column:2!important;grid-row:2!important}
+:root body #titleTop>header.card>.header-main>#displaySettings{grid-column:3!important;grid-row:2!important}
+:root body #titleTop>header.card>.header-main>#refreshPage{grid-column:4!important;grid-row:2!important}
+:root body #titleTop>header.card>.header-main>:is(#toolUsage,#displaySettings){width:100%!important;min-width:0!important;margin:0!important;justify-self:stretch!important;align-self:stretch!important}
+:root body #titleTop>header.card>.header-main>:is(#toolUsage,#displaySettings)>summary,
+:root body #titleTop>header.card>.header-main>:is(#calculationMethodsLink,#refreshPage){box-sizing:border-box;display:flex!important;align-items:center!important;justify-content:center!important;width:100%!important;min-width:0!important;min-height:44px!important;height:100%;margin:0!important;padding:2px 4px!important;font-size:12px!important;line-height:1.25!important;text-align:center!important;white-space:normal!important;overflow-wrap:anywhere;justify-self:stretch!important}
 
 /* Cool frames: neon-blue double ring and soft glow. Decorative only (no background images, so text contrast audits stay reliable). */
 :root{
@@ -1984,7 +1998,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
         <ol><li>締め時間と現コア数を合わせます。</li><li>目標値と現在値を入力します。K・万・全角数字も使えます。</li><li>残りポイント・達成率・アイテムの目安を確認します。</li></ol>
         <p>時計は端末の時刻を日本時間で表示します。締め時間を過ぎたら、現在値を新しい期間の値に更新してください。</p>
         <h3>ボーダーから目標を設定する</h3>
-        <p>±0・+1・+2を選ぶと、設定した条件で目標を計算します。「手入力」を選ぶと、入力した目標を使います。</p>
+        <p>±0・+1・+2を選ぶと、設定した条件で目標を計算します。目標値欄に直接入力すると、その値を使います（ボーダー欄は「手入力」と表示）。</p>
         <h3>記録を移す</h3>
         <p>別の端末に設定や記録を移すときは、JSONバックアップを使います。読み込むと、締め時間・日付・ランクが同じ記録はバックアップの値で上書きされます。</p>
         <p><a class="manual-link" href="#targetMini">目標値へ</a><a class="manual-link" href="#recordEditor">記録の編集へ</a><a class="manual-link" href="#backupTools">バックアップへ</a></p>
@@ -2078,7 +2092,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
     <div class="pickgrid" hidden>
       <div><label for="pickPeriod">集計期間</label><select id="pickPeriod" class="sm"><option value="d1">前日</option><option value="d2">2日前</option><option value="d3">3日前</option><option value="7d">直近7日</option><option value="14d">直近14日</option><option value="30d">直近30日</option><option value="month">当月</option><option value="prev">先月</option><option value="3m">3か月</option><option value="all">全期間</option></select></div>
       <div><label for="pickRank">ランク</label><select id="pickRank" class="sm num"></select></div>
-      <div><label for="pickBorder">設定する目標のボーダー</label><select id="pickBorder" class="sm num"><option value="0" selected>±0</option><option value="1">+1</option><option value="2">+2</option><option value="">手入力</option></select></div>
+      <div><label for="pickBorder">設定する目標のボーダー</label><select id="pickBorder" class="sm num"><option value="0" selected>±0</option><option value="1">+1</option><option value="2">+2</option><option value="" hidden disabled>手入力</option></select></div>
     </div>
     <div class="builder-controls">
       <div hidden><label for="targetMethod">目標の算出方法</label><select id="targetMethod"><option value="mean">平均値</option><option value="median">中央値</option><option value="p75" selected>上位25％の境界値</option><option value="max">期間内の最大値</option><option value="min">期間内の最小値</option></select></div>
