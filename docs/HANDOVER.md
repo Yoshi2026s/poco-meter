@@ -1,6 +1,6 @@
 # ポコメーター番長 Codex・Claude Code 共同開発引継ぎ
 
-更新日：2026/11/10（日本時間）
+更新日：2026/11/11（日本時間）
 
 Code は Claude Code を指す。共通ルールは [AGENTS.md](../AGENTS.md) を参照する。Claude Code は [CLAUDE.md](../CLAUDE.md) から同じルールを読む。
 この文書は作業の受け渡しと現状に使う。変更の経緯は [CHANGELOG.md](CHANGELOG.md) と各PRに残す。
@@ -71,7 +71,7 @@ git switch -c codex/example-task "origin/(root)"
 
 ## 未確認・既知のテスト差
 
-- v2026.11.11.1（カード枠の装飾）は標準チェックと `npm run test:extra` のvite系10本に合格。Playwright画面系3本はこの端末にPlaywrightが無く未実行。ローカルの公開物をChromiumの360・375・700px幅で4画面目視（暗い・明るい表示）。WebKit・実機は未確認。
+- v2026.11.11.1（カード枠の装飾）は標準チェックと `npm run test:extra` のvite系10本に合格。Playwright画面系3本はこの端末にPlaywrightが無く未実行。ローカルの公開物をChromiumの360・375・700px幅で4画面目視（暗い・明るい表示）。[PR #37](https://github.com/Yoshi2026s/poco-meter/pull/37) で統合・公開済み（`1778872`）。公開先で版表示（版を出す3画面）と4画面の枠のCSS反映と、メーター画面のスマホ幅表示を確認した。WebKit・実機は未確認。
 - v2026.11.10.4（初回表示・サブ画面の見出し情報・404）は標準チェックと関連回帰テストに合格し、ローカルで組み立てた公開物をChromiumのスマホ幅で確認した。`npm run test:extra` はvite系10本に合格、Playwright画面系3本はこの端末にPlaywrightが無く未実行。[PR #35](https://github.com/Yoshi2026s/poco-meter/pull/35) で統合・公開済み（`cf6a7af`）。公開先ではページを取得して、版・タイトル・アイコン・404ページ・文言の反映を確認した。WebKit・実機と、公開先でのブラウザー操作（「読込中…」の見え方）は未確認。
 - 旧テスト `offline-ui-50.mjs`（U49）・`offline-sw-5000.mjs`・`offline-ui-5000.mjs`・`offline-reliability-1000.mjs` は標準チェックの対象外で、既定ブランチ `8ae64dc` でも同じ項目が失敗する。
 - 物理端末のSafariとOSキーボードは未確認。
