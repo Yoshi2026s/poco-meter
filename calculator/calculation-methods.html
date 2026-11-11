@@ -47,10 +47,16 @@ main{width:min(860px,100%);margin:auto;padding:20px 16px 32px}header{display:fle
 
 @media screen{
   main>header{box-shadow:inset 0 -3px var(--brand-blue)}
-  main>section{box-shadow:inset 4px 0 var(--brand-blue)}
-  main>section:nth-of-type(3n+2){box-shadow:inset 4px 0 var(--brand-emerald)}
-  main>section:nth-of-type(3n){box-shadow:inset 4px 0 var(--brand-pink)}
+  main>section{
+    border-color:var(--frame-line);
+    box-shadow:inset 3px 0 var(--frame-accent,var(--brand-blue)),0 0 0 3px var(--frame-ring),0 0 16px var(--frame-ring),0 8px 20px var(--frame-drop);
+  }
+  main>section:nth-of-type(3n+2){--frame-accent:var(--brand-emerald)}
+  main>section:nth-of-type(3n){--frame-accent:var(--brand-pink)}
 }
+/* Cool frames: neon-blue ring and soft glow. Decorative only. */
+:root{--frame-line:rgba(106,218,255,.42);--frame-ring:rgba(41,134,255,.16);--frame-drop:rgba(4,12,28,.42)}
+:root[data-theme="light"]{--frame-line:rgba(41,134,255,.55);--frame-ring:rgba(41,134,255,.12);--frame-drop:rgba(15,60,120,.18)}
 </style>
 </head>
 <body>

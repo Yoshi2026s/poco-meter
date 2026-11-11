@@ -47,9 +47,16 @@
 
 @media screen{
   body>header{box-shadow:inset 0 4px var(--brand-blue)}
-  #filterPanel{box-shadow:inset 4px 0 var(--brand-emerald)}
-  #meterCalendarPanel{box-shadow:inset 4px 0 var(--brand-pink)}
+  #filterPanel{--frame-accent:var(--brand-emerald)}
+  #meterCalendarPanel{--frame-accent:var(--brand-pink)}
+  :is(#filterPanel,#meterCalendarPanel){
+    border-color:var(--frame-line);
+    box-shadow:inset 3px 0 var(--frame-accent),0 0 0 3px var(--frame-ring),0 0 16px var(--frame-ring),0 8px 20px var(--frame-drop);
+  }
 }
+/* Cool frames: neon-blue ring and soft glow. Decorative only. */
+:root{--frame-line:rgba(106,218,255,.42);--frame-ring:rgba(41,134,255,.16);--frame-drop:rgba(4,12,28,.42)}
+:root[data-theme="light"]{--frame-line:rgba(41,134,255,.55);--frame-ring:rgba(41,134,255,.12);--frame-drop:rgba(15,60,120,.18)}
 </style></head><body><header><div class="nav"><a class="button" id="backCalculator" href="./">← メーター計算へ</a><button id="themeButton" type="button">明るい表示</button></div><h1>過去のボーダー表</h1><p class="sub">日付・ランク・締め時間で絞り込めます。</p><p class="sub" id="historyVersion">最終更新バージョン：__VERSION__</p></header><main>
 <section class="panel" id="filterPanel" aria-labelledby="filterHeading"><h2 id="filterHeading" tabindex="-1">記録を探す</h2><form id="historyForm"><div class="filters">
 
