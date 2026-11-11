@@ -74,6 +74,7 @@ git switch -c codex/example-task "origin/(root)"
 
 ## 未確認・既知のテスト差
 
+- v2026.11.11.5（Yoshi1012タグを免責事項の右隣へ移動・サイズ統一）は標準チェックと `npm run test:extra` のvite系10本に合格。Playwright画面系3本は未実行。Chromiumの360・700px幅で配置と免責事項の開閉を確認。[PR #45](https://github.com/Yoshi2026s/poco-meter/pull/45) で統合・公開済み（`34e83a1`）。公開URLで360px幅の版表示・免責事項と同じ行・同寸（166×44px）・横はみ出し無しを確認。WebKit・実機は未確認。
 - v2026.11.11.4（ボーダー選択リストから手入力を完全削除・既定値側の手入力を復旧）は標準チェックと `npm run test:extra` のvite系10本に合格（`mobile-usability-10000` は選択肢数の期待値を41に更新）。Playwright画面系3本は未実行。[PR #43](https://github.com/Yoshi2026s/poco-meter/pull/43) で統合・公開済み（`9e2ecd8`）。公開先の360px幅で版表示と、3つのリストが±0・+1・+2のみ・既定値側に手入力があることを確認した。iOS Safari・実機は未確認。
 - v2026.11.11.3（ボーダー選択の手入力を非表示・タイトル欄を2段に縮小）は標準チェックと `npm run test:extra` のvite系10本に合格。Playwright画面系3本は未実行。Chromiumの360・700px幅と812×375で配置・手入力表示・±0〜+2への切替・使い方の開閉を確認。[PR #41](https://github.com/Yoshi2026s/poco-meter/pull/41) で統合・公開済み（`66abc50`）。公開先の360px幅で版表示・タイトル欄の高さ106px・リストに手入力が出ないことを確認した（hidden の選択肢はiOSで残る恐れがあり、v2026.11.11.4で削除）。
 - v2026.11.11.2（タイトル欄を最上部へ移動）は標準チェックと `npm run test:extra` のvite系10本に合格。Playwright画面系3本は未実行。Chromiumの375・700px幅と812×375の横持ちで配置と使い方・表示設定の開閉を確認。[PR #39](https://github.com/Yoshi2026s/poco-meter/pull/39) で統合・公開済み（`29710a1`）。公開先のスマホ幅で版表示とタイトル欄が最上部にあることを確認した。WebKit・実機は未確認。
