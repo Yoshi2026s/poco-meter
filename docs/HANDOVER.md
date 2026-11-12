@@ -79,6 +79,9 @@ git switch -c codex/example-task "origin/(root)"
 
 ## 未確認・既知のテスト差
 
+- v2026.11.12.1（常時表示パネル）は標準チェック・vite系10本に合格。Playwright画面系は record-display 合格、hud-items（HUD target）と phone-layout（320×568）は変更前と同じ既知の失敗。[PR #48](https://github.com/Yoshi2026s/poco-meter/pull/48) で統合・公開済み（`8c8b29b`）。公開URLで版表示・`data/meter-forecast.json`（200）・375×812でのパネル表示（予想・イベント・横はみ出し無し）を確認。実機・WebKit・Wake Lockの実効は未確認。初めて開いた端末ではボーダー読込中に予想欄が「記録0日分」と出て、読込後に予想へ切り替わる。
+- Windowsでは `scripts/test-extra.sh` の NODE_PATH 区切り（`:`）が効かず acorn・playwright が見つからない。個別実行時は `;` 区切りで指定し、Chromiumは `POCOCHA_CHROMIUM` で ms-playwright の chromium-1248 を指定した。
+
 - v2026.11.11.5（Yoshi1012タグを免責事項の右隣へ移動・サイズ統一）は標準チェックと `npm run test:extra` のvite系10本に合格。Playwright画面系3本は未実行。Chromiumの360・700px幅で配置と免責事項の開閉を確認。[PR #45](https://github.com/Yoshi2026s/poco-meter/pull/45) で統合・公開済み（`34e83a1`）。公開URLで360px幅の版表示・免責事項と同じ行・同寸（166×44px）・横はみ出し無しを確認。WebKit・実機は未確認。
 - v2026.11.11.4（ボーダー選択リストから手入力を完全削除・既定値側の手入力を復旧）は標準チェックと `npm run test:extra` のvite系10本に合格（`mobile-usability-10000` は選択肢数の期待値を41に更新）。Playwright画面系3本は未実行。[PR #43](https://github.com/Yoshi2026s/poco-meter/pull/43) で統合・公開済み（`9e2ecd8`）。公開先の360px幅で版表示と、3つのリストが±0・+1・+2のみ・既定値側に手入力があることを確認した。iOS Safari・実機は未確認。
 - v2026.11.11.3（ボーダー選択の手入力を非表示・タイトル欄を2段に縮小）は標準チェックと `npm run test:extra` のvite系10本に合格。Playwright画面系3本は未実行。Chromiumの360・700px幅と812×375で配置・手入力表示・±0〜+2への切替・使い方の開閉を確認。[PR #41](https://github.com/Yoshi2026s/poco-meter/pull/41) で統合・公開済み（`66abc50`）。公開先の360px幅で版表示・タイトル欄の高さ106px・リストに手入力が出ないことを確認した（hidden の選択肢はiOSで残る恐れがあり、v2026.11.11.4で削除）。
