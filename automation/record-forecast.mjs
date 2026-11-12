@@ -19,13 +19,13 @@ const r1 = x => Math.round(x * 10) / 10;
 
 // その日・締め時間の締め（JST）。24時締めは翌日0時。
 export function closeEnd(date, close) { return Date.parse(date + 'T00:00:00+09:00') + Number(close) * 3600e3; }
-// 予想と実際の値から、誤差（%）の一覧を作る
+// 予想と実際の値から、誤差（%）の一覧を作る。誤差は過去の答え合わせ（backtest-forecast.mjs）と同じく「予想÷実際−1」。
 export function errorsOf(entry) {
   const out = [];
   if (!entry.actual) return out;
   for (const [rank, fs] of Object.entries(entry.forecasts)) (fs || []).forEach((f, idx) => {
     const a = entry.actual[rank]?.[idx];
-    if (f && f[0] > 0 && a > 0) out.push({rank, idx, err: (a / f[0] - 1) * 100, inRange: f[1] != null && f[2] != null ? a >= f[1] && a <= f[2] : null});
+    if (f && f[0] > 0 && a > 0) out.push({rank, idx, err: (f[0] / a - 1) * 100, inRange: f[1] != null && f[2] != null ? a >= f[1] && a <= f[2] : null});
   });
   return out;
 }

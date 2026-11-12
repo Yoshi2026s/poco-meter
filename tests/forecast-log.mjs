@@ -43,7 +43,10 @@ assert.deepEqual(second.log.entries['2026-11-12|22'].actual.S2, [110000, null, 2
 const s = second.log.summary;
 assert.equal(s.checkedDays, 1); assert.equal(s.firstDate, '2026-11-12');
 assert.equal(s.overall.n, 2, '欠損を除いた2件');
-assert.equal(s.overall.within10, 100, '+10%と-10%はどちらも±10%以内');
+// 誤差は過去の答え合わせと同じ「予想÷実際−1」：100K/110K→-9.1%（以内）、300K/270K→+11.1%（外れ）
+assert.equal(s.overall.within10, 50);
+// ちょうど±10%（110K/100K）は浮動小数の誤差があっても以内に数える
+assert.equal(summarize({k: {date: '2026-11-12', close: '22', forecasts: {S2: [[110000, null, null]]}, actual: {S2: [100000]}}}, '2026-11-13').overall.within10, 100);
 assert.equal(s.bySeries['22|S2|0'].n, 1);
 assert.deepEqual(summarize({}, '2026-11-13').overall, {n: 0});
 
@@ -52,11 +55,17 @@ const bundle = forecastBundle(factors, null, '2026-11-13', {before: 0, after: 0,
 assert.equal(bundle.record.recent.length, 1);
 assert.equal(bundle.record.recent[0].date, '2026-11-12');
 assert.equal(bundle.record.bySeries['22|S2|0'].within10, 100);
+assert.equal(bundle.record.bySeries['22|S2|2'].within10, 0);
 
 // パネルの表示：前回の答え合わせと、記録開始からの的中
 const e = engine('2026-11-13T12:00:00+09:00');
 const text = e.aoRecordText(bundle, '22', 'S2', 0, '2026-11-13');
-assert.match(text, /前回の答え合わせ（11\/12）：予想 100K → 実際 110K（\+10%・±10%以内）/);
+assert.match(text, /前回の答え合わせ（11\/12）：予想 100K → 実際 110K（予想が9\.1%低い・±10%以内）/);
+assert.match(e.aoRecordText(bundle, '22', 'S2', 2, '2026-11-13'), /予想 300K → 実際 270K（予想が11\.1%高い）/);
+// 直近の答え合わせの一覧（新しい順・±10%以内かどうか）
+assert.deepEqual(e.aoRecordRows(bundle, '22', 'S2', 2, '2026-11-13').map(r => [r.date, r.err, r.hit]), [['2026-11-12', 11.1, false]]);
+assert.deepEqual(e.aoRecordRows(bundle, '22', 'S2', 0, '2026-11-12'), [], '対象日より前の記録だけを使う');
+assert.match(html, /id="aoHistoryBox" hidden/);
 assert.match(text, /日々の記録（11\/12〜・1日）：±10%以内 100%/);
 assert.equal(e.aoRecordText(bundle, '22', 'S2', 1, '2026-11-13'), '', '欠損の系列は表示しない');
 assert.match(e.aoRecordText({record: {firstDate: null, recent: [], bySeries: {}}}, '22', 'S2', 0, '2026-11-13'), /記録を始めました/);
