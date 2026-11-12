@@ -8,7 +8,7 @@ const log = {};
 // 11/1〜11/11：S2 の ±0 は 100,000 固定、+1 は 200,000 固定。11/5 は欠損。
 for (let d = 1; d <= 11; d++) if (d !== 5) log[`2026-11-${String(d).padStart(2, '0')}`] = {S2: [100000, 200000, 300000]};
 
-// 予想データ無し：直近の中央値をそのまま出す
+// 予想データ無し：基準値をそのまま出す（S帯：一定値ならその値）
 {
   const f = e.meterForecast(log, '2026-11-12', 'S2', 0, '24', null);
   assert.equal(f.status, 'ok'); assert.equal(f.value, 100000); assert.equal(f.n, 10); assert.equal(f.low, null);
@@ -19,14 +19,12 @@ for (let d = 1; d <= 11; d++) if (d !== 5) log[`2026-11-${String(d).padStart(2, 
   const few = {'2026-11-10': {S2: [1, 1, 1]}, '2026-11-11': {S2: [1, 1, 1]}, '2026-11-09': {S2: [0, 0, 0]}};
   assert.deepEqual({...e.meterForecast(few, '2026-11-12', 'S2', 0, '24', null)}, {status: 'no-base', n: 2});
 }
-// 補正：曜日（ランク別を優先）×暦×大型イベント。幅は締め時間全体の曜日の p25・p75。
+// 補正：締め時間×ランク帯の model のうち、use* が真のものだけ掛ける。幅は model の p25・p75。
 {
   const bundle = {
-    weekday: {'24': {'木': {pct: -1.1, p25: -11.6, p75: 3.7}}},
-    weekdayByRank: {'24': {S2: {'木': -0.6}}},
-    calendar: {'24': {'payday10-next': {pct: 1.2, label: '10日払いの翌日'}}},
-    event: {'24': {middle: {pct: 0.2}, last: {pct: 1.7}}},
-    days: {'2026-11-12': {tags: ['payday10-next'], events: [{type: 'big', ranks: ['S2'], phase: 'last'}, {type: 'collab', ranks: ['S2'], phase: 'last'}]}},
+    model: {'24': {S: {useWeekday: true, weekday: {'木': -0.6}, useCalendar: true, calendar: {'payday10-next': {pct: 1.2, label: '10日払いの翌日'}}, useEvent: true, event: {middle: 0.2, last: 1.7}, p25: -11.6, p75: 3.7},
+      A: {useWeekday: false, weekday: {'木': 50}, useCalendar: true, calendar: {'payday10-next': {pct: 1.2, label: '10日払いの翌日'}}, useEvent: false, p25: -5, p75: 4}}},
+    days: {'2026-11-12': {tags: ['payday10-next'], events: [{type: 'big', ranks: ['S2'], phase: 'last'}, {type: 'collab', ranks: ['S2', 'A1'], phase: 'last'}]}},
   };
   const f = e.meterForecast(log, '2026-11-12', 'S2', 0, '24', bundle);
   const ratio = (1 - 0.006) * 1.012 * 1.017;
@@ -34,10 +32,30 @@ for (let d = 1; d <= 11; d++) if (d !== 5) log[`2026-11-${String(d).padStart(2, 
   assert.deepEqual([...f.reasons.map(r => r.label)], ['木曜日', '10日払いの翌日', '大型イベント最終日']);
   assert.ok(Math.abs(f.low - f.value * (1 - 0.116)) < 1e-6 && Math.abs(f.high - f.value * 1.037) < 1e-6);
   assert.equal(f.inRange, true);
-  // 対象ランク外の大型イベントは補正しない
+  // 使わない補正（A帯の曜日）と、大型でないイベントは掛けない
   const a1 = e.meterForecast({...Object.fromEntries(Object.entries(log).map(([d]) => [d, {A1: [50000, 1, 1]}]))}, '2026-11-12', 'A1', 0, '24', bundle);
-  assert.deepEqual([...a1.reasons.map(r => r.label)], ['木曜日', '10日払いの翌日']);
+  assert.deepEqual([...a1.reasons.map(r => r.label)], ['10日払いの翌日']);
+  assert.ok(Math.abs(a1.low - a1.value * 0.95) < 1e-6);
 }
+// 基準値：D帯は直近ほど重い指数加重平均、それ以外は指数加重中央値（前日まで最大42日）
+{
+  const vals = [130, null, 100, 100, 100, 100, 100]; // [0]=前日
+  const d = e.forecastBase(vals, 'D');
+  let ex = 100; for (const x of [100, 100, 100, 100, 100, 130]) ex = 0.5 * x + 0.5 * ex; // 古い順に初期値=最古7件の中央値から
+  assert.ok(Math.abs(d - ex) < 1e-9, 'D帯は前日の跳ねに強く寄る');
+  assert.equal(e.forecastBase(vals, 'S'), 100, 'S帯は外れ値1日に引っぱられない');
+  assert.equal(e.forecastBase([200, 200, 100, 100, 100], 'A'), 100);
+  assert.equal(e.forecastBase([null, null], 'C'), null);
+  const dlog = {}; for (let d2 = 1; d2 <= 11; d2++) dlog[`2026-11-${String(d2).padStart(2, '0')}`] = {D1: [d2 === 11 ? 4000 : 2000, 1, 1]};
+  const fd = e.meterForecast(dlog, '2026-11-12', 'D1', 0, '24', null);
+  assert.equal(fd.method, '指数加重平均'); assert.ok(fd.value > 2900 && fd.value < 3100);
+}
+// 自信度は10段階：±10%以内の割合を10%刻みで★に（1〜10に収める）
+assert.equal(e.forecastStars({within10: 66.1}, {n: 14}), 7);
+assert.equal(e.forecastStars({within10: 98}, {n: 14}), 10);
+assert.equal(e.forecastStars({within10: 2}, {n: 14}), 1);
+assert.equal(e.forecastStars(null, {n: 12}), 3);
+assert.equal(e.forecastStars(null, {n: 6}), 2);
 assert.equal(e.forecastTrend(0.4), '普段どおり');
 assert.equal(e.forecastTrend(2), 'やや高め ↑');
 assert.equal(e.forecastTrend(-3.5), '低め ↓');

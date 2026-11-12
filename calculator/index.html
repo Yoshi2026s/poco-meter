@@ -2020,6 +2020,7 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
 .always-on .ao-pct{text-align:right;font-size:13px;color:#9db6d6;margin-top:2px}
 .always-on .ao-fvalue{font-size:clamp(28px,9vw,46px);font-weight:800;color:#ffffff;margin-top:4px;overflow-wrap:anywhere}
 .always-on .ao-frange,.always-on .ao-trend{font-size:14px;color:#cfe3ff}
+.always-on .ao-trend{white-space:pre-line}
 .always-on .ao-trend.up{color:#ff9f6e}.always-on .ao-trend.down{color:#7fd1ff}
 .always-on .ao-reasons,.always-on .ao-events ul{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:6px}
 .always-on .ao-reasons li{font-size:13px;color:#9db6d6}
@@ -4271,27 +4272,42 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
   // 今の期間のメーターが何日分のボーダーになるか（締め時刻の直前の日本時間の日付）。
   function forecastDayISO(ms){var p=meterWindow(ms);return aoIsoDay(p.end-1+9*3600e3);}
   function aoMedian(a){var s=a.slice().sort(function(x,y){return x-y;}),m=s.length>>1;return s.length%2?s[m]:(s[m-1]+s[m])/2;}
-  // 予想ボーダー：直近14日（前日まで）の同じ締め時間・ランク・ボーダーの中央値 × 曜日・暦・大型イベントの普段比。
-  // 前日までの記録が5日未満なら出さない。欠損日は0で埋めない。
-  function meterForecast(log,dateISO,rank,idx,close,bundle){
-    var t=Date.parse(dateISO+'T00:00:00Z'),vals=[];
-    if(!Number.isFinite(t))return {status:'no-date'};
-    for(var o=1;o<=14;o++){var row=log&&log[aoIsoDay(t-o*864e5)],v=row&&row[rank]&&row[rank][idx];if(typeof v==='number'&&v>0)vals.push(v);}
-    if(vals.length<5)return {status:'no-base',n:vals.length};
-    var base=aoMedian(vals),w='日月火水木金土'[new Date(t).getUTCDay()],reasons=[],ratio=1;
-    function add(label,pct){if(typeof pct!=='number'||!Number.isFinite(pct))return;ratio*=1+pct/100;if(Math.abs(pct)>=0.1)reasons.push({label:label,pct:pct});}
-    var wk=bundle&&bundle.weekday&&bundle.weekday[close]||{},wr=bundle&&bundle.weekdayByRank&&bundle.weekdayByRank[close]&&bundle.weekdayByRank[close][rank]||{};
-    add(w+'曜日',typeof wr[w]==='number'?wr[w]:(wk[w]?wk[w].pct:NaN));
-    var day=bundle&&bundle.days&&bundle.days[dateISO],cal=bundle&&bundle.calendar&&bundle.calendar[close]||{},ev=bundle&&bundle.event&&bundle.event[close]||{};
-    if(day){
-      (day.tags||[]).forEach(function(tag){if(cal[tag])add(cal[tag].label||tag,cal[tag].pct);});
-      var hit=(day.events||[]).filter(function(e){return e.type==='big'&&(e.ranks||[]).indexOf(rank)>=0;})[0];
-      if(hit&&ev[hit.phase])add('大型イベント'+({first:'初日',middle:'期間中',last:'最終日'})[hit.phase],ev[hit.phase].pct);
+  // 予想ボーダー：同じ締め時間・ランク・ボーダーの前日までの記録（最大42日）から、ランク帯ごとに選んだ方法で基準値を出し、
+  // 予想データの model（過去データで効果を確かめた補正だけ）を掛ける。直近14日に記録が5日未満なら出さない。欠損日は0で埋めない。
+  // 基準値の方法は 2025年のデータで選び、2026年のデータで答え合わせした（automation/backtest-forecast.mjs）。
+  //   D帯：指数加重平均（α=0.5、直近ほど重い）／S帯：指数加重中央値（α=0.15）／A・B・C帯：指数加重中央値（α=0.05）
+  function forecastBase(vals,band){
+    var o,alpha=band==='D'?0.5:band==='S'?0.15:0.05;
+    if(band==='D'){
+      var seq=[];for(o=vals.length-1;o>=0;o--)if(vals[o])seq.push(vals[o]);
+      if(!seq.length)return null;var e=aoMedian(seq.slice(0,7));
+      for(o=0;o<seq.length;o++)e=alpha*seq[o]+(1-alpha)*e;
+      return e;
     }
-    var spread=wk[w]&&typeof wk[w].p25==='number'&&typeof wk[w].p75==='number'?[wk[w].p25,wk[w].p75]:null;
+    var pairs=[],total=0;
+    for(o=0;o<vals.length;o++)if(vals[o]){var wgt=Math.pow(1-alpha,o);pairs.push([vals[o],wgt]);total+=wgt;}
+    if(!pairs.length)return null;
+    pairs.sort(function(a,b){return a[0]-b[0];});
+    for(var i=0,acc=0;i<pairs.length;i++){acc+=pairs[i][1];if(acc>=total/2)return pairs[i][0];}
+    return pairs[pairs.length-1][0];
+  }
+  function meterForecast(log,dateISO,rank,idx,close,bundle){
+    var t=Date.parse(dateISO+'T00:00:00Z'),vals=[],recent=0;
+    if(!Number.isFinite(t))return {status:'no-date'};
+    for(var o=1;o<=42;o++){var row=log&&log[aoIsoDay(t-o*864e5)],v=row&&row[rank]&&row[rank][idx],ok=typeof v==='number'&&v>0;vals.push(ok?v:null);if(ok&&o<=14)recent++;}
+    if(recent<5)return {status:'no-base',n:recent};
+    var band=String(rank).charAt(0),base=forecastBase(vals,band),w='日月火水木金土'[new Date(t).getUTCDay()],reasons=[],ratio=1;
+    function add(label,pct){if(typeof pct!=='number'||!Number.isFinite(pct))return;ratio*=1+pct/100;if(Math.abs(pct)>=0.1)reasons.push({label:label,pct:pct});}
+    var m=bundle&&bundle.model&&bundle.model[close]&&bundle.model[close][band]||null,day=bundle&&bundle.days&&bundle.days[dateISO];
+    if(m&&m.useWeekday&&m.weekday)add(w+'曜日',m.weekday[w]);
+    if(m&&day){
+      if(m.useCalendar&&m.calendar)(day.tags||[]).forEach(function(tag){var c=m.calendar[tag];if(c)add(c.label||tag,c.pct);});
+      var hit=(day.events||[]).filter(function(e){return e.type==='big'&&(e.ranks||[]).indexOf(rank)>=0;})[0];
+      if(m.useEvent&&m.event&&hit&&typeof m.event[hit.phase]==='number')add('大型イベント'+({first:'初日',middle:'期間中',last:'最終日'})[hit.phase],m.event[hit.phase]);
+    }
+    var spread=m&&typeof m.p25==='number'&&typeof m.p75==='number'?[m.p25,m.p75]:null;
     var value=base*ratio,pct=Math.round((ratio-1)*1000)/10;
-    var confidence=!bundle?1:vals.length>=12&&spread&&spread[1]-spread[0]<12?3:vals.length>=8?2:1;
-    return {status:'ok',value:value,low:spread?value*(1+spread[0]/100):null,high:spread?value*(1+spread[1]/100):null,base:base,n:vals.length,pct:pct,reasons:reasons,confidence:confidence,inRange:!!day};
+    return {status:'ok',value:value,low:spread?value*(1+spread[0]/100):null,high:spread?value*(1+spread[1]/100):null,base:base,n:recent,pct:pct,reasons:reasons,confidence:recent>=12?2:1,inRange:!!day,method:band==='D'?'指数加重平均':'指数加重中央値'};
   }
   function forecastTrend(pct){return Math.abs(pct)<1?'普段どおり':pct>0?(pct>=3?'高め ↑':'やや高め ↑'):(pct<=-3?'低め ↓':'やや低め ↓');}
   function aoK(n,unit){return fmtK(Math.round(n/unit)*unit);}
@@ -4314,6 +4330,9 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
   }
   // 過去データの答え合わせ（公開時に予想データへ入れる）から、締め時間×ランク帯の的中率を取り出す。
   function forecastAccuracy(bundle,close,rank){var a=bundle&&bundle.accuracy,g=a&&a.byGroup&&a.byGroup[close+'|'+String(rank).charAt(0)];return g&&typeof g.within10==='number'?{within10:g.within10,medianAbsErr:g.medianAbsErr,from:a.period&&a.period.from,to:a.period&&a.period.to}:null;}
+  // 自信度（10段階）：過去の答え合わせで±10%以内に入った割合を10%刻みで★にする（例：66% → ★7）。
+  // 答え合わせが無いときは記録の日数から控えめに出す（直近14日に12日以上で★3、それ未満は★2）。
+  function forecastStars(acc,f){if(acc&&typeof acc.within10==='number')return Math.max(1,Math.min(10,Math.round(acc.within10/10)));return f&&f.n>=12?3:2;}
   function renderAlwaysOnForecast(nowMs){
     var close=closeKey(),rank=state.rank,idx=[0,1,2].indexOf(state.analysisBorder)>=0?state.analysisBorder:0,dateISO=forecastDayISO(nowMs);
     var key=[dateISO,close,rank,idx,dataRevision,forecastData&&forecastData.generatedAt,forecastError,forecastLoading,liveBorderBusy].join('|');
@@ -4327,13 +4346,13 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
     if(f.status!=='ok'&&liveBorderBusy){aoSet('aoForecast','読込中…');aoSet('aoRange','');aoSet('aoTrend','');aoSet('aoForecastNote','過去のボーダーを読み込み中です。読み込みが終わると予想を表示します。');return;}
     if(f.status!=='ok'){aoSet('aoForecast','—');aoSet('aoRange','');aoSet('aoTrend','');aoSet('aoForecastNote','直近14日のうち前日までの記録が'+(f.n||0)+'日分しかないため、予想を出していません（5日分以上で表示）。');return;}
     aoSet('aoForecast','約 '+aoK(f.value,100));
-    aoSet('aoRange',f.low!==null?'目安の幅 '+aoK(f.low,1000)+' 〜 '+aoK(f.high,1000)+'（過去の同じ曜日の半数が入る幅）':'');
-    var acc=forecastAccuracy(forecastData,close,rank),stars=acc?(acc.within10>=75?3:acc.within10>=60?2:1):f.confidence;
-    var trend=$('aoTrend');aoSet('aoTrend',forecastData?'普段比 '+(f.pct>0?'+':'')+f.pct+'%　'+forecastTrend(f.pct)+'　自信度 '+'★★★'.slice(0,stars)+'☆☆☆'.slice(stars):'直近14日の中央値（補正なし）');
+    aoSet('aoRange',f.low!==null?'目安の幅 '+aoK(f.low,1000)+' 〜 '+aoK(f.high,1000)+'（過去の予想で実際の値の半数が入った幅）':'');
+    var acc=forecastAccuracy(forecastData,close,rank),stars=forecastStars(acc,f);
+    var trend=$('aoTrend');aoSet('aoTrend',forecastData?'普段比 '+(f.pct>0?'+':'')+f.pct+'%　'+forecastTrend(f.pct)+'\n自信度 '+'★★★★★★★★★★'.slice(0,stars)+'☆☆☆☆☆☆☆☆☆☆'.slice(stars)+' '+stars+'/10':'直近14日の中央値（補正なし）');
     aoSet('aoAccuracy',acc?'過去の答え合わせ（'+aoMD(acc.from)+'〜'+aoMD(acc.to)+'・'+closeLabel+'・'+rank.charAt(0)+'帯）：±10%以内 '+acc.within10+'%・誤差の中央値 '+acc.medianAbsErr+'%':'');
     trend.className='ao-trend'+(f.pct>=1?' up':f.pct<=-1?' down':'');
     f.reasons.forEach(function(r){var li=document.createElement('li');li.textContent=r.label+' '+(r.pct>0?'+':'')+r.pct+'%';reasons.appendChild(li);});
-    aoSet('aoForecastNote',(forecastError?forecastError+'。':'')+(forecastLoading&&!forecastData?'予想データを読み込み中…':'')+(forecastData&&!f.inRange?'この日の暦・イベント情報は予想データの範囲外です。':'')+'基準：直近'+f.n+'日の中央値 '+aoK(f.base,100)+'。');
+    aoSet('aoForecastNote',(forecastError?forecastError+'。':'')+(forecastLoading&&!forecastData?'予想データを読み込み中…':'')+(forecastData&&!f.inRange?'この日の暦・イベント情報は予想データの範囲外です。':'')+'基準：前日までの記録（直近14日に'+f.n+'日分）の'+f.method+' '+aoK(f.base,100)+'。');
   }
   function renderAlwaysOnEvents(nowMs){
     var now=jstNow(nowMs),today=now.y+'-'+String(now.m).padStart(2,'0')+'-'+String(now.d).padStart(2,'0'),tomorrow=aoIsoDay(Date.parse(today+'T00:00:00Z')+864e5),rank=state.rank;
