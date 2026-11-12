@@ -72,6 +72,8 @@ assert.equal(e.forecastTrend(-3.5), '低め ↓');
 // 画面：入口ボタンとパネルがあり、初期表示ではパネルは閉じている。ページ初期化を通しても壊れない。
 assert.match(html, /id="alwaysOnOpen"[^>]*>常時表示パネル</);
 assert.match(html, /<div class="always-on" id="alwaysOn" role="dialog" aria-modal="true"[^>]*hidden>/);
+// 初めて開いた端末でボーダー読込中の間は「記録0日分」ではなく読込中と出す
+assert.ok(html.includes("if(f.status!=='ok'&&liveBorderBusy){aoSet('aoForecast','読込中…')"));
 {
   const page = pageEngine(undefined);
   assert.ok(page, 'ページ初期化（パネルの登録を含む）が例外なく終わる');

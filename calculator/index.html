@@ -4304,13 +4304,14 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
   }
   function renderAlwaysOnForecast(nowMs){
     var close=closeKey(),rank=state.rank,idx=[0,1,2].indexOf(state.analysisBorder)>=0?state.analysisBorder:0,dateISO=forecastDayISO(nowMs);
-    var key=[dateISO,close,rank,idx,dataRevision,forecastData&&forecastData.generatedAt,forecastError,forecastLoading].join('|');
+    var key=[dateISO,close,rank,idx,dataRevision,forecastData&&forecastData.generatedAt,forecastError,forecastLoading,liveBorderBusy].join('|');
     if(key===alwaysOnForecastKey)return;alwaysOnForecastKey=key;
     var closeLabel=close==='24'?'24時締め':close+'時締め';
     aoSet('aoRankHead','設定ランク '+rank+'・'+closeLabel+'・ボーダー'+AO_BORDERS[idx]+'（'+aoMD(dateISO)+'分）の予想');
     var reasons=$('aoReasons');reasons.textContent='';
     if(rank==='E'){aoSet('aoForecast','—');aoSet('aoRange','');aoSet('aoTrend','');aoSet('aoForecastNote','E帯は予想の対象外です（記録が少ないため）。');return;}
     var f=meterForecast(LOG(),dateISO,rank,idx,close,forecastData);
+    if(f.status!=='ok'&&liveBorderBusy){aoSet('aoForecast','読込中…');aoSet('aoRange','');aoSet('aoTrend','');aoSet('aoForecastNote','過去のボーダーを読み込み中です。読み込みが終わると予想を表示します。');return;}
     if(f.status!=='ok'){aoSet('aoForecast','—');aoSet('aoRange','');aoSet('aoTrend','');aoSet('aoForecastNote','直近14日のうち前日までの記録が'+(f.n||0)+'日分しかないため、予想を出していません（5日分以上で表示）。');return;}
     aoSet('aoForecast','約 '+aoK(f.value,100));
     aoSet('aoRange',f.low!==null?'目安の幅 '+aoK(f.low,1000)+' 〜 '+aoK(f.high,1000)+'（過去の同じ曜日の半数が入る幅）':'');
