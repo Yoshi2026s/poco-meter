@@ -82,6 +82,7 @@ git switch -c codex/example-task "origin/(root)"
 
 ## 未確認・既知のテスト差
 
+- v2026.11.12.11（日々の予想と実際の記録・パネルの前回の答え合わせ・予想の行タップでパネル・古いデータの「※古」）は標準チェック・vite系10本に合格、Playwrightは record-display 合格・hud-items と phone-layout は既知の失敗のみ。[PR #65](https://github.com/Yoshi2026s/poco-meter/pull/65) で統合・公開済み（`588a2b3`）。公開URLで版表示、予想の行のタップでパネルが開くこと、記録開始の案内を確認。答え合わせの実データは 11/13 05:00 の自動更新から（その後の公開でパネルに反映）。iPhone実機は未確認。
 - v2026.11.12.10（通常表示の目標値の下にメーター予想）は標準チェック・vite系10本に合格、Playwrightは record-display 合格・hud-items（320×568、+17px）と phone-layout（HUD target）は既知の失敗のみ。[PR #64](https://github.com/Yoshi2026s/poco-meter/pull/64) で統合・公開済み（`fd8c01d`）。公開URLで版表示と「予想 約322.3K ★6」の表示を確認。
 - v2026.11.12.9（常時表示パネルに必要ペース・締め30分/10分前の色変化・予想データの作成日時）は標準チェック・vite系10本に合格、Playwrightは record-display 合格・hud-items と phone-layout は既知の失敗のみ。[PR #62](https://github.com/Yoshi2026s/poco-meter/pull/62) で統合・公開済み（`875fa73`）。公開URLで版表示、必要ペース・締め前のオレンジ表示・作成日時、横はみ出しなし・エラーなしを確認。iPhone実機は未確認。
 - v2026.11.12.8（常時表示パネルを画面テーマに左右されない配色に・印の位置・再読み込みで現メーターを残す）は標準チェック・vite系10本に合格、Playwrightは record-display 合格・hud-items と phone-layout は既知の失敗のみ（hud-items は変更前のコードでも同じ失敗）。[PR #60](https://github.com/Yoshi2026s/poco-meter/pull/60) で統合・公開済み（`b2031c6`）。公開URLでライトテーマ時もパネルの文字・ボタンが黒地の専用配色になること、版表示、エラーなしを確認。iPhone実機は未確認。
