@@ -1,4 +1,4 @@
-// 常時表示パネルの予想ボーダー（画面に載る meterForecast・forecastDayISO）を、実際の画面スクリプトから取り出して検証する。
+// 通常表示の予想・イベントカード（旧 常時表示パネル）の予想ボーダー（画面に載る meterForecast・forecastDayISO）を、実際の画面スクリプトから取り出して検証する。
 import assert from 'node:assert/strict';
 import {engine, pageEngine, html} from './calculator-harness.mjs';
 import {forecastBundle} from '../automation/build-meter-factors.mjs';
@@ -123,18 +123,20 @@ assert.equal(e.forecastTrend(-3.5), '低め ↓');
   assert.equal(r.overall.medianAbsErr, 0);
 }
 
-// 画面：現メーターの手入力欄・加減算ボタン・本日のイベラス欄
-for (const id of ['aoCurrentInput', 'aoSub1k', 'aoAdd1k', 'aoAdd10k', 'aoAdd100k', 'aoLast', 'aoAccuracy']) assert.ok(html.includes(`id="${id}"`), id);
-assert.match(html, /<h3 id="aoLastHead">本日のイベラス（最終日）<\/h3>/);
-
-// 画面：入口ボタンとパネルがあり、初期表示ではパネルは閉じている。ページ初期化を通しても壊れない。
-assert.match(html, /id="alwaysOnOpen"[^>]*>常時表示パネル</);
-assert.match(html, /<div class="always-on" id="alwaysOn" role="dialog" aria-modal="true"[^>]*hidden>/);
+// 画面：常時表示パネルは通常表示に統合した。予想・イベントのカードは通常表示（#mini）の中にあり、別画面のパネルは無い。
+for (const id of ['mainForecastCard', 'mainEventsCard', 'aoForecast', 'aoAccuracy', 'aoRecord', 'aoLast', 'aoEvents', 'aoTomorrow']) assert.ok(html.includes(`id="${id}"`), id);
+assert.ok(html.includes('<h2 class="main-card-head ao-last-head" id="aoLastHead">本日のイベラス（最終日）</h2>'));
+assert.ok(!html.includes('id="alwaysOn"') && !html.includes('id="aoCurrentInput"'), '別画面のパネルと二重の現メーター欄は無い');
+assert.ok(html.indexOf('id="mini"') < html.indexOf('id="mainForecastCard"') && html.indexOf('id="mainForecastCard"') < html.indexOf('id="mainTools"'), '予想カードは残りアイテムの目安の下・ツールの上');
+// 常時表示モード：ボタンで切り替え、上部の帯に終了ボタン。初期表示では帯は隠れている。
+assert.match(html, /id="alwaysOnOpen" aria-pressed="false">常時表示モード</);
+assert.ok(html.includes('<div class="ao-mode-bar" id="aoModeBar" hidden><span id="aoWake" role="status"></span><button type="button" id="alwaysOnClose">常時表示を終了</button></div>'));
+assert.ok(html.includes('html.always-on-mode :is(header.card,#mainTools,#mainSubMenus,#miniGoalMenu,#itemsWindow,footer'));
 // 初めて開いた端末でボーダー読込中の間は「記録0日分」ではなく読込中と出す
 assert.ok(html.includes("if(f.status!=='ok'&&liveBorderBusy){aoSet('aoForecast','読込中…')"));
 {
   const page = pageEngine(undefined);
-  assert.ok(page, 'ページ初期化（パネルの登録を含む）が例外なく終わる');
+  assert.ok(page, 'ページ初期化（予想・イベントのカードを含む）が例外なく終わる');
 }
 // イベントの表示名と内容：見出しを優先（「開催期間」等は外す）し、種類と対象を添える
 assert.equal(e.aoEventName({title: 'POCO LAND 10周年祭 開催決定！', label: 'ポコキャラバン10周年祭 開催期間'}), 'ポコキャラバン10周年祭');
@@ -152,7 +154,7 @@ assert.equal(e.aoEventKind({type: 'newcomer', audience: ['新規ライバー']})
   assert.equal(b2.days['2026-11-12'].events.length, 1);
   assert.equal(b2.days['2026-11-14'].lasts.length, 1);
 }
-// スマホ幅の起動：通常は現メーターを0から始める。常時表示パネル（#always-on）を開いたまま読み込み直したときは、
+// スマホ幅の起動：通常は現メーターを0から始める。常時表示モード（#always-on）のまま読み込み直したときは、
 // 同じ締め時間の区切りで保存した現メーターを残す（前の区切りの値は残さない）。
 {
   const phone = {matchMedia: q => ({matches: /max-width:700px/.test(q)})};
@@ -169,7 +171,8 @@ assert.equal(e.aoEventKind({type: 'newcomer', audience: ['新規ライバー']})
 // 予想データの作成日時はJSTで表示する
 assert.equal(e.aoDataTime({generatedAt: '2026-11-12T08:05:00.000Z'}), '予想データ 11/12 17:05 作成。');
 assert.equal(e.aoDataTime(null), '');
-assert.match(html, /id="aoPace"/);
+// 必要ペースは通常表示の「必要ペース」（1時間あたり・10分あたり）に一本化した
+assert.ok(html.includes('id="perHour"') && !html.includes('id="aoPace"'));
 // 通常表示：目標値の下にメーター予想の行がある（目標値の欄の中、操作ボタンの前）
 assert.match(html, /id="targetMini"[\s\S]{0,600}id="miniForecast"[\s\S]{0,200}class="mini-target-actions"/);
 {

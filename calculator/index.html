@@ -1682,16 +1682,17 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 :root body #mini.main-screen :is(#targetMini,#currentMini){width:100%!important;min-height:52px!important;height:52px!important;padding:6px 10px!important;border-radius:10px!important;font-size:20px!important;line-height:1.2;font-weight:800;text-align:left}
 :root body #mini.main-screen .mini-input-box{position:relative;display:block;min-width:0}
 :root body #mini.main-screen .mini-input-box>#targetMini{display:block}
-/* 目標値の下のメーター予想（常時表示パネルと同じ予想。詳細は title・読み上げ名） */
+/* 目標値の下のメーター予想（下の「予想」カードと同じ予想。詳細は title・読み上げ名） */
 :root body #mini.main-screen .mini-forecast{display:block;margin:0;font-size:12px!important;line-height:1.25;font-weight:700;color:#17283a!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 :root body #mini.main-screen .mini-forecast[hidden]{display:none}
 :root body #mini.main-screen .mini-forecast{cursor:pointer;-webkit-tap-highlight-color:transparent}
 :root body #mini.main-screen .mini-forecast:focus-visible{outline:2px solid #1e78d6;outline-offset:1px;border-radius:4px}
 :root body #mini.main-screen .mini-forecast .mini-forecast-old{font-weight:700;color:#9d2034!important;margin-left:4px}
+:root body #mini.main-screen .mini-forecast :is(.mini-forecast-stars,.mini-forecast-old){font-size:12px!important}
 :root body #mini.main-screen .mini-forecast .mini-forecast-stars{font-weight:600;color:#445466!important;margin-left:4px}
 /* Tiny note drawn inside the target box (bottom edge) so no other layout moves. */
-:root body #mini.main-screen .target-update-note{position:absolute;left:11px;right:8px;bottom:3px;margin:0;font-size:9px!important;line-height:1.2;font-weight:600;letter-spacing:0;color:var(--sub)!important;opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none}
-:root body #mini.main-screen #targetMini{padding-bottom:13px!important;padding-top:1px!important}
+:root body #mini.main-screen .target-update-note{position:absolute;left:11px;right:8px;bottom:3px;margin:0;font-size:11px!important;line-height:1.2;font-weight:600;letter-spacing:0;color:var(--sub)!important;opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none}
+:root body #mini.main-screen #targetMini{padding-bottom:15px!important;padding-top:1px!important}
 :root body #mini.main-screen .mini-target-actions{display:flex!important;gap:6px;flex-wrap:nowrap}
 :root body #mini.main-screen .mini-input .mini-action{flex:1 1 0;width:auto!important;min-width:0!important;min-height:44px!important;height:auto!important;margin:0!important;padding:4px 2px!important;border-radius:8px!important;font-size:13px!important;line-height:1.3;letter-spacing:0;white-space:nowrap!important;overflow:hidden;text-overflow:ellipsis}
 :root body #mini.main-screen :is(#targetMiniError,#currentMiniError){grid-column:1/-1;margin:0;font-size:13px!important;line-height:1.5;color:var(--red)!important}
@@ -1934,7 +1935,8 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 :root body #titleTop>header.card>.header-main>h1{grid-column:1/-1!important;grid-row:1!important;justify-self:start;max-width:46%;margin:0!important;font-size:clamp(1rem,4.4vw,1.2rem)!important;line-height:1.25!important;white-space:nowrap;min-width:0}
 :root body #titleTop>header.card>.header-main>#toolUpdatedDate{grid-column:1/-1!important;grid-row:1!important;max-width:54%!important;justify-self:end;display:flex!important;flex-direction:column!important;align-items:flex-end!important;gap:0!important;margin:0!important;min-width:0;max-width:100%;text-align:right;line-height:1.3!important}
 :root body #titleTop>header.card>.header-main>#toolUpdatedDate>span:first-child{display:none!important}
-:root body #titleTop>header.card>.header-main>#toolUpdatedDate>:is(time,#toolVersion){font-size:10px!important;white-space:nowrap!important}
+:root body #titleTop>header.card>.header-main>#toolUpdatedDate>time{display:none!important}
+:root body #titleTop>header.card>.header-main>#toolUpdatedDate>#toolVersion{font-size:clamp(10px,3.2vw,12px)!important;white-space:nowrap!important}
 :root body #titleTop>header.card>.header-main>#toolUsage{grid-column:1!important;grid-row:2!important}
 :root body #titleTop>header.card>.header-main>#calculationMethodsLink{grid-column:2!important;grid-row:2!important}
 :root body #titleTop>header.card>.header-main>#displaySettings{grid-column:3!important;grid-row:2!important}
@@ -1998,100 +2000,54 @@ footer .footer-support>details[open]~.tool-creator-logo{grid-row:auto;grid-colum
   }
 }
 
-/* 2026-11 always-on panel：スマホを置いて常時表示する全画面パネル（黒背景・大きい文字・焼き付き防止の小さな位置ずらし） */
 :root body #mini.main-screen .main-tools .meter-tools{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;align-items:stretch}
 :root body #mini.main-screen .main-tools #alwaysOnOpen{width:100%;min-height:44px;margin:0;font-size:14px!important;font-weight:800}
-html.always-on-open,html.always-on-open body{overflow:hidden!important}
-.always-on{position:fixed;inset:0;z-index:2147483000;background:#000;color:#e8f2ff;overflow:auto;overscroll-behavior:contain;font-family:inherit;-webkit-text-size-adjust:100%}
-.always-on[hidden]{display:none!important}
-.always-on .ao-inner{min-height:100%;box-sizing:border-box;padding:max(12px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));display:grid;grid-template-columns:minmax(0,1fr);gap:12px;align-content:start;transition:transform 1.2s ease}
-.always-on section{border:1px solid #1d3b66;border-radius:14px;padding:10px 14px;background:#050b16;min-width:0}
-:root body .always-on :is(h2,h3)::before,:root body .always-on :is(h2,h3)::after{content:none!important;display:none!important}
-:root body .always-on :is(h2,h3){border:0!important;padding:0!important;background:none!important;box-shadow:none!important}
-.always-on h2,.always-on h3{margin:0;font-size:13px;font-weight:700;color:#7fb8ff;letter-spacing:.02em}
-.always-on .num{font-variant-numeric:tabular-nums}
-.always-on .ao-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.always-on .ao-close{min-height:44px;min-width:72px;border-radius:10px;border:1px solid #2a4f80;background:#0b1830;color:#cfe3ff;font-size:14px;font-weight:700}
-.always-on .ao-clock{text-align:center}
-.always-on .ao-date{font-size:clamp(16px,4.6vw,24px);font-weight:700}
-.always-on .ao-time{font-size:clamp(44px,15vw,92px);font-weight:800;line-height:1.05;color:#ffffff;letter-spacing:.01em}
-.always-on .ao-sub{font-size:13px;color:#9db6d6;display:flex;flex-wrap:wrap;justify-content:center;gap:4px 10px}
-.always-on .ao-sub b{color:#ffd166;font-size:15px}
-.always-on .ao-row{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:14px;color:#9db6d6}
-.always-on .ao-row b{font-size:clamp(20px,6vw,30px);color:#e8f2ff;overflow-wrap:anywhere;text-align:right}
-.always-on .ao-remain{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-top:6px;color:#9db6d6;font-size:14px}
-.always-on .ao-remain b{font-size:clamp(28px,9vw,48px);color:#4cc2ff;font-weight:800;overflow-wrap:anywhere;text-align:right}
-.always-on .ao-remain b.done{color:#4ade80}
-.always-on .ao-bar{height:10px;border-radius:999px;background:#13233d;overflow:hidden;margin-top:8px}
-.always-on .ao-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#1e78d6,#4cc2ff);border-radius:inherit}
-.always-on .ao-pct{text-align:right;font-size:13px;color:#9db6d6;margin-top:2px}
-.always-on .ao-fvalue{font-size:clamp(28px,9vw,46px);font-weight:800;color:#ffffff;margin-top:4px;overflow-wrap:anywhere}
-.always-on .ao-frange,.always-on .ao-trend{font-size:14px;color:#cfe3ff}
-.always-on .ao-trend{white-space:pre-line}
-.always-on .ao-trend.up{color:#ff9f6e}.always-on .ao-trend.down{color:#7fd1ff}
-.always-on .ao-reasons,.always-on .ao-events ul{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:6px}
-.always-on .ao-reasons li{font-size:13px;color:#9db6d6}
-.always-on .ao-events li{font-size:14px;line-height:1.4;border-left:3px solid #1e78d6;padding-left:8px;overflow-wrap:anywhere}
-.always-on .ao-events li.ao-big{border-left-color:#ffd166}
-.always-on .ao-last{border-color:#7a3412}
-.always-on .ao-last li{border-left-color:#f97316}
-.always-on .ao-last li small b{color:#ffb38a}
-.always-on .ao-current input{width:min(62%,260px);min-height:44px;box-sizing:border-box;text-align:right;font-size:clamp(20px,6vw,30px);font-weight:700;color:#e8f2ff;background:#0b1830;border:1px solid #2a4f80;border-radius:10px;padding:4px 10px}
-.always-on .ao-current input[aria-invalid="true"]{border-color:#f87171}
-.always-on .ao-quick{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:6px 0 4px}
-.always-on .ao-quick button{min-height:44px;min-width:0;padding:0 2px;white-space:nowrap;border-radius:10px;border:1px solid #2a4f80;background:#0b1830;color:#cfe3ff;font-size:13px;font-weight:700}
-.always-on .ao-accuracy{margin:4px 0 0;font-size:12px;color:#cfe3ff}
-.always-on .ao-record{white-space:pre-line}
-.always-on .ao-events li a{color:#e8f2ff;text-decoration:none}
-.always-on .ao-events li small{display:block;color:#9db6d6;font-size:12px}
-.always-on .ao-badge{display:inline-block;margin-left:6px;padding:0 6px;border-radius:6px;background:#1e78d6;color:#fff;font-size:11px;font-weight:700;vertical-align:middle}
-.always-on .ao-badge.last{background:#c2410c}
-.always-on .ao-next-head{margin-top:10px}
-.always-on .ao-note{margin:6px 0 0;font-size:12px;color:#8aa3c2}
-.always-on .ao-foot{margin:0;font-size:11px;color:#6f86a6;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center}
-.always-on .ao-logo{font-weight:800;color:#4c9dff;letter-spacing:.04em;margin-right:auto}
-@media (min-width:640px) and (max-height:600px),(min-width:960px){.always-on .ao-inner{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:'top top' 'clock forecast' 'meter forecast' 'meter last' 'meter events' 'foot foot';grid-template-rows:auto auto auto auto 1fr auto}.always-on .ao-events.ao-last{grid-area:last;align-self:start}.always-on .ao-top{grid-area:top}.always-on .ao-clock{grid-area:clock}.always-on .ao-meter{grid-area:meter;align-self:start}.always-on .ao-forecast{grid-area:forecast}.always-on .ao-events{grid-area:events;align-self:start}.always-on .ao-foot{grid-area:foot}.always-on .ao-time{font-size:clamp(40px,9vw,88px)}}
-@media (min-width:560px) and (max-height:460px){.always-on .ao-inner{gap:8px;padding-top:8px;padding-bottom:8px}.always-on section{padding:8px 12px}.always-on .ao-time{font-size:clamp(36px,8vw,64px)}.always-on .ao-fvalue,.always-on .ao-remain b{font-size:clamp(22px,5vw,34px)}}
-@media (prefers-reduced-motion:reduce){.always-on .ao-inner{transition:none}}
-/* 常時表示パネルは黒地の専用配色。画面テーマ（ライト・画面カラー）の強制色（!important）に負けないよう、IDで指定し直す。 */
-#alwaysOn.always-on{color-scheme:dark;--ink:#f2f7ff;--text:#f2f7ff;--muted:#c3d4ea;--sub:#c3d4ea;--paper:#07101f;--panel:#07101f;--bg:#000;--surface:#07101f;--raised:#0f2140;--line:#24497a;--teal:#8cc4ff;--input-bg:#0f2140;--field:#0f2140;--control-border:#3a6aa5;--on-accent:#fff;background:#000!important;color:#f2f7ff!important}
-#alwaysOn :is(div,p,span,small,label,b,strong,h2,h3,li,a,time,ul){color:#f2f7ff!important;text-shadow:none!important;-webkit-text-fill-color:currentColor}
-#alwaysOn section{background:#07101f!important;border-color:#24497a!important;box-shadow:none!important}
-#alwaysOn section.ao-last{border-color:#9a4517!important}
-#alwaysOn :is(h2,h3){color:#8cc4ff!important;background:none!important}
-#alwaysOn .ao-time,#alwaysOn .ao-fvalue{color:#fff!important}
-#alwaysOn :is(.ao-sub,.ao-sub span,.ao-row,.ao-row label,.ao-remain,.ao-remain span,.ao-pct,.ao-reasons li,.ao-events li small){color:#c3d4ea!important}
-#alwaysOn :is(.ao-row b,.ao-events li a,.ao-accuracy,.ao-frange,.ao-trend){color:#f2f7ff!important}
-#alwaysOn .ao-sub b{color:#ffd166!important}
-#alwaysOn .ao-sub b.soon{color:#ffa94d!important}
-#alwaysOn .ao-sub b.urgent{color:#ff7b7b!important}
-#alwaysOn .ao-pace{text-align:right;font-size:13px;color:#ffd166!important;margin-top:2px}
-#alwaysOn .ao-remain b{color:#5fd0ff!important}
-#alwaysOn .ao-remain b.done{color:#4ade80!important}
-#alwaysOn .ao-trend.up{color:#ffab80!important}
-#alwaysOn .ao-trend.down{color:#8fd8ff!important}
-#alwaysOn .ao-last li small b{color:#ffc29e!important}
-#alwaysOn :is(.ao-note,.ao-note *){color:#a9bdd6!important}
-#alwaysOn :is(.ao-foot,.ao-foot span){color:#9fb3cc!important}
-#alwaysOn .ao-foot .ao-logo{color:#5aa8ff!important}
-#alwaysOn .ao-bar{background:#16294a!important}
-#alwaysOn .ao-events li{border-left-color:#3d8fe8!important}
-#alwaysOn .ao-events li.ao-big{border-left-color:#ffd166!important}
-#alwaysOn .ao-last li{border-left-color:#f97316!important}
-#alwaysOn .ao-badge{background:#1763b5!important;color:#fff!important}
-#alwaysOn .ao-badge.last{background:#c2410c!important}
-#alwaysOn :is(.ao-close,.ao-quick button){background:#0f2140!important;color:#e8f2ff!important;border:1px solid #3a6aa5!important;box-shadow:none!important;-webkit-appearance:none;appearance:none;touch-action:manipulation}
-#alwaysOn :is(.ao-close,.ao-quick button):active{background:#1e4f8f!important}
-#alwaysOn .ao-current input{background:#0f2140!important;color:#fff!important;-webkit-text-fill-color:#fff;border:1px solid #3a6aa5!important;box-shadow:none!important;opacity:1}
-#alwaysOn .ao-current input::placeholder{color:#7f97b6!important;-webkit-text-fill-color:#7f97b6}
-#alwaysOn .ao-current input[aria-invalid="true"]{border-color:#f87171!important}
-#alwaysOn :is(button,input,a):focus-visible{outline:2px solid #ffd166!important;outline-offset:2px}
-#alwaysOn .ao-history{margin-top:6px;font-size:12px}
-#alwaysOn .ao-history-toggle{display:flex;align-items:center;gap:2px;width:100%;min-height:36px;padding:0!important;margin:0;border:0!important;background:transparent!important;box-shadow:none!important;color:#8cc4ff!important;font-size:12px!important;font-weight:700;text-align:left;cursor:pointer;-webkit-appearance:none;appearance:none}
-#alwaysOn .ao-history-toggle span{color:#8cc4ff!important}
-#alwaysOn .ao-history ul{list-style:none;margin:4px 0 0;padding:0;display:grid;gap:4px}
-#alwaysOn .ao-history li{color:#c3d4ea!important;border-left:3px solid #3d8fe8;padding-left:6px}
-#alwaysOn .ao-history li.miss{border-left-color:#ffa94d}
+/* 予想・イベントのカード（通常表示）。入力欄と同じく、固定の淡い背景に濃い文字（テーマに左右されない）。 */
+:root body #mini.main-screen .main-card{margin:8px 0 0;padding:10px 12px;border:1px solid var(--line);border-radius:12px;color:#17283a!important;min-width:0;box-shadow:none}
+:root body #mini.main-screen .main-forecast-card{background:#e6f1ff!important}
+:root body #mini.main-screen .main-events-card{background:#e9f7ee!important}
+:root body #mini.main-screen .main-card :is(div,p,span,small,b,li,h2,a,button){color:#17283a!important;text-shadow:none!important}
+:root body #mini.main-screen .main-card .main-card-head{margin:0 0 4px;padding:0!important;border:0!important;background:none!important;box-shadow:none!important;font-size:15px!important;line-height:1.35;font-weight:800;color:#0d3b66!important}
+:root body #mini.main-screen .main-card .main-card-head::before,:root body #mini.main-screen .main-card .main-card-head::after{content:none!important;display:none!important}
+:root body #mini.main-screen .main-card .main-card-head:not(:first-child){margin-top:10px}
+:root body #mini.main-screen .main-card .main-card-head:focus{outline:none}
+:root body #mini.main-screen .main-card .ao-fvalue{font-size:clamp(28px,8.5vw,40px)!important;font-weight:800;line-height:1.15}
+:root body #mini.main-screen .main-card :is(.ao-frange,.ao-trend){font-size:14px!important;line-height:1.5}
+:root body #mini.main-screen .main-card .ao-trend{white-space:pre-line;font-weight:700}
+:root body #mini.main-screen .main-card .ao-trend.up{color:#9a3412!important}
+:root body #mini.main-screen .main-card .ao-trend.down{color:#0b4f8a!important}
+:root body #mini.main-screen .main-card .ao-accuracy{margin:4px 0 0;font-size:13px!important;line-height:1.5}
+:root body #mini.main-screen .main-card .ao-record{white-space:pre-line}
+:root body #mini.main-screen .main-card :is(.ao-reasons,.ao-list,#aoHistory){list-style:none;margin:6px 0 0;padding:0;display:grid;gap:6px}
+:root body #mini.main-screen .main-card .ao-reasons li{font-size:13px!important;color:#445466!important}
+:root body #mini.main-screen .main-card .ao-note{margin:6px 0 0;font-size:12px!important;line-height:1.5;color:#445466!important}
+:root body #mini.main-screen .main-card .ao-history-toggle{display:flex;align-items:center;gap:2px;width:100%;min-height:40px;padding:0!important;margin:0;border:0!important;background:transparent!important;box-shadow:none!important;color:#0b4f8a!important;font-size:13px!important;font-weight:800;text-align:left;cursor:pointer;-webkit-appearance:none;appearance:none}
+:root body #mini.main-screen .main-card .ao-history-toggle span{color:#0b4f8a!important}
+:root body #mini.main-screen .main-card #aoHistory li{font-size:13px!important;border-left:3px solid #1763b5;padding-left:6px}
+:root body #mini.main-screen .main-card #aoHistory li.miss{border-left-color:#c2410c}
+:root body #mini.main-screen .main-card .ao-list li{font-size:15px!important;line-height:1.45;border-left:4px solid #1763b5;padding-left:8px;overflow-wrap:anywhere}
+:root body #mini.main-screen .main-card .ao-list li.ao-big{border-left-color:#b7791f}
+:root body #mini.main-screen .main-card .ao-last li{border-left-color:#c2410c}
+:root body #mini.main-screen .main-card .ao-list li a{font-weight:700;text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;color:#0d3b66!important}
+:root body #mini.main-screen .main-card .ao-list li small{display:block;font-size:13px!important;color:#445466!important}
+:root body #mini.main-screen .main-card .ao-last li small b{color:#9a3412!important}
+:root body #mini.main-screen .main-card .ao-badge{display:inline-block;margin-left:6px;padding:0 6px;border-radius:6px;background:#1763b5!important;color:#fff!important;font-size:12px!important;font-weight:700;vertical-align:baseline}
+:root body #mini.main-screen .main-card .ao-badge.last{background:#c2410c!important}
+:root body #mini.main-screen #miniT.soon{color:#ffa94d!important}
+:root body #mini.main-screen #miniT.urgent{color:#ff7b7b!important}
+/* 常時表示モード：同じ画面のまま、設定・メニュー類を隠して数字を大きくする。上部の帯に点灯維持の状態と終了ボタン。 */
+.ao-mode-bar{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 8px;padding:6px 10px;border-radius:10px;background:#0d1b2e!important;color:#e8f2ff!important}
+.ao-mode-bar[hidden]{display:none!important}
+.ao-mode-bar #aoWake{font-size:13px!important;color:#c3d4ea!important;min-width:0}
+.ao-mode-bar #alwaysOnClose{flex:0 0 auto;min-height:44px;padding:0 14px;border-radius:10px;border:1px solid #3a6aa5!important;background:#1763b5!important;color:#fff!important;font-size:14px!important;font-weight:800;box-shadow:none!important}
+html.always-on-mode :is(header.card,#mainTools,#mainSubMenus,#miniGoalMenu,#itemsWindow,footer,.wrap,#miniClockAccuracy,#miniTargetField .mini-target-actions,.mini-reset,#miniUndoCurrent,#targetUpdateNote){display:none!important}
+/* 通常表示の各部品は :root body #mini.main-screen … の強い指定で表示されるため、同じ強さ以上で隠す */
+html.always-on-mode body #mini.main-screen :is(#miniGoalMenu,#itemsWindow,#mainTools,#miniClockAccuracy,#miniTargetField .mini-target-actions,.mini-reset,#miniUndoCurrent,#targetUpdateNote,#miniCurrentField .mini-target-actions){display:none!important}
+html.always-on-mode #mini.main-screen{transition:transform 1.2s ease}
+html.always-on-mode body #mini.main-screen #miniR{font-size:clamp(30px,9vw,56px)!important;line-height:1.05;white-space:nowrap}
+html.always-on-mode body #mini.main-screen #miniT{font-size:clamp(24px,7vw,40px)!important;white-space:nowrap}
+html.always-on-mode body #mini.main-screen #miniNowTime{font-size:clamp(18px,5.5vw,26px)!important}
+@media (prefers-reduced-motion:reduce){html.always-on-mode #mini.main-screen{transition:none}}
 </style>
 </head>
 <body>
@@ -2141,6 +2097,7 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
   </header>
 </div>
 <div class="mini show main-screen" id="mini" role="region" aria-label="メーター" aria-hidden="false">
+<div class="ao-mode-bar" id="aoModeBar" hidden><span id="aoWake" role="status"></span><button type="button" id="alwaysOnClose">常時表示を終了</button></div>
 <div class="main-hero"><div class="mini-remaining"><span id="miniL">目標まであと</span><b id="miniR" class="num">-</b></div><div class="mini-countdown"><span id="miniDeadlineLabel">締切まで</span><span class="mt" id="miniT">-</span><div class="main-progress" id="miniProgress" role="progressbar" aria-label="目標の達成率" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="main-progress-bar"><span id="miniFill"></span></div><span id="miniPct" class="num">0%</span></div><button type="button" id="miniPeriodReview" hidden>締め後の現在値を確認</button></div>
 <small class="clock-accuracy" id="miniClockAccuracy">標準時との差 未確認</small>
 <!-- phone-current:start -->
@@ -2156,8 +2113,10 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
 <small id="miniBufferError" hidden role="status" aria-live="polite"></small>
 <!-- phone-current:end -->
 <section id="itemsWindow" aria-labelledby="itemsWindowTitle"><div class="items-window-head"><h2 id="itemsWindowTitle">残りアイテムの目安</h2><div class="items-core"><label for="coreCountItems">現コア数</label><input id="coreCountItems" class="num" type="text" inputmode="numeric" enterkeyhint="done" autocomplete="off" placeholder="0" aria-label="現コア数（0〜1000人）" aria-describedby="coreCountItemsError inputStatus" value="0"></div></div><small id="coreCountItemsError" class="items-core-error" hidden></small><div id="itemsWindowRow"></div></section>
+<section class="main-card main-forecast-card" id="mainForecastCard" aria-labelledby="aoRankHead"><h2 class="main-card-head" id="aoRankHead" tabindex="-1">設定ランクの予想</h2><div class="ao-fvalue num" id="aoForecast"></div><div class="ao-frange num" id="aoRange"></div><div class="ao-trend" id="aoTrend"></div><p class="ao-accuracy" id="aoAccuracy"></p><p class="ao-accuracy ao-record" id="aoRecord"></p><div class="ao-history" id="aoHistoryBox" hidden><button type="button" class="ao-history-toggle" id="aoHistoryToggle" aria-expanded="false" aria-controls="aoHistory"><span class="ao-history-mark" aria-hidden="true">▸</span> <span id="aoHistorySummary">直近の答え合わせ</span></button><ul id="aoHistory" hidden></ul></div><ul class="ao-reasons" id="aoReasons"></ul><p class="ao-note" id="aoForecastNote"></p></section>
+<section class="main-card main-events-card" id="mainEventsCard" aria-labelledby="aoEventsHead"><h2 class="main-card-head ao-last-head" id="aoLastHead">本日のイベラス（最終日）</h2><ul class="ao-list ao-last" id="aoLast"></ul><p class="ao-note" id="aoLastNote"></p><h2 class="main-card-head" id="aoEventsHead">今日の開催イベント</h2><ul class="ao-list" id="aoEvents"></ul><h2 class="main-card-head ao-next-head" id="aoTomorrowHead" hidden>明日から</h2><ul class="ao-list" id="aoTomorrow"></ul><p class="ao-note" id="aoEventsNote"></p></section>
 <section class="main-tools" id="mainTools" aria-label="目標の条件・コピー・換算"><p class="hint goal-context" id="appliedContext" tabindex="0" aria-label="目標設定時の条件"></p><p id="manualTargetMsg" class="toast" role="status"></p>
-    <div class="meter-tools"><button type="button" id="copyRemaining">残りポイントをコピー</button><button type="button" id="alwaysOnOpen" aria-haspopup="dialog" aria-controls="alwaysOn">常時表示パネル</button></div><textarea id="summaryText" readonly hidden aria-label="手動コピー用の現在の残り"></textarea>
+    <div class="meter-tools"><button type="button" id="copyRemaining">残りポイントをコピー</button><button type="button" id="alwaysOnOpen" aria-pressed="false">常時表示モード</button></div><textarea id="summaryText" readonly hidden aria-label="手動コピー用の現在の残り"></textarea>
     
     <div class="item-conversion-tools">
     <details class="conversion-note"><summary>換算条件（ボーナス<span id="coreNote">＝100%</span>）</summary><p class="hint">必要コインは、残りポイントを（4 × ボーナス倍率）で割って切り上げます。アイテムの個数は、それぞれ単独で目標に届く場合の目安です。</p></details>
@@ -2483,17 +2442,6 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
 
 <!-- Initialize only after all calculator status elements exist. -->
 <span class="toast" id="menuStatus" role="status"></span><p class="hint" id="menuPreferenceStatus" role="status" aria-live="polite" hidden></p><p class="hint period-notice" id="periodNotice" role="status" hidden></p><p class="hint" id="storageStatus" role="status" hidden></p>
-<div class="always-on" id="alwaysOn" role="dialog" aria-modal="true" aria-labelledby="aoTitle" hidden>
-<div class="ao-inner" id="alwaysOnInner">
-<div class="ao-top"><h2 id="aoTitle">ポコメーター番長 常時表示</h2><button type="button" id="alwaysOnClose" class="ao-close">閉じる</button></div>
-<section class="ao-clock" aria-label="現在日時"><div class="ao-date" id="aoDate"></div><div class="ao-time num" id="aoTime"></div><div class="ao-sub"><span id="aoClockLabel">端末時刻</span><span><span id="aoDeadlineLabel">締めまで</span> <b class="num" id="aoCountdown"></b></span></div></section>
-<section class="ao-meter" aria-label="メーター"><div class="ao-row ao-current"><label for="aoCurrentInput">現メーター</label><input class="num" id="aoCurrentInput" type="text" inputmode="decimal" placeholder="例 120000" enterkeyhint="done" autocomplete="off" spellcheck="false" aria-describedby="aoCurrentMsg"></div><div class="ao-quick" role="group" aria-label="現メーターを調整"><button type="button" id="aoSub1k" aria-label="現メーターから1,000 ptを引く">−1K</button><button type="button" id="aoAdd1k" aria-label="現メーターに1,000 ptを足す">+1K</button><button type="button" id="aoAdd10k" aria-label="現メーターに10,000 ptを足す">+10K</button><button type="button" id="aoAdd100k" aria-label="現メーターに100,000 ptを足す">+100K</button></div><small class="ao-note" id="aoCurrentMsg" role="status" aria-live="polite"></small><div class="ao-row"><span>目標メーター</span><b class="num" id="aoTarget"></b></div><div class="ao-remain"><span id="aoRemainLabel">目標まであと</span><b class="num" id="aoRemain"></b></div><div class="ao-bar" aria-hidden="true"><i id="aoFill"></i></div><div class="ao-pct num" id="aoPct"></div><div class="ao-pace num" id="aoPace"></div></section>
-<section class="ao-forecast" aria-labelledby="aoRankHead"><h3 id="aoRankHead">設定ランクの予想</h3><div class="ao-fvalue num" id="aoForecast"></div><div class="ao-frange num" id="aoRange"></div><div class="ao-trend" id="aoTrend"></div><p class="ao-accuracy" id="aoAccuracy"></p><p class="ao-accuracy ao-record" id="aoRecord"></p><div class="ao-history" id="aoHistoryBox" hidden><button type="button" class="ao-history-toggle" id="aoHistoryToggle" aria-expanded="false" aria-controls="aoHistory"><span class="ao-history-mark" aria-hidden="true">▸</span> <span id="aoHistorySummary">直近の答え合わせ</span></button><ul id="aoHistory" hidden></ul></div><ul class="ao-reasons" id="aoReasons"></ul><p class="ao-note" id="aoForecastNote"></p></section>
-<section class="ao-events ao-last" aria-labelledby="aoLastHead"><h3 id="aoLastHead">本日のイベラス（最終日）</h3><ul id="aoLast"></ul><p class="ao-note" id="aoLastNote"></p></section>
-<section class="ao-events" aria-labelledby="aoEventsHead"><h3 id="aoEventsHead">今日の開催イベント</h3><ul id="aoEvents"></ul><h3 class="ao-next-head" id="aoTomorrowHead" hidden>明日から</h3><ul id="aoTomorrow"></ul><p class="ao-note" id="aoEventsNote"></p></section>
-<p class="ao-foot"><span class="ao-logo">Yoshi1012</span><span id="aoWake"></span><span>予想は過去のボーダーと公式noteのイベント情報から出した目安です。</span></p>
-</div>
-</div>
 <script id="simple-menu-controller">
 (function(){
   'use strict';
@@ -2620,7 +2568,7 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
   }
   state.goalDefaultsVersion=4;
   var phoneDefaultsOnOpen=!!(window.matchMedia&&window.matchMedia('(max-width:700px)').matches);
-  // 常時表示パネルを開いたまま再読み込みされたとき（スマホがタブを読み込み直したときなど）は、
+  // 常時表示モードのまま再読み込みされたとき（スマホがタブを読み込み直したときなど）は、
   // 同じ締め時間の区切りで保存した現メーターを残す。それ以外のスマホでの起動は従来どおり0から始める。
   var keepAlwaysOnCurrent=false;
   try{keepAlwaysOnCurrent=phoneDefaultsOnOpen&&location.hash==='#always-on'&&Number(state.currentSavedAt)>0&&Number(state.currentSavedAt)<=Date.now()&&meterWindow(Number(state.currentSavedAt)).end===meterWindow(Date.now()).end;}catch(e){keepAlwaysOnCurrent=false;}
@@ -3973,7 +3921,7 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
   $('applyGoalDefaults').onclick=function(){try{var defaults=cleanGoalDefaults(state.goalDefaults);clearTargetResetUndo();delete numericComposing.target;assignGoalDefaults(defaults);automaticTargetSignature='';statsCache={};syncAllInputs();loadEditor();var persisted=save();update();renderGoalDefaultDraft();if(!persisted||storageFailed){goalDefaultMessage('この画面に適用しましたが、端末へ保存できません。画面の保存エラーを確認してください。',true);return;}goalDefaultMessage('既定値を適用しました。'+(goalDefaultDraftChanged()?'未保存の変更は残っています。':''),false);}catch(e){goalDefaultMessage(e.message,true);}};
   $('restoreGoalDefaults').onclick=function(){$('applyGoalDefaults').click();$('summaryStatus').className=$('goalDefaultsStatus').className;$('summaryStatus').textContent=$('goalDefaultsStatus').textContent;};
   syncGoalDefaultInputs(state.goalDefaults);
-  if(phoneDefaultsOnOpen){$('goalDefaultsHelp').textContent='スマホでは、開くたびに既定値を適用し、現在値は0から始まります。';$('defaultOnLoad').parentNode.lastChild.textContent='PCでも起動時に既定値を適用';}
+  if(phoneDefaultsOnOpen){$('goalDefaultsHelp').textContent='スマホでは、開くたびに既定値を適用し、現在値は0から始まります（常時表示モードのまま開き直したときは、同じ締めまでの現在値を残します）。';$('defaultOnLoad').parentNode.lastChild.textContent='PCでも起動時に既定値を適用';}
   syncAllInputs();loadEditor();
 
 
@@ -4314,10 +4262,10 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
   // Expose the same local calculator actions when the browser supports WebMCP.
   syncLiveBorders();
   setInterval(function(){if(!document.hidden)syncLiveBorders();},300000);
-  // ---- 常時表示パネル：現メーター・目標メーター・日時・設定ランクの予想ボーダー・開催イベント ----
+  // ---- 予想・イベントのカード（通常表示）と常時表示モード ----
   // 予想データ（./data/meter-forecast.json）は公開時に作られる。取得できない時は保存済みの写しを使う。
   var FORECAST_KEY='pococha-meter-forecast-v1',FORECAST_SCHEMA='poco-meter-forecast-v1',forecastData=null,forecastFetchedAt=0,forecastError='',forecastLoading=false;
-  var alwaysOnLock=null,alwaysOnTimer=null,alwaysOnShiftTimer=null,alwaysOnReturnFocus=null,alwaysOnForecastKey='',alwaysOnEventsKey='';
+  var alwaysOnLock=null,alwaysOnShiftTimer=null,alwaysOnReturnFocus=null,alwaysOnForecastKey='',alwaysOnEventsKey='';
   var AO_WEEKDAYS='日月火水木金土',AO_PHASES={first:'初日',middle:'期間中',last:'最終日'},AO_BORDERS=['±0','+1','+2'];
   function aoIsoDay(t){return new Date(t).toISOString().slice(0,10);}
   // 今の期間のメーターが何日分のボーダーになるか（締め時刻の直前の日本時間の日付）。
@@ -4374,7 +4322,7 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
   function aoEventKind(e){var k={big:'大型イベント',event:'イベント',collab:'コラボ・出演権',newcomer:'新規ライバー向け',mission:'ミッション',item:'アイテム',notice:'お知らせ'}[e.type]||'';var a=(e.audience||[]).filter(function(x){return k.indexOf(x)<0;});return (k?'・'+k:'')+(a.length?'・'+a.join('・'):'');}
   function aoMD(d){return d?Number(d.slice(5,7))+'/'+Number(d.slice(8,10)):'';}
   function aoEventItems(list,rank,lastView){
-    var ul=document.createDocumentFragment();
+    var ul=typeof document.createDocumentFragment==="function"?document.createDocumentFragment():document.createElement("div");
     list.forEach(function(e){
       var li=document.createElement('li'),a=document.createElement('a'),meta=document.createElement('small');
       if(e.type==='big')li.className='ao-big';
@@ -4383,7 +4331,7 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
       var badges=[];
       if((e.ranks||[]).indexOf(rank)>=0){var b=document.createElement('span');b.className='ao-badge';b.textContent='対象ランク';badges.push(b);}
       if(e.phase==='last'&&!lastView){var l=document.createElement('span');l.className='ao-badge last';l.textContent='最終日';badges.push(l);}
-      if(lastView){var endB=document.createElement('b');endB.textContent=(e.endTime?'本日 '+e.endTime+' まで':'本日まで（終了時刻は記事に記載なし）');meta.appendChild(endB);meta.appendChild(document.createTextNode('・'+aoMD(e.start)+'〜'+aoEventKind(e)));}
+      if(lastView){var endB=document.createElement('b');endB.textContent=(e.endTime?'本日 '+e.endTime+' まで':'本日まで');meta.appendChild(endB);meta.appendChild(document.createTextNode('・'+(e.start&&e.start!==(e.end||e.start)?aoMD(e.start)+'〜':'1日開催')+aoEventKind(e)));}
       else meta.textContent=aoMD(e.start)+(e.end&&e.end!==e.start?'〜'+aoMD(e.end):'')+(e.endTime?' '+e.endTime+'まで':'')+aoEventKind(e);
       badges.forEach(function(x){meta.appendChild(x);});
       li.appendChild(meta);ul.appendChild(li);
@@ -4412,10 +4360,10 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
     aoSet('aoRange',f.low!==null?'目安の幅 '+aoK(f.low,1000)+' 〜 '+aoK(f.high,1000)+'（過去は2回に1回この幅に入った）':'');
     var acc=forecastAccuracy(forecastData,close,rank,idx),stars=forecastStars(acc,f);
     var trend=$('aoTrend');aoSet('aoTrend',forecastData?'普段比 '+(f.pct>0?'+':'')+f.pct+'%　'+forecastTrend(f.pct)+'\n自信度 '+'★★★★★★★★★★'.slice(0,stars)+'☆☆☆☆☆☆☆☆☆☆'.slice(stars)+' '+stars+'/10':'直近14日の中央値（補正なし）');
-    aoSet('aoAccuracy',acc?'過去の答え合わせ（'+aoMD(acc.from)+'〜'+aoMD(acc.to)+'・'+closeLabel+'・'+(acc&&acc.scope==='series'?rank+'のボーダー'+AO_BORDERS[idx]:rank.charAt(0)+'帯')+'）：±10%以内 '+acc.within10+'%・誤差の中央値 '+acc.medianAbsErr+'%':'');
+    aoSet('aoAccuracy',acc?'過去の的中率（'+aoMD(acc.from)+'〜'+aoMD(acc.to)+(acc.scope==='series'?'':'・'+rank.charAt(0)+'帯全体')+'）：±10%以内 '+acc.within10+'%・誤差の中央値 '+acc.medianAbsErr+'%':'');
     trend.className='ao-trend'+(f.pct>=1?' up':f.pct<=-1?' down':'');
     f.reasons.forEach(function(r){var li=document.createElement('li');li.textContent=r.label+' '+(r.pct>0?'+':'')+r.pct+'%';reasons.appendChild(li);});
-    aoSet('aoForecastNote',(forecastError?forecastError+'。':'')+(forecastLoading&&!forecastData?'予想データを読み込み中…':'')+(forecastData&&!f.inRange?'この日の暦・イベント情報は予想データの範囲外です。':'')+'基準：前日までの記録（直近14日に'+f.n+'日分）の'+f.method+' '+aoK(f.base,100)+'。'+aoDataTime(forecastData));
+    aoSet('aoForecastNote',(forecastError?forecastError+'。':'')+(forecastLoading&&!forecastData?'予想データを読み込み中…':'')+(forecastData&&!f.inRange?'この日の暦・イベント情報は予想データの範囲外です。':'')+'基準 '+aoK(f.base,100)+'（前日までの直近14日のうち'+f.n+'日分から）。'+aoDataTime(forecastData));
   }
   // 日々の予想と実際の記録（公開時に予想データの record へ入る）から、設定の系列の「前回の答え合わせ」と「記録の的中」を作る。
   // 設定の系列について、答え合わせ済みの日を新しい順に並べる（誤差は過去の答え合わせと同じく「予想÷実際−1」）。
@@ -4452,26 +4400,14 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
     if(key===alwaysOnEventsKey)return;alwaysOnEventsKey=key;
     var days=forecastData&&forecastData.days||{},lasts=days[today]&&days[today].lasts||[],list=(days[today]&&days[today].events||[]).filter(function(e){return !e.ends&&e.phase!=='last';}),next=(days[tomorrow]&&days[tomorrow].events||[]).filter(function(e){return e.phase==='first';});
     $('aoEvents').textContent='';$('aoTomorrow').textContent='';$('aoLast').textContent='';$('aoLast').appendChild(aoEventItems(lasts,rank,true));
-    aoSet('aoLastNote',!forecastData?'':!days[today]?'今日のイベント情報は予想データの範囲外です。':!lasts.length?'本日が最終日のイベントは見つかりませんでした（公式noteで期間を確認できたもの）。':'終了時刻はアプリ内の表示を優先してください。');
+    aoSet('aoLastNote',!forecastData?'':!days[today]?'今日のイベント情報は予想データの範囲外です。':!lasts.length?'本日が最終日のイベントはありません（公式noteで期間を確認できたもの）。':'終了時刻はアプリ内の表示を優先してください。');
     $('aoEvents').appendChild(aoEventItems(list,rank));$('aoTomorrow').appendChild(aoEventItems(next,rank));$('aoTomorrowHead').hidden=!next.length;
-    aoSet('aoEventsNote',!forecastData?(forecastLoading?'イベント情報を読み込み中…':'イベント情報を取得できませんでした。'):!days[today]?'今日のイベント情報は予想データの範囲外です。':!list.length?'公式noteで期間を確認できたイベントはありません。':'公式noteの記事から期間を読み取った一覧です。正式な内容はアプリ内でご確認ください。');
+    aoSet('aoEventsNote',!forecastData?(forecastLoading?'イベント情報を読み込み中…':'イベント情報を取得できませんでした。'):!days[today]?'今日のイベント情報は予想データの範囲外です。':!list.length?'公式noteで期間を確認できたイベントはありません。':'公式noteの記事から読み取った期間です。正式な内容はアプリ内で確認してください。');
   }
+  // 通常表示の「予想」「イベント」カードを描く（1秒ごと。内容が変わったときだけ書き換える）。締め30分前・10分前は締めまでの表示色を変える。
   function renderAlwaysOn(){
-    var box=$('alwaysOn');if(!box||box.hidden||!alwaysOnIsOpen)return;
-    var nowMs=currentTimeMs(),now=jstNow(nowMs),clock=new Date(nowMs+9*3600e3),basis=clockBasis();
-    aoSet('aoDate',now.y+'年'+now.m+'月'+now.d+'日（'+AO_WEEKDAYS[now.w]+'）');
-    aoSet('aoTime',String(clock.getUTCHours()).padStart(2,'0')+':'+String(clock.getUTCMinutes()).padStart(2,'0')+':'+String(clock.getUTCSeconds()).padStart(2,'0'));
-    aoSet('aoClockLabel',basis.primary==='Pocochaサーバー時刻'?'Pocochaサーバー時刻':'端末時刻');
-    var leftMs=meterWindow(nowMs).end-nowMs;aoSet('aoCountdown',countdownTime(leftMs,false));
-    // 締め30分前・10分前は色を変える
-    var cd=$('aoCountdown'),cdClass='num'+(leftMs<=600000?' urgent':leftMs<=1800000?' soon':'');if(cd&&cd.className!==cdClass)cd.className=cdClass;
-    var cur=parseNum(state.current),tgt=parseNum(state.target);
-    var curInput=$('aoCurrentInput');if(curInput&&document.activeElement!==curInput&&curInput.getAttribute('aria-invalid')!=='true'&&curInput.value!==fmt(cur))curInput.value=fmt(cur);aoSet('aoTarget',tgt?fmt(tgt)+' pt':'未設定');
-    aoSet('aoRemainLabel',!tgt?'目標を設定してください':cur>=tgt?'目標達成':'目標まであと');
-    aoSet('aoRemain',tgt?fmtK(Math.max(0,tgt-cur)):'—');$('aoRemain').classList.toggle('done',!!tgt&&cur>=tgt);
-    var pct=tgt?Math.max(0,Math.min(100,Math.floor(cur/tgt*100))):0;$('aoFill').style.width=pct+'%';aoSet('aoPct',tgt?(cur>0?pct+'%':'0%（現メーターを入力すると進み具合を表示）'):'');
-    // 締めまでに目標へ届くための必要ペース（現メーター入力後、締めまで1分以上あるとき）
-    aoSet('aoPace',tgt&&cur>0&&tgt>cur&&leftMs>=60000?'必要ペース 約 '+aoK((tgt-cur)/(leftMs/60000),100)+'/分（1時間あたり '+aoK((tgt-cur)/(leftMs/3600000),1000)+'）':'');
+    var nowMs=currentTimeMs(),leftMs=meterWindow(nowMs).end-nowMs,mt=$('miniT');
+    if(mt&&mt.classList){mt.classList.toggle('soon',leftMs>600000&&leftMs<=1800000);mt.classList.toggle('urgent',leftMs<=600000);}
     renderAlwaysOnForecast(nowMs);renderAlwaysOnEvents(nowMs);
   }
   async function loadForecastData(force){
@@ -4484,36 +4420,38 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
       var data=await response.json();if(!data||data.schema!==FORECAST_SCHEMA)throw new Error('形式が違います');
       forecastData=data;forecastError='';try{localStorage.setItem(FORECAST_KEY,JSON.stringify(data));}catch(e){}
     }catch(e){forecastError=forecastData?'最新の予想データを取得できませんでした（保存済みの写しを表示）':'予想データを取得できませんでした';}
-    finally{forecastLoading=false;renderAlwaysOn();if(typeof renderMainForecast==='function')renderMainForecast();}
+    finally{forecastLoading=false;renderAlwaysOn();renderMainForecast();}
   }
-  async function requestAlwaysOnLock(){
-    if(!navigator.wakeLock||typeof navigator.wakeLock.request!=='function'){aoSet('aoWake','この端末では画面の自動消灯を止められません。');return;}
-    if(alwaysOnLock)return;
-    try{alwaysOnLock=await navigator.wakeLock.request('screen');aoSet('aoWake','画面を点けたままにしています。');alwaysOnLock.addEventListener('release',function(){alwaysOnLock=null;if($('alwaysOn')&&!$('alwaysOn').hidden)aoSet('aoWake','画面の点灯維持が解除されました（画面に戻ると再開）。');});}
-    catch(e){alwaysOnLock=null;aoSet('aoWake','画面の自動消灯を止められませんでした（省電力モードなどを確認）。');}
-  }
-  function shiftAlwaysOn(){var inner=$('alwaysOnInner');if(inner)inner.style.transform='translate('+Math.round(Math.random()*10-5)+'px,'+Math.round(Math.random()*10-5)+'px)';}
-  // パネルが開いているかは開閉の操作で持つ（読み込み直後の予想データ取得でパネルを描かないため）
+  // 常時表示モード：通常表示のまま、画面の点灯を保ち（Wake Lock）、設定類を隠して数字を大きくし、1分ごとに数pxずらして焼き付きを防ぐ。
   var alwaysOnIsOpen=false;
+  async function requestAlwaysOnLock(){
+    if(!navigator.wakeLock||typeof navigator.wakeLock.request!=='function'){aoSet('aoWake','この端末は画面の自動消灯を止められません');return;}
+    if(alwaysOnLock)return;
+    try{alwaysOnLock=await navigator.wakeLock.request('screen');aoSet('aoWake','画面を点けたままにしています');alwaysOnLock.addEventListener('release',function(){alwaysOnLock=null;if(alwaysOnIsOpen)aoSet('aoWake','点灯維持が解除されました（画面に戻ると再開）');});}
+    catch(e){alwaysOnLock=null;aoSet('aoWake','画面の自動消灯を止められませんでした');}
+  }
+  function shiftAlwaysOn(){var inner=$('mini');if(inner)inner.style.transform='translate('+Math.round(Math.random()*8-4)+'px,'+Math.round(Math.random()*8-4)+'px)';}
   function openAlwaysOn(){
-    var box=$('alwaysOn');if(!box||!box.hidden)return;
-    alwaysOnIsOpen=true;alwaysOnReturnFocus=document.activeElement;box.hidden=false;document.documentElement.classList.add('always-on-open');
-    alwaysOnForecastKey=alwaysOnEventsKey='';renderAlwaysOn();loadForecastData(false);requestAlwaysOnLock();
-    clearInterval(alwaysOnTimer);alwaysOnTimer=setInterval(function(){if(!document.hidden){renderAlwaysOn();loadForecastData(false);}},250);
+    if(alwaysOnIsOpen)return;
+    alwaysOnIsOpen=true;alwaysOnReturnFocus=document.activeElement;document.documentElement.classList.add('always-on-mode');
+    var bar=$('aoModeBar');if(bar)bar.hidden=false;var open=$('alwaysOnOpen');if(open)open.setAttribute('aria-pressed','true');
+    requestAlwaysOnLock();
     clearInterval(alwaysOnShiftTimer);alwaysOnShiftTimer=setInterval(shiftAlwaysOn,60000);
+    try{window.scrollTo(0,0);}catch(e){}
     try{$('alwaysOnClose').focus({preventScroll:true});}catch(e){}
-    // 再読み込み（スマホがタブを読み込み直したとき）でもパネルに戻れるよう、URLに #always-on を付ける（履歴は増やさない）
+    // 再読み込み（スマホがタブを読み込み直したとき）でも常時表示に戻れるよう、URLに #always-on を付ける（履歴は増やさない）
     if(typeof location!=='undefined'&&location.hash!=='#always-on'){try{history.replaceState(null,'',location.pathname+location.search+'#always-on');}catch(e){}}
   }
   function closeAlwaysOn(){
-    var box=$('alwaysOn');if(!box||box.hidden)return;
-    alwaysOnIsOpen=false;box.hidden=true;document.documentElement.classList.remove('always-on-open');clearInterval(alwaysOnTimer);clearInterval(alwaysOnShiftTimer);alwaysOnTimer=alwaysOnShiftTimer=null;
-    var inner=$('alwaysOnInner');if(inner)inner.style.transform='';
+    if(!alwaysOnIsOpen)return;
+    alwaysOnIsOpen=false;document.documentElement.classList.remove('always-on-mode');clearInterval(alwaysOnShiftTimer);alwaysOnShiftTimer=null;
+    var bar=$('aoModeBar');if(bar)bar.hidden=true;var open=$('alwaysOnOpen');if(open)open.setAttribute('aria-pressed','false');
+    var inner=$('mini');if(inner)inner.style.transform='';
     if(alwaysOnLock){try{alwaysOnLock.release();}catch(e){}alwaysOnLock=null;}
     if(typeof location!=='undefined'&&location.hash==='#always-on'){try{history.replaceState(null,'',location.pathname+location.search);}catch(e){}}
-    if(alwaysOnReturnFocus&&typeof alwaysOnReturnFocus.focus==='function'){try{alwaysOnReturnFocus.focus({preventScroll:true});}catch(e){}}
+    var back=open||alwaysOnReturnFocus;if(back&&typeof back.focus==='function'){try{back.focus({preventScroll:true});}catch(e){}}
   }
-  // 通常表示：目標値の下に、設定ランク×締め時間×選択ボーダーのメーター予想を短く出す（常時表示パネルと同じ計算）。
+  // 目標値の下に、設定ランク×締め時間×選択ボーダーのメーター予想を短く出す（下の「予想」カードと同じ計算）。
   var mainForecastKey='';
   function renderMainForecast(){
     var el=$('miniForecast');if(!el)return;
@@ -4529,29 +4467,25 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
         title=head+'の予想 約'+aoK(f.value,100)+(f.low!==null?'（目安 '+aoK(f.low,1000)+'〜'+aoK(f.high,1000)+'）':'')+(forecastData?'、普段比 '+(f.pct>0?'+':'')+f.pct+'%、自信度 '+s+'/10':'');}}
     el.textContent=text;if(stars){var sp=document.createElement('span');sp.className='mini-forecast-stars';sp.textContent=stars;el.appendChild(sp);}
     if(stale){var old=document.createElement('span');old.className='mini-forecast-old';old.textContent='※古';el.appendChild(old);title+='（予想データが36時間以上前のものです。通信できる状態で開き直すと更新します）';}
-    title+='。タップで常時表示パネルを開きます';
+    title+='。タップで予想の詳細へ移動します';
     el.title=title;el.setAttribute('aria-label',title);el.hidden=false;
   }
+  function showForecastCard(){var card=$('mainForecastCard');if(!card)return;try{card.scrollIntoView({block:'start',behavior:'smooth'});}catch(e){card.scrollIntoView();}var h=$('aoRankHead');if(h&&typeof h.focus==='function'){try{h.focus({preventScroll:true});}catch(e){}}}
   if($('miniForecast')){
-    // 予想の行をタップ（またはEnter・スペース）すると常時表示パネルを開く
-    $('miniForecast').addEventListener('click',function(){if(typeof openAlwaysOn==='function')openAlwaysOn();});
-    $('miniForecast').addEventListener('keydown',function(event){if(event.key==='Enter'||event.key===' '){event.preventDefault();if(typeof openAlwaysOn==='function')openAlwaysOn();}});
-    renderMainForecast();loadForecastData(false);setInterval(function(){if(!document.hidden){renderMainForecast();loadForecastData(false);}},1000);}
-  if($('alwaysOn')&&$('alwaysOnOpen')){
-    $('alwaysOnOpen').addEventListener('click',openAlwaysOn);
+    // 予想の行をタップ（またはEnter・スペース）すると、下の「予想」カードへ移動する
+    $('miniForecast').addEventListener('click',showForecastCard);
+    $('miniForecast').addEventListener('keydown',function(event){if(event.key==='Enter'||event.key===' '){event.preventDefault();showForecastCard();}});
+    renderMainForecast();renderAlwaysOn();loadForecastData(false);
+    setInterval(function(){if(!document.hidden){renderMainForecast();renderAlwaysOn();loadForecastData(false);}},1000);
+  }
+  // 直近の答え合わせの一覧を開閉する（details ではなくボタン。メニュー用の閉じるボタンの対象外にするため）
+  if($('aoHistoryToggle'))$('aoHistoryToggle').addEventListener('click',function(){var open=this.getAttribute('aria-expanded')!=='true';this.setAttribute('aria-expanded',String(open));$('aoHistory').hidden=!open;var mark=this.querySelector('.ao-history-mark');if(mark)mark.textContent=open?'▾':'▸';});
+  if($('alwaysOnOpen')&&$('alwaysOnClose')){
+    $('alwaysOnOpen').addEventListener('click',function(){if(alwaysOnIsOpen)closeAlwaysOn();else openAlwaysOn();});
     $('alwaysOnClose').addEventListener('click',closeAlwaysOn);
-    // 直近の答え合わせの一覧を開閉する（details ではなくボタン。メニュー用の閉じるボタンの対象外にするため）
-    if($('aoHistoryToggle'))$('aoHistoryToggle').addEventListener('click',function(){var open=this.getAttribute('aria-expanded')!=='true';this.setAttribute('aria-expanded',String(open));$('aoHistory').hidden=!open;var mark=this.querySelector('.ao-history-mark');if(mark)mark.textContent=open?'▾':'▸';});
-    // 現メーターはパネル内で直接入力・加減算できる（本体の現在値と同じ保存先）。
-    var aoCur=$('aoCurrentInput');
-    function aoCommitCurrent(){var n=readNumber(aoCur.value);if(n===null){aoCur.setAttribute('aria-invalid','true');aoSet('aoCurrentMsg','数値を入力してください（K・万・全角数字も使えます）。');return;}aoCur.removeAttribute('aria-invalid');if(n===parseNum(state.current)){aoCur.value=fmt(n);return;}var ok=setCurrent(n);aoCur.value=fmt(parseNum(state.current));aoSet('aoCurrentMsg',ok?'現メーターを '+fmt(parseNum(state.current))+' pt に更新しました。':'表示は更新しましたが、端末への保存に失敗しました。');renderAlwaysOn();}
-    aoCur.addEventListener('change',aoCommitCurrent);
-    aoCur.addEventListener('keydown',function(event){if(event.key==='Enter'){event.preventDefault();aoCommitCurrent();aoCur.blur();}else if(event.key==='Escape'){event.stopPropagation();aoCur.removeAttribute('aria-invalid');aoCur.value=fmt(parseNum(state.current));aoSet('aoCurrentMsg','');aoCur.blur();}});
-    aoCur.addEventListener('focus',function(){try{aoCur.select();}catch(e){}});
-    [['aoSub1k',-1000],['aoAdd1k',1000],['aoAdd10k',10000],['aoAdd100k',100000]].forEach(function(pair){$(pair[0]).addEventListener('click',function(){aoCur.removeAttribute('aria-invalid');adjustCurrentBy(pair[1]);aoCur.value=fmt(parseNum(state.current));aoSet('aoCurrentMsg',($('currentActionMsg')&&$('currentActionMsg').textContent)||'');renderAlwaysOn();});});
-    document.addEventListener('keydown',function(event){if(event.key==='Escape'&&!$('alwaysOn').hidden&&document.activeElement!==$('aoCurrentInput'))closeAlwaysOn();});
-    document.addEventListener('visibilitychange',function(){if(!document.hidden&&!$('alwaysOn').hidden){requestAlwaysOnLock();renderAlwaysOn();}});
-    // ホーム画面のショートカット等から #always-on で開ける。
+    document.addEventListener('keydown',function(event){if(event.key==='Escape'&&alwaysOnIsOpen)closeAlwaysOn();});
+    document.addEventListener('visibilitychange',function(){if(!document.hidden&&alwaysOnIsOpen)requestAlwaysOnLock();});
+    // ホーム画面のショートカット等から #always-on で常時表示モードにできる。
     if(typeof location!=='undefined'){if(location.hash==='#always-on')openAlwaysOn();window.addEventListener('hashchange',function(){if(location.hash==='#always-on')openAlwaysOn();});}
   }
   var meterContext=document.modelContext;
