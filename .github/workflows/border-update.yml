@@ -46,6 +46,9 @@ jobs:
       - name: 予想の答え合わせ（2026年以降の過去データ）
         continue-on-error: true
         run: node automation/backtest-forecast.mjs
+      - name: 日々の予想を記録し、実際のボーダーで答え合わせ
+        continue-on-error: true
+        run: node automation/record-forecast.mjs | tee forecast-log-report.json
       - name: 変更があればコミット
         run: |
           if [ -z "$(git status --porcelain -- data/)" ]; then
@@ -54,7 +57,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/borders.json data/border-provenance.json 2>/dev/null || git add data/borders.json
-          git add data/events.json data/meter-factors.json data/forecast-backtest.json 2>/dev/null || true
+          git add data/events.json data/meter-factors.json data/forecast-backtest.json data/forecast-log.json 2>/dev/null || true
           git commit -m "ボーダー自動更新 $(TZ=Asia/Tokyo date '+%Y-%m-%d %H:%M') JST"
           for attempt in 1 2 3; do
             git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:refs/heads/${GITHUB_REF_NAME}" && exit 0
@@ -69,6 +72,9 @@ jobs:
           fi
           if [ -f events-report.json ]; then
             { echo '### イベント収集の結果'; echo '```json'; cat events-report.json; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [ -f forecast-log-report.json ]; then
+            { echo '### 予想の記録と答え合わせ'; echo '```json'; cat forecast-log-report.json; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
           fi
       - name: 取得が止まった場合は失敗として通知
         if: steps.update.outputs.exit != '0'

@@ -11,7 +11,7 @@
 | 算出方法 | `calculator/calculation-methods.html` | |
 | オフライン（SW） | `calculator/sw.js`・`offline-assets.mjs`（manifest・アイコンPNG） | アイコン図形は `scripts/meter-icon-svg.mjs` |
 | 公開用の加工 | `scripts/build-pages.mjs`（`PAGES_VERSION`）→ `scripts/prepare-github-meter.mjs`・`lib/browser-security.mjs`（CSPハッシュ） | Sites専用部分（統計送信・管理リンク等）をここで外す |
-| メーター予想の情報源 | `automation/collect-events.mjs`（公式noteからイベントの事実だけ収集）・`automation/build-meter-factors.mjs`（曜日・給料日・暦・イベントの普段比） | 答え合わせは `automation/backtest-forecast.mjs`（→ `data/forecast-backtest.json`）。データは `data/events.json`・`data/meter-factors.json`。公開時に `forecastBundle` で `data/meter-forecast.json` を作る。テストは `tests/meter-sources.mjs`・`tests/always-on-forecast.mjs` |
+| メーター予想の情報源 | `automation/record-forecast.mjs`（日々の予想と実際の記録→`data/forecast-log.json`）・`automation/collect-events.mjs`（公式noteからイベントの事実だけ収集）・`automation/build-meter-factors.mjs`（曜日・給料日・暦・イベントの普段比） | 答え合わせは `automation/backtest-forecast.mjs`（→ `data/forecast-backtest.json`）。データは `data/events.json`・`data/meter-factors.json`。公開時に `forecastBundle` で `data/meter-forecast.json` を作る。テストは `tests/meter-sources.mjs`・`tests/always-on-forecast.mjs` |
 | ボーダー取得 | `automation/update-borders-json.mjs`（①記事本文：`lib/border-source.mjs`、②表画像：`automation/table-reader.mjs`） | データは `data/borders.json`（手編集禁止）、補完記録は `data/border-provenance.json` |
 | 定期実行・公開 | `.github/workflows/border-update.yml`・`pages.yml`・`calculator-tests.yml` | |
 
