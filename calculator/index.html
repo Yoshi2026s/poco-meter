@@ -2087,8 +2087,8 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
 #alwaysOn .ao-current input[aria-invalid="true"]{border-color:#f87171!important}
 #alwaysOn :is(button,input,a):focus-visible{outline:2px solid #ffd166!important;outline-offset:2px}
 #alwaysOn .ao-history{margin-top:6px;font-size:12px}
-#alwaysOn .ao-history summary{cursor:pointer;color:#8cc4ff!important;font-weight:700;min-height:32px;display:flex;align-items:center}
-#alwaysOn .ao-history summary:focus-visible{outline:2px solid #ffd166;outline-offset:2px}
+#alwaysOn .ao-history-toggle{display:flex;align-items:center;gap:2px;width:100%;min-height:36px;padding:0!important;margin:0;border:0!important;background:transparent!important;box-shadow:none!important;color:#8cc4ff!important;font-size:12px!important;font-weight:700;text-align:left;cursor:pointer;-webkit-appearance:none;appearance:none}
+#alwaysOn .ao-history-toggle span{color:#8cc4ff!important}
 #alwaysOn .ao-history ul{list-style:none;margin:4px 0 0;padding:0;display:grid;gap:4px}
 #alwaysOn .ao-history li{color:#c3d4ea!important;border-left:3px solid #3d8fe8;padding-left:6px}
 #alwaysOn .ao-history li.miss{border-left-color:#ffa94d}
@@ -2488,7 +2488,7 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
 <div class="ao-top"><h2 id="aoTitle">ポコメーター番長 常時表示</h2><button type="button" id="alwaysOnClose" class="ao-close">閉じる</button></div>
 <section class="ao-clock" aria-label="現在日時"><div class="ao-date" id="aoDate"></div><div class="ao-time num" id="aoTime"></div><div class="ao-sub"><span id="aoClockLabel">端末時刻</span><span><span id="aoDeadlineLabel">締めまで</span> <b class="num" id="aoCountdown"></b></span></div></section>
 <section class="ao-meter" aria-label="メーター"><div class="ao-row ao-current"><label for="aoCurrentInput">現メーター</label><input class="num" id="aoCurrentInput" type="text" inputmode="decimal" placeholder="例 120000" enterkeyhint="done" autocomplete="off" spellcheck="false" aria-describedby="aoCurrentMsg"></div><div class="ao-quick" role="group" aria-label="現メーターを調整"><button type="button" id="aoSub1k" aria-label="現メーターから1,000 ptを引く">−1K</button><button type="button" id="aoAdd1k" aria-label="現メーターに1,000 ptを足す">+1K</button><button type="button" id="aoAdd10k" aria-label="現メーターに10,000 ptを足す">+10K</button><button type="button" id="aoAdd100k" aria-label="現メーターに100,000 ptを足す">+100K</button></div><small class="ao-note" id="aoCurrentMsg" role="status" aria-live="polite"></small><div class="ao-row"><span>目標メーター</span><b class="num" id="aoTarget"></b></div><div class="ao-remain"><span id="aoRemainLabel">目標まであと</span><b class="num" id="aoRemain"></b></div><div class="ao-bar" aria-hidden="true"><i id="aoFill"></i></div><div class="ao-pct num" id="aoPct"></div><div class="ao-pace num" id="aoPace"></div></section>
-<section class="ao-forecast" aria-labelledby="aoRankHead"><h3 id="aoRankHead">設定ランクの予想</h3><div class="ao-fvalue num" id="aoForecast"></div><div class="ao-frange num" id="aoRange"></div><div class="ao-trend" id="aoTrend"></div><p class="ao-accuracy" id="aoAccuracy"></p><p class="ao-accuracy ao-record" id="aoRecord"></p><details class="ao-history" id="aoHistoryBox" hidden><summary id="aoHistorySummary">直近の答え合わせ</summary><ul id="aoHistory"></ul></details><ul class="ao-reasons" id="aoReasons"></ul><p class="ao-note" id="aoForecastNote"></p></section>
+<section class="ao-forecast" aria-labelledby="aoRankHead"><h3 id="aoRankHead">設定ランクの予想</h3><div class="ao-fvalue num" id="aoForecast"></div><div class="ao-frange num" id="aoRange"></div><div class="ao-trend" id="aoTrend"></div><p class="ao-accuracy" id="aoAccuracy"></p><p class="ao-accuracy ao-record" id="aoRecord"></p><div class="ao-history" id="aoHistoryBox" hidden><button type="button" class="ao-history-toggle" id="aoHistoryToggle" aria-expanded="false" aria-controls="aoHistory"><span class="ao-history-mark" aria-hidden="true">▸</span> <span id="aoHistorySummary">直近の答え合わせ</span></button><ul id="aoHistory" hidden></ul></div><ul class="ao-reasons" id="aoReasons"></ul><p class="ao-note" id="aoForecastNote"></p></section>
 <section class="ao-events ao-last" aria-labelledby="aoLastHead"><h3 id="aoLastHead">本日のイベラス（最終日）</h3><ul id="aoLast"></ul><p class="ao-note" id="aoLastNote"></p></section>
 <section class="ao-events" aria-labelledby="aoEventsHead"><h3 id="aoEventsHead">今日の開催イベント</h3><ul id="aoEvents"></ul><h3 class="ao-next-head" id="aoTomorrowHead" hidden>明日から</h3><ul id="aoTomorrow"></ul><p class="ao-note" id="aoEventsNote"></p></section>
 <p class="ao-foot"><span class="ao-logo">Yoshi1012</span><span id="aoWake"></span><span>予想は過去のボーダーと公式noteのイベント情報から出した目安です。</span></p>
@@ -4028,8 +4028,6 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
     var destination=trigger||menu.querySelector('summary');destination.focus({preventScroll:true});scrollToControl(destination,trigger?'center':'nearest');
   }
   document.querySelectorAll('details').forEach(function(menu){
-    // 常時表示パネル内の折りたたみ（直近の答え合わせ）はメニューではないので、閉じるボタン等を付けない
-    if(typeof menu.closest==='function'&&menu.closest('#alwaysOn'))return;
     menu.open=false;menu.removeAttribute('open');
     var summary=Array.prototype.find.call(menu.children,function(child){return child.tagName==='SUMMARY';});if(!summary)return;
     var content=menu.id==='displaySettings'?menu.querySelector('.display-settings-panel'):menu.querySelector('.header-help-panel')||menu;
@@ -4542,6 +4540,8 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
   if($('alwaysOn')&&$('alwaysOnOpen')){
     $('alwaysOnOpen').addEventListener('click',openAlwaysOn);
     $('alwaysOnClose').addEventListener('click',closeAlwaysOn);
+    // 直近の答え合わせの一覧を開閉する（details ではなくボタン。メニュー用の閉じるボタンの対象外にするため）
+    if($('aoHistoryToggle'))$('aoHistoryToggle').addEventListener('click',function(){var open=this.getAttribute('aria-expanded')!=='true';this.setAttribute('aria-expanded',String(open));$('aoHistory').hidden=!open;var mark=this.querySelector('.ao-history-mark');if(mark)mark.textContent=open?'▾':'▸';});
     // 現メーターはパネル内で直接入力・加減算できる（本体の現在値と同じ保存先）。
     var aoCur=$('aoCurrentInput');
     function aoCommitCurrent(){var n=readNumber(aoCur.value);if(n===null){aoCur.setAttribute('aria-invalid','true');aoSet('aoCurrentMsg','数値を入力してください（K・万・全角数字も使えます）。');return;}aoCur.removeAttribute('aria-invalid');if(n===parseNum(state.current)){aoCur.value=fmt(n);return;}var ok=setCurrent(n);aoCur.value=fmt(parseNum(state.current));aoSet('aoCurrentMsg',ok?'現メーターを '+fmt(parseNum(state.current))+' pt に更新しました。':'表示は更新しましたが、端末への保存に失敗しました。');renderAlwaysOn();}
