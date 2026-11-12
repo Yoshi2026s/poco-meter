@@ -18,7 +18,7 @@ run() {
   if "$@" >"$log/$name.log" 2>&1; then echo "ok  $name"; else echo "NG  $name"; tail -n 20 "$log/$name.log"; failed=1; fi
 }
 run pages-borders+table-channel node --test tests/pages-borders.mjs tests/table-channel.mjs
-for t in calculation-engine periods-default-rank items-core-input border-write-auth history-search meter-sources; do run "$t" node "tests/$t.mjs"; done
+for t in calculation-engine periods-default-rank items-core-input border-write-auth history-search meter-sources always-on-forecast; do run "$t" node "tests/$t.mjs"; done
 run pages-build node scripts/build-pages.mjs --out="$log/_site"
 # 生成物（過去ボーダー・E帯）が元ファイルと一致するか。不一致なら元に戻して知らせる。
 gen=(calculator/border-history.html calculator/e-border.html)

@@ -179,6 +179,44 @@ export function buildFactors(borders, events) {
   };
 }
 
+// 画面（常時表示パネル）用の小さな配布物。補正値のうち予想に使えるもの（insufficient 以外）と、
+// 今日の前後の日ごとの暦タグ・開催イベントだけを入れる。公開時（scripts/build-pages.mjs）に作る。
+export const FORECAST_TAGS = ['payday10-actual', 'payday10-next', 'payday20-actual', 'payday20-next', 'payday25-actual', 'payday25-next',
+  'month-start', 'month-end', 'holiday', 'year-end', 'golden-week', 'obon', 'christmas', 'valentine'];
+const TYPE_ORDER = {big: 0, event: 1, collab: 2, newcomer: 3, mission: 4, item: 5, notice: 6};
+export function forecastBundle(factors, events, todayISO, {before = 3, after = 45} = {}) {
+  const usable = s => s && s.status !== 'insufficient' && Number.isFinite(s.pct);
+  const pick = obj => Object.fromEntries(Object.entries(obj || {}).filter(([, s]) => usable(s)).map(([k, s]) => [k, {pct: s.pct, ...(s.label ? {label: s.label} : {}), days: s.days}]));
+  const out = {schema: 'poco-meter-forecast-v1', generatedAt: factors.generatedAt, today: todayISO, coverage: factors.coverage, weekday: {}, weekdayByRank: {}, calendar: {}, event: {}, days: {}};
+  for (const c of Object.keys(factors.weekday || {})) {
+    out.weekday[c] = Object.fromEntries(Object.entries(factors.weekday[c]).filter(([, s]) => usable(s)).map(([w, s]) => [w, {pct: s.pct, p25: s.p25, p75: s.p75, days: s.days}]));
+    out.weekdayByRank[c] = Object.fromEntries(Object.entries(factors.weekdayByRank?.[c] || {}).map(([r, ws]) => [r, Object.fromEntries(Object.entries(ws).filter(([, s]) => usable(s)).map(([w, s]) => [w, s.pct]))]));
+    out.calendar[c] = pick(Object.fromEntries(FORECAST_TAGS.map(t => [t, factors.calendar?.[c]?.[t]])));
+    out.event[c] = pick({first: factors.event?.[c]?.['big-first'], middle: factors.event?.[c]?.['big-middle'], last: factors.event?.[c]?.['big-last']});
+  }
+  const t0 = Date.parse(todayISO + 'T00:00:00Z');
+  for (let t = t0 - before * DAY; t <= t0 + after * DAY; t += DAY) {
+    const d = iso(t);
+    const list = [];
+    for (const e of events?.events || []) {
+      if (e.confidence === 'none') continue;
+      for (const p of e.periods || []) {
+        const end = p.end || p.start;
+        if (!p.start || d < p.start || d > end) continue;
+        list.push({title: e.title.slice(0, 60), label: p.label ? p.label.slice(0, 40) : null, type: e.type, ranks: (p.ranks?.length ? p.ranks : e.ranks) || [],
+          phase: d === p.start ? 'first' : d === end ? 'last' : 'middle', start: p.start, end: p.end || null, endTime: p.endTime || null, url: e.url});
+      }
+    }
+    // 同じ記事の重複を除き、大型→通常イベント→その他の順に最大8件。
+    const seen = new Set();
+    const uniq = list.sort((a, b) => (a.phase === 'last' ? 0 : 1) - (b.phase === 'last' ? 0 : 1))
+      .filter(x => { if (seen.has(x.url)) return false; seen.add(x.url); return true; }) // 1記事1件（最終日の期間を優先）
+      .sort((a, b) => (TYPE_ORDER[a.type] ?? 9) - (TYPE_ORDER[b.type] ?? 9) || (b.ranks.length ? 1 : 0) - (a.ranks.length ? 1 : 0)).slice(0, 8);
+    out.days[d] = {tags: calendarTags(d).filter(x => FORECAST_TAGS.includes(x)), events: uniq};
+  }
+  return out;
+}
+
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const borders = JSON.parse(await readFile(arg('borders', 'data/borders.json'), 'utf8'));
   let events = null; try { events = JSON.parse(await readFile(arg('events', 'data/events.json'), 'utf8')); } catch {}

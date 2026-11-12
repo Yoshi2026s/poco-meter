@@ -31,6 +31,7 @@ jobs:
           node tests/border-write-auth.mjs
           node tests/history-search.mjs
           node tests/meter-sources.mjs
+          node tests/always-on-forecast.mjs
       # 依存パッケージ不要。上の手順の結果にかかわらず実行する。
       - name: GitHub Pages版とボーダー更新（ネットワークなし）を検証
         if: always()
