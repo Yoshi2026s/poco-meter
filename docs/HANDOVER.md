@@ -60,6 +60,10 @@ git switch -c codex/example-task "origin/(root)"
 - 初期値は旧Sites公開APIの1951件（〜2026-10-18）。10/19〜11/03 は月別表画像から補完済み（証跡 `db/backfill-2026-10-19-to-11-03-evidence.json`）。
 - 欠け：10/31 13時（取得元の表が空欄）。3日経過前の日は自動更新の第2系統が後日補う。
 - 補完した日・取得元に無い日は `data/border-provenance.json` に記録される。
+- メーター予想の情報源（画面には未接続）：
+  - `data/events.json`：`automation/collect-events.mjs` が Pococha公式note（report.pococha.com）のRSS・サイトマップ・記事ページから、イベント名・期間・対象ランク・URLだけを集めたもの。本文は保存しない。初回は2024-12以降を手動で収集した（2026-11-12）。
+  - `data/meter-factors.json`：`automation/build-meter-factors.mjs` が borders.json と events.json から、曜日・給料日（10・20・25日と実支給日）・暦・大型イベントごとの「普段比」を集計したもの。
+  - 自動の定期実行には未登録（追加には承認が必要）。個人のnote・ブログは未収集（発見手段と作者ごとの転載可否が未確認。HAISHIN LAB は使わない）。
 
 ## 起動と時刻
 - 初めて開いた端末では、公開ボーダーの取得が終わるまで目標欄に「読込中…」と表示する。取得に失敗した場合は「データ無し」に戻る。
