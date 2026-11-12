@@ -49,7 +49,7 @@ git switch -c codex/example-task "origin/(root)"
 - 公開：GitHub Pages https://yoshi2026s.github.io/poco-meter/ （既定ブランチ `(root)` への push で自動公開）
 - ボーダー：`data/borders.json`。GitHub Actions が毎日 05:00・17:00 JST に ONE CARAT から取得（記事本文＋月別表画像の2系統）。同じジョブでPococha公式noteのイベント新着も収集する。
 - 旧Sites・署名キー・旧ChatGPTタスクは使わない。旧Sitesには新URLへの移転案内を掲示済み。
-- ツール版：`scripts/build-pages.mjs` の `PAGES_VERSION`（v2026.11.12.6）。
+- ツール版：`scripts/build-pages.mjs` の `PAGES_VERSION`（v2026.11.12.7）。
 - メーター画面の並び：最上部にタイトル欄（使い方・目標値の算出方法・表示設定・再読み込み・アプリ更新）、その下にメーター、補助メニュー、E帯・過去ボーダーの入口。タイトル欄は `#titleTop`（`.title-top`）に入り、幅はメーターと同じ。 タイトル欄は2段（1段目：タイトルと更新日時・版、2段目：4ボタン）で、スマホでは約106px。
 - 目標のボーダー選択（メーターのボーダー欄・詳細側の `quickBorder`・`pickBorder`）は ±0・+1・+2 のみで「手入力」の選択肢は無い。目標値を直接入力した時も欄は直前のボーダー（`state.analysisBorder`、無ければ±0）を表示し、フォーカスが外れただけでは自動計算に戻さない。別のボーダーを選ぶか「既定値」で自動計算に戻る。既定値設定の `defaultBorder` だけは「手入力」を残す（JSで追加）。
 - メーター画面のYoshi1012タグ（`.tool-creator-logo`）はフッターの `.footer-support` 内、「免責事項」の右隣（2列グリッドの右）で、免責事項ボタンと同じ幅・高さ44px。免責事項を開くと本文の下に回る。

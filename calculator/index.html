@@ -4314,8 +4314,8 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
   function aoK(n,unit){return fmtK(Math.round(n/unit)*unit);}
   function aoSet(id,text){var el=$(id);if(el&&el.textContent!==text)el.textContent=text;}
   function aoCleanTitle(s){return String(s||'').replace(/\p{Extended_Pictographic}|️|‍/gu,'').replace(/[＼／]/g,' ').replace(/\s+/g,' ').trim();}
-  // イベントの名前：期間の見出し（「開催期間」等を除く）を優先し、記事タイトルに含まれる・無いときは記事タイトル。
-  function aoEventName(e){var t=aoCleanTitle(e.title),l=aoCleanTitle(String(e.label||'').replace(/\s*(開催期間|イベント期間|開催日程|開催日時|キャンペーン期間)$/,''));if(!l||l.length<2||t.indexOf(l)>=0)return t;
+  // イベントの名前：収集時に整えた名前（見出しの決まり文句・末尾の「開催期間」等を除いたもの）を優先し、無いときは記事タイトル。
+  function aoEventName(e){var t=aoCleanTitle(e.title),l=aoCleanTitle(String(e.label||'').replace(/\s*(開催期間|イベント期間|開催日程|開催日時|キャンペーン期間)$/,''));if(!l||l.length<2)return t;
     // 「準決勝」「予選」など段階名だけのときは、記事タイトル（【】や記号を除いた先頭20字）を前に付ける
     if(/^(予選|準決勝|決勝|本戦|本選|準々決勝|第d+(弾|回|ステージ|日程)|ステージd*|リーグ|前半|後半|DAYd+)/.test(l)&&l.length<=12){var q=t.match(/[『「]([^』」]{2,30})[』」]/);return (q?q[1]:t.replace(/【[^】]*】|[＼／]/g,'').trim().slice(0,20))+' '+l;}
     return l;}

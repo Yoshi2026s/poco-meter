@@ -138,7 +138,7 @@ assert.ok(html.includes("if(f.status!=='ok'&&liveBorderBusy){aoSet('aoForecast',
 }
 // イベントの表示名と内容：見出しを優先（「開催期間」等は外す）し、種類と対象を添える
 assert.equal(e.aoEventName({title: 'POCO LAND 10周年祭 開催決定！', label: 'ポコキャラバン10周年祭 開催期間'}), 'ポコキャラバン10周年祭');
-assert.equal(e.aoEventName({title: 'POCO LAND 10周年祭 開催決定！', label: 'POCO LAND 10周年祭'}), 'POCO LAND 10周年祭 開催決定！');
+assert.equal(e.aoEventName({title: 'POCO LAND 10周年祭 開催決定！', label: 'POCO LAND 10周年祭'}), 'POCO LAND 10周年祭');
 assert.match(e.aoEventName({title: '＼新規ライバー限定イベント／『Kimono MUSE』創刊号専属モデル選抜イベント#2', label: '準決勝'}), /^Kimono MUSE 準決勝$/);
 assert.match(e.aoEventName({title: '【予告】『ar』年間モデルオーディション', label: '決勝'}), /^ar 決勝$/);
 assert.equal(e.aoEventKind({type: 'big', audience: ['ボイス']}), '・大型イベント・ボイス');

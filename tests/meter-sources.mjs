@@ -1,6 +1,6 @@
 // メーター予想の情報源（イベント収集・補正値の集計）の最小テスト。ネットワーク不要。
 import assert from 'node:assert/strict';
-import {findPeriods, findRanks, classify, pickLabel, articleText, toEvent, SOURCES} from '../automation/collect-events.mjs';
+import {findPeriods, findRanks, classify, pickLabel, articleText, toEvent, SOURCES, tidyLabel, titleNameOf} from '../automation/collect-events.mjs';
 import {paydayOf, calendarTags, buildFactors} from '../automation/build-meter-factors.mjs';
 
 // 期間：年あり・年なし・同日の時刻範囲・「より開催」・エントリ期間の区別
@@ -68,4 +68,21 @@ assert.equal(pickLabel('※', '夏祭り'), '夏祭り');
   const e = toEvent(SOURCES[0], 'https://report.pococha.com/n/x', '<meta property="og:title" content="【ボイスライバー限定】冬祭り"><script>"datePublished":"2026-11-20T00:00:00+09:00"</script>' + html);
   assert.equal(e.periods.length, 1); assert.equal(e.excluded, 2); assert.deepEqual(e.audience, ['ボイス']);
 }
+// 名前の整え方：見出しの決まり文句（概要・ルール/詳細・〜について・末尾の開催期間）を外し、決まり文句だけなら記事タイトルの名前
+assert.equal(tidyLabel('つなごうPocochaの輪！ポコキャラバン10周年祭 開催期間', 'x'), 'つなごうPocochaの輪！ポコキャラバン10周年祭');
+assert.equal(tidyLabel('イベント概要 イベント期間', 'トーク番組出演権'), 'トーク番組出演権');
+assert.equal(tidyLabel('ルール/詳細 イベント期間', '始球式'), '始球式');
+assert.equal(tidyLabel('この記事でご紹介する内容', 'アイドル応援ミッション'), 'アイドル応援ミッション');
+assert.equal(tidyLabel('“チーム対抗”ポコチャバトルについて', 'x'), '“チーム対抗”ポコチャバトル');
+assert.equal(tidyLabel('「JOYSOUND認定 歌うまライバー決定戦！2026 Autumn」採点対象楽', 'x'), 'JOYSOUND認定 歌うまライバー決定戦！2026 Autumn');
+assert.equal(tidyLabel('5月実施予定！Pococha内イベント「ミューズ プレオーディション」の概要 イベント期間', 'x'), 'ミューズ プレオーディション');
+assert.equal(tidyLabel('ついに本戦！「ar30周年企画 年間出演モデルオーディション', 'x'), 'ついに本戦！ ar30周年企画 年間出演モデルオーディション', '閉じていない括弧は記号だけ外す');
+assert.equal(tidyLabel('新人戦 予選期間', 'x'), '新人戦 予選期間', '段階名は残す');
+assert.equal(tidyLabel('', 'タイトル名'), 'タイトル名');
+// 記事タイトルの名前：『』「」の名前を優先、日付・お知らせの【】や「のご紹介」を外す、内容のある【】は残す
+assert.equal(titleNameOf('Pococha 年末の一大イベント「POCO LAND 10周年祭」開催決定！〜10年分の、いつもに拍手を〜'), 'POCO LAND 10周年祭');
+assert.equal(titleNameOf('【9/16〜9/29】ファミリーみんなで新しいなかまを迎えよう！最大30,000コイン山分け 友達招待キャンペーン'), 'ファミリーみんなで新しいなかまを迎えよう！最大30,000コイン山分け 友達招待キャンペーン');
+assert.equal(titleNameOf('【IDOL RISING】 アイドル応援ミッションのご紹介！'), '【IDOL RISING】 アイドル応援ミッション');
+assert.equal(titleNameOf('【Music Pococha LIVE!!🎤 -福岡クリスマスアドベント 2026- 開催🌲✨】'), 'Music Pococha LIVE!! -福岡クリスマスアドベント 2026');
+assert.equal(titleNameOf('「ヒーロー戦隊」アイテム登場!'), 'ヒーロー戦隊');
 console.log('meter-sources ok');
