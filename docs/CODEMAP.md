@@ -27,7 +27,7 @@
 | 3811–3913 | アクセス統計（Pages版の作成時に外す） |
 
 本体スクリプトの主な関数（`grep -n "function 名前" calculator/index.html`）：
-- 常時表示パネル：`forecastBase`・`meterForecast`・`forecastStars`・`forecastDayISO`・`renderAlwaysOn`・`openAlwaysOn`・`loadForecastData`（本体スクリプト末尾、`meterContext` の直前）
+- 予想・イベントのカードと常時表示モード（旧 常時表示パネル）：`forecastBase`・`meterForecast`・`forecastStars`・`forecastDayISO`・`renderAlwaysOn`・`openAlwaysOn`・`loadForecastData`（本体スクリプト末尾、`meterContext` の直前）
 - 保存・復元：`packStoredState`・`unpackStoredState`・`recoverStoredState`・`save`（2127〜2200）
 - 時刻・締め：`jstNow`・`meterWindow`・`renderDeadlineCountdown`（2439〜2455）、`syncClose`・`commitClose`（3490〜）
 - ボーダー同期：`mergeLiveBorders`・`syncLiveBorders`（2546〜2614）
