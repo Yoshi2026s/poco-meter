@@ -210,9 +210,9 @@ function pageEngine(settings, capabilities = {}) {
   document.body = nodes.find(node => node.tagName === 'BODY');
   document.documentElement = nodes.find(node => node.tagName === 'HTML');
   const timers = new Map(), intervals = new Map(); let timerId = 0;
-  const window = { isSecureContext: capabilities.isSecureContext ?? false, location: { hash: '' }, addEventListener: (type, handler) => listen(windowHandlers, type, handler),
+  const window = { isSecureContext: capabilities.isSecureContext ?? false, location: capabilities.location ?? { hash: '' }, addEventListener: (type, handler) => listen(windowHandlers, type, handler),
     matchMedia: capabilities.matchMedia ?? (query => ({ matches: query.includes('prefers-reduced-motion') ? !!capabilities.reducedMotion : false })),
-    history: { pushState(_state, _unused, url) { window.location.hash = url; } },
+    history: { pushState(_state, _unused, url) { window.location.hash = url; }, replaceState(_state, _unused, url) { const i = String(url).indexOf('#'); window.location.hash = i >= 0 ? String(url).slice(i) : ''; } },
     visualViewport: { addEventListener: (type, handler) => listen(viewportHandlers, type, handler) } };
   let intersectionCallback;
   class IntersectionObserverDouble { constructor(callback) { intersectionCallback = callback; } observe() {} }
@@ -223,7 +223,7 @@ function pageEngine(settings, capabilities = {}) {
     static now() { return clock; }
   }
   const context = vm.createContext({ Date: FixedDate, document, performance: capabilities.performance,
-    window, navigator: capabilities.navigator ?? {}, Event, IntersectionObserver: IntersectionObserverDouble,
+    window, ...(capabilities.location ? {location: window.location, history: window.history} : {}), navigator: capabilities.navigator ?? {}, Event, IntersectionObserver: IntersectionObserverDouble,
     localStorage: capabilities.localStorage ?? { getItem: key => stored.get(key) ?? null,
       setItem: (key, value) => stored.set(key, value) },
     setTimeout: (callback, delay) => { const id = ++timerId; timers.set(id, { callback, delay }); return id; },

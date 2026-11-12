@@ -152,4 +152,18 @@ assert.equal(e.aoEventKind({type: 'newcomer', audience: ['新規ライバー']})
   assert.equal(b2.days['2026-11-12'].events.length, 1);
   assert.equal(b2.days['2026-11-14'].lasts.length, 1);
 }
+// スマホ幅の起動：通常は現メーターを0から始める。常時表示パネル（#always-on）を開いたまま読み込み直したときは、
+// 同じ締め時間の区切りで保存した現メーターを残す（前の区切りの値は残さない）。
+{
+  const phone = {matchMedia: q => ({matches: /max-width:700px/.test(q)})};
+  const at = Date.parse('2026-10-03T21:00:00+09:00');
+  const saved = (savedAt) => ({target: '500000', current: '160000', currentSavedAt: savedAt, deadline: '22:00'});
+  const loc = hash => ({hash, pathname: '/', search: ''});
+  const kept = pageEngine(saved(at - 30 * 60e3), {...phone, location: loc('#always-on')});
+  assert.equal(kept.element('current').value, '160,000', 'パネルを開いたまま読み込み直すと現メーターを残す');
+  const normal = pageEngine(saved(at - 30 * 60e3), {...phone, location: loc('')});
+  assert.equal(normal.element('current').value, '0', '通常のスマホ起動は従来どおり0から');
+  const old = pageEngine(saved(at - 25 * 3600e3), {...phone, location: loc('#always-on')});
+  assert.equal(old.element('current').value, '0', '前の締め時間の区切りで保存した値は残さない');
+}
 console.log('always-on-forecast ok');

@@ -2045,6 +2045,36 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
 @media (min-width:640px) and (max-height:600px),(min-width:960px){.always-on .ao-inner{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:'top top' 'clock forecast' 'meter forecast' 'meter last' 'meter events' 'foot foot';grid-template-rows:auto auto auto auto 1fr auto}.always-on .ao-events.ao-last{grid-area:last;align-self:start}.always-on .ao-top{grid-area:top}.always-on .ao-clock{grid-area:clock}.always-on .ao-meter{grid-area:meter;align-self:start}.always-on .ao-forecast{grid-area:forecast}.always-on .ao-events{grid-area:events;align-self:start}.always-on .ao-foot{grid-area:foot}.always-on .ao-time{font-size:clamp(40px,9vw,88px)}}
 @media (min-width:560px) and (max-height:460px){.always-on .ao-inner{gap:8px;padding-top:8px;padding-bottom:8px}.always-on section{padding:8px 12px}.always-on .ao-time{font-size:clamp(36px,8vw,64px)}.always-on .ao-fvalue,.always-on .ao-remain b{font-size:clamp(22px,5vw,34px)}}
 @media (prefers-reduced-motion:reduce){.always-on .ao-inner{transition:none}}
+/* 常時表示パネルは黒地の専用配色。画面テーマ（ライト・画面カラー）の強制色（!important）に負けないよう、IDで指定し直す。 */
+#alwaysOn.always-on{color-scheme:dark;--ink:#f2f7ff;--text:#f2f7ff;--muted:#c3d4ea;--sub:#c3d4ea;--paper:#07101f;--panel:#07101f;--bg:#000;--surface:#07101f;--raised:#0f2140;--line:#24497a;--teal:#8cc4ff;--input-bg:#0f2140;--field:#0f2140;--control-border:#3a6aa5;--on-accent:#fff;background:#000!important;color:#f2f7ff!important}
+#alwaysOn :is(div,p,span,small,label,b,strong,h2,h3,li,a,time,ul){color:#f2f7ff!important;text-shadow:none!important;-webkit-text-fill-color:currentColor}
+#alwaysOn section{background:#07101f!important;border-color:#24497a!important;box-shadow:none!important}
+#alwaysOn section.ao-last{border-color:#9a4517!important}
+#alwaysOn :is(h2,h3){color:#8cc4ff!important;background:none!important}
+#alwaysOn .ao-time,#alwaysOn .ao-fvalue{color:#fff!important}
+#alwaysOn :is(.ao-sub,.ao-sub span,.ao-row,.ao-row label,.ao-remain,.ao-remain span,.ao-pct,.ao-reasons li,.ao-events li small){color:#c3d4ea!important}
+#alwaysOn :is(.ao-row b,.ao-events li a,.ao-accuracy,.ao-frange,.ao-trend){color:#f2f7ff!important}
+#alwaysOn .ao-sub b{color:#ffd166!important}
+#alwaysOn .ao-remain b{color:#5fd0ff!important}
+#alwaysOn .ao-remain b.done{color:#4ade80!important}
+#alwaysOn .ao-trend.up{color:#ffab80!important}
+#alwaysOn .ao-trend.down{color:#8fd8ff!important}
+#alwaysOn .ao-last li small b{color:#ffc29e!important}
+#alwaysOn :is(.ao-note,.ao-note *){color:#a9bdd6!important}
+#alwaysOn :is(.ao-foot,.ao-foot span){color:#9fb3cc!important}
+#alwaysOn .ao-foot .ao-logo{color:#5aa8ff!important}
+#alwaysOn .ao-bar{background:#16294a!important}
+#alwaysOn .ao-events li{border-left-color:#3d8fe8!important}
+#alwaysOn .ao-events li.ao-big{border-left-color:#ffd166!important}
+#alwaysOn .ao-last li{border-left-color:#f97316!important}
+#alwaysOn .ao-badge{background:#1763b5!important;color:#fff!important}
+#alwaysOn .ao-badge.last{background:#c2410c!important}
+#alwaysOn :is(.ao-close,.ao-quick button){background:#0f2140!important;color:#e8f2ff!important;border:1px solid #3a6aa5!important;box-shadow:none!important;-webkit-appearance:none;appearance:none;touch-action:manipulation}
+#alwaysOn :is(.ao-close,.ao-quick button):active{background:#1e4f8f!important}
+#alwaysOn .ao-current input{background:#0f2140!important;color:#fff!important;-webkit-text-fill-color:#fff;border:1px solid #3a6aa5!important;box-shadow:none!important;opacity:1}
+#alwaysOn .ao-current input::placeholder{color:#7f97b6!important;-webkit-text-fill-color:#7f97b6}
+#alwaysOn .ao-current input[aria-invalid="true"]{border-color:#f87171!important}
+#alwaysOn :is(button,input,a):focus-visible{outline:2px solid #ffd166!important;outline-offset:2px}
 </style>
 </head>
 <body>
@@ -2440,7 +2470,7 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
 <div class="ao-inner" id="alwaysOnInner">
 <div class="ao-top"><h2 id="aoTitle">ポコメーター番長 常時表示</h2><button type="button" id="alwaysOnClose" class="ao-close">閉じる</button></div>
 <section class="ao-clock" aria-label="現在日時"><div class="ao-date" id="aoDate"></div><div class="ao-time num" id="aoTime"></div><div class="ao-sub"><span id="aoClockLabel">端末時刻</span><span><span id="aoDeadlineLabel">締めまで</span> <b class="num" id="aoCountdown"></b></span></div></section>
-<section class="ao-meter" aria-label="メーター"><div class="ao-row ao-current"><label for="aoCurrentInput">現メーター</label><input class="num" id="aoCurrentInput" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" spellcheck="false" aria-describedby="aoCurrentMsg"></div><div class="ao-quick" role="group" aria-label="現メーターを調整"><button type="button" id="aoSub1k" aria-label="現メーターから1,000 ptを引く">−1K</button><button type="button" id="aoAdd1k" aria-label="現メーターに1,000 ptを足す">+1K</button><button type="button" id="aoAdd10k" aria-label="現メーターに10,000 ptを足す">+10K</button><button type="button" id="aoAdd100k" aria-label="現メーターに100,000 ptを足す">+100K</button></div><small class="ao-note" id="aoCurrentMsg" role="status" aria-live="polite"></small><div class="ao-row"><span>目標メーター</span><b class="num" id="aoTarget"></b></div><div class="ao-remain"><span id="aoRemainLabel">目標まであと</span><b class="num" id="aoRemain"></b></div><div class="ao-bar" aria-hidden="true"><i id="aoFill"></i></div><div class="ao-pct num" id="aoPct"></div></section>
+<section class="ao-meter" aria-label="メーター"><div class="ao-row ao-current"><label for="aoCurrentInput">現メーター</label><input class="num" id="aoCurrentInput" type="text" inputmode="decimal" placeholder="例 120000" enterkeyhint="done" autocomplete="off" spellcheck="false" aria-describedby="aoCurrentMsg"></div><div class="ao-quick" role="group" aria-label="現メーターを調整"><button type="button" id="aoSub1k" aria-label="現メーターから1,000 ptを引く">−1K</button><button type="button" id="aoAdd1k" aria-label="現メーターに1,000 ptを足す">+1K</button><button type="button" id="aoAdd10k" aria-label="現メーターに10,000 ptを足す">+10K</button><button type="button" id="aoAdd100k" aria-label="現メーターに100,000 ptを足す">+100K</button></div><small class="ao-note" id="aoCurrentMsg" role="status" aria-live="polite"></small><div class="ao-row"><span>目標メーター</span><b class="num" id="aoTarget"></b></div><div class="ao-remain"><span id="aoRemainLabel">目標まであと</span><b class="num" id="aoRemain"></b></div><div class="ao-bar" aria-hidden="true"><i id="aoFill"></i></div><div class="ao-pct num" id="aoPct"></div></section>
 <section class="ao-forecast" aria-labelledby="aoRankHead"><h3 id="aoRankHead">設定ランクの予想</h3><div class="ao-fvalue num" id="aoForecast"></div><div class="ao-frange num" id="aoRange"></div><div class="ao-trend" id="aoTrend"></div><p class="ao-accuracy" id="aoAccuracy"></p><ul class="ao-reasons" id="aoReasons"></ul><p class="ao-note" id="aoForecastNote"></p></section>
 <section class="ao-events ao-last" aria-labelledby="aoLastHead"><h3 id="aoLastHead">本日のイベラス（最終日）</h3><ul id="aoLast"></ul><p class="ao-note" id="aoLastNote"></p></section>
 <section class="ao-events" aria-labelledby="aoEventsHead"><h3 id="aoEventsHead">今日の開催イベント</h3><ul id="aoEvents"></ul><h3 class="ao-next-head" id="aoTomorrowHead" hidden>明日から</h3><ul id="aoTomorrow"></ul><p class="ao-note" id="aoEventsNote"></p></section>
@@ -2573,7 +2603,11 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
   }
   state.goalDefaultsVersion=4;
   var phoneDefaultsOnOpen=!!(window.matchMedia&&window.matchMedia('(max-width:700px)').matches);
-  if(phoneDefaultsOnOpen){state.target='';state.current='0';state.currentSavedAt=Date.now();}
+  // 常時表示パネルを開いたまま再読み込みされたとき（スマホがタブを読み込み直したときなど）は、
+  // 同じ締め時間の区切りで保存した現メーターを残す。それ以外のスマホでの起動は従来どおり0から始める。
+  var keepAlwaysOnCurrent=false;
+  try{keepAlwaysOnCurrent=phoneDefaultsOnOpen&&location.hash==='#always-on'&&Number(state.currentSavedAt)>0&&Number(state.currentSavedAt)<=Date.now()&&meterWindow(Number(state.currentSavedAt)).end===meterWindow(Date.now()).end;}catch(e){keepAlwaysOnCurrent=false;}
+  if(phoneDefaultsOnOpen){state.target='';if(!keepAlwaysOnCurrent){state.current='0';state.currentSavedAt=Date.now();}}
   if(state.goalDefaults.applyOnLoad||phoneDefaultsOnOpen)assignGoalDefaults(state.goalDefaults);
   state.coreCount='0';
   state.pick=(state.pick!==''&&[0,1,2].indexOf(+state.pick)>=0)?+state.pick:'';
@@ -4328,10 +4362,13 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
       var li=document.createElement('li'),a=document.createElement('a'),meta=document.createElement('small');
       if(e.type==='big')li.className='ao-big';
       a.href=e.url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=aoEventName(e);li.appendChild(a);
-      if((e.ranks||[]).indexOf(rank)>=0){var b=document.createElement('span');b.className='ao-badge';b.textContent='対象ランク';li.appendChild(b);}
-      if(e.phase==='last'&&!lastView){var l=document.createElement('span');l.className='ao-badge last';l.textContent='最終日';li.appendChild(l);}
+      // 印（対象ランク・最終日）は名前の下の行の末尾に付ける（名前の後ろで1行だけ折り返さないように）
+      var badges=[];
+      if((e.ranks||[]).indexOf(rank)>=0){var b=document.createElement('span');b.className='ao-badge';b.textContent='対象ランク';badges.push(b);}
+      if(e.phase==='last'&&!lastView){var l=document.createElement('span');l.className='ao-badge last';l.textContent='最終日';badges.push(l);}
       if(lastView){var endB=document.createElement('b');endB.textContent=(e.endTime?'本日 '+e.endTime+' まで':'本日まで（終了時刻は記事に記載なし）');meta.appendChild(endB);meta.appendChild(document.createTextNode('・'+aoMD(e.start)+'〜'+aoEventKind(e)));}
       else meta.textContent=aoMD(e.start)+(e.end&&e.end!==e.start?'〜'+aoMD(e.end):'')+(e.endTime?' '+e.endTime+'まで':'')+aoEventKind(e);
+      badges.forEach(function(x){meta.appendChild(x);});
       li.appendChild(meta);ul.appendChild(li);
     });
     return ul;
@@ -4355,7 +4392,7 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
     if(f.status!=='ok'&&liveBorderBusy){aoSet('aoForecast','読込中…');aoSet('aoRange','');aoSet('aoTrend','');aoSet('aoForecastNote','過去のボーダーを読み込み中です。読み込みが終わると予想を表示します。');return;}
     if(f.status!=='ok'){aoSet('aoForecast','—');aoSet('aoRange','');aoSet('aoTrend','');aoSet('aoForecastNote','直近14日のうち前日までの記録が'+(f.n||0)+'日分しかないため、予想を出していません（5日分以上で表示）。');return;}
     aoSet('aoForecast','約 '+aoK(f.value,100));
-    aoSet('aoRange',f.low!==null?'目安の幅 '+aoK(f.low,1000)+' 〜 '+aoK(f.high,1000)+'（過去の予想で実際の値の半数が入った幅）':'');
+    aoSet('aoRange',f.low!==null?'目安の幅 '+aoK(f.low,1000)+' 〜 '+aoK(f.high,1000)+'（過去は2回に1回この幅に入った）':'');
     var acc=forecastAccuracy(forecastData,close,rank,idx),stars=forecastStars(acc,f);
     var trend=$('aoTrend');aoSet('aoTrend',forecastData?'普段比 '+(f.pct>0?'+':'')+f.pct+'%　'+forecastTrend(f.pct)+'\n自信度 '+'★★★★★★★★★★'.slice(0,stars)+'☆☆☆☆☆☆☆☆☆☆'.slice(stars)+' '+stars+'/10':'直近14日の中央値（補正なし）');
     aoSet('aoAccuracy',acc?'過去の答え合わせ（'+aoMD(acc.from)+'〜'+aoMD(acc.to)+'・'+closeLabel+'・'+(acc&&acc.scope==='series'?rank+'のボーダー'+AO_BORDERS[idx]:rank.charAt(0)+'帯')+'）：±10%以内 '+acc.within10+'%・誤差の中央値 '+acc.medianAbsErr+'%':'');
@@ -4384,7 +4421,7 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
     var curInput=$('aoCurrentInput');if(curInput&&document.activeElement!==curInput&&curInput.getAttribute('aria-invalid')!=='true'&&curInput.value!==fmt(cur))curInput.value=fmt(cur);aoSet('aoTarget',tgt?fmt(tgt)+' pt':'未設定');
     aoSet('aoRemainLabel',!tgt?'目標を設定してください':cur>=tgt?'目標達成':'目標まであと');
     aoSet('aoRemain',tgt?fmtK(Math.max(0,tgt-cur)):'—');$('aoRemain').classList.toggle('done',!!tgt&&cur>=tgt);
-    var pct=tgt?Math.max(0,Math.min(100,Math.floor(cur/tgt*100))):0;$('aoFill').style.width=pct+'%';aoSet('aoPct',tgt?pct+'%':'');
+    var pct=tgt?Math.max(0,Math.min(100,Math.floor(cur/tgt*100))):0;$('aoFill').style.width=pct+'%';aoSet('aoPct',tgt?(cur>0?pct+'%':'0%（現メーターを入力すると進み具合を表示）'):'');
     renderAlwaysOnForecast(nowMs);renderAlwaysOnEvents(nowMs);
   }
   async function loadForecastData(force){
@@ -4413,6 +4450,8 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
     clearInterval(alwaysOnTimer);alwaysOnTimer=setInterval(function(){if(!document.hidden){renderAlwaysOn();loadForecastData(false);}},250);
     clearInterval(alwaysOnShiftTimer);alwaysOnShiftTimer=setInterval(shiftAlwaysOn,60000);
     try{$('alwaysOnClose').focus({preventScroll:true});}catch(e){}
+    // 再読み込み（スマホがタブを読み込み直したとき）でもパネルに戻れるよう、URLに #always-on を付ける（履歴は増やさない）
+    if(typeof location!=='undefined'&&location.hash!=='#always-on'){try{history.replaceState(null,'',location.pathname+location.search+'#always-on');}catch(e){}}
   }
   function closeAlwaysOn(){
     var box=$('alwaysOn');if(!box||box.hidden)return;
