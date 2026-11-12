@@ -4,6 +4,7 @@
 import {readFile, writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {tidyLabel, titleNameOf} from './collect-events.mjs';
 
 const arg = (name, def) => { const a = process.argv.find(x => x.startsWith(`--${name}=`)); return a ? a.slice(name.length + 3) : def; };
 export const RANKS = ['D1','D2','D3','C1','C2','C3','B1','B2','B3','A1','A2','A3','S1','S2','S3','S4','S5','S6'];
@@ -204,7 +205,7 @@ export function forecastBundle(factors, events, todayISO, {before = 3, after = 4
       for (const p of e.periods || []) {
         const end = p.end || p.start;
         if (!p.start || d < p.start || d > end) continue;
-        list.push({title: e.title.slice(0, 60), label: p.label ? p.label.slice(0, 40) : null, type: e.type, ranks: (p.ranks?.length ? p.ranks : e.ranks) || [],
+        list.push({title: e.title.slice(0, 60), label: (tidyLabel(p.label || "", titleNameOf(e.title)) || "").slice(0, 48) || null, type: e.type, ranks: (p.ranks?.length ? p.ranks : e.ranks) || [],
           phase: d === p.start ? 'first' : d === end ? 'last' : 'middle', ends: d === end, start: p.start, end: p.end || null, endTime: p.endTime || null, url: e.url,
           ...(e.audience?.length ? {audience: e.audience} : {})});
       }

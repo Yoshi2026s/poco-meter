@@ -132,6 +132,54 @@ export function cleanLabel(s) {
   return String(s || '').replace(/\p{Extended_Pictographic}|\uFE0F|\u200D/gu, '').replace(/[:：\s・■▼▶︎●◆◇★☆【】]+$/, '').replace(/^[\s・■▼▶︎●◆◇★☆]+/, '')
     .replace(/^イベント名\s*[:：]\s*/, '').replace(/\s+/g, ' ').trim();
 }
+// 見出しの決まり文句（概要・詳細・ルール・「〜について」・末尾の「開催期間」等）を名前から外す。
+// 決まり文句しか残らないときは記事タイトルの名前を使う。予選・本戦・投票などの段階名は残す。
+const BOILER = /^(?:(?:イベント|キャンペーン|企画|大会)?(?:概要|詳細|内容|ルール|の流れ)(?:[/・／](?:概要|詳細|ルール|内容))*|この記事でご紹介する内容|この記事の内容|豪華賞品はこちら[！!]?|対象ランク|対象者?|スケジュール|エントリー?)$/;
+// 記事タイトルから名前を作る：『』「」の名前を優先し、日付やお知らせの【】と「のご紹介」を外し、切れた括弧を残さない。
+// 括弧の外に残る語が短い（「〜」開催決定！）か決まり文句（の概要）なら、括弧内だけを名前にする
+const QUOTE_TAIL = /^(?:の?(?:概要|詳細|内容|ご紹介|お知らせ|ルール説明)|(?:開催|決定|に関する|をPocochaで).*|.{0,10})$/;
+// 閉じていない括弧は記号だけ外し（中身は残す）、末尾の区切り記号を落とす
+function cutDangling(t) {
+  for (const [o, c] of [['【', '】'], ['「', '」'], ['『', '』'], ['（', '）'], ['(', ')']]) {
+    if (t.lastIndexOf(o) > t.lastIndexOf(c)) t = t.slice(0, t.lastIndexOf(o)) + ' ' + t.slice(t.lastIndexOf(o) + 1);
+  }
+  return t.replace(/\s+/g, ' ').replace(/[\s：:・、〜~×-]+$/, '').trim();
+}
+// 長い名前は区切り（空白・！・」など）で切る。区切りが前すぎるときは文字数で切る
+function cutAt(t, max) {
+  if (t.length <= max) return t;
+  const head = t.slice(0, max), i = Math.max(...[' ', '！', '!', '」', '』', '】', '×'].map(ch => head.lastIndexOf(ch)));
+  return i >= 20 ? head.slice(0, i + (/[！!」』】]/.test(head[i]) ? 1 : 0)) : head;
+}
+export function titleNameOf(title) {
+  const raw = cleanLabel(String(title || '').replace(/[＼／]/g, ' '));
+  // 日付・お知らせだけの【】（【9/16〜9/29】【期間限定】【新イベ開催予告】など）は外す
+  const stripped = raw.replace(/【[^】]*(?:\d+\s*[/月]|限定|登場|開催予告|お知らせ|更新|追記|速報|NEW|予告|結果発表)[^】]*】/g, ' ').replace(/\s+/g, ' ').trim();
+  let t = stripped.length >= 6 ? stripped : raw;
+  t = t.replace(/(?:のご紹介|開催決定|を開催|開催)[！!]*$/, '').trim();
+  const q = t.match(/^[^『「]{0,20}[『「]([^』」]{4,40})[』」](.*)$/);
+  if (q && QUOTE_TAIL.test(q[2].trim())) return q[1];
+  return cutDangling(cutAt(t, 48)) || cutDangling(raw.slice(0, 48));
+}
+export function tidyLabel(label, titleName) {
+  let l = cleanLabel(label);
+  for (let i = 0; i < 3; i++) {
+    const before = l;
+    l = l.replace(/\s*(?:の)?(?:開催期間|イベント期間|キャンペーン期間|開催日程|開催日時)$/, '').replace(/\s*について$/, '').trim();
+    const parts = l.split(' ');
+    if (parts.length > 1 && BOILER.test(parts[0])) l = parts.slice(1).join(' ');
+    if (parts.length > 1 && BOILER.test(parts[parts.length - 1])) l = parts.slice(0, -1).join(' ');
+    l = l.replace(/^(?:\d+月実施予定[！!]?\s*)?Pococha内イベント/, '').trim();
+    const q = l.match(/^[^「『]{0,30}[「『]([^」』]{2,40})[」』](.+)$/);
+    if (q && QUOTE_TAIL.test(q[2].trim())) l = q[1];
+    l = cutDangling(l);
+    if (l === before) break;
+  }
+  if (!l || l.length < 2 || GENERIC.test(l) || BOILER.test(l) || /^(?:イベント|キャンペーン)$/.test(l)) return titleName || null;
+  // 以前の収集で記事タイトルを途中で切った名前は、整えた記事タイトルの名前に置き換える
+  if (titleName && titleName.length > l.length && titleName.startsWith(l)) return titleName;
+  return l;
+}
 // 名前の決め方：①行内の『』「」で囲まれた名前 ②行の前置きが短い名前ならそれ ③直前の見出し（＋前置きが「開催期間」等なら付ける）
 export function pickLabel(prefix, heading) {
   const p = cleanLabel(prefix);
@@ -177,8 +225,8 @@ export function toEvent(source, url, html) {
   // 公開日〜最終更新日の前後だけを対象にする（過去の実績紹介や翌年の予告を拾いすぎないため）。
   const lo = published ? Date.parse(published.slice(0, 10)) - 30 * 864e5 : -Infinity;
   const hi = modified ? Date.parse(modified.slice(0, 10)) + 90 * 864e5 : Infinity;
-  const titleName = cleanLabel(title.replace(/[＼／]/g, ' ')).slice(0, 40);
-  const main = periods.filter(p => !p.isEntry && Date.parse(p.start) >= lo && Date.parse(p.start) <= hi).map(p => ({...p, label: p.label && !GENERIC.test(p.label) ? p.label : titleName}));
+  const titleName = titleNameOf(title);
+  const main = periods.filter(p => !p.isEntry && Date.parse(p.start) >= lo && Date.parse(p.start) <= hi).map(p => ({...p, label: p.label && !GENERIC.test(p.label) ? tidyLabel(p.label, titleName) : titleName}));
   const type = classify(title, text);
   const ranks = findRanks(text);
   // 期間が1つだけのときは記事全体の期間とみなす。複数あるとき（予定表・まとめ記事）は periods を個別に使う。
