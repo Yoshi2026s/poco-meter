@@ -14,7 +14,7 @@ import {forecastBundle} from '../automation/build-meter-factors.mjs';
 const ROOT = fileURLToPath(new URL('../', import.meta.url));
 // Tool version shown on the page. Change only when the tool itself changes
 // (data updates do not change it).
-export const PAGES_VERSION = {version: 'v2026.11.13.1', updatedAt: '2026-11-13T01:30:00+09:00', label: '2026/11/13 01:30:00'};
+export const PAGES_VERSION = {version: 'v2026.11.13.2', updatedAt: '2026-11-13T08:27:00+09:00', label: '2026/11/13 08:27:00'};
 const SITES_ORIGIN = 'https://poco-meter.freefreelife2000.chatgpt.site';
 const COLLECTOR_ORIGIN = 'https://pococha-comment-access.freefreelife2000.chatgpt.site';
 const BORDER_FETCH = "fetch('/api/borders',{cache:'no-cache',credentials:'same-origin',signal:controller.signal})";

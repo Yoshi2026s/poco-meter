@@ -2040,14 +2040,64 @@ footer .footer-support>details[open]~.tool-creator-logo{grid-row:auto;grid-colum
 .ao-mode-bar[hidden]{display:none!important}
 .ao-mode-bar #aoWake{font-size:13px!important;color:#c3d4ea!important;min-width:0}
 .ao-mode-bar #alwaysOnClose{flex:0 0 auto;min-height:44px;padding:0 14px;border-radius:10px;border:1px solid #3a6aa5!important;background:#1763b5!important;color:#fff!important;font-size:14px!important;font-weight:800;box-shadow:none!important}
-html.always-on-mode :is(header.card,#mainTools,#mainSubMenus,#miniGoalMenu,#itemsWindow,footer,.wrap,#miniClockAccuracy,#miniTargetField .mini-target-actions,.mini-reset,#miniUndoCurrent,#targetUpdateNote){display:none!important}
+html.always-on-mode :is(header.card,#mainTools,#mainSubMenus,#miniGoalMenu,#itemsWindow,footer,.wrap,#miniClockAccuracy,.mini-label-actions,#targetUpdateNote){display:none!important}
 /* 通常表示の各部品は :root body #mini.main-screen … の強い指定で表示されるため、同じ強さ以上で隠す */
-html.always-on-mode body #mini.main-screen :is(#miniGoalMenu,#itemsWindow,#mainTools,#miniClockAccuracy,#miniTargetField .mini-target-actions,.mini-reset,#miniUndoCurrent,#targetUpdateNote,#miniCurrentField .mini-target-actions){display:none!important}
+html.always-on-mode body #mini.main-screen :is(#miniGoalMenu,#itemsWindow,#mainTools,#miniClockAccuracy,.mini-label-actions,#targetUpdateNote){display:none!important}
 html.always-on-mode #mini.main-screen{transition:transform 1.2s ease}
 html.always-on-mode body #mini.main-screen #miniR{font-size:clamp(30px,9vw,56px)!important;line-height:1.05;white-space:nowrap}
 html.always-on-mode body #mini.main-screen #miniT{font-size:clamp(24px,7vw,40px)!important;white-space:nowrap}
 html.always-on-mode body #mini.main-screen #miniNowTime{font-size:clamp(18px,5.5vw,26px)!important}
 @media (prefers-reduced-motion:reduce){html.always-on-mode #mini.main-screen{transition:none}}
+/* 目標値・現在値の見出し行に操作ボタン（既定値・詳細・戻す・リセット）を並べる（ボタンだけの行をなくす） */
+:root body #mini.main-screen :is(#miniTargetField,#miniCurrentField) .mini-label-row{display:flex!important;align-items:center;justify-content:space-between;gap:4px;min-width:0}
+:root body #mini.main-screen :is(#miniTargetField,#miniCurrentField) .mini-label-row>label{flex:0 0 auto;white-space:nowrap}
+:root body #mini.main-screen :is(#miniTargetField,#miniCurrentField) .mini-label-actions{display:flex;gap:4px;flex:0 1 auto;min-width:0;justify-content:flex-end}
+:root body #mini.main-screen :is(#miniTargetField,#miniCurrentField) .mini-label-actions .mini-action{flex:0 0 auto!important;width:auto!important;min-width:0!important;min-height:32px!important;height:32px!important;padding:0 8px!important;font-size:12px!important;line-height:1!important;white-space:nowrap}
+/* 2026-11-13 スマホ縦画面の詰め表示：スクロールなしで「予想」まで見えるよう、ボタン・余白を小さくする。
+   入力欄・選択欄の文字は16px（iPhoneの入力時の自動拡大を防ぐ）のまま、高さだけ詰める。ボタンは32〜36px。 */
+@media (max-width:559px){
+  html:root body #titleTop>header.card{padding:5px 8px!important;margin-bottom:4px!important}
+  html:root body #titleTop>header.card>.header-main{row-gap:4px!important}
+  html:root body #titleTop>header.card>.header-main>h1{font-size:17px!important;line-height:1.2!important}
+  html:root body #titleTop>header.card>.header-main>:is(#toolUsage,#calculationMethodsLink,#displaySettings,#refreshPage){min-height:30px!important}
+  html:root body #titleTop>header.card>.header-main>:is(#toolUsage,#displaySettings)>summary,html:root body #titleTop>header.card>.header-main>:is(#calculationMethodsLink,#refreshPage){min-height:30px!important;height:30px!important;padding:0 4px!important;font-size:12px!important;line-height:1.2!important;white-space:nowrap!important;display:flex!important;align-items:center!important;justify-content:center!important}
+  html:root body #mini.main-screen .main-hero{padding-top:6px!important;padding-bottom:6px!important;row-gap:2px!important}
+  html:root body #mini.main-screen .main-inputs{padding:6px!important;row-gap:4px!important}
+  html:root body #mini.main-screen .mini-input{gap:3px!important}
+  html:root body #mini.main-screen .mini-input .mini-label-row{min-height:28px!important}
+  html:root body #mini.main-screen :is(#miniTargetField,#miniCurrentField) .mini-label-actions .mini-action{min-height:28px!important;height:28px!important;padding:0 5px!important;font-size:12px!important;letter-spacing:-.02em}
+  html:root body #mini.main-screen :is(#miniTargetField,#miniCurrentField) .mini-label-actions{gap:3px!important}
+  html:root body #mini.main-screen :is(#targetMini,#currentMini){min-height:40px!important;height:40px!important}
+  html:root body #mini.main-screen #targetMini{padding-bottom:13px!important}
+  html:root body #mini.main-screen .mini-quick-add{gap:6px!important;margin:0!important}
+  html:root body #mini.main-screen .mini-quick-add button{min-height:36px!important;height:36px!important;font-size:15px!important;padding:0 2px!important}
+  html:root body #mini.main-screen .mini-goal-menu{padding:6px!important;row-gap:4px!important;column-gap:6px!important}
+  html:root body #mini.main-screen .mini-goal-menu .goal-field{gap:1px!important}
+  html:root body #mini.main-screen .mini-goal-menu label{font-size:12px!important;line-height:1.25!important}
+  html:root body #mini.main-screen #miniGoalMenu :is(select,input){min-height:36px!important;height:36px!important;padding-top:0!important;padding-bottom:0!important}
+  html:root body #mini.main-screen #itemsWindow{padding:5px 6px!important;row-gap:4px!important}
+  html:root body #mini.main-screen #itemsWindow .items-window-head{min-height:0!important}
+  html:root body #mini.main-screen #coreCountItems{min-height:34px!important;height:34px!important}
+  html:root body #mini.main-screen #itemsWindowRow .coin-card{min-height:40px!important;padding-top:1px!important;padding-bottom:1px!important}
+  html:root body #mini.main-screen .main-card{margin-top:6px!important;padding:8px 10px!important}
+  html:root body #mini.main-screen .main-card .main-card-head{font-size:14px!important}
+  html:root body #mini.main-screen .main-card .ao-fvalue{font-size:30px!important}
+  html:root body #mini.main-screen .main-card :is(.ao-frange,.ao-trend){font-size:13px!important;line-height:1.4!important}
+  html:root body #mini.main-screen .main-card .ao-accuracy{font-size:12px!important;line-height:1.4!important}
+  html:root body #mini.main-screen .main-card .ao-list li{font-size:14px!important}
+  html:root body #mini.main-screen .main-card .ao-list li small{font-size:12px!important}
+  html:root body #titleTop>header.card>.header-main>h1{font-size:16px!important}
+  html:root body #titleTop>header.card>.header-main>:is(#toolUsage,#displaySettings)>summary,html:root body #titleTop>header.card>.header-main>:is(#calculationMethodsLink,#refreshPage){min-height:28px!important;height:28px!important}
+  html:root body #titleTop>header.card>.header-main>:is(#toolUsage,#calculationMethodsLink,#displaySettings,#refreshPage){min-height:28px!important}
+  html:root body #mini.main-screen .main-hero{padding-top:4px!important;padding-bottom:4px!important;row-gap:0!important}
+  html:root body #mini.main-screen #miniGoalMenu :is(select,input){min-height:34px!important;height:34px!important}
+  html:root body #mini.main-screen #coreCountItems{min-height:32px!important;height:32px!important}
+  html:root body #mini.main-screen #itemsWindowRow .coin-card{min-height:36px!important}
+  html:root body #mini.main-screen .main-card .main-card-head{font-size:13px!important;margin-bottom:0!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  html:root body #mini.main-screen .main-card{padding:6px 10px!important}
+  html:root body #mini.main-screen .main-card .ao-fvalue{font-size:28px!important;line-height:1.1!important}
+  html:root body #mini.main-screen #itemsWindowRow .coin-card{min-height:34px!important}
+}
 </style>
 </head>
 <body>
@@ -2068,7 +2118,7 @@ html.always-on-mode body #mini.main-screen #miniNowTime{font-size:clamp(18px,5.5
         <p><a class="manual-link" href="#targetMini">目標値へ</a><a class="manual-link" href="#recordEditor">記録の編集へ</a><a class="manual-link" href="#backupTools">バックアップへ</a></p>
       </div>
     </div></details>
-      <a class="method-help-link" id="calculationMethodsLink" href="/calculation-methods" target="_blank" rel="noopener noreferrer">目標値の算出方法</a>
+      <a class="method-help-link" id="calculationMethodsLink" href="/calculation-methods" target="_blank" rel="noopener noreferrer" aria-label="目標値の算出方法（新しいタブ）" title="目標値の算出方法">算出方法</a>
       <!-- display-settings-menu:start -->
       <details class="display-settings" id="displaySettings"><summary>表示設定</summary>
         <div class="display-settings-panel">
@@ -2103,8 +2153,8 @@ html.always-on-mode body #mini.main-screen #miniNowTime{font-size:clamp(18px,5.5
 <!-- phone-current:start -->
 <time id="miniNow" class="num" title="現在日時・日本時間（時刻同期を確認中）"><span id="miniNowDate"></span><span id="miniClockReading"><span id="miniTimeLabel">時刻を確認中</span> <b id="miniNowTime"></b></span>
 </time></div>
-<div class="main-inputs"><div class="mini-input mini-target" id="miniTargetField"><div class="mini-label-row"><label for="targetMini">目標値</label><button type="button" class="mini-action mini-reset" id="resetTargetMini" aria-label="目標値をリセット">リセット</button></div><div class="mini-input-box"><input class="num" id="targetMini" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="未設定" aria-describedby="targetMiniError targetUpdateNote inputStatus"><small class="target-update-note" id="targetUpdateNote" title="公開ボーダーは日本時間の5時・17時頃に更新します。">ボーダー更新 5時・17時頃</small></div><small class="mini-forecast num" id="miniForecast" role="button" tabindex="0" hidden></small><div class="mini-target-actions"><button type="button" class="mini-action" id="restoreTargetMini" aria-label="既定の目標設定を適用">既定値</button><button type="button" class="mini-action" id="openMiniTargetDetails" aria-controls="sectionBody-1" aria-label="目標値の詳細設定を開く">詳細設定</button></div></div>
-<div class="mini-input mini-current" id="miniCurrentField"><div class="mini-label-row"><label for="currentMini">現在値</label><button type="button" class="mini-action mini-reset" id="resetCurrentMini" aria-label="現在値をリセット">リセット</button></div><input class="num" id="currentMini" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="0" aria-describedby="currentMiniError inputStatus"><div class="mini-target-actions"><button type="button" class="mini-action" id="miniUndoCurrent" disabled aria-label="直前の現在値に戻す">戻す</button></div></div>
+<div class="main-inputs"><div class="mini-input mini-target" id="miniTargetField"><div class="mini-label-row"><label for="targetMini">目標値</label><span class="mini-label-actions"><button type="button" class="mini-action" id="restoreTargetMini" aria-label="既定の目標設定を適用">既定値</button><button type="button" class="mini-action" id="openMiniTargetDetails" aria-controls="sectionBody-1" aria-label="目標値の詳細設定を開く">詳細</button><button type="button" class="mini-action mini-reset" id="resetTargetMini" aria-label="目標値をリセット">リセット</button></span></div><div class="mini-input-box"><input class="num" id="targetMini" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="未設定" aria-describedby="targetMiniError targetUpdateNote inputStatus"><small class="target-update-note" id="targetUpdateNote" title="公開ボーダーは日本時間の5時・17時頃に更新します。">ボーダー更新 5時・17時頃</small></div><small class="mini-forecast num" id="miniForecast" role="button" tabindex="0" hidden></small></div>
+<div class="mini-input mini-current" id="miniCurrentField"><div class="mini-label-row"><label for="currentMini">現在値</label><span class="mini-label-actions"><button type="button" class="mini-action" id="miniUndoCurrent" disabled aria-label="直前の現在値に戻す">戻す</button><button type="button" class="mini-action mini-reset" id="resetCurrentMini" aria-label="現在値をリセット">リセット</button></span></div><input class="num" id="currentMini" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="0" aria-describedby="currentMiniError inputStatus"></div>
 <small id="targetMiniError" hidden role="status" aria-live="polite"></small>
 <small id="currentMiniError" hidden role="status" aria-live="polite"></small>
 <div class="mini-quick-add" role="group" aria-label="現在値を調整"><button type="button" id="miniSub1k" aria-label="現在値から1,000 ptを引く">−1K</button><button type="button" id="miniAdd1k" aria-label="現在値に1,000 ptを足す">+1K</button><button type="button" id="miniAdd10k" aria-label="現在値に10,000 ptを足す">+10K</button><button type="button" id="miniAdd100k" aria-label="現在値に100,000 ptを足す">+100K</button></div>
@@ -4349,7 +4399,7 @@ html.always-on-mode body #mini.main-screen #miniNowTime{font-size:clamp(18px,5.5
     var key=[dateISO,close,rank,idx,dataRevision,forecastData&&forecastData.generatedAt,forecastError,forecastLoading,liveBorderBusy].join('|');
     if(key===alwaysOnForecastKey)return;alwaysOnForecastKey=key;
     var closeLabel=close==='24'?'24時締め':close+'時締め';
-    aoSet('aoRankHead','設定ランク '+rank+'・'+closeLabel+'・ボーダー'+AO_BORDERS[idx]+'（'+aoMD(dateISO)+'分）の予想');
+    aoSet('aoRankHead','予想 '+rank+' '+AO_BORDERS[idx]+'・'+closeLabel+'（'+aoMD(dateISO)+'分）');
     var reasons=$('aoReasons');reasons.textContent='';
     aoSet('aoAccuracy','');aoSet('aoRecord',aoRecordText(forecastData,close,rank,idx,dateISO));aoRenderHistory(aoRecordRows(forecastData,close,rank,idx,dateISO));
     if(rank==='E'){aoSet('aoForecast','—');aoSet('aoRange','');aoSet('aoTrend','');aoSet('aoForecastNote','E帯は予想の対象外です（記録が少ないため）。');return;}
