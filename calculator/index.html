@@ -1685,6 +1685,9 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 /* 目標値の下のメーター予想（常時表示パネルと同じ予想。詳細は title・読み上げ名） */
 :root body #mini.main-screen .mini-forecast{display:block;margin:0;font-size:12px!important;line-height:1.25;font-weight:700;color:#17283a!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 :root body #mini.main-screen .mini-forecast[hidden]{display:none}
+:root body #mini.main-screen .mini-forecast{cursor:pointer;-webkit-tap-highlight-color:transparent}
+:root body #mini.main-screen .mini-forecast:focus-visible{outline:2px solid #1e78d6;outline-offset:1px;border-radius:4px}
+:root body #mini.main-screen .mini-forecast .mini-forecast-old{font-weight:700;color:#9d2034!important;margin-left:4px}
 :root body #mini.main-screen .mini-forecast .mini-forecast-stars{font-weight:600;color:#445466!important;margin-left:4px}
 /* Tiny note drawn inside the target box (bottom edge) so no other layout moves. */
 :root body #mini.main-screen .target-update-note{position:absolute;left:11px;right:8px;bottom:3px;margin:0;font-size:9px!important;line-height:1.2;font-weight:600;letter-spacing:0;color:var(--sub)!important;opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none}
@@ -2038,6 +2041,7 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
 .always-on .ao-quick{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:6px 0 4px}
 .always-on .ao-quick button{min-height:44px;min-width:0;padding:0 2px;white-space:nowrap;border-radius:10px;border:1px solid #2a4f80;background:#0b1830;color:#cfe3ff;font-size:13px;font-weight:700}
 .always-on .ao-accuracy{margin:4px 0 0;font-size:12px;color:#cfe3ff}
+.always-on .ao-record{white-space:pre-line}
 .always-on .ao-events li a{color:#e8f2ff;text-decoration:none}
 .always-on .ao-events li small{display:block;color:#9db6d6;font-size:12px}
 .always-on .ao-badge{display:inline-block;margin-left:6px;padding:0 6px;border-radius:6px;background:#1e78d6;color:#fff;font-size:11px;font-weight:700;vertical-align:middle}
@@ -2136,7 +2140,7 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
 <!-- phone-current:start -->
 <time id="miniNow" class="num" title="現在日時・日本時間（時刻同期を確認中）"><span id="miniNowDate"></span><span id="miniClockReading"><span id="miniTimeLabel">時刻を確認中</span> <b id="miniNowTime"></b></span>
 </time></div>
-<div class="main-inputs"><div class="mini-input mini-target" id="miniTargetField"><div class="mini-label-row"><label for="targetMini">目標値</label><button type="button" class="mini-action mini-reset" id="resetTargetMini" aria-label="目標値をリセット">リセット</button></div><div class="mini-input-box"><input class="num" id="targetMini" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="未設定" aria-describedby="targetMiniError targetUpdateNote inputStatus"><small class="target-update-note" id="targetUpdateNote" title="公開ボーダーは日本時間の5時・17時頃に更新します。">ボーダー更新 5時・17時頃</small></div><small class="mini-forecast num" id="miniForecast" role="status" aria-live="off" hidden></small><div class="mini-target-actions"><button type="button" class="mini-action" id="restoreTargetMini" aria-label="既定の目標設定を適用">既定値</button><button type="button" class="mini-action" id="openMiniTargetDetails" aria-controls="sectionBody-1" aria-label="目標値の詳細設定を開く">詳細設定</button></div></div>
+<div class="main-inputs"><div class="mini-input mini-target" id="miniTargetField"><div class="mini-label-row"><label for="targetMini">目標値</label><button type="button" class="mini-action mini-reset" id="resetTargetMini" aria-label="目標値をリセット">リセット</button></div><div class="mini-input-box"><input class="num" id="targetMini" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="未設定" aria-describedby="targetMiniError targetUpdateNote inputStatus"><small class="target-update-note" id="targetUpdateNote" title="公開ボーダーは日本時間の5時・17時頃に更新します。">ボーダー更新 5時・17時頃</small></div><small class="mini-forecast num" id="miniForecast" role="button" tabindex="0" hidden></small><div class="mini-target-actions"><button type="button" class="mini-action" id="restoreTargetMini" aria-label="既定の目標設定を適用">既定値</button><button type="button" class="mini-action" id="openMiniTargetDetails" aria-controls="sectionBody-1" aria-label="目標値の詳細設定を開く">詳細設定</button></div></div>
 <div class="mini-input mini-current" id="miniCurrentField"><div class="mini-label-row"><label for="currentMini">現在値</label><button type="button" class="mini-action mini-reset" id="resetCurrentMini" aria-label="現在値をリセット">リセット</button></div><input class="num" id="currentMini" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="0" aria-describedby="currentMiniError inputStatus"><div class="mini-target-actions"><button type="button" class="mini-action" id="miniUndoCurrent" disabled aria-label="直前の現在値に戻す">戻す</button></div></div>
 <small id="targetMiniError" hidden role="status" aria-live="polite"></small>
 <small id="currentMiniError" hidden role="status" aria-live="polite"></small>
@@ -2478,7 +2482,7 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
 <div class="ao-top"><h2 id="aoTitle">ポコメーター番長 常時表示</h2><button type="button" id="alwaysOnClose" class="ao-close">閉じる</button></div>
 <section class="ao-clock" aria-label="現在日時"><div class="ao-date" id="aoDate"></div><div class="ao-time num" id="aoTime"></div><div class="ao-sub"><span id="aoClockLabel">端末時刻</span><span><span id="aoDeadlineLabel">締めまで</span> <b class="num" id="aoCountdown"></b></span></div></section>
 <section class="ao-meter" aria-label="メーター"><div class="ao-row ao-current"><label for="aoCurrentInput">現メーター</label><input class="num" id="aoCurrentInput" type="text" inputmode="decimal" placeholder="例 120000" enterkeyhint="done" autocomplete="off" spellcheck="false" aria-describedby="aoCurrentMsg"></div><div class="ao-quick" role="group" aria-label="現メーターを調整"><button type="button" id="aoSub1k" aria-label="現メーターから1,000 ptを引く">−1K</button><button type="button" id="aoAdd1k" aria-label="現メーターに1,000 ptを足す">+1K</button><button type="button" id="aoAdd10k" aria-label="現メーターに10,000 ptを足す">+10K</button><button type="button" id="aoAdd100k" aria-label="現メーターに100,000 ptを足す">+100K</button></div><small class="ao-note" id="aoCurrentMsg" role="status" aria-live="polite"></small><div class="ao-row"><span>目標メーター</span><b class="num" id="aoTarget"></b></div><div class="ao-remain"><span id="aoRemainLabel">目標まであと</span><b class="num" id="aoRemain"></b></div><div class="ao-bar" aria-hidden="true"><i id="aoFill"></i></div><div class="ao-pct num" id="aoPct"></div><div class="ao-pace num" id="aoPace"></div></section>
-<section class="ao-forecast" aria-labelledby="aoRankHead"><h3 id="aoRankHead">設定ランクの予想</h3><div class="ao-fvalue num" id="aoForecast"></div><div class="ao-frange num" id="aoRange"></div><div class="ao-trend" id="aoTrend"></div><p class="ao-accuracy" id="aoAccuracy"></p><ul class="ao-reasons" id="aoReasons"></ul><p class="ao-note" id="aoForecastNote"></p></section>
+<section class="ao-forecast" aria-labelledby="aoRankHead"><h3 id="aoRankHead">設定ランクの予想</h3><div class="ao-fvalue num" id="aoForecast"></div><div class="ao-frange num" id="aoRange"></div><div class="ao-trend" id="aoTrend"></div><p class="ao-accuracy" id="aoAccuracy"></p><p class="ao-accuracy ao-record" id="aoRecord"></p><ul class="ao-reasons" id="aoReasons"></ul><p class="ao-note" id="aoForecastNote"></p></section>
 <section class="ao-events ao-last" aria-labelledby="aoLastHead"><h3 id="aoLastHead">本日のイベラス（最終日）</h3><ul id="aoLast"></ul><p class="ao-note" id="aoLastNote"></p></section>
 <section class="ao-events" aria-labelledby="aoEventsHead"><h3 id="aoEventsHead">今日の開催イベント</h3><ul id="aoEvents"></ul><h3 class="ao-next-head" id="aoTomorrowHead" hidden>明日から</h3><ul id="aoTomorrow"></ul><p class="ao-note" id="aoEventsNote"></p></section>
 <p class="ao-foot"><span class="ao-logo">Yoshi1012</span><span id="aoWake"></span><span>予想は過去のボーダーと公式noteのイベント情報から出した目安です。</span></p>
@@ -4393,7 +4397,7 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
     var closeLabel=close==='24'?'24時締め':close+'時締め';
     aoSet('aoRankHead','設定ランク '+rank+'・'+closeLabel+'・ボーダー'+AO_BORDERS[idx]+'（'+aoMD(dateISO)+'分）の予想');
     var reasons=$('aoReasons');reasons.textContent='';
-    aoSet('aoAccuracy','');
+    aoSet('aoAccuracy','');aoSet('aoRecord',aoRecordText(forecastData,close,rank,idx,dateISO));
     if(rank==='E'){aoSet('aoForecast','—');aoSet('aoRange','');aoSet('aoTrend','');aoSet('aoForecastNote','E帯は予想の対象外です（記録が少ないため）。');return;}
     var f=meterForecast(LOG(),dateISO,rank,idx,close,forecastData);
     if(f.status!=='ok'&&liveBorderBusy){aoSet('aoForecast','読込中…');aoSet('aoRange','');aoSet('aoTrend','');aoSet('aoForecastNote','過去のボーダーを読み込み中です。読み込みが終わると予想を表示します。');return;}
@@ -4407,6 +4411,19 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
     f.reasons.forEach(function(r){var li=document.createElement('li');li.textContent=r.label+' '+(r.pct>0?'+':'')+r.pct+'%';reasons.appendChild(li);});
     aoSet('aoForecastNote',(forecastError?forecastError+'。':'')+(forecastLoading&&!forecastData?'予想データを読み込み中…':'')+(forecastData&&!f.inRange?'この日の暦・イベント情報は予想データの範囲外です。':'')+'基準：前日までの記録（直近14日に'+f.n+'日分）の'+f.method+' '+aoK(f.base,100)+'。'+aoDataTime(forecastData));
   }
+  // 日々の予想と実際の記録（公開時に予想データの record へ入る）から、設定の系列の「前回の答え合わせ」と「記録の的中」を作る。
+  function aoRecordText(data,close,rank,idx,dateISO){
+    var rec=data&&data.record;if(!rec)return '';
+    var last=(rec.recent||[]).filter(function(e){return e.close===close&&e.date<dateISO&&e.forecasts&&e.forecasts[rank]&&e.forecasts[rank][idx]&&e.actual&&e.actual[rank]&&e.actual[rank][idx]>0;}).sort(function(a,b){return a.date<b.date?1:-1;})[0];
+    var parts=[];
+    if(last){var f=last.forecasts[rank][idx][0],a=last.actual[rank][idx],d=Math.round((a/f-1)*1000)/10;parts.push('前回の答え合わせ（'+aoMD(last.date)+'）：予想 '+aoK(f,100)+' → 実際 '+aoK(a,100)+'（'+(d>0?'+':'')+d+'%'+(Math.abs(d)<=10?'・±10%以内':'')+'）');}
+    var s=rec.bySeries&&rec.bySeries[close+'|'+rank+'|'+idx];
+    if(s&&s.n)parts.push('日々の記録（'+aoMD(rec.firstDate)+'〜・'+s.n+'日）：±10%以内 '+s.within10+'%');
+    if(!parts.length)return rec.firstDate?'':'日々の予想と実際の記録を始めました（結果が出た日から答え合わせを表示）。';
+    return parts.join(String.fromCharCode(10));
+  }
+  // 予想データが古い（作成から36時間を超えた）か。オフラインで端末の写しを使い続けているときの目安。
+  function forecastDataStale(data,nowMs){var t=data&&Date.parse(data.generatedAt);return Number.isFinite(t)&&nowMs-t>36*3600e3;}
   // 予想データの作成日時（JST）。古いデータを使っていないかの目安にする。
   function aoDataTime(data){var t=data&&Date.parse(data.generatedAt);if(!Number.isFinite(t))return '';var d=new Date(t+9*3600e3);return '予想データ '+(d.getUTCMonth()+1)+'/'+d.getUTCDate()+' '+String(d.getUTCHours()).padStart(2,'0')+':'+String(d.getUTCMinutes()).padStart(2,'0')+' 作成。';}
   function renderAlwaysOnEvents(nowMs){
@@ -4481,7 +4498,8 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
   function renderMainForecast(){
     var el=$('miniForecast');if(!el)return;
     var nowMs=currentTimeMs(),close=closeKey(),rank=state.rank,idx=[0,1,2].indexOf(state.analysisBorder)>=0?state.analysisBorder:0,dateISO=forecastDayISO(nowMs);
-    var key=[dateISO,close,rank,idx,dataRevision,forecastData&&forecastData.generatedAt,forecastLoading,liveBorderBusy].join('|');
+    var stale=forecastDataStale(forecastData,nowMs);
+    var key=[dateISO,close,rank,idx,dataRevision,forecastData&&forecastData.generatedAt,forecastLoading,liveBorderBusy,stale].join('|');
     if(key===mainForecastKey)return;mainForecastKey=key;
     var head=rank+'・'+(close==='24'?'24時締め':close+'時締め')+'・ボーダー'+AO_BORDERS[idx]+'（'+aoMD(dateISO)+'分）',text,stars='',title;
     if(rank==='E'){text='予想 対象外';title=head+'：E帯は予想の対象外です';}
@@ -4490,9 +4508,15 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
       else{var acc=forecastAccuracy(forecastData,close,rank,idx),s=forecastStars(acc,f);text='予想 約'+aoK(f.value,100);if(forecastData)stars='★'+s;
         title=head+'の予想 約'+aoK(f.value,100)+(f.low!==null?'（目安 '+aoK(f.low,1000)+'〜'+aoK(f.high,1000)+'）':'')+(forecastData?'、普段比 '+(f.pct>0?'+':'')+f.pct+'%、自信度 '+s+'/10':'');}}
     el.textContent=text;if(stars){var sp=document.createElement('span');sp.className='mini-forecast-stars';sp.textContent=stars;el.appendChild(sp);}
+    if(stale){var old=document.createElement('span');old.className='mini-forecast-old';old.textContent='※古';el.appendChild(old);title+='（予想データが36時間以上前のものです。通信できる状態で開き直すと更新します）';}
+    title+='。タップで常時表示パネルを開きます';
     el.title=title;el.setAttribute('aria-label',title);el.hidden=false;
   }
-  if($('miniForecast')){renderMainForecast();loadForecastData(false);setInterval(function(){if(!document.hidden){renderMainForecast();loadForecastData(false);}},1000);}
+  if($('miniForecast')){
+    // 予想の行をタップ（またはEnter・スペース）すると常時表示パネルを開く
+    $('miniForecast').addEventListener('click',function(){if(typeof openAlwaysOn==='function')openAlwaysOn();});
+    $('miniForecast').addEventListener('keydown',function(event){if(event.key==='Enter'||event.key===' '){event.preventDefault();if(typeof openAlwaysOn==='function')openAlwaysOn();}});
+    renderMainForecast();loadForecastData(false);setInterval(function(){if(!document.hidden){renderMainForecast();loadForecastData(false);}},1000);}
   if($('alwaysOn')&&$('alwaysOnOpen')){
     $('alwaysOnOpen').addEventListener('click',openAlwaysOn);
     $('alwaysOnClose').addEventListener('click',closeAlwaysOn);

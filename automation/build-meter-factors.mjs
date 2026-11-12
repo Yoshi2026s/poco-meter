@@ -186,7 +186,7 @@ export function buildFactors(borders, events) {
 export const FORECAST_TAGS = ['payday10-actual', 'payday10-next', 'payday20-actual', 'payday20-next', 'payday25-actual', 'payday25-next',
   'month-start', 'month-end', 'month-late', 'holiday', 'year-end', 'golden-week', 'obon', 'christmas', 'valentine'];
 const TYPE_ORDER = {big: 0, event: 1, collab: 2, newcomer: 3, mission: 4, item: 5, notice: 6};
-export function forecastBundle(factors, events, todayISO, {before = 3, after = 45, backtest = null} = {}) {
+export function forecastBundle(factors, events, todayISO, {before = 3, after = 45, backtest = null, log = null} = {}) {
   const usable = s => s && s.status !== 'insufficient' && Number.isFinite(s.pct);
   const pick = obj => Object.fromEntries(Object.entries(obj || {}).filter(([, s]) => usable(s)).map(([k, s]) => [k, {pct: s.pct, ...(s.label ? {label: s.label} : {}), days: s.days}]));
   const out = {schema: 'poco-meter-forecast-v1', generatedAt: factors.generatedAt, today: todayISO, coverage: factors.coverage, weekday: {}, weekdayByRank: {}, calendar: {}, event: {}, days: {}};
@@ -228,6 +228,14 @@ export function forecastBundle(factors, events, todayISO, {before = 3, after = 4
   if (backtest?.byGroup) out.accuracy = {period: backtest.period, overall: pickAcc(backtest.overall),
     byGroup: Object.fromEntries(Object.entries(backtest.byGroup).map(([k, s]) => [k, pickAcc(s)])),
     ...(backtest.bySeries ? {bySeries: Object.fromEntries(Object.entries(backtest.bySeries).map(([k, s]) => [k, {within10: s.within10, medianAbsErr: s.medianAbsErr, days: s.days}]))} : {})};
+  // 日々の予想と実際の記録（automation/record-forecast.mjs）。直近8日分の答え合わせ済みの記録と、記録開始からの集計だけを入れる。
+  if (log?.entries) {
+    const from = iso(Date.parse(todayISO) - 8 * DAY);
+    const recent = Object.values(log.entries).filter(e => e.actual && e.date >= from && e.date < todayISO)
+      .map(e => ({date: e.date, close: e.close, forecasts: e.forecasts, actual: e.actual}));
+    const s = log.summary || {};
+    out.record = {firstDate: s.firstDate || null, checkedDays: s.checkedDays || 0, overall: s.overall || {n: 0}, last30: s.last30 || {n: 0}, bySeries: s.bySeries || {}, recent};
+  }
   return out;
 }
 const pickAcc = s => s && {within10: s.within10, within20: s.within20, medianAbsErr: s.medianAbsErr, inRange: s.inRange, days: s.days, n: s.n};
