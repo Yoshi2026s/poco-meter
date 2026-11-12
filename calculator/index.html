@@ -2055,6 +2055,9 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
 #alwaysOn :is(.ao-sub,.ao-sub span,.ao-row,.ao-row label,.ao-remain,.ao-remain span,.ao-pct,.ao-reasons li,.ao-events li small){color:#c3d4ea!important}
 #alwaysOn :is(.ao-row b,.ao-events li a,.ao-accuracy,.ao-frange,.ao-trend){color:#f2f7ff!important}
 #alwaysOn .ao-sub b{color:#ffd166!important}
+#alwaysOn .ao-sub b.soon{color:#ffa94d!important}
+#alwaysOn .ao-sub b.urgent{color:#ff7b7b!important}
+#alwaysOn .ao-pace{text-align:right;font-size:13px;color:#ffd166!important;margin-top:2px}
 #alwaysOn .ao-remain b{color:#5fd0ff!important}
 #alwaysOn .ao-remain b.done{color:#4ade80!important}
 #alwaysOn .ao-trend.up{color:#ffab80!important}
@@ -2470,7 +2473,7 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
 <div class="ao-inner" id="alwaysOnInner">
 <div class="ao-top"><h2 id="aoTitle">ポコメーター番長 常時表示</h2><button type="button" id="alwaysOnClose" class="ao-close">閉じる</button></div>
 <section class="ao-clock" aria-label="現在日時"><div class="ao-date" id="aoDate"></div><div class="ao-time num" id="aoTime"></div><div class="ao-sub"><span id="aoClockLabel">端末時刻</span><span><span id="aoDeadlineLabel">締めまで</span> <b class="num" id="aoCountdown"></b></span></div></section>
-<section class="ao-meter" aria-label="メーター"><div class="ao-row ao-current"><label for="aoCurrentInput">現メーター</label><input class="num" id="aoCurrentInput" type="text" inputmode="decimal" placeholder="例 120000" enterkeyhint="done" autocomplete="off" spellcheck="false" aria-describedby="aoCurrentMsg"></div><div class="ao-quick" role="group" aria-label="現メーターを調整"><button type="button" id="aoSub1k" aria-label="現メーターから1,000 ptを引く">−1K</button><button type="button" id="aoAdd1k" aria-label="現メーターに1,000 ptを足す">+1K</button><button type="button" id="aoAdd10k" aria-label="現メーターに10,000 ptを足す">+10K</button><button type="button" id="aoAdd100k" aria-label="現メーターに100,000 ptを足す">+100K</button></div><small class="ao-note" id="aoCurrentMsg" role="status" aria-live="polite"></small><div class="ao-row"><span>目標メーター</span><b class="num" id="aoTarget"></b></div><div class="ao-remain"><span id="aoRemainLabel">目標まであと</span><b class="num" id="aoRemain"></b></div><div class="ao-bar" aria-hidden="true"><i id="aoFill"></i></div><div class="ao-pct num" id="aoPct"></div></section>
+<section class="ao-meter" aria-label="メーター"><div class="ao-row ao-current"><label for="aoCurrentInput">現メーター</label><input class="num" id="aoCurrentInput" type="text" inputmode="decimal" placeholder="例 120000" enterkeyhint="done" autocomplete="off" spellcheck="false" aria-describedby="aoCurrentMsg"></div><div class="ao-quick" role="group" aria-label="現メーターを調整"><button type="button" id="aoSub1k" aria-label="現メーターから1,000 ptを引く">−1K</button><button type="button" id="aoAdd1k" aria-label="現メーターに1,000 ptを足す">+1K</button><button type="button" id="aoAdd10k" aria-label="現メーターに10,000 ptを足す">+10K</button><button type="button" id="aoAdd100k" aria-label="現メーターに100,000 ptを足す">+100K</button></div><small class="ao-note" id="aoCurrentMsg" role="status" aria-live="polite"></small><div class="ao-row"><span>目標メーター</span><b class="num" id="aoTarget"></b></div><div class="ao-remain"><span id="aoRemainLabel">目標まであと</span><b class="num" id="aoRemain"></b></div><div class="ao-bar" aria-hidden="true"><i id="aoFill"></i></div><div class="ao-pct num" id="aoPct"></div><div class="ao-pace num" id="aoPace"></div></section>
 <section class="ao-forecast" aria-labelledby="aoRankHead"><h3 id="aoRankHead">設定ランクの予想</h3><div class="ao-fvalue num" id="aoForecast"></div><div class="ao-frange num" id="aoRange"></div><div class="ao-trend" id="aoTrend"></div><p class="ao-accuracy" id="aoAccuracy"></p><ul class="ao-reasons" id="aoReasons"></ul><p class="ao-note" id="aoForecastNote"></p></section>
 <section class="ao-events ao-last" aria-labelledby="aoLastHead"><h3 id="aoLastHead">本日のイベラス（最終日）</h3><ul id="aoLast"></ul><p class="ao-note" id="aoLastNote"></p></section>
 <section class="ao-events" aria-labelledby="aoEventsHead"><h3 id="aoEventsHead">今日の開催イベント</h3><ul id="aoEvents"></ul><h3 class="ao-next-head" id="aoTomorrowHead" hidden>明日から</h3><ul id="aoTomorrow"></ul><p class="ao-note" id="aoEventsNote"></p></section>
@@ -4398,8 +4401,10 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
     aoSet('aoAccuracy',acc?'過去の答え合わせ（'+aoMD(acc.from)+'〜'+aoMD(acc.to)+'・'+closeLabel+'・'+(acc&&acc.scope==='series'?rank+'のボーダー'+AO_BORDERS[idx]:rank.charAt(0)+'帯')+'）：±10%以内 '+acc.within10+'%・誤差の中央値 '+acc.medianAbsErr+'%':'');
     trend.className='ao-trend'+(f.pct>=1?' up':f.pct<=-1?' down':'');
     f.reasons.forEach(function(r){var li=document.createElement('li');li.textContent=r.label+' '+(r.pct>0?'+':'')+r.pct+'%';reasons.appendChild(li);});
-    aoSet('aoForecastNote',(forecastError?forecastError+'。':'')+(forecastLoading&&!forecastData?'予想データを読み込み中…':'')+(forecastData&&!f.inRange?'この日の暦・イベント情報は予想データの範囲外です。':'')+'基準：前日までの記録（直近14日に'+f.n+'日分）の'+f.method+' '+aoK(f.base,100)+'。');
+    aoSet('aoForecastNote',(forecastError?forecastError+'。':'')+(forecastLoading&&!forecastData?'予想データを読み込み中…':'')+(forecastData&&!f.inRange?'この日の暦・イベント情報は予想データの範囲外です。':'')+'基準：前日までの記録（直近14日に'+f.n+'日分）の'+f.method+' '+aoK(f.base,100)+'。'+aoDataTime(forecastData));
   }
+  // 予想データの作成日時（JST）。古いデータを使っていないかの目安にする。
+  function aoDataTime(data){var t=data&&Date.parse(data.generatedAt);if(!Number.isFinite(t))return '';var d=new Date(t+9*3600e3);return '予想データ '+(d.getUTCMonth()+1)+'/'+d.getUTCDate()+' '+String(d.getUTCHours()).padStart(2,'0')+':'+String(d.getUTCMinutes()).padStart(2,'0')+' 作成。';}
   function renderAlwaysOnEvents(nowMs){
     var now=jstNow(nowMs),today=now.y+'-'+String(now.m).padStart(2,'0')+'-'+String(now.d).padStart(2,'0'),tomorrow=aoIsoDay(Date.parse(today+'T00:00:00Z')+864e5),rank=state.rank;
     var key=[today,rank,forecastData&&forecastData.generatedAt,forecastError,forecastLoading].join('|');
@@ -4416,12 +4421,16 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
     aoSet('aoDate',now.y+'年'+now.m+'月'+now.d+'日（'+AO_WEEKDAYS[now.w]+'）');
     aoSet('aoTime',String(clock.getUTCHours()).padStart(2,'0')+':'+String(clock.getUTCMinutes()).padStart(2,'0')+':'+String(clock.getUTCSeconds()).padStart(2,'0'));
     aoSet('aoClockLabel',basis.primary==='Pocochaサーバー時刻'?'Pocochaサーバー時刻':'端末時刻');
-    aoSet('aoCountdown',countdownTime(meterWindow(nowMs).end-nowMs,false));
+    var leftMs=meterWindow(nowMs).end-nowMs;aoSet('aoCountdown',countdownTime(leftMs,false));
+    // 締め30分前・10分前は色を変える
+    var cd=$('aoCountdown'),cdClass='num'+(leftMs<=600000?' urgent':leftMs<=1800000?' soon':'');if(cd&&cd.className!==cdClass)cd.className=cdClass;
     var cur=parseNum(state.current),tgt=parseNum(state.target);
     var curInput=$('aoCurrentInput');if(curInput&&document.activeElement!==curInput&&curInput.getAttribute('aria-invalid')!=='true'&&curInput.value!==fmt(cur))curInput.value=fmt(cur);aoSet('aoTarget',tgt?fmt(tgt)+' pt':'未設定');
     aoSet('aoRemainLabel',!tgt?'目標を設定してください':cur>=tgt?'目標達成':'目標まであと');
     aoSet('aoRemain',tgt?fmtK(Math.max(0,tgt-cur)):'—');$('aoRemain').classList.toggle('done',!!tgt&&cur>=tgt);
     var pct=tgt?Math.max(0,Math.min(100,Math.floor(cur/tgt*100))):0;$('aoFill').style.width=pct+'%';aoSet('aoPct',tgt?(cur>0?pct+'%':'0%（現メーターを入力すると進み具合を表示）'):'');
+    // 締めまでに目標へ届くための必要ペース（現メーター入力後、締めまで1分以上あるとき）
+    aoSet('aoPace',tgt&&cur>0&&tgt>cur&&leftMs>=60000?'必要ペース 約 '+aoK((tgt-cur)/(leftMs/60000),100)+'/分（1時間あたり '+aoK((tgt-cur)/(leftMs/3600000),1000)+'）':'');
     renderAlwaysOnForecast(nowMs);renderAlwaysOnEvents(nowMs);
   }
   async function loadForecastData(force){
