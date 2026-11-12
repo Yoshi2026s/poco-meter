@@ -184,7 +184,7 @@ export function buildFactors(borders, events) {
 export const FORECAST_TAGS = ['payday10-actual', 'payday10-next', 'payday20-actual', 'payday20-next', 'payday25-actual', 'payday25-next',
   'month-start', 'month-end', 'holiday', 'year-end', 'golden-week', 'obon', 'christmas', 'valentine'];
 const TYPE_ORDER = {big: 0, event: 1, collab: 2, newcomer: 3, mission: 4, item: 5, notice: 6};
-export function forecastBundle(factors, events, todayISO, {before = 3, after = 45} = {}) {
+export function forecastBundle(factors, events, todayISO, {before = 3, after = 45, backtest = null} = {}) {
   const usable = s => s && s.status !== 'insufficient' && Number.isFinite(s.pct);
   const pick = obj => Object.fromEntries(Object.entries(obj || {}).filter(([, s]) => usable(s)).map(([k, s]) => [k, {pct: s.pct, ...(s.label ? {label: s.label} : {}), days: s.days}]));
   const out = {schema: 'poco-meter-forecast-v1', generatedAt: factors.generatedAt, today: todayISO, coverage: factors.coverage, weekday: {}, weekdayByRank: {}, calendar: {}, event: {}, days: {}};
@@ -204,7 +204,7 @@ export function forecastBundle(factors, events, todayISO, {before = 3, after = 4
         const end = p.end || p.start;
         if (!p.start || d < p.start || d > end) continue;
         list.push({title: e.title.slice(0, 60), label: p.label ? p.label.slice(0, 40) : null, type: e.type, ranks: (p.ranks?.length ? p.ranks : e.ranks) || [],
-          phase: d === p.start ? 'first' : d === end ? 'last' : 'middle', start: p.start, end: p.end || null, endTime: p.endTime || null, url: e.url});
+          phase: d === p.start ? 'first' : d === end ? 'last' : 'middle', ends: d === end, start: p.start, end: p.end || null, endTime: p.endTime || null, url: e.url});
       }
     }
     // 同じ記事の重複を除き、大型→通常イベント→その他の順に最大8件。
@@ -212,10 +212,18 @@ export function forecastBundle(factors, events, todayISO, {before = 3, after = 4
     const uniq = list.sort((a, b) => (a.phase === 'last' ? 0 : 1) - (b.phase === 'last' ? 0 : 1))
       .filter(x => { if (seen.has(x.url)) return false; seen.add(x.url); return true; }) // 1記事1件（最終日の期間を優先）
       .sort((a, b) => (TYPE_ORDER[a.type] ?? 9) - (TYPE_ORDER[b.type] ?? 9) || (b.ranks.length ? 1 : 0) - (a.ranks.length ? 1 : 0)).slice(0, 8);
-    out.days[d] = {tags: calendarTags(d).filter(x => FORECAST_TAGS.includes(x)), events: uniq};
+    // 本日のイベラス（この日が最終日のもの。1日だけの開催も含む）は件数を絞りすぎないよう別に持つ。
+    const seenLast = new Set();
+    const lasts = list.filter(x => x.ends).filter(x => { if (seenLast.has(x.url)) return false; seenLast.add(x.url); return true; })
+      .sort((a, b) => (TYPE_ORDER[a.type] ?? 9) - (TYPE_ORDER[b.type] ?? 9) || (a.endTime || '24:00').localeCompare(b.endTime || '24:00')).slice(0, 15);
+    out.days[d] = {tags: calendarTags(d).filter(x => FORECAST_TAGS.includes(x)), events: uniq, lasts};
   }
+  // 過去データの答え合わせ（automation/backtest-forecast.mjs）の要約。締め時間×ランク帯の的中率だけを入れる。
+  if (backtest?.byGroup) out.accuracy = {period: backtest.period, overall: pickAcc(backtest.overall),
+    byGroup: Object.fromEntries(Object.entries(backtest.byGroup).map(([k, s]) => [k, pickAcc(s)]))};
   return out;
 }
+const pickAcc = s => s && {within10: s.within10, within20: s.within20, medianAbsErr: s.medianAbsErr, inRange: s.inRange, days: s.days, n: s.n};
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const borders = JSON.parse(await readFile(arg('borders', 'data/borders.json'), 'utf8'));

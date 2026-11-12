@@ -14,7 +14,7 @@ import {forecastBundle} from '../automation/build-meter-factors.mjs';
 const ROOT = fileURLToPath(new URL('../', import.meta.url));
 // Tool version shown on the page. Change only when the tool itself changes
 // (data updates do not change it).
-export const PAGES_VERSION = {version: 'v2026.11.12.2', updatedAt: '2026-11-12T15:07:00+09:00', label: '2026/11/12 15:07:00'};
+export const PAGES_VERSION = {version: 'v2026.11.12.3', updatedAt: '2026-11-12T15:20:00+09:00', label: '2026/11/12 15:20:00'};
 const SITES_ORIGIN = 'https://poco-meter.freefreelife2000.chatgpt.site';
 const COLLECTOR_ORIGIN = 'https://pococha-comment-access.freefreelife2000.chatgpt.site';
 const BORDER_FETCH = "fetch('/api/borders',{cache:'no-cache',credentials:'same-origin',signal:controller.signal})";
@@ -170,7 +170,8 @@ export async function buildPages({root = ROOT, out = resolve(ROOT, '_site')} = {
   let forecast = null;
   try {
     const [factors, events] = await Promise.all([read('data/meter-factors.json'), read('data/events.json')]);
-    forecast = JSON.stringify(forecastBundle(JSON.parse(factors), JSON.parse(events), new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10)));
+    const backtest = await read('data/forecast-backtest.json').then(JSON.parse, () => null);
+    forecast = JSON.stringify(forecastBundle(JSON.parse(factors), JSON.parse(events), new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10), {backtest}));
   } catch (error) { if (error.code !== 'ENOENT') throw error; }
   if ((methods.match(/href="\/"/g) || []).length !== 2) throw new Error('Pages build: expected two help return links');
   const pagesManifest = structuredClone(manifest);
