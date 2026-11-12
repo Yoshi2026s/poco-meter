@@ -152,6 +152,8 @@ export function backtest(borders, events, html, {from}) {
     byClose: by(r => r.close),
     byGroup: by(r => `${r.close}|${r.band}`),
     byBand: by(r => r.band),
+    // 締め時間×ランク×ボーダーごと（画面の的中率・自信度に使う。同じ帯でも±0やS6は外れやすいため）
+    bySeries: by(r => `${r.close}|${r.rank}|${r.idx}`),
     byBorder: by(r => ['±0', '+1', '+2'][r.idx]),
     evalModel,
     // 画面用：全期間で作り直した補正

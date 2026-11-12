@@ -40,12 +40,17 @@ for (let d = 1; d <= 11; d++) if (d !== 5) log[`2026-11-${String(d).padStart(2, 
 // 基準値：D帯は直近ほど重い指数加重平均、それ以外は指数加重中央値（前日まで最大42日）
 {
   const vals = [130, null, 100, 100, 100, 100, 100]; // [0]=前日
-  const d = e.forecastBase(vals, 'D');
+  const d = e.forecastBase(vals, 'D1', 0);
   let ex = 100; for (const x of [100, 100, 100, 100, 100, 130]) ex = 0.5 * x + 0.5 * ex; // 古い順に初期値=最古7件の中央値から
   assert.ok(Math.abs(d - ex) < 1e-9, 'D帯は前日の跳ねに強く寄る');
-  assert.equal(e.forecastBase(vals, 'S'), 100, 'S帯は外れ値1日に引っぱられない');
-  assert.equal(e.forecastBase([200, 200, 100, 100, 100], 'A'), 100);
-  assert.equal(e.forecastBase([null, null], 'C'), null);
+  assert.equal(e.forecastBase(vals, 'S2', 1), 100, 'S2の+1は外れ値1日に引っぱられない');
+  assert.equal(e.forecastBase([200, 200, 100, 100, 100], 'A1', 1), 100);
+  assert.equal(e.forecastBase([null, null], 'C1', 0), null);
+  // S6は直近重視（α0.5）、S1〜S5の±0はやや直近重視（α0.3）、S帯の+1・+2はゆっくり（α0.05）
+  assert.equal(e.forecastBase([200, 200, 100, 100, 100], 'S6', 2), 200);
+  assert.equal(e.forecastBase([200, 200, 100, 100, 100], 'S2', 0), 200);
+  assert.equal(e.forecastBase([200, 200, 100, 100, 100], 'S2', 1), 100);
+  assert.equal(e.forecastBase([200, 200, 100, 100, 100], 'A1', 0), 100, 'A帯の±0は変えない');
   const dlog = {}; for (let d2 = 1; d2 <= 11; d2++) dlog[`2026-11-${String(d2).padStart(2, '0')}`] = {D1: [d2 === 11 ? 4000 : 2000, 1, 1]};
   const fd = e.meterForecast(dlog, '2026-11-12', 'D1', 0, '24', null);
   assert.equal(fd.method, '指数加重平均'); assert.ok(fd.value > 2900 && fd.value < 3100);
@@ -94,8 +99,15 @@ assert.equal(e.forecastTrend(-3.5), '低め ↓');
   // 答え合わせの要約：締め時間×ランク帯の的中率だけを入れる
   const acc = forecastBundle(factors, events, '2026-11-12', {before: 0, after: 0, backtest: {period: {from: '2026-01-01', to: '2026-11-11'}, overall: {within10: 63, medianAbsErr: 6, n: 9, extra: 1}, byGroup: {'24|S': {within10: 58.5, within20: 75, medianAbsErr: 7.1, inRange: 42, days: 300, n: 5000, bias: 5}}}}).accuracy;
   assert.deepEqual(acc.byGroup['24|S'], {within10: 58.5, within20: 75, medianAbsErr: 7.1, inRange: 42, days: 300, n: 5000});
-  assert.equal(e.forecastAccuracy({accuracy: acc}, '24', 'S2').within10, 58.5);
-  assert.equal(e.forecastAccuracy({accuracy: acc}, '24', 'A1'), null);
+  assert.equal(e.forecastAccuracy({accuracy: acc}, '24', 'S2', 0).within10, 58.5);
+  assert.equal(e.forecastAccuracy({accuracy: acc}, '24', 'A1', 0), null);
+  // ランク×ボーダーの的中率があれば優先（30日分未満なら帯の値）
+  const acc2 = {...acc, bySeries: {'24|S6|0': {within10: 37.1, medianAbsErr: 17.9, days: 300}, '24|S2|0': {within10: 90, medianAbsErr: 1, days: 10}}};
+  assert.equal(e.forecastAccuracy({accuracy: acc2}, '24', 'S6', 0).within10, 37.1);
+  assert.equal(e.forecastAccuracy({accuracy: acc2}, '24', 'S6', 0).scope, 'series');
+  assert.equal(e.forecastAccuracy({accuracy: acc2}, '24', 'S2', 0).within10, 58.5);
+  const accB = forecastBundle(factors, events, '2026-11-12', {before: 0, after: 0, backtest: {period: {}, overall: {}, byGroup: {}, bySeries: {'24|S6|0': {within10: 37.1, medianAbsErr: 17.9, days: 300, n: 900}}}}).accuracy;
+  assert.deepEqual(accB.bySeries['24|S6|0'], {within10: 37.1, medianAbsErr: 17.9, days: 300});
 }
 
 // 答え合わせ：画面の meterForecast を取り出して使い、補正値は検証期間より前のデータだけで作る
