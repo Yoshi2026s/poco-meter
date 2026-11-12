@@ -47,7 +47,7 @@ git switch -c codex/example-task "origin/(root)"
 
 ## 構成
 - 公開：GitHub Pages https://yoshi2026s.github.io/poco-meter/ （既定ブランチ `(root)` への push で自動公開）
-- ボーダー：`data/borders.json`。GitHub Actions が毎日 05:00・17:00 JST に ONE CARAT から取得（記事本文＋月別表画像の2系統）。
+- ボーダー：`data/borders.json`。GitHub Actions が毎日 05:00・17:00 JST に ONE CARAT から取得（記事本文＋月別表画像の2系統）。同じジョブでPococha公式noteのイベント新着も収集する。
 - 旧Sites・署名キー・旧ChatGPTタスクは使わない。旧Sitesには新URLへの移転案内を掲示済み。
 - ツール版：`scripts/build-pages.mjs` の `PAGES_VERSION`（v2026.11.11.5）。
 - メーター画面の並び：最上部にタイトル欄（使い方・目標値の算出方法・表示設定・再読み込み・アプリ更新）、その下にメーター、補助メニュー、E帯・過去ボーダーの入口。タイトル欄は `#titleTop`（`.title-top`）に入り、幅はメーターと同じ。 タイトル欄は2段（1段目：タイトルと更新日時・版、2段目：4ボタン）で、スマホでは約106px。
@@ -63,7 +63,7 @@ git switch -c codex/example-task "origin/(root)"
 - メーター予想の情報源（画面には未接続）：
   - `data/events.json`：`automation/collect-events.mjs` が Pococha公式note（report.pococha.com）のRSS・サイトマップ・記事ページから、イベント名・期間・対象ランク・URLだけを集めたもの。本文は保存しない。初回は2024-12以降を手動で収集した（2026-11-12）。
   - `data/meter-factors.json`：`automation/build-meter-factors.mjs` が borders.json と events.json から、曜日・給料日（10・20・25日と実支給日）・暦・大型イベントごとの「普段比」を集計したもの。
-  - 自動の定期実行には未登録（追加には承認が必要）。個人のnote・ブログは未収集（発見手段と作者ごとの転載可否が未確認。HAISHIN LAB は使わない）。
+  - 「ボーダー自動更新」（05:00・17:00 JST）の後に続けて、RSSの新着だけを収集し補正値を集計し直す（2026-11-12 ユーザー承認。失敗してもボーダー保存は止めない。変化が無ければコミットしない）。個人のnote・ブログは未収集（発見手段と作者ごとの転載可否が未確認。HAISHIN LAB は使わない）。
 
 ## 起動と時刻
 - 初めて開いた端末では、公開ボーダーの取得が終わるまで目標欄に「読込中…」と表示する。取得に失敗した場合は「データ無し」に戻る。

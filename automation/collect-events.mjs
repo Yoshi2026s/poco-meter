@@ -176,7 +176,7 @@ export async function collect({file, since, backfill, delay, log = console.error
     let list;
     try { list = await listArticles(source, {since, backfill}); } catch (e) { if (e instanceof Blocked) { report.blocked = e.message; continue; } throw e; }
     for (const url of list) {
-      if (byId.has(url) && byId.get(url).confidence !== 'none' && !process.argv.includes('--refresh')) continue;
+      if (byId.has(url) && !process.argv.includes('--refresh')) continue; // 取得済みは取り直さない（定期実行の負荷を抑える）
       await sleep(delay);
       let html;
       try { html = await get(url); } catch (e) { if (e instanceof Blocked) { report.blocked = e.message; log(`停止: ${e.message}`); break; } report.errors.push(String(e.message)); continue; }
@@ -200,8 +200,10 @@ export async function collect({file, since, backfill, delay, log = console.error
     ],
     events,
   };
-  await writeFile(file, JSON.stringify(out, null, 1) + '\n');
-  return {...report, total: events.length};
+  // 新しい記事が無ければ書き換えない（更新日時だけの差分コミットを作らない）。
+  const same = JSON.stringify({...store, updatedAt: null}) === JSON.stringify({...out, updatedAt: null});
+  if (!same) await writeFile(file, JSON.stringify(out, null, 1) + '\n');
+  return {...report, total: events.length, written: !same};
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

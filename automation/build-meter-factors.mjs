@@ -183,6 +183,10 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   const borders = JSON.parse(await readFile(arg('borders', 'data/borders.json'), 'utf8'));
   let events = null; try { events = JSON.parse(await readFile(arg('events', 'data/events.json'), 'utf8')); } catch {}
   const out = buildFactors(borders, events);
-  await writeFile(arg('out', 'data/meter-factors.json'), JSON.stringify(out, null, 1) + '\n');
-  console.log(JSON.stringify(out.coverage));
+  const file = arg('out', 'data/meter-factors.json');
+  // 集計結果が変わらなければ書き換えない（生成日時だけの差分コミットを作らない）。
+  let prev = null; try { prev = JSON.parse(await readFile(file, 'utf8')); } catch {}
+  const same = prev && JSON.stringify({...prev, generatedAt: null}) === JSON.stringify({...out, generatedAt: null});
+  if (!same) await writeFile(file, JSON.stringify(out, null, 1) + '\n');
+  console.log(JSON.stringify({...out.coverage, written: !same}));
 }
