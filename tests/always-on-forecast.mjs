@@ -166,4 +166,8 @@ assert.equal(e.aoEventKind({type: 'newcomer', audience: ['新規ライバー']})
   const old = pageEngine(saved(at - 25 * 3600e3), {...phone, location: loc('#always-on')});
   assert.equal(old.element('current').value, '0', '前の締め時間の区切りで保存した値は残さない');
 }
+// 予想データの作成日時はJSTで表示する
+assert.equal(e.aoDataTime({generatedAt: '2026-11-12T08:05:00.000Z'}), '予想データ 11/12 17:05 作成。');
+assert.equal(e.aoDataTime(null), '');
+assert.match(html, /id="aoPace"/);
 console.log('always-on-forecast ok');
