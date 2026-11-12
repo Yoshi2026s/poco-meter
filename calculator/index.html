@@ -4314,17 +4314,24 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
   function aoK(n,unit){return fmtK(Math.round(n/unit)*unit);}
   function aoSet(id,text){var el=$(id);if(el&&el.textContent!==text)el.textContent=text;}
   function aoCleanTitle(s){return String(s||'').replace(/\p{Extended_Pictographic}|️|‍/gu,'').replace(/[＼／]/g,' ').replace(/\s+/g,' ').trim();}
+  // イベントの名前：期間の見出し（「開催期間」等を除く）を優先し、記事タイトルに含まれる・無いときは記事タイトル。
+  function aoEventName(e){var t=aoCleanTitle(e.title),l=aoCleanTitle(String(e.label||'').replace(/\s*(開催期間|イベント期間|開催日程|開催日時|キャンペーン期間)$/,''));if(!l||l.length<2||t.indexOf(l)>=0)return t;
+    // 「準決勝」「予選」など段階名だけのときは、記事タイトル（【】や記号を除いた先頭20字）を前に付ける
+    if(/^(予選|準決勝|決勝|本戦|本選|準々決勝|第d+(弾|回|ステージ|日程)|ステージd*|リーグ|前半|後半|DAYd+)/.test(l)&&l.length<=12){var q=t.match(/[『「]([^』」]{2,30})[』」]/);return (q?q[1]:t.replace(/【[^】]*】|[＼／]/g,'').trim().slice(0,20))+' '+l;}
+    return l;}
+  // 種類と対象（内容の手がかり）
+  function aoEventKind(e){var k={big:'大型イベント',event:'イベント',collab:'コラボ・出演権',newcomer:'新規ライバー向け',mission:'ミッション',item:'アイテム',notice:'お知らせ'}[e.type]||'';var a=(e.audience||[]).filter(function(x){return k.indexOf(x)<0;});return (k?'・'+k:'')+(a.length?'・'+a.join('・'):'');}
   function aoMD(d){return d?Number(d.slice(5,7))+'/'+Number(d.slice(8,10)):'';}
   function aoEventItems(list,rank,lastView){
     var ul=document.createDocumentFragment();
     list.forEach(function(e){
       var li=document.createElement('li'),a=document.createElement('a'),meta=document.createElement('small');
       if(e.type==='big')li.className='ao-big';
-      a.href=e.url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=aoCleanTitle(e.title);li.appendChild(a);
+      a.href=e.url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=aoEventName(e);li.appendChild(a);
       if((e.ranks||[]).indexOf(rank)>=0){var b=document.createElement('span');b.className='ao-badge';b.textContent='対象ランク';li.appendChild(b);}
       if(e.phase==='last'&&!lastView){var l=document.createElement('span');l.className='ao-badge last';l.textContent='最終日';li.appendChild(l);}
-      if(lastView){var endB=document.createElement('b');endB.textContent=(e.endTime?'本日 '+e.endTime+' まで':'本日まで（終了時刻は記事に記載なし）');meta.appendChild(endB);meta.appendChild(document.createTextNode('・'+aoMD(e.start)+'〜'+(e.type==='big'?'・大型イベント':'')));}
-      else meta.textContent=aoMD(e.start)+(e.end&&e.end!==e.start?'〜'+aoMD(e.end):'')+(e.endTime?' '+e.endTime+'まで':'')+(e.type==='big'?'・大型イベント':'');
+      if(lastView){var endB=document.createElement('b');endB.textContent=(e.endTime?'本日 '+e.endTime+' まで':'本日まで（終了時刻は記事に記載なし）');meta.appendChild(endB);meta.appendChild(document.createTextNode('・'+aoMD(e.start)+'〜'+aoEventKind(e)));}
+      else meta.textContent=aoMD(e.start)+(e.end&&e.end!==e.start?'〜'+aoMD(e.end):'')+(e.endTime?' '+e.endTime+'まで':'')+aoEventKind(e);
       li.appendChild(meta);ul.appendChild(li);
     });
     return ul;

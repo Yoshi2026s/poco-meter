@@ -44,9 +44,21 @@ async function get(url, {binary = false} = {}) {
 
 const decode = s => s.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;|&#x27;/g, "'").replace(/&nbsp;/g, ' ');
 
+// note の記事本文（note-common-styles__textnote-body の div）だけを取り出す。見つからなければページ全体。
+export function articleBody(html) {
+  const i = html.indexOf('note-common-styles__textnote-body');
+  if (i < 0) return html;
+  const s = html.lastIndexOf('<div', i);
+  const re = /<\/?div\b/g; re.lastIndex = s;
+  let depth = 0, m;
+  while ((m = re.exec(html))) { depth += m[0] === '<div' ? 1 : -1; if (depth === 0) return html.slice(s, m.index); }
+  return html.slice(s);
+}
+
 export function articleText(html) {
-  return decode(html
+  return decode(articleBody(html)
     .replace(/<script[\s\S]*?<\/script>/gi, '').replace(/<style[\s\S]*?<\/style>/gi, '')
+    .replace(/<h[2-4][^>]*>/gi, '\n## ')
     .replace(/<(br|\/p|\/h[1-6]|\/li|\/div|\/tr|\/td|\/th|\/figcaption)[^>]*>/gi, '\n')
     .replace(/<[^>]+>/g, ''))
     .replace(/[ \t　]+/g, ' ').replace(/\n\s*\n+/g, '\n');
@@ -88,25 +100,47 @@ export function findPeriods(text, publishedISO) {
       } else if (hOnly) { end = start; endTime = hOnly; }
       if (!h1 && !mo2 && hOnly) continue; // 「10:00〜12:00」だけの行は日付範囲ではない
       if (end && (end < start || (Date.parse(end) - Date.parse(start)) / 864e5 > 120)) continue;
-      const prefix = line.slice(0, m.index);
+      const prefix = line.slice(0, m.index).replace(/^## /, '');
       const head = [lines[li - 1], lines[li - 2]].filter(Boolean).join(' ');
-      const labeled = /開催期間|イベント期間|開催日程|開催日時|期間[:：]|予選|本戦|決勝|ステージ|リーグ|より(開催|スタート|開始)/.test(prefix + m[0]);
+      // 直前の見出し（## 行）。日付の行から12行以内のもの。
+      let heading = null;
+      for (let k = li - 1; k >= Math.max(0, li - 12); k--) if (/^## /.test(lines[k] || '')) { heading = cleanLabel(lines[k].slice(3)); break; }
+      const ctx = `${heading || ''} ${prefix}`;
+      const labeled = /開催期間|イベント期間|開催日程|開催日時|キャンペーン期間|期間[:：]|予選|本戦|準決勝|決勝|ステージ|リーグ|より(開催|スタート|開始)/.test(prefix + m[0]);
       const isEntry = /エントリー?期間|応募期間|申込|受付/.test(prefix);
-      const clean = s => s.replace(/\p{Extended_Pictographic}|️/gu, '').replace(/[:：\s・■]+$/, '').replace(/^[\s・■]+/, '').replace(/^イベント名\s*[:：]\s*/, '').trim();
-      let label = clean(prefix).slice(-30) || null;
-      if (!label || /^(開催期間|イベント期間|開催日程|開催日時|第\d+日程)$/.test(label)) {
-        // 見出しだけの行は、直前の見出し（日付を含まない短い行）をイベント名として補う。
-        for (let k = li - 1; k >= Math.max(0, li - 6); k--) {
-          const h = clean(lines[k] || '');
-          if (h && h.length <= 40 && !/\d{1,2}[\/月]\d{1,2}|期間|エントリ|対象|条件|※/.test(h)) { label = label ? `${h.slice(0, 30)} ${label}` : h.slice(0, 30); break; }
-        }
-      }
-      const ranks = findRanks(prefix);
-      out.push({start, end, startTime: h1 || null, endTime, label, labeled, isEntry, ranks: ranks.length ? ranks : findRanks(head)});
+      // イベントそのものの期間ではないもの（使用期限・配信時間・募集や選考・結果発表など）
+      const nonEvent = NON_EVENT.test(prefix) || (!labeled && NON_EVENT.test(heading || ''));
+      const mins = x => x ? +x.split(':')[0] * 60 + +x.split(':')[1] : null;
+      const slot = end === start && h1 && endTime && mins(endTime) > mins(h1) && mins(endTime) - mins(h1) <= 180 && !labeled;
+      out.push({start, end, startTime: h1 || null, endTime, label: pickLabel(prefix, heading), labeled, isEntry: isEntry || nonEvent || slot,
+        kind: isEntry ? 'entry' : nonEvent ? 'other' : slot ? 'slot' : 'event', ranks: findRanks(ctx).length ? findRanks(ctx) : findRanks(head)});
     }
   });
-  const seen = new Set();
-  return out.filter(p => { const k = `${p.start}|${p.end}|${p.label}|${p.isEntry}`; if (seen.has(k)) return false; seen.add(k); return true; });
+  // 同じ期間の重複はまとめる（名前は見出し付き・具体的なものを残す）。
+  const best = new Map();
+  for (const p of out) {
+    const k = `${p.start}|${p.end}|${p.isEntry}`, cur = best.get(k);
+    const score = q => (q.labeled ? 2 : 0) + (q.label ? 1 : 0) + (q.ranks.length ? 1 : 0);
+    if (!cur || score(p) > score(cur)) best.set(k, p);
+  }
+  return [...best.values()];
+}
+
+export const NON_EVENT = /使用期限|有効期限|利用期限|交換期限|獲得対象期限|次回配信|配信日時|配信スケジュール|配信予定|放送|募集期間|応募|選考|審査|結果発表|発表日|受け?取り期限|付与|適用期間|お届け予定|販売期間|購入期間/;
+export const GENERIC = /^(開催期間|イベント期間|開催日程|開催日時|キャンペーン期間|集計期間|期間|日程|スケジュール|第\d+日程|イベント名)$/;
+export function cleanLabel(s) {
+  return String(s || '').replace(/\p{Extended_Pictographic}|\uFE0F|\u200D/gu, '').replace(/[:：\s・■▼▶︎●◆◇★☆【】]+$/, '').replace(/^[\s・■▼▶︎●◆◇★☆]+/, '')
+    .replace(/^イベント名\s*[:：]\s*/, '').replace(/\s+/g, ' ').trim();
+}
+// 名前の決め方：①行内の『』「」で囲まれた名前 ②行の前置きが短い名前ならそれ ③直前の見出し（＋前置きが「開催期間」等なら付ける）
+export function pickLabel(prefix, heading) {
+  const p = cleanLabel(prefix);
+  const quoted = p.match(/[『「]([^』」]{2,40})[』」]/);
+  if (quoted) return quoted[1];
+  const short = p && p.length >= 2 && p.length <= 24 && !/[。、！？!?]|です|ます|こちら|以下|本記事|こんにちは/.test(p) && !/^[\d※＊*（(]|\/$|^【?$/.test(p);
+  if (short && !GENERIC.test(p)) return p;
+  if (heading && heading.length <= 40) return short && GENERIC.test(p) ? `${heading} ${p}` : heading;
+  return short ? p : null;
 }
 
 // 「S1〜S6」「B1-A3」「Aランク」「全ランク」などから対象ランクを集める。
@@ -143,28 +177,43 @@ export function toEvent(source, url, html) {
   // 公開日〜最終更新日の前後だけを対象にする（過去の実績紹介や翌年の予告を拾いすぎないため）。
   const lo = published ? Date.parse(published.slice(0, 10)) - 30 * 864e5 : -Infinity;
   const hi = modified ? Date.parse(modified.slice(0, 10)) + 90 * 864e5 : Infinity;
-  const main = periods.filter(p => !p.isEntry && Date.parse(p.start) >= lo && Date.parse(p.start) <= hi);
+  const titleName = cleanLabel(title.replace(/[＼／]/g, ' ')).slice(0, 40);
+  const main = periods.filter(p => !p.isEntry && Date.parse(p.start) >= lo && Date.parse(p.start) <= hi).map(p => ({...p, label: p.label && !GENERIC.test(p.label) ? p.label : titleName}));
   const type = classify(title, text);
   const ranks = findRanks(text);
   // 期間が1つだけのときは記事全体の期間とみなす。複数あるとき（予定表・まとめ記事）は periods を個別に使う。
   const single = main.length === 1 ? main[0] : null;
   const confidence = !main.length ? 'none' : main.some(p => p.labeled) ? 'high' : 'low';
   return {id: url.split('/').pop(), title, url, sourceId: source.id, sourceKind: source.kind, published, modified, type,
-    start: single?.start || null, end: single?.end || null, periods: main.map(({isEntry, ...p}) => p), ranks, confidence};
+    start: single?.start || null, end: single?.end || null, periods: main.map(({isEntry, kind, ...p}) => p), ranks, confidence, audience: audienceOf(title, text),
+    excluded: periods.filter(p => p.isEntry).length, fetchedAt: new Date().toISOString()};
+}
+
+// イベントの対象（内容の手がかり）。タイトルと本文の冒頭から判定する。
+export function audienceOf(title, text) {
+  const s = `${title}\n${String(text).slice(0, 2000)}`, out = [];
+  if (/ボイス(ライバー|配信)/.test(s)) out.push('ボイス');
+  if (/新規ライバー|デビュー|ルーキー/.test(title)) out.push('新規ライバー');
+  if (/リスナー(限定|向け|のみ)|リスナーランキング/.test(s)) out.push('リスナー');
+  if (/事務所|ギルド/.test(title)) out.push('事務所');
+  if (/ファミリー/.test(title)) out.push('ファミリー');
+  return out;
 }
 
 async function listArticles(source, {since, backfill}) {
   const urls = new Map();
   const rss = await get(source.rss);
   for (const m of rss.matchAll(/<item>[\s\S]*?<link>([^<]+)<\/link>[\s\S]*?<pubDate>([^<]+)<\/pubDate>[\s\S]*?<\/item>/g)) urls.set(m[1].trim(), new Date(m[2]).toISOString());
-  if (backfill && source.sitemap) {
+  const lastmod = new Map();
+  if (source.sitemap) {
     const xml = gunzipSync(await get(source.sitemap, {binary: true})).toString('utf8');
     for (const m of xml.matchAll(/<url>\s*<loc>([^<]+)<\/loc>\s*(?:<lastmod>([^<]+)<\/lastmod>)?/g)) {
       if (!/\/n\/[a-z0-9]+$/.test(m[1])) continue;
-      if (!m[2] || m[2].slice(0, 10) >= since) if (!urls.has(m[1])) urls.set(m[1], m[2] || null);
+      if (m[2]) lastmod.set(m[1], m[2]);
+      if (backfill && (!m[2] || m[2].slice(0, 10) >= since) && !urls.has(m[1])) urls.set(m[1], m[2] || null);
     }
   }
-  return [...urls.keys()];
+  return {list: [...urls.keys()], lastmod};
 }
 
 export async function collect({file, since, backfill, delay, log = console.error}) {
@@ -174,9 +223,15 @@ export async function collect({file, since, backfill, delay, log = console.error
   const report = {fetched: 0, added: 0, updated: 0, blocked: null, errors: []};
   for (const source of SOURCES) {
     let list;
-    try { list = await listArticles(source, {since, backfill}); } catch (e) { if (e instanceof Blocked) { report.blocked = e.message; continue; } throw e; }
-    for (const url of list) {
-      if (byId.has(url) && !process.argv.includes('--refresh')) continue; // 取得済みは取り直さない（定期実行の負荷を抑える）
+    let lastmod;
+    try { ({list, lastmod} = await listArticles(source, {since, backfill})); } catch (e) { if (e instanceof Blocked) { report.blocked = e.message; continue; } throw e; }
+    // 取得後に更新された記事（日程の変更など）は取り直す。公開から120日以内・1回20件まで。
+    const recent = Date.now() - 120 * 864e5;
+    const stale = [...byId.values()].filter(e => lastmod.get(e.url) && e.published && Date.parse(e.published) >= recent && (!e.fetchedAt || Date.parse(lastmod.get(e.url)) > Date.parse(e.fetchedAt)))
+      .sort((a, b) => Date.parse(lastmod.get(b.url)) - Date.parse(lastmod.get(a.url))).slice(0, 20).map(e => e.url);
+    report.refetched = stale.length;
+    for (const url of [...list, ...stale.filter(u => !list.includes(u))]) {
+      if (byId.has(url) && !stale.includes(url) && !process.argv.includes('--refresh')) continue; // 取得済み・未更新は取り直さない
       await sleep(delay);
       let html;
       try { html = await get(url); } catch (e) { if (e instanceof Blocked) { report.blocked = e.message; log(`停止: ${e.message}`); break; } report.errors.push(String(e.message)); continue; }
@@ -191,7 +246,7 @@ export async function collect({file, since, backfill, delay, log = console.error
   const events = [...byId.values()].sort((a, b) => (b.start || b.published || '').localeCompare(a.start || a.published || ''));
   const out = {
     schema: 'poco-events-v1',
-    note: 'イベント名・期間・対象ランク・URLなどの事実だけを記録。本文は保存しない。confidence: high=「開催期間」等の見出し付きの期間を検出 / low=見出しなしの期間 / none=期間を検出できず。',
+    note: 'イベント名・期間・対象ランク・対象（audience）・URLなどの事実だけを記録。本文は保存しない。confidence: high=「開催期間」等の見出し付きの期間を検出 / low=見出しなしの期間 / none=期間を検出できず。使用期限・配信時間・応募や選考などの期間は除外（excluded に件数）。',
     updatedAt: new Date().toISOString(),
     sources: SOURCES.map(({id, name, kind, home, checked}) => ({id, name, kind, home, checked})),
     pending: [

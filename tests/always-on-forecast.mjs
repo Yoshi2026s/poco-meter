@@ -136,4 +136,20 @@ assert.ok(html.includes("if(f.status!=='ok'&&liveBorderBusy){aoSet('aoForecast',
   const page = pageEngine(undefined);
   assert.ok(page, 'ページ初期化（パネルの登録を含む）が例外なく終わる');
 }
+// イベントの表示名と内容：見出しを優先（「開催期間」等は外す）し、種類と対象を添える
+assert.equal(e.aoEventName({title: 'POCO LAND 10周年祭 開催決定！', label: 'ポコキャラバン10周年祭 開催期間'}), 'ポコキャラバン10周年祭');
+assert.equal(e.aoEventName({title: 'POCO LAND 10周年祭 開催決定！', label: 'POCO LAND 10周年祭'}), 'POCO LAND 10周年祭 開催決定！');
+assert.match(e.aoEventName({title: '＼新規ライバー限定イベント／『Kimono MUSE』創刊号専属モデル選抜イベント#2', label: '準決勝'}), /^Kimono MUSE 準決勝$/);
+assert.match(e.aoEventName({title: '【予告】『ar』年間モデルオーディション', label: '決勝'}), /^ar 決勝$/);
+assert.equal(e.aoEventKind({type: 'big', audience: ['ボイス']}), '・大型イベント・ボイス');
+assert.equal(e.aoEventKind({type: 'newcomer', audience: ['新規ライバー']}), '・新規ライバー向け');
+// 別の記事に載った同じイベント（名前と期間が同じ）は1件にまとめる
+{
+  const evs = {events: [
+    {title: 'A記事', url: 'a', type: 'event', confidence: 'high', ranks: [], periods: [{start: '2026-11-12', end: '2026-11-14', label: '冬祭り 開催期間', ranks: []}]},
+    {title: 'B記事', url: 'b', type: 'event', confidence: 'high', ranks: [], periods: [{start: '2026-11-12', end: '2026-11-14', label: '冬祭り', ranks: []}]}]};
+  const b2 = forecastBundle({weekday: {}}, evs, '2026-11-12', {before: 0, after: 2});
+  assert.equal(b2.days['2026-11-12'].events.length, 1);
+  assert.equal(b2.days['2026-11-14'].lasts.length, 1);
+}
 console.log('always-on-forecast ok');

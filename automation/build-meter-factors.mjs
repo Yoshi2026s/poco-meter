@@ -205,17 +205,20 @@ export function forecastBundle(factors, events, todayISO, {before = 3, after = 4
         const end = p.end || p.start;
         if (!p.start || d < p.start || d > end) continue;
         list.push({title: e.title.slice(0, 60), label: p.label ? p.label.slice(0, 40) : null, type: e.type, ranks: (p.ranks?.length ? p.ranks : e.ranks) || [],
-          phase: d === p.start ? 'first' : d === end ? 'last' : 'middle', ends: d === end, start: p.start, end: p.end || null, endTime: p.endTime || null, url: e.url});
+          phase: d === p.start ? 'first' : d === end ? 'last' : 'middle', ends: d === end, start: p.start, end: p.end || null, endTime: p.endTime || null, url: e.url,
+          ...(e.audience?.length ? {audience: e.audience} : {})});
       }
     }
-    // 同じ記事の重複を除き、大型→通常イベント→その他の順に最大8件。
+    // 同じ記事の重複と、別の記事に載った同じイベント（名前と期間が同じ）を除き、大型→通常イベント→その他の順に最大8件。
     const seen = new Set();
+    const nameKey = x => `${String(x.label || x.title).replace(/\s*(開催期間|イベント期間|開催日程|キャンペーン期間)$/, '').replace(/[\s「」『』【】！!]/g, '')}|${x.start}|${x.end}`;
+    const once = x => { const k1 = x.url, k2 = nameKey(x); if (seen.has(k1) || seen.has(k2)) return false; seen.add(k1); seen.add(k2); return true; };
     const uniq = list.sort((a, b) => (a.phase === 'last' ? 0 : 1) - (b.phase === 'last' ? 0 : 1))
-      .filter(x => { if (seen.has(x.url)) return false; seen.add(x.url); return true; }) // 1記事1件（最終日の期間を優先）
+      .filter(once) // 1記事1件（最終日の期間を優先）
       .sort((a, b) => (TYPE_ORDER[a.type] ?? 9) - (TYPE_ORDER[b.type] ?? 9) || (b.ranks.length ? 1 : 0) - (a.ranks.length ? 1 : 0)).slice(0, 8);
     // 本日のイベラス（この日が最終日のもの。1日だけの開催も含む）は件数を絞りすぎないよう別に持つ。
-    const seenLast = new Set();
-    const lasts = list.filter(x => x.ends).filter(x => { if (seenLast.has(x.url)) return false; seenLast.add(x.url); return true; })
+    seen.clear();
+    const lasts = list.filter(x => x.ends).filter(once)
       .sort((a, b) => (TYPE_ORDER[a.type] ?? 9) - (TYPE_ORDER[b.type] ?? 9) || (a.endTime || '24:00').localeCompare(b.endTime || '24:00')).slice(0, 15);
     out.days[d] = {tags: calendarTags(d).filter(x => FORECAST_TAGS.includes(x)), events: uniq, lasts};
   }

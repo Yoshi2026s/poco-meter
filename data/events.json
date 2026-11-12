@@ -1,7 +1,7 @@
 {
  "schema": "poco-events-v1",
- "note": "イベント名・期間・対象ランク・URLなどの事実だけを記録。本文は保存しない。confidence: high=「開催期間」等の見出し付きの期間を検出 / low=見出しなしの期間 / none=期間を検出できず。",
- "updatedAt": "2026-11-12T04:52:45.770Z",
+ "note": "イベント名・期間・対象ランク・対象（audience）・URLなどの事実だけを記録。本文は保存しない。confidence: high=「開催期間」等の見出し付きの期間を検出 / low=見出しなしの期間 / none=期間を検出できず。使用期限・配信時間・応募や選考などの期間は除外（excluded に件数）。",
+ "updatedAt": "2026-11-12T08:28:44.443Z",
  "sources": [
   {
    "id": "pococha-official-note",
@@ -29,6 +29,51 @@
  ],
  "events": [
   {
+   "id": "nf19dd5141b7c",
+   "title": "おやすみチケットPlus+機能のお知らせ関連",
+   "url": "https://report.pococha.com/n/nf19dd5141b7c",
+   "sourceId": "pococha-official-note",
+   "sourceKind": "official",
+   "published": "2026-11-12T11:02:27.000+09:00",
+   "modified": "2026-11-12T15:30:22.000+09:00",
+   "type": "notice",
+   "start": "2027-01-01",
+   "end": "2027-01-03",
+   "periods": [
+    {
+     "start": "2027-01-01",
+     "end": "2027-01-03",
+     "startTime": null,
+     "endTime": null,
+     "label": "連休時期のおやすみチケット",
+     "labeled": false,
+     "ranks": [
+      "S1",
+      "S2",
+      "S3",
+      "S4",
+      "S5",
+      "S6"
+     ]
+    }
+   ],
+   "ranks": [
+    "A1",
+    "A2",
+    "A3",
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6"
+   ],
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:15:28.115Z"
+  },
+  {
    "id": "nf0986e61c48c",
    "title": "【🌟3色対抗 世代ウォーズ🌟】予選ポイント",
    "url": "https://report.pococha.com/n/nf0986e61c48c",
@@ -51,32 +96,10 @@
     }
    ],
    "ranks": [],
-   "confidence": "high"
-  },
-  {
-   "id": "nf19dd5141b7c",
-   "title": "おやすみチケットPlus+機能のお知らせ関連",
-   "url": "https://report.pococha.com/n/nf19dd5141b7c",
-   "sourceId": "pococha-official-note",
-   "sourceKind": "official",
-   "published": "2026-11-12T11:02:27.000+09:00",
-   "modified": "2026-11-12T11:02:27.000+09:00",
-   "type": "notice",
-   "start": null,
-   "end": null,
-   "periods": [],
-   "ranks": [
-    "A1",
-    "A2",
-    "A3",
-    "S1",
-    "S2",
-    "S3",
-    "S4",
-    "S5",
-    "S6"
-   ],
-   "confidence": "none"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:15:30.428Z"
   },
   {
    "id": "n00250f9f9546",
@@ -95,13 +118,16 @@
      "end": "2027-02-22",
      "startTime": null,
      "endTime": null,
-     "label": "期間",
+     "label": "タイトル未定 LIVE HOUSE TOUR 2026-2027 × Pococ",
      "labeled": true,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:14:15.343Z"
   },
   {
    "id": "n9a17730b03fb",
@@ -120,25 +146,7 @@
      "end": "2026-11-03",
      "startTime": null,
      "endTime": null,
-     "label": "配信に慣れながら少しずつファンを増やしていくこのイベントで、",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-11-10",
-     "end": "2026-11-10",
-     "startTime": "20:30",
-     "endTime": "21:00",
-     "label": "🏻次回配信",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-11-11",
-     "end": "2026-11-12",
-     "startTime": "21:30",
-     "endTime": "20:00",
-     "label": "🏻次回配信 11/10 20:30〜21:00頃",
+     "label": "準決勝進出中ライバーを紹介！！",
      "labeled": false,
      "ranks": []
     },
@@ -162,7 +170,12 @@
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [
+    "新規ライバー"
+   ],
+   "excluded": 2,
+   "fetchedAt": "2026-11-12T08:14:17.848Z"
   },
   {
    "id": "n8a8098dfe260",
@@ -177,7 +190,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:15:33.009Z"
   },
   {
    "id": "n2c3804d98d8d",
@@ -192,7 +208,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:14:21.011Z"
   },
   {
    "id": "n6740b64b4271",
@@ -207,7 +226,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:15:35.618Z"
   },
   {
    "id": "n52344eb6a125",
@@ -220,37 +242,12 @@
    "type": "item",
    "start": null,
    "end": null,
-   "periods": [
-    {
-     "start": "2026-11-01",
-     "end": "2026-11-30",
-     "startTime": "0:00",
-     "endTime": "23:59",
-     "label": "使用期限:2026/",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-11-06",
-     "end": "2026-11-08",
-     "startTime": "12:00",
-     "endTime": "23:59",
-     "label": "対象アイテムのポイント獲得対象期限は【2026/",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-11-01",
-     "end": "2026-11-30",
-     "startTime": "0:00",
-     "endTime": "23:59",
-     "label": " 11/8 23:59】のみです。対象アイテムは【2026/",
-     "labeled": false,
-     "ranks": []
-    }
-   ],
+   "periods": [],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 2,
+   "fetchedAt": "2026-11-12T08:14:23.689Z"
   },
   {
    "id": "n267fac9a3a1c",
@@ -265,7 +262,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:15:37.512Z"
   },
   {
    "id": "nc5c118481b06",
@@ -276,30 +276,24 @@
    "published": "2026-10-30T12:18:00.000+09:00",
    "modified": "2026-10-30T12:18:00.000+09:00",
    "type": "mission",
-   "start": null,
-   "end": null,
+   "start": "2026-10-30",
+   "end": "2026-10-31",
    "periods": [
     {
      "start": "2026-10-30",
      "end": "2026-10-31",
      "startTime": "10:00",
      "endTime": "23:59",
-     "label": "ファンの皆さんと一緒にハロウィンを楽しみながら、限定特典の獲",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-10-30",
-     "end": "2026-10-31",
-     "startTime": "10:00",
-     "endTime": "23:59",
-     "label": "集計期間",
+     "label": "イベント詳細・ミッション達成条件 集計期間",
      "labeled": true,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:14:26.273Z"
   },
   {
    "id": "n388ab0dd8027",
@@ -318,13 +312,16 @@
      "end": "2026-11-01",
      "startTime": null,
      "endTime": null,
-     "label": "こんにちは、Pococha運営です！",
+     "label": "＜10/30,31,11/1＞歌うまタイムライン出現！！",
      "labeled": false,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:15:39.734Z"
   },
   {
    "id": "n6983231af142",
@@ -358,7 +355,10 @@
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:14:28.439Z"
   },
   {
    "id": "n67ea5a4e1195",
@@ -373,7 +373,12 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [
+    "リスナー"
+   ],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:15:41.900Z"
   },
   {
    "id": "n1b6f3ddadd91",
@@ -407,7 +412,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:14:30.739Z"
   },
   {
    "id": "ne9db6a61a79d",
@@ -435,7 +443,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:15:43.896Z"
   },
   {
    "id": "nd8ded08cb0e3",
@@ -450,7 +461,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:14:33.599Z"
   },
   {
    "id": "n3fa6d7173d18",
@@ -484,7 +498,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:15:45.721Z"
   },
   {
    "id": "n30ca7ba97642",
@@ -499,7 +516,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:14:36.065Z"
   },
   {
    "id": "n1002621d703d",
@@ -518,13 +538,16 @@
      "end": null,
      "startTime": null,
      "endTime": null,
-     "label": "メインコンテンツへスキップ",
+     "label": "「JOYSOUND認定 歌うまライバー決定戦！2026 Autumn」採点対象楽",
      "labeled": true,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:15:56.542Z"
   },
   {
    "id": "nacab54b7879b",
@@ -543,13 +566,63 @@
      "end": null,
      "startTime": null,
      "endTime": null,
-     "label": "メインコンテンツへスキップ",
+     "label": "「JOYSOUND認定 歌うまライバー決定戦！2026 Autumn」開催時の対",
      "labeled": true,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:14:54.494Z"
+  },
+  {
+   "id": "n3f05523b4948",
+   "title": "「JOYSOUND認定 歌うまライバー決定戦！2026 Autumn」歌うまランキング入賞者発表🎤👏",
+   "url": "https://report.pococha.com/n/n3f05523b4948",
+   "sourceId": "pococha-official-note",
+   "sourceKind": "official",
+   "published": "2026-11-12T17:10:48.000+09:00",
+   "modified": "2026-11-12T17:10:48.000+09:00",
+   "type": "collab",
+   "start": "2026-10-24",
+   "end": "2026-10-30",
+   "periods": [
+    {
+     "start": "2026-10-24",
+     "end": "2026-10-30",
+     "startTime": null,
+     "endTime": null,
+     "label": "「JOYSOUND認定 歌うまライバー決定戦！2026 Autumn」歌うまラン",
+     "labeled": false,
+     "ranks": []
+    }
+   ],
+   "ranks": [
+    "D1",
+    "D2",
+    "D3",
+    "C1",
+    "C2",
+    "C3",
+    "B1",
+    "B2",
+    "B3",
+    "A1",
+    "A2",
+    "A3",
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6"
+   ],
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:14:13.319Z"
   },
   {
    "id": "n803868883e7d",
@@ -564,7 +637,12 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [
+    "ボイス"
+   ],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:15:47.697Z"
   },
   {
    "id": "n0a33f343f9af",
@@ -579,7 +657,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:14:41.114Z"
   },
   {
    "id": "n6b58b0bea1c0",
@@ -594,7 +675,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:15:49.936Z"
   },
   {
    "id": "nd9287ae61213",
@@ -609,7 +693,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:14:45.647Z"
   },
   {
    "id": "n9a990927ce64",
@@ -624,7 +711,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:15:51.936Z"
   },
   {
    "id": "n8c3a94936ee6",
@@ -643,13 +733,16 @@
      "end": "2026-10-25",
      "startTime": null,
      "endTime": null,
-     "label": "本記事では、",
+     "label": "【全ミッション一覧】 10月差し入れお届けミッション",
      "labeled": false,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:14:48.255Z"
   },
   {
    "id": "nff2586f52f67",
@@ -664,7 +757,12 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [
+    "リスナー"
+   ],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:15:54.254Z"
   },
   {
    "id": "n9096ea3c0139",
@@ -683,13 +781,16 @@
      "end": "2026-10-13",
      "startTime": "12:00",
      "endTime": "23:59",
-     "label": "スケジュール",
+     "label": "投稿期間",
      "labeled": false,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:15:06.457Z"
   },
   {
    "id": "ncadbcfa0f16d",
@@ -704,7 +805,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:15:00.640Z"
   },
   {
    "id": "n1a5fe2fdf8c2",
@@ -729,7 +833,10 @@
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:18:12.872Z"
   },
   {
    "id": "nf99dfd7294e6",
@@ -744,7 +851,12 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [
+    "リスナー"
+   ],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:15:59.705Z"
   },
   {
    "id": "nbf2c1188a729",
@@ -763,7 +875,7 @@
      "end": "2026-12-25",
      "startTime": null,
      "endTime": null,
-     "label": "こチャレ」へエントリすると、POCOLANDイベント期間中(",
+     "label": "ぽこチャレ",
      "labeled": true,
      "ranks": []
     },
@@ -772,7 +884,7 @@
      "end": "2026-10-25",
      "startTime": null,
      "endTime": null,
-     "label": "プレ世代ウォーズ",
+     "label": "世代ウォーズ(NEW)",
      "labeled": false,
      "ranks": []
     },
@@ -781,7 +893,7 @@
      "end": "2026-12-25",
      "startTime": null,
      "endTime": null,
-     "label": "クリスマスアイテムを使って、特別なプロフィール背景をGETし 開催期間",
+     "label": "Pocochaクリスマスパーティ2026 開催期間",
      "labeled": true,
      "ranks": []
     },
@@ -790,7 +902,7 @@
      "end": "2026-11-29",
      "startTime": null,
      "endTime": null,
-     "label": "POCO LAND 2026や新機能情報などの最新情報をいち 開催期間",
+     "label": "つなごうPocochaの輪！ポコキャラバン10周年祭 開催期間",
      "labeled": true,
      "ranks": []
     }
@@ -815,7 +927,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:15:03.388Z"
   },
   {
    "id": "n7603018611e5",
@@ -834,13 +949,16 @@
      "end": "2026-09-27",
      "startTime": "12:00",
      "endTime": "23:59",
-     "label": "2026/",
+     "label": "枠のみんなでお月見しようお月見ミッション！",
      "labeled": false,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:15:08.738Z"
   },
   {
    "id": "n9c2b2bcf419c",
@@ -859,13 +977,16 @@
      "end": "2026-09-27",
      "startTime": null,
      "endTime": null,
-     "label": "本記事では、",
+     "label": "【全ミッション一覧】 差し入れお届けミッション",
      "labeled": false,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:16:20.971Z"
   },
   {
    "id": "n811eb4dd0ddb",
@@ -876,21 +997,14 @@
    "published": "2026-09-20T12:00:00.000+09:00",
    "modified": "2026-09-20T12:00:51.000+09:00",
    "type": "item",
-   "start": "2026-09-20",
-   "end": "2026-10-15",
-   "periods": [
-    {
-     "start": "2026-09-20",
-     "end": "2026-10-15",
-     "startTime": null,
-     "endTime": null,
-     "label": "応募・選考スケジュール",
-     "labeled": false,
-     "ranks": []
-    }
-   ],
+   "start": null,
+   "end": null,
+   "periods": [],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 1,
+   "fetchedAt": "2026-11-12T08:16:02.073Z"
   },
   {
    "id": "n599d3a27d832",
@@ -905,7 +1019,40 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:16:04.790Z"
+  },
+  {
+   "id": "n558628be7989",
+   "title": "【9/16〜9/29】ファミリーみんなで新しいなかまを迎えよう！最大30,000コイン山分け 友達招待キャンペーン",
+   "url": "https://report.pococha.com/n/n558628be7989",
+   "sourceId": "pococha-official-note",
+   "sourceKind": "official",
+   "published": "2026-09-10T12:16:02.000+09:00",
+   "modified": "2026-09-10T12:16:02.000+09:00",
+   "type": "notice",
+   "start": "2026-09-16",
+   "end": "2026-09-29",
+   "periods": [
+    {
+     "start": "2026-09-16",
+     "end": "2026-09-29",
+     "startTime": null,
+     "endTime": null,
+     "label": "キャンペーン概要 キャンペーン期間",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [
+    "ファミリー"
+   ],
+   "excluded": 1,
+   "fetchedAt": "2026-11-12T08:16:13.803Z"
   },
   {
    "id": "n7154ccf8460f",
@@ -930,7 +1077,10 @@
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:16:07.563Z"
   },
   {
    "id": "n73ab1169f47c",
@@ -940,12 +1090,15 @@
    "sourceKind": "official",
    "published": "2026-09-10T16:00:00.000+09:00",
    "modified": "2026-09-19T12:04:54.000+09:00",
-   "type": "event",
+   "type": "collab",
    "start": null,
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:16:09.855Z"
   },
   {
    "id": "n0f6c98d58777",
@@ -960,7 +1113,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:15:13.240Z"
   },
   {
    "id": "nd268b3d45afd",
@@ -970,116 +1126,15 @@
    "sourceKind": "official",
    "published": "2026-09-10T16:00:00.000+09:00",
    "modified": "2026-09-14T00:44:32.000+09:00",
-   "type": "notice",
+   "type": "collab",
    "start": null,
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
-  },
-  {
-   "id": "n558628be7989",
-   "title": "【9/16〜9/29】ファミリーみんなで新しいなかまを迎えよう！最大30,000コイン山分け 友達招待キャンペーン",
-   "url": "https://report.pococha.com/n/n558628be7989",
-   "sourceId": "pococha-official-note",
-   "sourceKind": "official",
-   "published": "2026-09-10T12:16:02.000+09:00",
-   "modified": "2026-09-10T12:16:02.000+09:00",
-   "type": "notice",
-   "start": null,
-   "end": null,
-   "periods": [
-    {
-     "start": "2026-09-16",
-     "end": "2026-09-29",
-     "startTime": null,
-     "endTime": null,
-     "label": "【",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-09-10",
-     "end": "2026-09-13",
-     "startTime": "16:00",
-     "endTime": "23:59",
-     "label": "参加ファミリーの募集期間",
-     "labeled": true,
-     "ranks": []
-    },
-    {
-     "start": "2026-09-16",
-     "end": "2026-09-29",
-     "startTime": null,
-     "endTime": null,
-     "label": "キャンペーン期間",
-     "labeled": true,
-     "ranks": []
-    },
-    {
-     "start": "2026-09-16",
-     "end": "2026-09-29",
-     "startTime": "0:00",
-     "endTime": "23:59",
-     "label": "ファミリーに加入すること（新規登録・ファミリー加入のいずれも",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-09-10",
-     "end": "2026-09-13",
-     "startTime": "16:00",
-     "endTime": "23:59",
-     "label": "STEP1｜応募する（",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-09-16",
-     "end": "2026-09-29",
-     "startTime": null,
-     "endTime": "23:59",
-     "label": "A. カウント対象はキャンペーン期間中（",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-09-16",
-     "end": "2026-09-29",
-     "startTime": "0:00",
-     "endTime": "23:59",
-     "label": "カウント対象となるのは、",
-     "labeled": false,
-     "ranks": []
-    }
-   ],
-   "ranks": [],
-   "confidence": "high"
-  },
-  {
-   "id": "n384f73db3cab",
-   "title": "IDOL★ST∀R MINE",
-   "url": "https://report.pococha.com/n/n384f73db3cab",
-   "sourceId": "pococha-official-note",
-   "sourceKind": "official",
-   "published": "2026-08-18T18:49:46.000+09:00",
-   "modified": "2026-08-19T10:23:25.000+09:00",
-   "type": "notice",
-   "start": "2026-09-10",
-   "end": "2026-09-10",
-   "periods": [
-    {
-     "start": "2026-09-10",
-     "end": "2026-09-10",
-     "startTime": "21:00",
-     "endTime": "22:00",
-     "label": "【メンバー配信スケジュール】 結夢かえ",
-     "labeled": false,
-     "ranks": []
-    }
-   ],
-   "ranks": [],
-   "confidence": "low"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:15:10.992Z"
   },
   {
    "id": "nee12da8d8a54",
@@ -1089,7 +1144,7 @@
    "sourceKind": "official",
    "published": "2026-09-08T21:00:00.000+09:00",
    "modified": "2026-09-14T10:53:44.000+09:00",
-   "type": "notice",
+   "type": "collab",
    "start": "2026-09-09",
    "end": "2026-11-30",
    "periods": [
@@ -1098,13 +1153,16 @@
      "end": "2026-11-30",
      "startTime": null,
      "endTime": null,
-     "label": "K 2026 前夜祭に参加するアイドルグループのメンバーは、",
+     "label": "SPARK 2026 前夜祭",
      "labeled": false,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:15:19.073Z"
   },
   {
    "id": "n2fe43a1c58b7",
@@ -1119,7 +1177,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:16:16.204Z"
   },
   {
    "id": "n3b416d61b186",
@@ -1134,68 +1195,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
-  },
-  {
-   "id": "n2c5b14ec6fb5",
-   "title": "【最終結果発表】 IDOL RISING “グループ対抗”ポコチャバトル ランキング結果",
-   "url": "https://report.pococha.com/n/n2c5b14ec6fb5",
-   "sourceId": "pococha-official-note",
-   "sourceKind": "official",
-   "published": "2026-09-08T12:00:00.000+09:00",
-   "modified": "2026-09-14T14:32:02.000+09:00",
-   "type": "event",
-   "start": null,
-   "end": null,
-   "periods": [
-    {
-     "start": "2026-09-07",
-     "end": "2026-09-13",
-     "startTime": "19:00",
-     "endTime": "23:59",
-     "label": "最終ランキング結果",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-09-10",
-     "end": "2026-09-10",
-     "startTime": "21:00",
-     "endTime": "22:00",
-     "label": "【メンバー配信スケジュール】 結夢かえ",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-09-07",
-     "end": "2026-09-13",
-     "startTime": null,
-     "endTime": null,
-     "label": "開催されるIDOL RISING FES 2026 に向けて",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-09-07",
-     "end": "2026-09-13",
-     "startTime": null,
-     "endTime": null,
-     "label": "【",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-09-13",
-     "end": "2026-09-13",
-     "startTime": "22:00",
-     "endTime": "23:00",
-     "label": "～9月13日ガチイベ！！】 次の配信日時（ガチイベ期間！！）",
-     "labeled": false,
-     "ranks": []
-    }
-   ],
-   "ranks": [],
-   "confidence": "low"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:15:15.375Z"
   },
   {
    "id": "n85dada00b9a3",
@@ -1214,7 +1217,7 @@
      "end": "2026-09-27",
      "startTime": null,
      "endTime": null,
-     "label": "【9月】",
+     "label": "【Rain Treeのラジオ予備校】差し入れお届けミッション",
      "labeled": false,
      "ranks": []
     },
@@ -1223,13 +1226,44 @@
      "end": "2026-10-25",
      "startTime": null,
      "endTime": null,
-     "label": "【10月】",
+     "label": "【Rain Treeのラジオ予備校】差し入れお届けミッション",
      "labeled": false,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:15:21.120Z"
+  },
+  {
+   "id": "n2c5b14ec6fb5",
+   "title": "【最終結果発表】 IDOL RISING “グループ対抗”ポコチャバトル ランキング結果",
+   "url": "https://report.pococha.com/n/n2c5b14ec6fb5",
+   "sourceId": "pococha-official-note",
+   "sourceKind": "official",
+   "published": "2026-09-08T12:00:00.000+09:00",
+   "modified": "2026-09-14T14:32:02.000+09:00",
+   "type": "event",
+   "start": "2026-09-07",
+   "end": "2026-09-13",
+   "periods": [
+    {
+     "start": "2026-09-07",
+     "end": "2026-09-13",
+     "startTime": "19:00",
+     "endTime": "23:59",
+     "label": "【最終結果発表】 IDOL RISING “グループ対抗”ポコチャバトル ランキ",
+     "labeled": false,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "low",
+   "audience": [],
+   "excluded": 2,
+   "fetchedAt": "2026-11-12T08:16:18.972Z"
   },
   {
    "id": "n43939d3e80b0",
@@ -1248,13 +1282,100 @@
      "end": "2026-09-13",
      "startTime": null,
      "endTime": null,
-     "label": "開催されるIDOL RISING FES 2026 に向けて",
+     "label": "なないろ∞ミルキーウェイ",
      "labeled": false,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:17:28.748Z"
+  },
+  {
+   "id": "nd03010f2c3fc",
+   "title": "【IDOL RISING】“グループ対抗” ポコチャバトルのご紹介",
+   "url": "https://report.pococha.com/n/nd03010f2c3fc",
+   "sourceId": "pococha-official-note",
+   "sourceKind": "official",
+   "published": "2026-08-18T19:00:00.000+09:00",
+   "modified": "2026-09-14T00:05:00.000+09:00",
+   "type": "notice",
+   "start": "2026-09-07",
+   "end": "2026-09-13",
+   "periods": [
+    {
+     "start": "2026-09-07",
+     "end": "2026-09-13",
+     "startTime": null,
+     "endTime": null,
+     "label": "企画概要",
+     "labeled": false,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:16:54.391Z"
+  },
+  {
+   "id": "n6de4cd18361e",
+   "title": "MeringueHack",
+   "url": "https://report.pococha.com/n/n6de4cd18361e",
+   "sourceId": "pococha-official-note",
+   "sourceKind": "official",
+   "published": "2026-08-18T18:41:09.000+09:00",
+   "modified": "2026-08-18T18:41:09.000+09:00",
+   "type": "notice",
+   "start": "2026-09-07",
+   "end": "2026-09-13",
+   "periods": [
+    {
+     "start": "2026-09-07",
+     "end": "2026-09-13",
+     "startTime": null,
+     "endTime": null,
+     "label": "MeringueHack",
+     "labeled": false,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "low",
+   "audience": [],
+   "excluded": 1,
+   "fetchedAt": "2026-11-12T08:17:17.995Z"
+  },
+  {
+   "id": "n0a423ba75616",
+   "title": "【全ミッション一覧】 “グループ対抗”ポコチャバトル",
+   "url": "https://report.pococha.com/n/n0a423ba75616",
+   "sourceId": "pococha-official-note",
+   "sourceKind": "official",
+   "published": "2026-08-18T17:00:00.000+09:00",
+   "modified": "2026-09-01T18:51:57.000+09:00",
+   "type": "mission",
+   "start": "2026-09-07",
+   "end": "2026-09-13",
+   "periods": [
+    {
+     "start": "2026-09-07",
+     "end": "2026-09-13",
+     "startTime": null,
+     "endTime": null,
+     "label": "IDOL RISING “グループ対抗”ポコチャバトルについて",
+     "labeled": false,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:17:22.453Z"
   },
   {
    "id": "ncc56314e49dd",
@@ -1269,7 +1390,12 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [
+    "ボイス"
+   ],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:16:24.116Z"
   },
   {
    "id": "nfddde87ba927",
@@ -1284,7 +1410,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:15:23.040Z"
   },
   {
    "id": "n4920384cd756",
@@ -1312,7 +1441,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:15:25.193Z"
   },
   {
    "id": "n8d5343268583",
@@ -1327,7 +1459,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:16:26.609Z"
   },
   {
    "id": "n469677d42844",
@@ -1342,7 +1477,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:16:29.807Z"
   },
   {
    "id": "n2646c001258d",
@@ -1361,7 +1499,7 @@
      "end": null,
      "startTime": null,
      "endTime": null,
-     "label": "本記事では、",
+     "label": "SKE48 ASIA TOUR 2026応援ミッション",
      "labeled": true,
      "ranks": []
     },
@@ -1379,7 +1517,7 @@
      "end": "2026-09-26",
      "startTime": null,
      "endTime": null,
-     "label": "STEP2 ツアー期間:オフショット投稿&現地配信",
+     "label": "企画内容",
      "labeled": true,
      "ranks": []
     },
@@ -1394,169 +1532,19 @@
     },
     {
      "start": "2026-09-01",
-     "end": "2026-09-01",
-     "startTime": "21:00",
-     "endTime": "22:00",
-     "label": "配信スケジュール",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-09-03",
-     "end": "2026-09-03",
-     "startTime": "21:00",
-     "endTime": "22:00",
-     "label": "配信スケジュール",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-09-04",
-     "end": "2026-09-04",
-     "startTime": "21:00",
-     "endTime": "22:00",
-     "label": "配信スケジュール",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-09-06",
-     "end": "2026-09-06",
-     "startTime": "20:00",
-     "endTime": "21:00",
-     "label": "配信スケジュール",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-09-09",
-     "end": "2026-09-09",
-     "startTime": "21:00",
-     "endTime": "22:00",
-     "label": "配信スケジュール",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-09-15",
-     "end": "2026-09-15",
-     "startTime": "21:00",
-     "endTime": "22:00",
-     "label": "配信スケジュール",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-09-16",
-     "end": "2026-09-16",
-     "startTime": "21:00",
-     "endTime": "22:00",
-     "label": null,
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-09-18",
-     "end": "2026-09-18",
-     "startTime": "21:00",
-     "endTime": "22:00",
-     "label": null,
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-10-02",
-     "end": "2026-10-02",
-     "startTime": "20:00",
-     "endTime": "21:00",
-     "label": "配信スケジュール",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-10-03",
-     "end": "2026-10-03",
-     "startTime": "20:00",
-     "endTime": "21:00",
-     "label": "配信スケジュール",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-10-04",
-     "end": "2026-10-04",
-     "startTime": "20:00",
-     "endTime": "21:00",
-     "label": "配信スケジュール",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-10-07",
-     "end": "2026-10-07",
-     "startTime": "21:00",
-     "endTime": "22:00",
-     "label": "配信スケジュール",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-10-08",
-     "end": "2026-10-08",
-     "startTime": "21:00",
-     "endTime": "22:00",
-     "label": "配信スケジュール",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-10-09",
-     "end": "2026-10-09",
-     "startTime": "21:00",
-     "endTime": "22:00",
-     "label": "配信スケジュール",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-10-10",
-     "end": "2026-10-10",
-     "startTime": "20:00",
-     "endTime": "21:00",
-     "label": null,
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-10-13",
-     "end": "2026-10-13",
-     "startTime": "21:00",
-     "endTime": "22:00",
-     "label": null,
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-09-01",
      "end": "2026-10-13",
      "startTime": null,
      "endTime": null,
      "label": "ファミリー加入申請について",
      "labeled": false,
      "ranks": []
-    },
-    {
-     "start": "2026-09-01",
-     "end": "2026-10-13",
-     "startTime": null,
-     "endTime": null,
-     "label": "4. メッセージを入力して「送信」をタップ",
-     "labeled": false,
-     "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 16,
+   "fetchedAt": "2026-11-12T08:16:32.263Z"
   },
   {
    "id": "n42a3b7cb3d4b",
@@ -1569,37 +1557,12 @@
    "type": "item",
    "start": null,
    "end": null,
-   "periods": [
-    {
-     "start": "2026-09-01",
-     "end": "2026-09-30",
-     "startTime": "0:00",
-     "endTime": "23:59",
-     "label": "使用期限:2026/",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-09-07",
-     "end": "2026-09-09",
-     "startTime": "12:00",
-     "endTime": "23:59",
-     "label": "対象アイテムのポイント獲得対象期限は【2026/",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-09-01",
-     "end": "2026-09-30",
-     "startTime": "0:00",
-     "endTime": "23:59",
-     "label": "イテムにポイントは付与されません。対象アイテムは【2026/",
-     "labeled": false,
-     "ranks": []
-    }
-   ],
+   "periods": [],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 2,
+   "fetchedAt": "2026-11-12T08:16:34.365Z"
   },
   {
    "id": "nd33bca6bdb47",
@@ -1614,7 +1577,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:16:36.329Z"
   },
   {
    "id": "n6de6014fdf0c",
@@ -1624,7 +1590,7 @@
    "sourceKind": "official",
    "published": "2026-08-25T20:01:37.000+09:00",
    "modified": "2026-08-31T12:30:13.000+09:00",
-   "type": "event",
+   "type": "collab",
    "start": null,
    "end": null,
    "periods": [
@@ -1651,22 +1617,18 @@
      "end": "2026-09-08",
      "startTime": null,
      "endTime": null,
-     "label": "「TGC 北九州 2026」のランウェイモデルとして出演いた",
+     "label": "イベントを勝ち抜いた先で待つ、特別なプライズ！",
      "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-09-01",
-     "end": "2026-09-06",
-     "startTime": null,
-     "endTime": null,
-     "label": "ク！ Be The MODEL オーディション参加中 準決勝",
-     "labeled": true,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [
+    "リスナー"
+   ],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:16:38.853Z"
   },
   {
    "id": "n90d0c75e2845",
@@ -1704,7 +1666,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 1,
+   "fetchedAt": "2026-11-12T08:17:54.636Z"
   },
   {
    "id": "n59cfde073301",
@@ -1719,7 +1684,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:16:41.821Z"
   },
   {
    "id": "n69b1d731c9b8",
@@ -1734,7 +1702,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:16:44.056Z"
   },
   {
    "id": "nda3a2d87f1f2",
@@ -1759,7 +1730,10 @@
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:16:46.899Z"
   },
   {
    "id": "naf0bad192c8a",
@@ -1774,7 +1748,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:16:49.306Z"
   },
   {
    "id": "n3fd2ac6644fe",
@@ -1793,7 +1770,7 @@
      "end": null,
      "startTime": "12:00",
      "endTime": null,
-     "label": "本記事では、",
+     "label": "この記事でご紹介する内容",
      "labeled": true,
      "ranks": []
     },
@@ -1826,50 +1803,12 @@
     }
    ],
    "ranks": [],
-   "confidence": "high"
-  },
-  {
-   "id": "nd03010f2c3fc",
-   "title": "【IDOL RISING】“グループ対抗” ポコチャバトルのご紹介",
-   "url": "https://report.pococha.com/n/nd03010f2c3fc",
-   "sourceId": "pococha-official-note",
-   "sourceKind": "official",
-   "published": "2026-08-18T19:00:00.000+09:00",
-   "modified": "2026-09-14T00:05:00.000+09:00",
-   "type": "notice",
-   "start": null,
-   "end": null,
-   "periods": [
-    {
-     "start": "2026-09-07",
-     "end": "2026-09-13",
-     "startTime": null,
-     "endTime": null,
-     "label": "3名がチームとなり挑む “グループ対抗” ポコチャバトルを、",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-09-07",
-     "end": "2026-09-13",
-     "startTime": "19:00",
-     "endTime": "23:59",
-     "label": "名古屋発、次に輝くアイドルたちが大集結する「IDOL RIS",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-09-07",
-     "end": "2026-09-13",
-     "startTime": "12:00",
-     "endTime": "23:59",
-     "label": "おたすけミッションとは？",
-     "labeled": false,
-     "ranks": []
-    }
+   "confidence": "high",
+   "audience": [
+    "リスナー"
    ],
-   "ranks": [],
-   "confidence": "low"
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:16:52.189Z"
   },
   {
    "id": "n068107aefdf8",
@@ -1884,7 +1823,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:16:57.479Z"
   },
   {
    "id": "nd97557ec7d48",
@@ -1899,7 +1841,28 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:17:00.041Z"
+  },
+  {
+   "id": "n384f73db3cab",
+   "title": "IDOL★ST∀R MINE",
+   "url": "https://report.pococha.com/n/n384f73db3cab",
+   "sourceId": "pococha-official-note",
+   "sourceKind": "official",
+   "published": "2026-08-18T18:49:46.000+09:00",
+   "modified": "2026-08-19T10:23:25.000+09:00",
+   "type": "notice",
+   "start": null,
+   "end": null,
+   "periods": [],
+   "ranks": [],
+   "confidence": "none",
+   "audience": [],
+   "excluded": 1,
+   "fetchedAt": "2026-11-12T08:17:02.071Z"
   },
   {
    "id": "n123b86348920",
@@ -1914,7 +1877,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:17:04.385Z"
   },
   {
    "id": "n891b9e31e874",
@@ -1929,7 +1895,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:17:07.024Z"
   },
   {
    "id": "n8cc089225498",
@@ -1944,7 +1913,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:17:09.512Z"
   },
   {
    "id": "nf33cdc389b3a",
@@ -1959,7 +1931,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:17:13.062Z"
   },
   {
    "id": "n5c8a6b6caca1",
@@ -1974,41 +1949,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
-  },
-  {
-   "id": "n6de4cd18361e",
-   "title": "MeringueHack",
-   "url": "https://report.pococha.com/n/n6de4cd18361e",
-   "sourceId": "pococha-official-note",
-   "sourceKind": "official",
-   "published": "2026-08-18T18:41:09.000+09:00",
-   "modified": "2026-08-18T18:41:09.000+09:00",
-   "type": "notice",
-   "start": null,
-   "end": null,
-   "periods": [
-    {
-     "start": "2026-09-07",
-     "end": "2026-09-13",
-     "startTime": null,
-     "endTime": null,
-     "label": "【",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-09-13",
-     "end": "2026-09-13",
-     "startTime": "22:00",
-     "endTime": "23:00",
-     "label": "～9月13日ガチイベ！！】 次の配信日時（ガチイベ期間！！）",
-     "labeled": false,
-     "ranks": []
-    }
-   ],
-   "ranks": [],
-   "confidence": "low"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:17:15.557Z"
   },
   {
    "id": "n68cd9046804d",
@@ -2023,50 +1967,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
-  },
-  {
-   "id": "n0a423ba75616",
-   "title": "【全ミッション一覧】 “グループ対抗”ポコチャバトル",
-   "url": "https://report.pococha.com/n/n0a423ba75616",
-   "sourceId": "pococha-official-note",
-   "sourceKind": "official",
-   "published": "2026-08-18T17:00:00.000+09:00",
-   "modified": "2026-09-01T18:51:57.000+09:00",
-   "type": "mission",
-   "start": null,
-   "end": null,
-   "periods": [
-    {
-     "start": "2026-09-07",
-     "end": "2026-09-13",
-     "startTime": null,
-     "endTime": null,
-     "label": "本記事では、",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-09-07",
-     "end": "2026-09-13",
-     "startTime": null,
-     "endTime": null,
-     "label": "3名がチームとなり挑む “グループ対抗” ポコチャバトルを、",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-09-07",
-     "end": "2026-09-13",
-     "startTime": "19:00",
-     "endTime": "23:59",
-     "label": "名古屋発、次に輝くアイドルたちが大集結する「IDOL RIS",
-     "labeled": false,
-     "ranks": []
-    }
-   ],
-   "ranks": [],
-   "confidence": "low"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:17:20.024Z"
   },
   {
    "id": "ne295b7ed080d",
@@ -2081,7 +1985,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:17:24.540Z"
   },
   {
    "id": "n1a290b7246f2",
@@ -2096,7 +2003,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:17:26.635Z"
   },
   {
    "id": "n98f86f253f0c",
@@ -2111,7 +2021,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:17:30.769Z"
   },
   {
    "id": "nc3b00c086178",
@@ -2126,7 +2039,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:17:32.889Z"
   },
   {
    "id": "n9daf0ffd682a",
@@ -2137,39 +2053,24 @@
    "published": "2026-08-16T20:50:08.000+09:00",
    "modified": "2026-09-17T09:56:30.000+09:00",
    "type": "notice",
-   "start": null,
-   "end": null,
+   "start": "2026-08-17",
+   "end": "2026-09-20",
    "periods": [
     {
      "start": "2026-08-17",
      "end": "2026-09-20",
      "startTime": null,
      "endTime": null,
-     "label": "フェスに出演するアイドルグループのメンバーも、",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-08-29",
-     "end": "2026-08-29",
-     "startTime": "13:00",
-     "endTime": "16:00",
-     "label": "MCとして北海道出身のライバーのあやさんが参加予定！",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-08-30",
-     "end": "2026-08-30",
-     "startTime": "13:00",
-     "endTime": "16:00",
-     "label": "MCとして北海道出身のライバーのあやさんが参加予定！",
+     "label": "出演グループもPococha配信！",
      "labeled": false,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 2,
+   "fetchedAt": "2026-11-12T08:17:36.277Z"
   },
   {
    "id": "n39e664f04123",
@@ -2200,7 +2101,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:17:39.245Z"
   },
   {
    "id": "na30f616c5b41",
@@ -2219,7 +2123,7 @@
      "end": null,
      "startTime": null,
      "endTime": null,
-     "label": "本記事では、",
+     "label": "SKE48劇場×Pococha『SKE48 CM出演権争奪チーム対抗応援ミッショ",
      "labeled": true,
      "ranks": []
     },
@@ -2228,22 +2132,18 @@
      "end": "2026-10-15",
      "startTime": null,
      "endTime": null,
-     "label": "① SKE48 CM出演権争奪チーム対抗応援ミッション！",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-08-17",
-     "end": "2026-10-15",
-     "startTime": null,
-     "endTime": null,
-     "label": "② SKE48称号獲得ミッション",
+     "label": "① SKE48 CM出演権争奪チーム対抗応援ミッション！",
      "labeled": false,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [
+    "リスナー"
+   ],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:17:46.790Z"
   },
   {
    "id": "n521465494e0d",
@@ -2258,7 +2158,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:17:49.340Z"
   },
   {
    "id": "n3514705fc2cc",
@@ -2273,7 +2176,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:17:51.844Z"
   },
   {
    "id": "n63e5746f3b37",
@@ -2288,7 +2194,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:17:56.669Z"
   },
   {
    "id": "n251e9985e61f",
@@ -2307,13 +2216,16 @@
      "end": "2026-08-05",
      "startTime": null,
      "endTime": null,
-     "label": "エキシビションは、Pococha甲子園本戦と同スケジュール（",
+     "label": "2026 エキシビションイベント「始球式」について",
      "labeled": true,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:19:01.141Z"
   },
   {
    "id": "n818db46c191c",
@@ -2326,37 +2238,12 @@
    "type": "item",
    "start": null,
    "end": null,
-   "periods": [
-    {
-     "start": "2026-08-01",
-     "end": "2026-08-31",
-     "startTime": "00:00",
-     "endTime": "23:59",
-     "label": "使用期限:2026/",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-08-26",
-     "end": "2026-08-28",
-     "startTime": "12:00",
-     "endTime": "23:59",
-     "label": "対象アイテムのポイント獲得対象期限は【2026/",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-08-01",
-     "end": "2026-08-31",
-     "startTime": "0:00",
-     "endTime": "23:59",
-     "label": "イテムにポイントは付与されません。対象アイテムは【2026/",
-     "labeled": false,
-     "ranks": []
-    }
-   ],
+   "periods": [],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 2,
+   "fetchedAt": "2026-11-12T08:18:03.557Z"
   },
   {
    "id": "nba0d72b18ac3",
@@ -2375,13 +2262,16 @@
      "end": "2026-08-02",
      "startTime": null,
      "endTime": null,
-     "label": "Pocochaの7月は『コスプレライバーさん応援月間』",
+     "label": "世界最大のコスプレの祭典をPocochaで一緒に盛り上げよう！",
      "labeled": false,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:18:38.520Z"
   },
   {
    "id": "n79ce610a4e05",
@@ -2424,7 +2314,12 @@
     }
    ],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [
+    "リスナー"
+   ],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:18:06.204Z"
   },
   {
    "id": "n4b112e87e773",
@@ -2435,18 +2330,9 @@
    "published": "2026-07-29T15:00:25.000+09:00",
    "modified": "2026-07-30T10:09:37.000+09:00",
    "type": "notice",
-   "start": null,
-   "end": null,
+   "start": "2026-07-29",
+   "end": "2026-08-04",
    "periods": [
-    {
-     "start": "2026-07-29",
-     "end": "2026-08-04",
-     "startTime": null,
-     "endTime": null,
-     "label": "【",
-     "labeled": false,
-     "ranks": []
-    },
     {
      "start": "2026-07-29",
      "end": "2026-08-04",
@@ -2455,19 +2341,13 @@
      "label": "対象期間",
      "labeled": true,
      "ranks": []
-    },
-    {
-     "start": "2026-07-29",
-     "end": "2026-08-04",
-     "startTime": null,
-     "endTime": null,
-     "label": "キャンペーン期間（2026/",
-     "labeled": false,
-     "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:18:10.270Z"
   },
   {
    "id": "nd65e7a53c591",
@@ -2482,7 +2362,12 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [
+    "ボイス"
+   ],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:18:15.401Z"
   },
   {
    "id": "nb6e201a0402c",
@@ -2501,7 +2386,7 @@
      "end": "2026-07-31",
      "startTime": null,
      "endTime": null,
-     "label": "こんにちは、Pococha運営です！",
+     "label": "「JOYSOUND認定 歌うまライバー決定戦！2026 Summer」歌うまラン",
      "labeled": false,
      "ranks": []
     }
@@ -2526,7 +2411,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:17:43.720Z"
   },
   {
    "id": "nfec6a95c793a",
@@ -2545,13 +2433,16 @@
      "end": null,
      "startTime": null,
      "endTime": null,
-     "label": "メインコンテンツへスキップ",
+     "label": "「JOYSOUND認定 歌うまライバー決定戦！2026 Summer」開催時の対",
      "labeled": true,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:18:30.453Z"
   },
   {
    "id": "n757964c90ff7",
@@ -2570,13 +2461,16 @@
      "end": null,
      "startTime": null,
      "endTime": null,
-     "label": "メインコンテンツへスキップ",
+     "label": "「JOYSOUND認定 歌うまライバー決定戦！2026 Summer」採点対象楽",
      "labeled": true,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:18:33.194Z"
   },
   {
    "id": "n49e6d953636c",
@@ -2591,7 +2485,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:18:17.591Z"
   },
   {
    "id": "n6a4a23dc33ed",
@@ -2610,7 +2507,7 @@
      "end": null,
      "startTime": "11:00",
      "endTime": null,
-     "label": "本記事では、",
+     "label": "この記事でご紹介する内容",
      "labeled": true,
      "ranks": []
     },
@@ -2625,7 +2522,12 @@
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [
+    "リスナー"
+   ],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:18:22.690Z"
   },
   {
    "id": "n1c76112f9051",
@@ -2640,7 +2542,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:18:25.278Z"
   },
   {
    "id": "n235bb23f59f2",
@@ -2655,7 +2560,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:18:28.338Z"
   },
   {
    "id": "ned35fe137da9",
@@ -2674,13 +2582,16 @@
      "end": "2026-07-15",
      "startTime": null,
      "endTime": null,
-     "label": "こんにちは、Pococha運営です！",
+     "label": "＜7/25,26,27＞歌うまタイムライン出現！！",
      "labeled": false,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:18:19.916Z"
   },
   {
    "id": "n79cfa00bed2a",
@@ -2705,7 +2616,10 @@
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 1,
+   "fetchedAt": "2026-11-12T08:18:52.903Z"
   },
   {
    "id": "nd82427ea2f93",
@@ -2720,7 +2634,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:18:36.303Z"
   },
   {
    "id": "n85580927376a",
@@ -2735,7 +2652,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:18:40.495Z"
   },
   {
    "id": "n9db318e52567",
@@ -2754,13 +2674,16 @@
      "end": "2026-07-07",
      "startTime": "12:00",
      "endTime": "23:59",
-     "label": "Pococha甲子園 2026と連動して開催され、開催期間は",
+     "label": "あつまれ！地元のわっしょい隊について教えてください",
      "labeled": true,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:19:11.097Z"
   },
   {
    "id": "n7d4d01d6f594",
@@ -2773,28 +2696,12 @@
    "type": "item",
    "start": null,
    "end": null,
-   "periods": [
-    {
-     "start": "2026-07-01",
-     "end": "2026-07-31",
-     "startTime": "00:00",
-     "endTime": "23:59",
-     "label": "使用期限:2026/",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-07-20",
-     "end": "2026-07-23",
-     "startTime": "12:00",
-     "endTime": "23:59",
-     "label": "対象アイテムのポイント獲得対象期限は【",
-     "labeled": false,
-     "ranks": []
-    }
-   ],
+   "periods": [],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 2,
+   "fetchedAt": "2026-11-12T08:18:42.819Z"
   },
   {
    "id": "n68fc801df9b0",
@@ -2813,7 +2720,10 @@
     "S2",
     "S3"
    ],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:18:45.258Z"
   },
   {
    "id": "nba33c92660ee",
@@ -2832,7 +2742,7 @@
      "end": "2026-06-24",
      "startTime": null,
      "endTime": null,
-     "label": "甲子園ぽこチャレ 開催期間",
+     "label": "イベントの参加エントリ期間 開催期間",
      "labeled": true,
      "ranks": []
     },
@@ -2877,16 +2787,7 @@
      "end": "2026-08-05",
      "startTime": null,
      "endTime": null,
-     "label": "全国大会 本選 開催期間",
-     "labeled": true,
-     "ranks": []
-    },
-    {
-     "start": "2026-08-01",
-     "end": "2026-08-05",
-     "startTime": null,
-     "endTime": null,
-     "label": "※ 予選の結果時点で、",
+     "label": "全国大会予選入賞者数 (本戦出場枠)",
      "labeled": true,
      "ranks": [
       "D1",
@@ -2930,7 +2831,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 2,
+   "fetchedAt": "2026-11-12T08:18:50.370Z"
   },
   {
    "id": "n6af2c08161ee",
@@ -2945,7 +2849,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:18:55.018Z"
   },
   {
    "id": "nc6a4860a3887",
@@ -2964,13 +2871,72 @@
      "end": "2026-06-21",
      "startTime": null,
      "endTime": null,
-     "label": "れ2チームに分かれて挑む「“チーム対抗”ポコチャバトル」を、",
+     "label": "“チーム対抗”ポコチャバトル",
      "labeled": false,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:18:57.706Z"
+  },
+  {
+   "id": "nf9e38a41867e",
+   "title": "“チーム対抗”ポコチャバトルについて",
+   "url": "https://report.pococha.com/n/nf9e38a41867e",
+   "sourceId": "pococha-official-note",
+   "sourceKind": "official",
+   "published": "2026-05-20T19:00:00.000+09:00",
+   "modified": "2026-06-12T18:40:09.000+09:00",
+   "type": "notice",
+   "start": "2026-06-17",
+   "end": "2026-06-21",
+   "periods": [
+    {
+     "start": "2026-06-17",
+     "end": "2026-06-21",
+     "startTime": null,
+     "endTime": null,
+     "label": "“チーム対抗”ポコチャバトルについて",
+     "labeled": false,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:19:56.545Z"
+  },
+  {
+   "id": "nc22b1ed940ba",
+   "title": "配信枠に虹を架けよう🌈雨上りの虹ミッション！",
+   "url": "https://report.pococha.com/n/nc22b1ed940ba",
+   "sourceId": "pococha-official-note",
+   "sourceKind": "official",
+   "published": "2026-05-28T17:00:00.000+09:00",
+   "modified": "2026-06-04T14:32:26.000+09:00",
+   "type": "mission",
+   "start": "2026-06-10",
+   "end": "2026-06-13",
+   "periods": [
+    {
+     "start": "2026-06-10",
+     "end": "2026-06-13",
+     "startTime": "12:00",
+     "endTime": "23:59",
+     "label": "配信枠に虹を架けよう雨上りの虹ミッション！",
+     "labeled": false,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "low",
+   "audience": [],
+   "excluded": 1,
+   "fetchedAt": "2026-11-12T08:19:19.091Z"
   },
   {
    "id": "n6ef96885387f",
@@ -2989,13 +2955,16 @@
      "end": "2026-06-09",
      "startTime": null,
      "endTime": null,
-     "label": "こんにちは、Pococha運営です！",
+     "label": "＜6/27,28,29＞歌うまタイムライン出現！！",
      "labeled": false,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:18:47.725Z"
   },
   {
    "id": "nc05f98ab764f",
@@ -3010,7 +2979,12 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [
+    "ボイス"
+   ],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:19:04.406Z"
   },
   {
    "id": "nf4ffa83e32ef",
@@ -3025,32 +2999,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
-  },
-  {
-   "id": "nd57e967d84a4",
-   "title": "「学園生活」アイテム登場！🏫",
-   "url": "https://report.pococha.com/n/nd57e967d84a4",
-   "sourceId": "pococha-official-note",
-   "sourceKind": "official",
-   "published": "2026-05-28T17:00:00.000+09:00",
-   "modified": "2026-06-12T12:46:59.000+09:00",
-   "type": "item",
-   "start": "2026-06-01",
-   "end": "2026-06-30",
-   "periods": [
-    {
-     "start": "2026-06-01",
-     "end": "2026-06-30",
-     "startTime": "00:00",
-     "endTime": "23:59",
-     "label": "使用期限:2026/",
-     "labeled": false,
-     "ranks": []
-    }
-   ],
-   "ranks": [],
-   "confidence": "low"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:19:08.029Z"
   },
   {
    "id": "nee60d5c0ac8a",
@@ -3065,41 +3017,28 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:19:13.308Z"
   },
   {
-   "id": "nc22b1ed940ba",
-   "title": "配信枠に虹を架けよう🌈雨上りの虹ミッション！",
-   "url": "https://report.pococha.com/n/nc22b1ed940ba",
+   "id": "nd57e967d84a4",
+   "title": "「学園生活」アイテム登場！🏫",
+   "url": "https://report.pococha.com/n/nd57e967d84a4",
    "sourceId": "pococha-official-note",
    "sourceKind": "official",
    "published": "2026-05-28T17:00:00.000+09:00",
-   "modified": "2026-06-04T14:32:26.000+09:00",
-   "type": "mission",
+   "modified": "2026-06-12T12:46:59.000+09:00",
+   "type": "item",
    "start": null,
    "end": null,
-   "periods": [
-    {
-     "start": "2026-06-10",
-     "end": "2026-06-13",
-     "startTime": "12:00",
-     "endTime": "23:59",
-     "label": "2026/",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-06-10",
-     "end": "2026-07-07",
-     "startTime": "12:00",
-     "endTime": "23:59",
-     "label": "06/13 23:59】のみです。対象アイテムは【2026/",
-     "labeled": false,
-     "ranks": []
-    }
-   ],
+   "periods": [],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 1,
+   "fetchedAt": "2026-11-12T08:19:16.541Z"
   },
   {
    "id": "nbdbaeba60e73",
@@ -3114,7 +3053,12 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [
+    "ボイス"
+   ],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:19:21.826Z"
   },
   {
    "id": "n136f1a58d252",
@@ -3129,7 +3073,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:19:24.242Z"
   },
   {
    "id": "nd1a830fe9c02",
@@ -3144,7 +3091,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:19:26.619Z"
   },
   {
    "id": "n36d5b8443e87",
@@ -3159,7 +3109,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:19:28.884Z"
   },
   {
    "id": "n841ea2863042",
@@ -3174,7 +3127,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:19:31.693Z"
   },
   {
    "id": "need8cc10bbc9",
@@ -3189,7 +3145,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:19:34.000Z"
   },
   {
    "id": "n5418c274b7ba",
@@ -3204,7 +3163,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:19:36.155Z"
   },
   {
    "id": "n6e2c526aa571",
@@ -3219,7 +3181,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:19:38.194Z"
   },
   {
    "id": "nf0bcb259ed85",
@@ -3234,7 +3199,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:19:40.962Z"
   },
   {
    "id": "n1775d5030d74",
@@ -3249,7 +3217,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:19:43.322Z"
   },
   {
    "id": "n6b49d71fbcb6",
@@ -3264,7 +3235,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:19:45.855Z"
   },
   {
    "id": "ndbcabde1dc4a",
@@ -3279,7 +3253,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:19:49.156Z"
   },
   {
    "id": "ne4bede46487d",
@@ -3294,7 +3271,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:19:51.786Z"
   },
   {
    "id": "n08cb2e511938",
@@ -3313,7 +3293,7 @@
      "end": null,
      "startTime": "12:00",
      "endTime": null,
-     "label": "本記事では、",
+     "label": "目次",
      "labeled": true,
      "ranks": []
     },
@@ -3328,41 +3308,12 @@
     }
    ],
    "ranks": [],
-   "confidence": "high"
-  },
-  {
-   "id": "nf9e38a41867e",
-   "title": "“チーム対抗”ポコチャバトルについて",
-   "url": "https://report.pococha.com/n/nf9e38a41867e",
-   "sourceId": "pococha-official-note",
-   "sourceKind": "official",
-   "published": "2026-05-20T19:00:00.000+09:00",
-   "modified": "2026-06-12T18:40:09.000+09:00",
-   "type": "notice",
-   "start": null,
-   "end": null,
-   "periods": [
-    {
-     "start": "2026-06-17",
-     "end": "2026-06-21",
-     "startTime": null,
-     "endTime": null,
-     "label": "総勢25名が参加！",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-06-17",
-     "end": "2026-06-21",
-     "startTime": null,
-     "endTime": null,
-     "label": "バトルスケジュール",
-     "labeled": false,
-     "ranks": []
-    }
+   "confidence": "high",
+   "audience": [
+    "リスナー"
    ],
-   "ranks": [],
-   "confidence": "low"
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:19:54.090Z"
   },
   {
    "id": "nb65620e4e1e7",
@@ -3372,12 +3323,15 @@
    "sourceKind": "official",
    "published": "2026-05-19T15:00:00.000+09:00",
    "modified": "2026-05-20T23:23:26.000+09:00",
-   "type": "notice",
+   "type": "collab",
    "start": null,
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:20:00.733Z"
   },
   {
    "id": "n1399c1ef7728",
@@ -3435,24 +3389,6 @@
      "label": "[開催期間]",
      "labeled": true,
      "ranks": []
-    },
-    {
-     "start": "2026-08-09",
-     "end": "2026-08-09",
-     "startTime": "12:30",
-     "endTime": "13:59",
-     "label": "昼の部",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-08-09",
-     "end": "2026-08-09",
-     "startTime": "18:00",
-     "endTime": "19:29",
-     "label": "夜の部",
-     "labeled": false,
-     "ranks": []
     }
    ],
    "ranks": [
@@ -3475,7 +3411,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 2,
+   "fetchedAt": "2026-11-12T08:20:05.787Z"
   },
   {
    "id": "n6c45dbd190a7",
@@ -3497,7 +3436,10 @@
     "S2",
     "S3"
    ],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:20:09.206Z"
   },
   {
    "id": "n660c6f5d0478",
@@ -3522,7 +3464,10 @@
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:20:03.100Z"
   },
   {
    "id": "n39aa615a0328",
@@ -3556,32 +3501,12 @@
     "S5",
     "S6"
    ],
-   "confidence": "none"
-  },
-  {
-   "id": "n5e416650ae7a",
-   "title": "「フィーバー」アイテム登場！",
-   "url": "https://report.pococha.com/n/n5e416650ae7a",
-   "sourceId": "pococha-official-note",
-   "sourceKind": "official",
-   "published": "2026-04-17T14:19:02.000+09:00",
-   "modified": "2026-04-17T18:55:21.000+09:00",
-   "type": "item",
-   "start": "2026-05-01",
-   "end": "2026-05-31",
-   "periods": [
-    {
-     "start": "2026-05-01",
-     "end": "2026-05-31",
-     "startTime": "00:00",
-     "endTime": "23:59",
-     "label": "使用期限:2026/",
-     "labeled": false,
-     "ranks": []
-    }
+   "confidence": "none",
+   "audience": [
+    "ボイス"
    ],
-   "ranks": [],
-   "confidence": "low"
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:20:12.382Z"
   },
   {
    "id": "nfa1ff75eab3b",
@@ -3596,7 +3521,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:20:18.467Z"
   },
   {
    "id": "ne1fa7db14543",
@@ -3611,7 +3539,12 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [
+    "リスナー"
+   ],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:20:21.559Z"
   },
   {
    "id": "na3235a134a88",
@@ -3626,7 +3559,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:20:24.480Z"
   },
   {
    "id": "n5337ecc40970",
@@ -3641,7 +3577,28 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:20:26.923Z"
+  },
+  {
+   "id": "n5e416650ae7a",
+   "title": "「フィーバー」アイテム登場！",
+   "url": "https://report.pococha.com/n/n5e416650ae7a",
+   "sourceId": "pococha-official-note",
+   "sourceKind": "official",
+   "published": "2026-04-17T14:19:02.000+09:00",
+   "modified": "2026-04-17T18:55:21.000+09:00",
+   "type": "item",
+   "start": null,
+   "end": null,
+   "periods": [],
+   "ranks": [],
+   "confidence": "none",
+   "audience": [],
+   "excluded": 1,
+   "fetchedAt": "2026-11-12T08:20:29.683Z"
   },
   {
    "id": "nb7e8b7138342",
@@ -3663,7 +3620,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:20:31.905Z"
   },
   {
    "id": "n88c8c067159f",
@@ -3682,7 +3642,7 @@
      "end": "2026-04-23",
      "startTime": null,
      "endTime": null,
-     "label": "こんにちは、Pococha運営です！",
+     "label": "「JOYSOUND認定 歌うまライバー決定戦！2026 Spring」歌うまラン",
      "labeled": false,
      "ranks": []
     }
@@ -3707,7 +3667,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:20:15.574Z"
   },
   {
    "id": "n9dc6d835142f",
@@ -3726,13 +3689,16 @@
      "end": null,
      "startTime": null,
      "endTime": null,
-     "label": "メインコンテンツへスキップ",
+     "label": "「JOYSOUND認定 歌うまライバー決定戦！2026 Spring」開催時の対",
      "labeled": true,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:20:43.643Z"
   },
   {
    "id": "n165838cd637f",
@@ -3751,13 +3717,16 @@
      "end": null,
      "startTime": null,
      "endTime": null,
-     "label": "メインコンテンツへスキップ",
+     "label": "「JOYSOUND認定 歌うまライバー決定戦！2026 Spring」採点対象楽",
      "labeled": true,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:20:45.711Z"
   },
   {
    "id": "nfd9e2f6cdca8",
@@ -3791,7 +3760,12 @@
     "S5",
     "S6"
    ],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [
+    "ボイス"
+   ],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:20:34.594Z"
   },
   {
    "id": "n6d2b18d96725",
@@ -3810,7 +3784,7 @@
      "end": "2026-05-15",
      "startTime": null,
      "endTime": null,
-     "label": "スケジュール イベント期間",
+     "label": "自分史上、最高の「かわいい」をアップデート♡『sweet』アンバサダーオーディシ",
      "labeled": true,
      "ranks": []
     },
@@ -3819,7 +3793,7 @@
      "end": "2026-06-08",
      "startTime": null,
      "endTime": null,
-     "label": "スケジュール イベント期間",
+     "label": "自分史上、最高の「かわいい」をアップデート♡『sweet』アンバサダーオーディシ",
      "labeled": true,
      "ranks": []
     }
@@ -3832,7 +3806,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 2,
+   "fetchedAt": "2026-11-12T08:20:37.127Z"
   },
   {
    "id": "n419c96421292",
@@ -3851,7 +3828,7 @@
      "end": "2026-06-24",
      "startTime": null,
      "endTime": null,
-     "label": "甲子園ぽこチャレ",
+     "label": "各イベントの参加エントリ期間",
      "labeled": false,
      "ranks": []
     },
@@ -3869,7 +3846,7 @@
      "end": "2026-07-02",
      "startTime": null,
      "endTime": null,
-     "label": "→7​/1(水)​より予選イベントスタート",
+     "label": "各イベントの参加エントリ期間",
      "labeled": false,
      "ranks": []
     }
@@ -3894,7 +3871,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:20:39.509Z"
   },
   {
    "id": "n06eebfe1348a",
@@ -3907,28 +3887,12 @@
    "type": "item",
    "start": null,
    "end": null,
-   "periods": [
-    {
-     "start": "2026-04-10",
-     "end": "2026-04-13",
-     "startTime": "12:00",
-     "endTime": "23:59",
-     "label": "対象アイテムのポイント獲得対象期限は【",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-04-01",
-     "end": "2026-04-30",
-     "startTime": "0:00",
-     "endTime": "23:59",
-     "label": "00 ～ 4月13日 23:59】のみです。対象アイテムは【",
-     "labeled": false,
-     "ranks": []
-    }
-   ],
+   "periods": [],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 2,
+   "fetchedAt": "2026-11-12T08:20:41.670Z"
   },
   {
    "id": "n2f80f2bd678a",
@@ -3938,12 +3902,15 @@
    "sourceKind": "official",
    "published": "2026-03-25T16:01:53.000+09:00",
    "modified": "2026-03-25T16:40:25.000+09:00",
-   "type": "event",
+   "type": "collab",
    "start": null,
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:20:48.682Z"
   },
   {
    "id": "n4225f3aae07f",
@@ -3958,7 +3925,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:20:50.971Z"
   },
   {
    "id": "nfc345f9c951e",
@@ -3977,7 +3947,7 @@
      "end": "2026-03-08",
      "startTime": "12:00",
      "endTime": "23:59",
-     "label": "2026/",
+     "label": "いっしょにすくすく！幻獣育成ミッション",
      "labeled": false,
      "ranks": []
     },
@@ -3986,22 +3956,16 @@
      "end": "2026-03-31",
      "startTime": "10:00",
      "endTime": "23:59",
-     "label": "陣営バトルに勝利して勝利プライズをゲットしよう！ 開催期間",
+     "label": "今しか手に入らない応援団称号をGETしよう！ 開催期間",
      "labeled": true,
-     "ranks": []
-    },
-    {
-     "start": "2026-03-06",
-     "end": "2026-03-08",
-     "startTime": "12:00",
-     "endTime": "23:59",
-     "label": "対象アイテムのポイント獲得対象期限は【",
-     "labeled": false,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 1,
+   "fetchedAt": "2026-11-12T08:20:53.514Z"
   },
   {
    "id": "n87a8a6bd22af",
@@ -4014,28 +3978,12 @@
    "type": "item",
    "start": null,
    "end": null,
-   "periods": [
-    {
-     "start": "2026-03-18",
-     "end": "2026-03-20",
-     "startTime": "12:00",
-     "endTime": "23:59",
-     "label": "対象アイテムのポイント獲得対象期限は【",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-03-01",
-     "end": "2026-03-31",
-     "startTime": "0:00",
-     "endTime": "23:59",
-     "label": "00 ～ 3月20日 23:59】のみです。対象アイテムは【",
-     "labeled": false,
-     "ranks": []
-    }
-   ],
+   "periods": [],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 2,
+   "fetchedAt": "2026-11-12T08:20:55.902Z"
   },
   {
    "id": "n53e77d1ba2bb",
@@ -4045,12 +3993,15 @@
    "sourceKind": "official",
    "published": "2026-02-25T15:39:02.000+09:00",
    "modified": "2026-02-25T16:14:25.000+09:00",
-   "type": "notice",
+   "type": "collab",
    "start": null,
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:20:58.168Z"
   },
   {
    "id": "n69157fa688de",
@@ -4069,7 +4020,7 @@
      "end": null,
      "startTime": "12:00",
      "endTime": null,
-     "label": "本記事では、",
+     "label": "目次",
      "labeled": true,
      "ranks": []
     },
@@ -4084,7 +4035,12 @@
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [
+    "リスナー"
+   ],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:21:01.009Z"
   },
   {
    "id": "n0ed238cc377b",
@@ -4099,57 +4055,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
-  },
-  {
-   "id": "n9b883ad5d2fa",
-   "title": "日本一のミスが決まる！MISS OF MISS CAMPUS QUEEN CONTEST 2026 Pococha審査準決勝開催中！",
-   "url": "https://report.pococha.com/n/n9b883ad5d2fa",
-   "sourceId": "pococha-official-note",
-   "sourceKind": "official",
-   "published": "2026-01-15T16:00:00.000+09:00",
-   "modified": "2026-02-19T16:33:51.000+09:00",
-   "type": "event",
-   "start": "2026-02-15",
-   "end": "2026-02-23",
-   "periods": [
-    {
-     "start": "2026-02-15",
-     "end": "2026-02-23",
-     "startTime": "18:00",
-     "endTime": "21:59",
-     "label": "場所:国立代々木競技場第一体育館",
-     "labeled": false,
-     "ranks": []
-    }
-   ],
-   "ranks": [],
-   "confidence": "low"
-  },
-  {
-   "id": "n422ed6080550",
-   "title": "日本一のミスターが決まる！MR OF MR CAMPUS CONTEST 2026 Pococha審査準決勝開催中！",
-   "url": "https://report.pococha.com/n/n422ed6080550",
-   "sourceId": "pococha-official-note",
-   "sourceKind": "official",
-   "published": "2026-01-15T16:00:00.000+09:00",
-   "modified": "2026-02-19T16:34:52.000+09:00",
-   "type": "event",
-   "start": "2026-02-15",
-   "end": "2026-02-23",
-   "periods": [
-    {
-     "start": "2026-02-15",
-     "end": "2026-02-23",
-     "startTime": "18:00",
-     "endTime": "21:59",
-     "label": "場所:国立代々木競技場第一体育館",
-     "labeled": false,
-     "ranks": []
-    }
-   ],
-   "ranks": [],
-   "confidence": "low"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:21:03.635Z"
   },
   {
    "id": "na8d0a5ef0c8c",
@@ -4177,7 +4086,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:21:10.806Z"
   },
   {
    "id": "n0a1836d6881e",
@@ -4192,7 +4104,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:21:13.207Z"
   },
   {
    "id": "ndc81ade3f70b",
@@ -4249,7 +4164,7 @@
      "end": "2026-10-31",
      "startTime": "10:00",
      "endTime": "23:59",
-     "label": "Pococha Halloween Party 2026 開催期間",
+     "label": "【ボイスライバー限定】おすすめイベント＆参加方法かんたんガイド",
      "labeled": true,
      "ranks": []
     },
@@ -4258,7 +4173,7 @@
      "end": "2026-10-10",
      "startTime": "12:00",
      "endTime": "23:59",
-     "label": "マンスリーエンタメ大賞 2026 ボイス部門 開催期間",
+     "label": "【ボイスライバー限定】おすすめイベント＆参加方法かんたんガイド",
      "labeled": true,
      "ranks": []
     },
@@ -4294,7 +4209,7 @@
      "end": "2026-10-05",
      "startTime": "12:00",
      "endTime": "23:59",
-     "label": "復刻版 Blooming Flowersプロフィール プルメ 開催期間",
+     "label": "ボイスライバーおすすめイベント 開催期間",
      "labeled": true,
      "ranks": []
     },
@@ -4303,7 +4218,7 @@
      "end": "2026-10-10",
      "startTime": "12:00",
      "endTime": "23:59",
-     "label": "Lucky charm コレクション 天使プロフィール 開催期間",
+     "label": "ボイスライバーおすすめイベント 開催期間",
      "labeled": true,
      "ranks": []
     },
@@ -4312,7 +4227,7 @@
      "end": "2026-10-13",
      "startTime": "12:00",
      "endTime": "23:59",
-     "label": "ぽこネクスト-池袋駅広告- 開催期間",
+     "label": "【ボイスライバー限定】おすすめイベント＆参加方法かんたんガイド",
      "labeled": true,
      "ranks": []
     },
@@ -4321,7 +4236,7 @@
      "end": "2026-10-29",
      "startTime": "12:00",
      "endTime": "23:59",
-     "label": "ネオンきらめく中華ナイト ハロウィンプロフィール 開催期間",
+     "label": "【ボイスライバー限定】おすすめイベント＆参加方法かんたんガイド",
      "labeled": true,
      "ranks": []
     },
@@ -4330,7 +4245,7 @@
      "end": "2026-10-01",
      "startTime": "16:00",
      "endTime": "1:59",
-     "label": "Music Pococha! 〜オリジナル曲 for voc 第1日程",
+     "label": "歌枠のボイスライバーおすすめイベント 第1日程",
      "labeled": false,
      "ranks": []
     },
@@ -4339,7 +4254,7 @@
      "end": "2026-10-16",
      "startTime": "16:00",
      "endTime": "1:59",
-     "label": "Music Pococha! 〜オリジナル曲 for voc 第2日程",
+     "label": "歌枠のボイスライバーおすすめイベント 第2日程",
      "labeled": false,
      "ranks": []
     },
@@ -4348,7 +4263,7 @@
      "end": "2026-10-08",
      "startTime": "12:00",
      "endTime": "23:59",
-     "label": "Music Pococha! 〜オリジナル曲 for voc 第1日程",
+     "label": "歌枠のボイスライバーおすすめイベント 第1日程",
      "labeled": false,
      "ranks": []
     },
@@ -4357,7 +4272,7 @@
      "end": "2026-10-22",
      "startTime": "12:00",
      "endTime": "23:59",
-     "label": "Music Pococha! 〜オリジナル曲 for voc 第2日程",
+     "label": "歌枠のボイスライバーおすすめイベント 第2日程",
      "labeled": false,
      "ranks": []
     }
@@ -4382,7 +4297,12 @@
     "S5",
     "S6"
    ],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [
+    "ボイス"
+   ],
+   "excluded": 4,
+   "fetchedAt": "2026-11-12T08:21:18.604Z"
   },
   {
    "id": "n8feffff1109e",
@@ -4397,7 +4317,66 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:21:21.210Z"
+  },
+  {
+   "id": "n89d36d5acdf9",
+   "title": "「ヒーロー戦隊」アイテム登場!",
+   "url": "https://report.pococha.com/n/n89d36d5acdf9",
+   "sourceId": "pococha-official-note",
+   "sourceKind": "official",
+   "published": "2026-01-29T17:30:00.000+09:00",
+   "modified": "2026-02-16T10:58:52.000+09:00",
+   "type": "item",
+   "start": "2026-02-01",
+   "end": "2026-02-28",
+   "periods": [
+    {
+     "start": "2026-02-01",
+     "end": "2026-02-28",
+     "startTime": "0:00",
+     "endTime": "23:59",
+     "label": "公開期間",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 2,
+   "fetchedAt": "2026-11-12T08:21:29.898Z"
+  },
+  {
+   "id": "na4f327cf0d65",
+   "title": "配信枠に福よ来い！鬼退治ミッション！",
+   "url": "https://report.pococha.com/n/na4f327cf0d65",
+   "sourceId": "pococha-official-note",
+   "sourceKind": "official",
+   "published": "2026-01-26T16:30:00.000+09:00",
+   "modified": "2026-01-27T10:41:29.000+09:00",
+   "type": "mission",
+   "start": "2026-02-01",
+   "end": "2026-02-03",
+   "periods": [
+    {
+     "start": "2026-02-01",
+     "end": "2026-02-03",
+     "startTime": "12:00",
+     "endTime": "23:59",
+     "label": "配信枠に福よ来い！鬼退治ミッション！",
+     "labeled": false,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "low",
+   "audience": [],
+   "excluded": 1,
+   "fetchedAt": "2026-11-12T08:21:37.534Z"
   },
   {
    "id": "n27e485347b0d",
@@ -4428,7 +4407,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:21:25.273Z"
   },
   {
    "id": "n1f88703f1b73",
@@ -4443,50 +4425,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
-  },
-  {
-   "id": "n89d36d5acdf9",
-   "title": "「ヒーロー戦隊」アイテム登場!",
-   "url": "https://report.pococha.com/n/n89d36d5acdf9",
-   "sourceId": "pococha-official-note",
-   "sourceKind": "official",
-   "published": "2026-01-29T17:30:00.000+09:00",
-   "modified": "2026-02-16T10:58:52.000+09:00",
-   "type": "item",
-   "start": null,
-   "end": null,
-   "periods": [
-    {
-     "start": "2026-02-01",
-     "end": "2026-02-28",
-     "startTime": "0:00",
-     "endTime": "23:59",
-     "label": "公開期間",
-     "labeled": true,
-     "ranks": []
-    },
-    {
-     "start": "2026-02-16",
-     "end": "2026-02-20",
-     "startTime": "12:00",
-     "endTime": "23:59",
-     "label": "対象アイテムのポイント獲得対象期限は【",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-02-01",
-     "end": "2026-02-28",
-     "startTime": "0:00",
-     "endTime": "23:59",
-     "label": "00 ～ 2月20日 23:59】のみです。対象アイテムは【",
-     "labeled": false,
-     "ranks": []
-    }
-   ],
-   "ranks": [],
-   "confidence": "high"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:21:27.289Z"
   },
   {
    "id": "n4a8e9c60ef3d",
@@ -4501,7 +4443,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:21:32.109Z"
   },
   {
    "id": "n848711c0741a",
@@ -4512,27 +4457,9 @@
    "published": "2026-01-26T19:02:05.000+09:00",
    "modified": "2026-01-26T19:02:05.000+09:00",
    "type": "item",
-   "start": null,
-   "end": null,
+   "start": "2026-01-26",
+   "end": "2026-01-31",
    "periods": [
-    {
-     "start": "2026-01-26",
-     "end": "2026-01-31",
-     "startTime": null,
-     "endTime": null,
-     "label": "投票方法について",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-01-26",
-     "end": "2026-01-31",
-     "startTime": null,
-     "endTime": null,
-     "label": "今後のスケジュール",
-     "labeled": false,
-     "ranks": []
-    },
     {
      "start": "2026-01-26",
      "end": "2026-01-31",
@@ -4544,41 +4471,10 @@
     }
    ],
    "ranks": [],
-   "confidence": "high"
-  },
-  {
-   "id": "na4f327cf0d65",
-   "title": "配信枠に福よ来い！鬼退治ミッション！",
-   "url": "https://report.pococha.com/n/na4f327cf0d65",
-   "sourceId": "pococha-official-note",
-   "sourceKind": "official",
-   "published": "2026-01-26T16:30:00.000+09:00",
-   "modified": "2026-01-27T10:41:29.000+09:00",
-   "type": "mission",
-   "start": null,
-   "end": null,
-   "periods": [
-    {
-     "start": "2026-02-01",
-     "end": "2026-02-03",
-     "startTime": "12:00",
-     "endTime": "23:59",
-     "label": "2026/",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2026-02-01",
-     "end": "2026-02-03",
-     "startTime": "12:00",
-     "endTime": "23:59",
-     "label": "対象アイテムの使用期限、ポイント獲得対象期限は【",
-     "labeled": false,
-     "ranks": []
-    }
-   ],
-   "ranks": [],
-   "confidence": "low"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:21:34.671Z"
   },
   {
    "id": "n9f03555076e7",
@@ -4593,7 +4489,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:21:40.365Z"
   },
   {
    "id": "n90d4c240786e",
@@ -4612,7 +4511,7 @@
      "end": "2026-01-23",
      "startTime": null,
      "endTime": null,
-     "label": "こんにちは、Pococha運営です！",
+     "label": "「JOYSOUND認定 歌うまライバー決定戦！2026 Winter」歌うまラン",
      "labeled": false,
      "ranks": []
     }
@@ -4637,7 +4536,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:21:16.138Z"
   },
   {
    "id": "n0ac2aee5a4d5",
@@ -4656,13 +4558,16 @@
      "end": null,
      "startTime": null,
      "endTime": null,
-     "label": "メインコンテンツへスキップ",
+     "label": "「JOYSOUND認定 歌うまライバー決定戦！2026 Winter」採点対象楽",
      "labeled": true,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:21:58.353Z"
   },
   {
    "id": "n78e5d0f0d5e3",
@@ -4681,13 +4586,16 @@
      "end": null,
      "startTime": null,
      "endTime": null,
-     "label": "メインコンテンツへスキップ",
+     "label": "「JOYSOUND認定 歌うまライバー決定戦！2026 Winter」開催時の対",
      "labeled": true,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:22:00.305Z"
   },
   {
    "id": "n326ea9052818",
@@ -4702,7 +4610,46 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:21:42.980Z"
+  },
+  {
+   "id": "n9b883ad5d2fa",
+   "title": "日本一のミスが決まる！MISS OF MISS CAMPUS QUEEN CONTEST 2026 Pococha審査準決勝開催中！",
+   "url": "https://report.pococha.com/n/n9b883ad5d2fa",
+   "sourceId": "pococha-official-note",
+   "sourceKind": "official",
+   "published": "2026-01-15T16:00:00.000+09:00",
+   "modified": "2026-02-19T16:33:51.000+09:00",
+   "type": "event",
+   "start": null,
+   "end": null,
+   "periods": [],
+   "ranks": [],
+   "confidence": "none",
+   "audience": [],
+   "excluded": 1,
+   "fetchedAt": "2026-11-12T08:21:45.617Z"
+  },
+  {
+   "id": "n422ed6080550",
+   "title": "日本一のミスターが決まる！MR OF MR CAMPUS CONTEST 2026 Pococha審査準決勝開催中！",
+   "url": "https://report.pococha.com/n/n422ed6080550",
+   "sourceId": "pococha-official-note",
+   "sourceKind": "official",
+   "published": "2026-01-15T16:00:00.000+09:00",
+   "modified": "2026-02-19T16:34:52.000+09:00",
+   "type": "event",
+   "start": null,
+   "end": null,
+   "periods": [],
+   "ranks": [],
+   "confidence": "none",
+   "audience": [],
+   "excluded": 1,
+   "fetchedAt": "2026-11-12T08:21:48.197Z"
   },
   {
    "id": "ne913c1c0c275",
@@ -4717,7 +4664,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:21:51.249Z"
   },
   {
    "id": "ndab4917994d9",
@@ -4745,13 +4695,16 @@
      "end": "2026-01-22",
      "startTime": "12:00",
      "endTime": "23:59",
-     "label": "ミッション開催期間は 【",
+     "label": "ミッション開催期間は",
      "labeled": true,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:21:53.734Z"
   },
   {
    "id": "ndf9e61784e7f",
@@ -4761,7 +4714,7 @@
    "sourceKind": "official",
    "published": "2025-12-23T15:00:59.000+09:00",
    "modified": "2026-01-13T16:33:45.000+09:00",
-   "type": "notice",
+   "type": "collab",
    "start": "2025-12-27",
    "end": "2026-01-16",
    "periods": [
@@ -4776,7 +4729,10 @@
     }
    ],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:22:02.442Z"
   },
   {
    "id": "n827d35859aa6",
@@ -4795,7 +4751,7 @@
      "end": "2026-01-15",
      "startTime": null,
      "endTime": null,
-     "label": "スケジュール",
+     "label": "【ポコガチャ1周年企画】オリジナルきせかえアイテムコンテスト開催",
      "labeled": false,
      "ranks": []
     },
@@ -4804,7 +4760,7 @@
      "end": "2026-01-25",
      "startTime": null,
      "endTime": null,
-     "label": "第一次選考（運営チーム）",
+     "label": "【ポコガチャ1周年企画】オリジナルきせかえアイテムコンテスト開催",
      "labeled": false,
      "ranks": []
     },
@@ -4813,13 +4769,16 @@
      "end": "2026-01-31",
      "startTime": null,
      "endTime": null,
-     "label": "最終選考（ユーザー投票）",
+     "label": "【ポコガチャ1周年企画】オリジナルきせかえアイテムコンテスト開催",
      "labeled": false,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:21:56.424Z"
   },
   {
    "id": "n3d1a4b61ebcf",
@@ -4834,7 +4793,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:22:04.466Z"
   },
   {
    "id": "nf1fe637cf4d9",
@@ -4849,7 +4811,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:22:07.404Z"
   },
   {
    "id": "n6fe13eb50f23",
@@ -4877,7 +4842,7 @@
      "end": "2025-12-24",
      "startTime": null,
      "endTime": null,
-     "label": "3．クリスマス本番",
+     "label": "POCO LAND 9周年祭博士検定 問題回答",
      "labeled": false,
      "ranks": []
     }
@@ -4902,7 +4867,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:22:10.172Z"
   },
   {
    "id": "n2430810fff35",
@@ -4921,13 +4889,16 @@
      "end": "2025-12-12",
      "startTime": "10:00",
      "endTime": "23:59",
-     "label": "夢のレッドカーペットウォークプロフィールをプレゼント",
+     "label": "【Hulu × Pococha】ピンキにHulu映画祭への招待状が届いたよ！",
      "labeled": false,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:22:12.334Z"
   },
   {
    "id": "n9bb82c3c086e",
@@ -4940,28 +4911,12 @@
    "type": "notice",
    "start": null,
    "end": null,
-   "periods": [
-    {
-     "start": "2025-12-09",
-     "end": "2025-12-09",
-     "startTime": "20:00",
-     "endTime": "21:00",
-     "label": "開催日時",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2025-12-11",
-     "end": "2025-12-11",
-     "startTime": "13:00",
-     "endTime": "14:00",
-     "label": "開催日時",
-     "labeled": false,
-     "ranks": []
-    }
-   ],
+   "periods": [],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 2,
+   "fetchedAt": "2026-11-12T08:22:14.416Z"
   },
   {
    "id": "ncc83c14cc0da",
@@ -4976,7 +4931,12 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [
+    "ボイス"
+   ],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:22:16.753Z"
   },
   {
    "id": "na412cf5dc9a2",
@@ -5001,7 +4961,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:22:19.152Z"
   },
   {
    "id": "n9b955ffdb495",
@@ -5023,7 +4986,13 @@
     "B2",
     "B3"
    ],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [
+    "ボイス",
+    "ファミリー"
+   ],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:22:22.371Z"
   },
   {
    "id": "n6e46c8e5ced9",
@@ -5048,7 +5017,10 @@
     }
    ],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:22:24.586Z"
   },
   {
    "id": "n3cce9d7f7dd1",
@@ -5063,7 +5035,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:22:27.125Z"
   },
   {
    "id": "n5c31f1895730",
@@ -5078,7 +5053,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 5,
+   "fetchedAt": "2026-11-12T08:22:29.537Z"
   },
   {
    "id": "n0e206434ac31",
@@ -5103,7 +5081,10 @@
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 1,
+   "fetchedAt": "2026-11-12T08:22:36.757Z"
   },
   {
    "id": "nc3abd014e3eb",
@@ -5118,7 +5099,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:22:31.887Z"
   },
   {
    "id": "n4e435ac556c3",
@@ -5129,30 +5113,24 @@
    "published": "2025-11-10T12:00:00.000+09:00",
    "modified": "2025-11-12T12:25:38.000+09:00",
    "type": "mission",
-   "start": null,
-   "end": null,
+   "start": "2025-11-19",
+   "end": "2025-11-21",
    "periods": [
     {
      "start": "2025-11-19",
      "end": "2025-11-21",
      "startTime": "12:00",
      "endTime": "23:59",
-     "label": "2025/",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2025-11-19",
-     "end": "2025-11-21",
-     "startTime": "12:00",
-     "endTime": "23:59",
-     "label": "対象アイテムのポイント獲得対象期限は【",
+     "label": "目指せ豊作！黄金いも大収穫ミッション！",
      "labeled": false,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 1,
+   "fetchedAt": "2026-11-12T08:22:34.469Z"
   },
   {
    "id": "n7db68943b696",
@@ -5171,13 +5149,16 @@
      "end": "2025-11-30",
      "startTime": null,
      "endTime": null,
-     "label": "期間",
+     "label": "【大切なお知らせ】Voice Pocochaのサービス終了と、「ボイポコフレンズ",
      "labeled": true,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:22:42.329Z"
   },
   {
    "id": "ndedb94b3d7f2",
@@ -5202,7 +5183,12 @@
     "S5",
     "S6"
    ],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [
+    "新規ライバー"
+   ],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:22:40.072Z"
   },
   {
    "id": "n9625eb059191",
@@ -5227,7 +5213,10 @@
     "A2",
     "A3"
    ],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:22:45.070Z"
   },
   {
    "id": "nfbf3157d903b",
@@ -5246,7 +5235,7 @@
      "end": "2025-12-25",
      "startTime": null,
      "endTime": null,
-     "label": "1.",
+     "label": "おやすみチケットの配布はありますか？",
      "labeled": false,
      "ranks": []
     },
@@ -5255,7 +5244,7 @@
      "end": "2025-12-31",
      "startTime": null,
      "endTime": null,
-     "label": "3.",
+     "label": "おやすみチケットの配布はありますか？",
      "labeled": false,
      "ranks": []
     },
@@ -5264,7 +5253,7 @@
      "end": "2026-01-03",
      "startTime": null,
      "endTime": null,
-     "label": "4.",
+     "label": "おやすみチケットの配布はありますか？",
      "labeled": false,
      "ranks": []
     }
@@ -5289,7 +5278,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:22:47.488Z"
   },
   {
    "id": "na76dbde7ae5e",
@@ -5304,7 +5296,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:22:50.129Z"
   },
   {
    "id": "n4e12f54204a8",
@@ -5323,7 +5318,7 @@
      "end": "2025-11-23",
      "startTime": "10:00",
      "endTime": "23:59",
-     "label": "ったPococha配信動画を撮影しご自身のXにポストした後、",
+     "label": "注意事項",
      "labeled": false,
      "ranks": []
     },
@@ -5332,13 +5327,16 @@
      "end": "2025-12-28",
      "startTime": "10:00",
      "endTime": "23:59",
-     "label": "月)10:00〜2025年11月23日(日)23:59または",
+     "label": "注意事項",
      "labeled": false,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:22:52.958Z"
   },
   {
    "id": "ne54c4394cf71",
@@ -5357,13 +5355,16 @@
      "end": "2025-10-27",
      "startTime": "16:00",
      "endTime": "23:59",
-     "label": "夢の監督就任プロフィールをプレゼント",
+     "label": "【Hulu × Pococha】ガーガーにHuluオリジナル作品の制作オファーが",
      "labeled": false,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:22:56.506Z"
   },
   {
    "id": "n6e775018b562",
@@ -5388,7 +5389,10 @@
     }
    ],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:23:41.884Z"
   },
   {
    "id": "nb5d493b469bd",
@@ -5407,7 +5411,10 @@
     "S2",
     "S3"
    ],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:23:05.419Z"
   },
   {
    "id": "n977b82abc2bb",
@@ -5441,7 +5448,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:23:10.431Z"
   },
   {
    "id": "nee8d884a9982",
@@ -5469,7 +5479,7 @@
      "end": "2025-10-15",
      "startTime": "12:00",
      "endTime": "23:59",
-     "label": "スケジュール 開催期間",
+     "label": "『姉ageha』レギュラーモデルオーディション【10/9(木)開催",
      "labeled": true,
      "ranks": []
     }
@@ -5482,7 +5492,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:23:13.298Z"
   },
   {
    "id": "n3276dd171571",
@@ -5501,7 +5514,7 @@
      "end": "2025-10-08",
      "startTime": null,
      "endTime": null,
-     "label": "こんにちは、Pococha運営です！",
+     "label": "「JOYSOUND認定 歌うまライバー決定戦！2025 Autumn」歌うまラン",
      "labeled": false,
      "ranks": []
     }
@@ -5526,7 +5539,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:23:01.532Z"
   },
   {
    "id": "n8ae145447674",
@@ -5545,13 +5561,16 @@
      "end": null,
      "startTime": null,
      "endTime": null,
-     "label": "メインコンテンツへスキップ",
+     "label": "「JOYSOUND認定 歌うまライバー決定戦！2025 Autumn」採点対象楽",
      "labeled": true,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:23:31.972Z"
   },
   {
    "id": "n5cd4bbbfd431",
@@ -5570,13 +5589,16 @@
      "end": null,
      "startTime": null,
      "endTime": null,
-     "label": "メインコンテンツへスキップ",
+     "label": "「JOYSOUND認定 歌うまライバー決定戦！2025 Autumn」開催時の対",
      "labeled": true,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:23:34.846Z"
   },
   {
    "id": "nd3116fd168ce",
@@ -5586,94 +5608,25 @@
    "sourceKind": "official",
    "published": "2025-09-30T17:00:00.000+09:00",
    "modified": "2025-10-07T17:35:56.000+09:00",
-   "type": "notice",
-   "start": null,
-   "end": null,
+   "type": "collab",
+   "start": "2025-10-01",
+   "end": "2025-10-12",
    "periods": [
     {
      "start": "2025-10-01",
      "end": "2025-10-12",
      "startTime": null,
      "endTime": null,
-     "label": "ぜひ配信枠に遊びに行ってみてください",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2025-10-01",
-     "end": "2025-10-01",
-     "startTime": "19:00",
-     "endTime": "19:30",
-     "label": "配信スケジュール",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2025-10-03",
-     "end": "2025-10-03",
-     "startTime": "18:30",
-     "endTime": "19:00",
-     "label": "配信スケジュール",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2025-10-04",
-     "end": "2025-10-04",
-     "startTime": "19:00",
-     "endTime": "19:30",
-     "label": "配信スケジュール",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2025-10-05",
-     "end": "2025-10-05",
-     "startTime": "19:00",
-     "endTime": "19:30",
-     "label": "配信スケジュール",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2025-10-06",
-     "end": "2025-10-06",
-     "startTime": "19:00",
-     "endTime": "19:30",
-     "label": "配信スケジュール",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2025-10-08",
-     "end": "2025-10-08",
-     "startTime": "19:00",
-     "endTime": "19:30",
-     "label": null,
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2025-10-10",
-     "end": "2025-10-10",
-     "startTime": "18:00",
-     "endTime": "18:30",
-     "label": null,
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2025-10-12",
-     "end": "2025-10-12",
-     "startTime": "21:00",
-     "endTime": "22:00",
-     "label": null,
+     "label": "「SING SHOW DOWN ファンコミュニティ」リレー配信 第ニ弾出演者発表",
      "labeled": false,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 8,
+   "fetchedAt": "2026-11-12T08:23:15.929Z"
   },
   {
    "id": "nf23637d9ff4b",
@@ -5683,12 +5636,15 @@
    "sourceKind": "official",
    "published": "2025-09-30T17:00:00.000+09:00",
    "modified": "2025-09-30T17:12:28.000+09:00",
-   "type": "notice",
+   "type": "collab",
    "start": null,
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:23:18.631Z"
   },
   {
    "id": "n84079dab9bb3",
@@ -5703,7 +5659,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:23:22.052Z"
   },
   {
    "id": "n43b1e196d91f",
@@ -5722,13 +5681,16 @@
      "end": "2025-10-04",
      "startTime": null,
      "endTime": null,
-     "label": "「オリジナル楽曲 for ユニット」イベント:最終結果",
+     "label": "「オリジナル楽曲 for ユニット」イベント：最終結果",
      "labeled": false,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:23:07.928Z"
   },
   {
    "id": "n8bbf26a21740",
@@ -5747,13 +5709,16 @@
      "end": "2025-10-04",
      "startTime": "12:00",
      "endTime": "23:59",
-     "label": "イベント参加までの流れ イベント期間",
+     "label": "イベントの流れ イベント期間",
      "labeled": true,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 1,
+   "fetchedAt": "2026-11-12T08:23:53.018Z"
   },
   {
    "id": "n6397f7e1c142",
@@ -5781,7 +5746,7 @@
      "end": "2025-10-23",
      "startTime": "12:00",
      "endTime": "23:59",
-     "label": "スケジュール 開催期間",
+     "label": "那須川天心 世界タイトルマッチ ラウンドガール出演権【2025年10月開催",
      "labeled": true,
      "ranks": []
     }
@@ -5794,7 +5759,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:23:24.830Z"
   },
   {
    "id": "n1b51b8e61dff",
@@ -5809,7 +5777,12 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [
+    "ファミリー"
+   ],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:23:27.201Z"
   },
   {
    "id": "ndf49f2d25522",
@@ -5824,7 +5797,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:23:29.434Z"
   },
   {
    "id": "n33a971a9e4fc",
@@ -5843,7 +5819,7 @@
      "end": "2025-12-10",
      "startTime": null,
      "endTime": null,
-     "label": "20Starsに参加中の​配信枠では、​最大9,999コイン",
+     "label": "POCO LAND 2025 20Stars",
      "labeled": false,
      "ranks": []
     },
@@ -5852,7 +5828,7 @@
      "end": "2025-12-11",
      "startTime": null,
      "endTime": null,
-     "label": "20Starsに参加中の​配信枠では、​最大9,999コイン",
+     "label": "POCO LAND 2025 20Stars",
      "labeled": false,
      "ranks": [
       "D1",
@@ -5868,7 +5844,7 @@
      "end": "2025-12-12",
      "startTime": null,
      "endTime": null,
-     "label": "20Starsに参加中の​配信枠では、​最大9,999コイン",
+     "label": "POCO LAND 2025 20Stars",
      "labeled": false,
      "ranks": [
       "D1",
@@ -5890,7 +5866,7 @@
      "end": "2025-12-15",
      "startTime": null,
      "endTime": null,
-     "label": "20Starsに参加中の​配信枠では、​最大9,999コイン",
+     "label": "POCO LAND 2025 20Stars",
      "labeled": false,
      "ranks": [
       "S1",
@@ -5906,7 +5882,7 @@
      "end": "2025-12-16",
      "startTime": null,
      "endTime": null,
-     "label": null,
+     "label": "POCO LAND 2025 20Stars",
      "labeled": false,
      "ranks": [
       "D1",
@@ -5922,7 +5898,7 @@
      "end": "2025-12-17",
      "startTime": null,
      "endTime": null,
-     "label": null,
+     "label": "POCO LAND 2025 20Stars",
      "labeled": false,
      "ranks": [
       "D1",
@@ -5958,29 +5934,11 @@
      "ranks": []
     },
     {
-     "start": "2025-11-11",
-     "end": "2025-11-20",
-     "startTime": null,
-     "endTime": null,
-     "label": "ぽこチャレ ラウンド1",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2025-12-01",
-     "end": "2025-12-09",
-     "startTime": null,
-     "endTime": null,
-     "label": "ぽこチャレ ラウンド2",
-     "labeled": false,
-     "ranks": []
-    },
-    {
      "start": "2025-12-11",
      "end": "2025-12-17",
      "startTime": null,
      "endTime": null,
-     "label": "世代やスタイルを越え、幅広いライバーさんが挑戦できる新しいイ",
+     "label": "POCO LAND 2025 Generations",
      "labeled": false,
      "ranks": []
     },
@@ -5989,7 +5947,7 @@
      "end": "2025-11-28",
      "startTime": null,
      "endTime": null,
-     "label": "みんなでたくさん楽しんで、最高のクリスマスの思い出をつくっち",
+     "label": "Pocochaクリスマスパーティ2025",
      "labeled": false,
      "ranks": []
     },
@@ -5998,7 +5956,7 @@
      "end": "2025-12-05",
      "startTime": null,
      "endTime": null,
-     "label": "みんなでたくさん楽しんで、最高のクリスマスの思い出をつくっち",
+     "label": "Pocochaクリスマスパーティ2025",
      "labeled": false,
      "ranks": []
     },
@@ -6007,7 +5965,7 @@
      "end": "2025-12-24",
      "startTime": null,
      "endTime": null,
-     "label": "みんなでたくさん楽しんで、最高のクリスマスの思い出をつくっち",
+     "label": "Pocochaクリスマスパーティ2025",
      "labeled": false,
      "ranks": []
     },
@@ -6016,7 +5974,7 @@
      "end": "2025-11-30",
      "startTime": null,
      "endTime": null,
-     "label": "POCO LAND 2025や新機能情報などの最新情報をいち",
+     "label": "つなごうPocochaの輪！ポコキャラバン9周年祭",
      "labeled": false,
      "ranks": []
     }
@@ -6041,7 +5999,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:23:37.225Z"
   },
   {
    "id": "n3ee951ab4210",
@@ -6056,7 +6017,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:23:39.551Z"
   },
   {
    "id": "nb87d3e32f425",
@@ -6081,7 +6045,12 @@
     "S5",
     "S6"
    ],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [
+    "リスナー"
+   ],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:23:44.359Z"
   },
   {
    "id": "n1e39135d1ca3",
@@ -6100,7 +6069,7 @@
      "end": "2025-09-15",
      "startTime": "12:00",
      "endTime": "23:59",
-     "label": "イベント詳細 イベント期間",
+     "label": "ついに本戦！「ar30周年企画 年間出演モデルオーディション：最終ステージ出演権",
      "labeled": true,
      "ranks": []
     }
@@ -6124,7 +6093,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 1,
+   "fetchedAt": "2026-11-12T08:24:18.529Z"
   },
   {
    "id": "n9905ca4a99a0",
@@ -6143,7 +6115,7 @@
      "end": null,
      "startTime": "12:00",
      "endTime": null,
-     "label": "本記事では、",
+     "label": "目次",
      "labeled": true,
      "ranks": []
     },
@@ -6155,19 +6127,13 @@
      "label": "応援ミッション",
      "labeled": false,
      "ranks": []
-    },
-    {
-     "start": "2025-09-10",
-     "end": "2025-10-19",
-     "startTime": "12:00",
-     "endTime": "23:59",
-     "label": "SKE48 17周年にちなんで、抽選で17名限定のスペシャル",
-     "labeled": false,
-     "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:23:46.562Z"
   },
   {
    "id": "nb15c74b85941",
@@ -6182,7 +6148,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:23:48.530Z"
   },
   {
    "id": "ncf4b21ae6acb",
@@ -6197,7 +6166,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:23:50.577Z"
   },
   {
    "id": "n75447b1cd774",
@@ -6212,7 +6184,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:23:55.903Z"
   },
   {
    "id": "ne183e909722f",
@@ -6227,7 +6202,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:23:58.202Z"
   },
   {
    "id": "n6301a3bca014",
@@ -6240,37 +6218,12 @@
    "type": "notice",
    "start": null,
    "end": null,
-   "periods": [
-    {
-     "start": "2025-08-13",
-     "end": "2025-08-13",
-     "startTime": "19:00",
-     "endTime": "21:00",
-     "label": "日時/",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2025-08-08",
-     "end": "2025-08-13",
-     "startTime": "14:00",
-     "endTime": "22:00",
-     "label": "※生放送開催に伴い、",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2025-08-13",
-     "end": "2025-08-13",
-     "startTime": "19:00",
-     "endTime": "20:00",
-     "label": "さらに、スペシャルドローンショーに合わせて！！",
-     "labeled": false,
-     "ranks": []
-    }
-   ],
+   "periods": [],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 2,
+   "fetchedAt": "2026-11-12T08:24:05.053Z"
   },
   {
    "id": "n6679a6e9a23a",
@@ -6285,7 +6238,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:24:07.799Z"
   },
   {
    "id": "n7ee4f6a29005",
@@ -6300,7 +6256,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:24:11.272Z"
   },
   {
    "id": "n6ff719bff511",
@@ -6319,7 +6278,7 @@
      "end": "2025-08-14",
      "startTime": "0:00",
      "endTime": "23:59",
-     "label": "【",
+     "label": "01 おかえりミッション",
      "labeled": false,
      "ranks": []
     },
@@ -6328,13 +6287,16 @@
      "end": "2025-08-11",
      "startTime": "0:00",
      "endTime": "23:59",
-     "label": "【",
+     "label": "02 おかえり花火ギフト",
      "labeled": false,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:24:14.000Z"
   },
   {
    "id": "nc37e410ac42e",
@@ -6356,7 +6318,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:24:16.350Z"
   },
   {
    "id": "n35c20625bb0c",
@@ -6375,7 +6340,7 @@
      "end": "2025-07-31",
      "startTime": null,
      "endTime": null,
-     "label": "こんにちは、Pococha運営です！",
+     "label": "「JOYSOUND認定 歌うまライバー決定戦！2025 Summer」歌うまラン",
      "labeled": false,
      "ranks": []
     }
@@ -6400,7 +6365,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:24:02.089Z"
   },
   {
    "id": "nf098094c366c",
@@ -6419,13 +6387,16 @@
      "end": null,
      "startTime": null,
      "endTime": null,
-     "label": "メインコンテンツへスキップ",
+     "label": "「JOYSOUND認定 歌うまライバー決定戦！2025 Summer」開催時の対",
      "labeled": true,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:24:20.522Z"
   },
   {
    "id": "nb22ad7072dd6",
@@ -6444,13 +6415,16 @@
      "end": null,
      "startTime": null,
      "endTime": null,
-     "label": "メインコンテンツへスキップ",
+     "label": "「JOYSOUND認定 歌うまライバー決定戦！2025 Summer」採点対象楽",
      "labeled": true,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:24:22.806Z"
   },
   {
    "id": "n5d52f9a450fb",
@@ -6469,13 +6443,53 @@
      "end": "2025-07-27",
      "startTime": "13:00",
      "endTime": "23:59",
-     "label": "キャンペーン期間",
+     "label": "豪華賞品はこちら！ キャンペーン期間",
      "labeled": true,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:24:30.026Z"
+  },
+  {
+   "id": "n5c5e56742730",
+   "title": "Pococha始球式 阪神タイガース【エキシビション】",
+   "url": "https://report.pococha.com/n/n5c5e56742730",
+   "sourceId": "pococha-official-note",
+   "sourceKind": "official",
+   "published": "2025-07-01T17:01:40.000+09:00",
+   "modified": "2025-07-01T17:01:40.000+09:00",
+   "type": "notice",
+   "start": "2025-07-13",
+   "end": "2025-07-17",
+   "periods": [
+    {
+     "start": "2025-07-13",
+     "end": "2025-07-17",
+     "startTime": "12:00",
+     "endTime": "23:59",
+     "label": "ルール/詳細 イベント期間",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6"
+   ],
+   "confidence": "high",
+   "audience": [
+    "リスナー"
+   ],
+   "excluded": 1,
+   "fetchedAt": "2026-11-12T08:24:38.458Z"
   },
   {
    "id": "n54d223596046",
@@ -6490,7 +6504,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:24:25.258Z"
   },
   {
    "id": "n435f780bd4e0",
@@ -6506,19 +6523,10 @@
    "periods": [
     {
      "start": "2025-07-23",
-     "end": null,
-     "startTime": null,
-     "endTime": null,
-     "label": "ライズ登場】あなたが選んだゲストとつくる！トーク番組出演権【",
-     "labeled": true,
-     "ranks": []
-    },
-    {
-     "start": "2025-07-23",
      "end": "2025-07-29",
      "startTime": null,
      "endTime": null,
-     "label": "スケジュール イベント期間",
+     "label": "イベント概要 イベント期間",
      "labeled": true,
      "ranks": []
     },
@@ -6540,7 +6548,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 1,
+   "fetchedAt": "2026-11-12T08:24:27.850Z"
   },
   {
    "id": "nc9a2140f2d83",
@@ -6555,7 +6566,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:24:32.471Z"
   },
   {
    "id": "ne2193439035f",
@@ -6570,48 +6584,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
-  },
-  {
-   "id": "n5c5e56742730",
-   "title": "Pococha始球式 阪神タイガース【エキシビション】",
-   "url": "https://report.pococha.com/n/n5c5e56742730",
-   "sourceId": "pococha-official-note",
-   "sourceKind": "official",
-   "published": "2025-07-01T17:01:40.000+09:00",
-   "modified": "2025-07-01T17:01:40.000+09:00",
-   "type": "notice",
-   "start": null,
-   "end": null,
-   "periods": [
-    {
-     "start": "2025-07-13",
-     "end": "2025-07-17",
-     "startTime": null,
-     "endTime": null,
-     "label": "Pococha始球式 阪神タイガース【エキシビション】",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2025-07-13",
-     "end": "2025-07-17",
-     "startTime": "12:00",
-     "endTime": "23:59",
-     "label": "ルール/詳細 イベント期間",
-     "labeled": true,
-     "ranks": []
-    }
-   ],
-   "ranks": [
-    "S1",
-    "S2",
-    "S3",
-    "S4",
-    "S5",
-    "S6"
-   ],
-   "confidence": "high"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:24:35.814Z"
   },
   {
    "id": "nc852a990c4be",
@@ -6626,7 +6602,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:24:41.126Z"
   },
   {
    "id": "n5461af7beb47",
@@ -6651,7 +6630,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:24:44.163Z"
   },
   {
    "id": "n666d5a2d10a9",
@@ -6666,7 +6648,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:24:47.238Z"
   },
   {
    "id": "n6778a051b7c5",
@@ -6681,7 +6666,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:24:49.784Z"
   },
   {
    "id": "n940e3ce52d64",
@@ -6696,7 +6684,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:24:52.046Z"
   },
   {
    "id": "n9f31d38c0b96",
@@ -6730,7 +6721,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:24:54.978Z"
   },
   {
    "id": "nf0af84b1ee8c",
@@ -6745,7 +6739,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:24:57.528Z"
   },
   {
    "id": "n0ef5790629bc",
@@ -6760,7 +6757,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:25:01.100Z"
   },
   {
    "id": "n40edcef875d5",
@@ -6782,7 +6782,10 @@
     "B2",
     "B3"
    ],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:25:03.417Z"
   },
   {
    "id": "nbf6e77f34cbf",
@@ -6797,7 +6800,12 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [
+    "リスナー"
+   ],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:25:05.914Z"
   },
   {
    "id": "nf0d90f56e258",
@@ -6812,7 +6820,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:25:08.507Z"
   },
   {
    "id": "nf8234092be44",
@@ -6827,7 +6838,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:25:11.165Z"
   },
   {
    "id": "nf8f111388966",
@@ -6846,7 +6860,7 @@
      "end": "2025-05-28",
      "startTime": null,
      "endTime": null,
-     "label": "5月実施予定！Pococha内イベント「ミューズ プレオーデ イベント期間",
+     "label": "5月実施予定！Pococha内イベント「ミューズ プレオーディション」の概要 イベント期間",
      "labeled": true,
      "ranks": []
     }
@@ -6859,7 +6873,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 1,
+   "fetchedAt": "2026-11-12T08:25:29.358Z"
   },
   {
    "id": "nf4ec723df4b4",
@@ -6949,28 +6966,6 @@
      "ranks": []
     },
     {
-     "start": "2025-07-13",
-     "end": "2025-07-17",
-     "startTime": null,
-     "endTime": null,
-     "label": "〇エキシビションイベント「始球式」",
-     "labeled": false,
-     "ranks": [
-      "S4",
-      "S5",
-      "S6"
-     ]
-    },
-    {
-     "start": "2025-07-13",
-     "end": "2025-07-17",
-     "startTime": null,
-     "endTime": null,
-     "label": "〇あなたが〇〇王〜夏〜",
-     "labeled": false,
-     "ranks": []
-    },
-    {
      "start": "2025-06-16",
      "end": "2025-06-24",
      "startTime": "12:00",
@@ -7018,7 +7013,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 4,
+   "fetchedAt": "2026-11-12T08:25:13.968Z"
   },
   {
    "id": "n085f4619699e",
@@ -7033,7 +7031,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:25:17.052Z"
   },
   {
    "id": "n6e684c905385",
@@ -7048,7 +7049,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:25:24.754Z"
   },
   {
    "id": "n45d49c7f091e",
@@ -7058,12 +7062,15 @@
    "sourceKind": "official",
    "published": "2025-05-09T19:32:31.000+09:00",
    "modified": "2025-05-09T19:32:31.000+09:00",
-   "type": "notice",
+   "type": "collab",
    "start": null,
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:25:27.013Z"
   },
   {
    "id": "n707df81aa32a",
@@ -7078,7 +7085,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:25:32.494Z"
   },
   {
    "id": "ne8af0bc8652a",
@@ -7093,7 +7103,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:25:34.558Z"
   },
   {
    "id": "n57e0360d7a32",
@@ -7112,16 +7125,7 @@
      "end": "2025-07-17",
      "startTime": null,
      "endTime": null,
-     "label": "※①の全国大会決勝（7/21）を除き、いずれも",
-     "labeled": true,
-     "ranks": []
-    },
-    {
-     "start": "2025-07-13",
-     "end": "2025-07-17",
-     "startTime": null,
-     "endTime": null,
-     "label": "でいただくため、Pococha甲子園本戦と同じスケジュール（",
+     "label": "エキシビションイベント「始球式」",
      "labeled": true,
      "ranks": []
     },
@@ -7130,7 +7134,7 @@
      "end": "2025-07-21",
      "startTime": null,
      "endTime": null,
-     "label": "※",
+     "label": "Pococha内で注目されるチャンス！",
      "labeled": false,
      "ranks": []
     },
@@ -7139,22 +7143,16 @@
      "end": "2025-07-18",
      "startTime": null,
      "endTime": null,
-     "label": "aでもっとも「〇〇なライバー」を決める「王企画」も同期間中（",
+     "label": "〇〇なライバー",
      "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2025-07-13",
-     "end": "2025-07-17",
-     "startTime": null,
-     "endTime": null,
-     "label": "予選はなく、",
-     "labeled": true,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:25:37.365Z"
   },
   {
    "id": "n3cd8c7597a9b",
@@ -7169,7 +7167,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:25:39.411Z"
   },
   {
    "id": "nc94efa71aa62",
@@ -7188,7 +7189,7 @@
      "end": "2025-06-30",
      "startTime": null,
      "endTime": "18:00",
-     "label": "しゃべくりスロット:みんなで話題を共有できるトークテーマスロ",
+     "label": "トライアル実施期間について",
      "labeled": false,
      "ranks": []
     },
@@ -7197,13 +7198,18 @@
      "end": "2025-05-31",
      "startTime": null,
      "endTime": null,
-     "label": "※",
+     "label": "トライアル実施期間について",
      "labeled": false,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [
+    "リスナー"
+   ],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:25:42.346Z"
   },
   {
    "id": "nd3d48b3d3f3c",
@@ -7222,7 +7228,7 @@
      "end": "2025-04-30",
      "startTime": null,
      "endTime": null,
-     "label": "こんにちは、Pococha運営です！",
+     "label": "「JOYSOUND認定 歌うまライバー決定戦！2025 Spring」歌うまラン",
      "labeled": false,
      "ranks": []
     }
@@ -7247,7 +7253,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:25:21.523Z"
   },
   {
    "id": "n49124d7ad724",
@@ -7266,13 +7275,16 @@
      "end": null,
      "startTime": null,
      "endTime": null,
-     "label": "メインコンテンツへスキップ",
+     "label": "「JOYSOUND認定 歌うまライバー決定戦！2025 Spring」開催時の対",
      "labeled": true,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:25:55.025Z"
   },
   {
    "id": "nb619efca1c1a",
@@ -7291,13 +7303,16 @@
      "end": null,
      "startTime": null,
      "endTime": null,
-     "label": "メインコンテンツへスキップ",
+     "label": "「JOYSOUND認定 歌うまライバー決定戦！2025 Spring」採点対象楽",
      "labeled": true,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:25:57.339Z"
   },
   {
    "id": "n26333b36f899",
@@ -7312,7 +7327,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:25:44.443Z"
   },
   {
    "id": "n56b2db81b75d",
@@ -7327,7 +7345,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:25:47.350Z"
   },
   {
    "id": "na74516d0735f",
@@ -7342,7 +7363,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:25:49.740Z"
   },
   {
    "id": "nbe952ab18156",
@@ -7357,7 +7381,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:25:52.364Z"
   },
   {
    "id": "n4788f8ee98fc",
@@ -7372,7 +7399,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:26:00.101Z"
   },
   {
    "id": "nde5c97cd4dac",
@@ -7387,7 +7417,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:26:02.197Z"
   },
   {
    "id": "nbdc2754b1578",
@@ -7421,7 +7454,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:26:05.010Z"
   },
   {
    "id": "nf069d216d51e",
@@ -7440,7 +7476,10 @@
     "S2",
     "S3"
    ],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:26:07.379Z"
   },
   {
    "id": "nbffca0b3282f",
@@ -7473,7 +7512,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:26:10.224Z"
   },
   {
    "id": "nf7027c2e1110",
@@ -7488,7 +7530,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:26:12.962Z"
   },
   {
    "id": "neb237d377cc5",
@@ -7503,7 +7548,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:26:15.243Z"
   },
   {
    "id": "n20d31fca12ff",
@@ -7516,28 +7564,12 @@
    "type": "collab",
    "start": null,
    "end": null,
-   "periods": [
-    {
-     "start": "2025-03-12",
-     "end": "2025-03-14",
-     "startTime": "12:00",
-     "endTime": "11:59",
-     "label": "募集期間",
-     "labeled": true,
-     "ranks": []
-    },
-    {
-     "start": "2025-03-14",
-     "end": "2025-03-16",
-     "startTime": "12:00",
-     "endTime": "23:59",
-     "label": "募集期間",
-     "labeled": true,
-     "ranks": []
-    }
-   ],
+   "periods": [],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 2,
+   "fetchedAt": "2026-11-12T08:26:17.604Z"
   },
   {
    "id": "n3e4f90f10a26",
@@ -7556,13 +7588,16 @@
      "end": null,
      "startTime": "15:00",
      "endTime": null,
-     "label": "人サイト『エンゲージ』とPocochaのコラボキャンペーンを",
+     "label": "エンゲージ",
      "labeled": true,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:26:23.158Z"
   },
   {
    "id": "n71e78d5758a0",
@@ -7575,64 +7610,12 @@
    "type": "collab",
    "start": null,
    "end": null,
-   "periods": [
-    {
-     "start": "2025-03-10",
-     "end": "2025-03-12",
-     "startTime": "15:00",
-     "endTime": "11:59",
-     "label": "募集期間",
-     "labeled": true,
-     "ranks": []
-    },
-    {
-     "start": "2025-03-12",
-     "end": "2025-03-14",
-     "startTime": "12:00",
-     "endTime": "11:59",
-     "label": "募集期間",
-     "labeled": true,
-     "ranks": []
-    },
-    {
-     "start": "2025-03-14",
-     "end": "2025-03-16",
-     "startTime": "12:00",
-     "endTime": "23:59",
-     "label": "募集期間",
-     "labeled": true,
-     "ranks": []
-    },
-    {
-     "start": "2025-03-10",
-     "end": "2025-03-12",
-     "startTime": "15:00",
-     "endTime": "11:59",
-     "label": "＜募集期間",
-     "labeled": true,
-     "ranks": []
-    },
-    {
-     "start": "2025-03-12",
-     "end": "2025-03-14",
-     "startTime": "12:00",
-     "endTime": "11:59",
-     "label": "＜募集期間",
-     "labeled": true,
-     "ranks": []
-    },
-    {
-     "start": "2025-03-14",
-     "end": "2025-03-16",
-     "startTime": "12:00",
-     "endTime": "23:59",
-     "label": "＜募集期間",
-     "labeled": true,
-     "ranks": []
-    }
-   ],
+   "periods": [],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 3,
+   "fetchedAt": "2026-11-12T08:26:20.048Z"
   },
   {
    "id": "n00e3fbdf732c",
@@ -7647,7 +7630,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:26:25.913Z"
   },
   {
    "id": "n90307fa0901f",
@@ -7662,7 +7648,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:26:28.129Z"
   },
   {
    "id": "n9df18f23c13e",
@@ -7681,7 +7670,10 @@
     "B2",
     "B3"
    ],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:26:30.747Z"
   },
   {
    "id": "n814205708677",
@@ -7700,13 +7692,16 @@
      "end": "2025-03-03",
      "startTime": null,
      "endTime": null,
-     "label": "初心者さん歓迎配信、趣味・興味、性別など複数のカテゴリーが存",
+     "label": "トライアル実施期間",
      "labeled": false,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:26:36.582Z"
   },
   {
    "id": "ne929d3d04aab",
@@ -7721,7 +7716,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:26:38.724Z"
   },
   {
    "id": "n7efbf2329072",
@@ -7736,7 +7734,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:26:41.008Z"
   },
   {
    "id": "n9bc595448e81",
@@ -7750,24 +7751,6 @@
    "start": null,
    "end": null,
    "periods": [
-    {
-     "start": "2025-02-07",
-     "end": "2025-02-14",
-     "startTime": "00:00",
-     "endTime": "23:59",
-     "label": "セットされたサムネイルの確認期間（",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2025-02-17",
-     "end": "2025-03-03",
-     "startTime": "12:00",
-     "endTime": "12:00",
-     "label": "検証スタート（",
-     "labeled": false,
-     "ranks": []
-    },
     {
      "start": "2025-02-07",
      "end": "2025-02-14",
@@ -7795,7 +7778,10 @@
     "C2",
     "C3"
    ],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:26:44.003Z"
   },
   {
    "id": "n6707933b835b",
@@ -7810,7 +7796,12 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [
+    "リスナー"
+   ],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:26:46.413Z"
   },
   {
    "id": "n7f577d5d76c7",
@@ -7829,7 +7820,7 @@
      "end": "2025-01-31",
      "startTime": null,
      "endTime": null,
-     "label": "こんにちは、Pococha運営です！",
+     "label": "「JOYSOUND認定 歌うまライバー決定戦！2025 Winter」歌うまラン",
      "labeled": false,
      "ranks": []
     }
@@ -7854,7 +7845,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:26:34.137Z"
   },
   {
    "id": "n8b035b27bdf9",
@@ -7873,13 +7867,16 @@
      "end": null,
      "startTime": null,
      "endTime": null,
-     "label": "メインコンテンツへスキップ",
+     "label": "「JOYSOUND認定 歌うまライバー決定戦！2025 Winter」開催時の対",
      "labeled": true,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:26:56.378Z"
   },
   {
    "id": "n6871e7159b8f",
@@ -7898,13 +7895,16 @@
      "end": null,
      "startTime": null,
      "endTime": null,
-     "label": "メインコンテンツへスキップ",
+     "label": "「JOYSOUND認定 歌うまライバー決定戦！2025 Winter」採点対象楽",
      "labeled": true,
      "ranks": []
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:26:58.604Z"
   },
   {
    "id": "na04bf7275d16",
@@ -7919,7 +7919,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:26:49.086Z"
   },
   {
    "id": "n7a76135816d8",
@@ -7947,7 +7950,12 @@
     "S5",
     "S6"
    ],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [
+    "リスナー"
+   ],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:26:51.546Z"
   },
   {
    "id": "nd919894459c0",
@@ -7957,12 +7965,15 @@
    "sourceKind": "official",
    "published": "2025-01-14T16:41:45.000+09:00",
    "modified": "2025-01-23T17:50:59.000+09:00",
-   "type": "notice",
+   "type": "collab",
    "start": null,
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:26:54.097Z"
   },
   {
    "id": "n15117e93ca1a",
@@ -7977,60 +7988,12 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
-  },
-  {
-   "id": "n48110f75d047",
-   "title": "2024/12/18「Sell Me Goods！格之進編」商品購入者数ランキング&Good PRコンテスト結果発表レポート👏",
-   "url": "https://report.pococha.com/n/n48110f75d047",
-   "sourceId": "pococha-official-note",
-   "sourceKind": "official",
-   "published": "2024-12-27T12:49:35.000+09:00",
-   "modified": "2025-01-09T10:47:12.000+09:00",
-   "type": "event",
-   "start": null,
-   "end": null,
-   "periods": [
-    {
-     "start": "2024-12-18",
-     "end": "2024-12-20",
-     "startTime": null,
-     "endTime": null,
-     "label": "メインコンテンツへスキップ",
-     "labeled": false,
-     "ranks": []
-    },
-    {
-     "start": "2024-12-18",
-     "end": "2024-12-20",
-     "startTime": "00:00",
-     "endTime": "23:59",
-     "label": "最終結果",
-     "labeled": false,
-     "ranks": []
-    }
+   "confidence": "none",
+   "audience": [
+    "リスナー"
    ],
-   "ranks": [
-    "D1",
-    "D2",
-    "D3",
-    "C1",
-    "C2",
-    "C3",
-    "B1",
-    "B2",
-    "B3",
-    "A1",
-    "A2",
-    "A3",
-    "S1",
-    "S2",
-    "S3",
-    "S4",
-    "S5",
-    "S6"
-   ],
-   "confidence": "low"
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:27:00.883Z"
   },
   {
    "id": "ndc4ef05f8bee",
@@ -8045,7 +8008,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:27:06.204Z"
   },
   {
    "id": "n1715c5b19b66",
@@ -8060,7 +8026,10 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:27:09.014Z"
   },
   {
    "id": "nd9209ee6c79f",
@@ -8077,9 +8046,9 @@
     {
      "start": "2024-12-09",
      "end": "2024-12-11",
-     "startTime": null,
-     "endTime": null,
-     "label": "メインコンテンツへスキップ",
+     "startTime": "00:00",
+     "endTime": "23:59",
+     "label": "1stステージ 最終結果",
      "labeled": false,
      "ranks": []
     },
@@ -8088,17 +8057,8 @@
      "end": "2024-12-23",
      "startTime": null,
      "endTime": null,
-     "label": "ll Me Goods！鹿児島編」イベントの1stステージ、",
+     "label": "Sell Me Goods！鹿児島編",
      "labeled": true,
-     "ranks": []
-    },
-    {
-     "start": "2024-12-09",
-     "end": "2024-12-11",
-     "startTime": "00:00",
-     "endTime": "23:59",
-     "label": "1stステージ 最終結果",
-     "labeled": false,
      "ranks": []
     },
     {
@@ -8128,7 +8088,12 @@
     "S5",
     "S6"
    ],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [
+    "リスナー"
+   ],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:27:11.903Z"
   },
   {
    "id": "n8f830b66f5c0",
@@ -8143,7 +8108,57 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:27:14.196Z"
+  },
+  {
+   "id": "n48110f75d047",
+   "title": "2024/12/18「Sell Me Goods！格之進編」商品購入者数ランキング&Good PRコンテスト結果発表レポート👏",
+   "url": "https://report.pococha.com/n/n48110f75d047",
+   "sourceId": "pococha-official-note",
+   "sourceKind": "official",
+   "published": "2024-12-27T12:49:35.000+09:00",
+   "modified": "2025-01-09T10:47:12.000+09:00",
+   "type": "event",
+   "start": "2024-12-18",
+   "end": "2024-12-20",
+   "periods": [
+    {
+     "start": "2024-12-18",
+     "end": "2024-12-20",
+     "startTime": "00:00",
+     "endTime": "23:59",
+     "label": "最終結果",
+     "labeled": false,
+     "ranks": []
+    }
+   ],
+   "ranks": [
+    "D1",
+    "D2",
+    "D3",
+    "C1",
+    "C2",
+    "C3",
+    "B1",
+    "B2",
+    "B3",
+    "A1",
+    "A2",
+    "A3",
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6"
+   ],
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:27:03.684Z"
   },
   {
    "id": "n09f0210f8e61",
@@ -8168,7 +8183,10 @@
     }
    ],
    "ranks": [],
-   "confidence": "high"
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:27:35.343Z"
   },
   {
    "id": "nd6dceefa0ffa",
@@ -8189,7 +8207,10 @@
     "C2",
     "C3"
    ],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:27:16.646Z"
   },
   {
    "id": "nb928f18362bd",
@@ -8204,7 +8225,114 @@
    "end": null,
    "periods": [],
    "ranks": [],
-   "confidence": "none"
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:27:18.791Z"
+  },
+  {
+   "id": "n78fff4033ee7",
+   "title": "『憧れの雑誌アンケート』投票受付中✨（12/18まで）",
+   "url": "https://report.pococha.com/n/n78fff4033ee7",
+   "sourceId": "pococha-official-note",
+   "sourceKind": "official",
+   "published": "2024-12-12T12:38:55.000+09:00",
+   "modified": "2024-12-12T12:38:55.000+09:00",
+   "type": "collab",
+   "start": "2024-12-12",
+   "end": "2024-12-18",
+   "periods": [
+    {
+     "start": "2024-12-12",
+     "end": "2024-12-18",
+     "startTime": "12:00",
+     "endTime": "23:59",
+     "label": "アンケート期間",
+     "labeled": false,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:27:23.811Z"
+  },
+  {
+   "id": "ne3df246011cd",
+   "title": "事務所間対抗イベント 「ギルドカップ 2024 WINTER 」のルール説明",
+   "url": "https://report.pococha.com/n/ne3df246011cd",
+   "sourceId": "pococha-official-note",
+   "sourceKind": "official",
+   "published": "2024-12-03T17:00:00.000+09:00",
+   "modified": "2024-12-04T17:12:35.000+09:00",
+   "type": "big",
+   "start": "2024-12-12",
+   "end": null,
+   "periods": [
+    {
+     "start": "2024-12-12",
+     "end": null,
+     "startTime": null,
+     "endTime": null,
+     "label": "事務所間対抗イベント 「ギルドカップ 2024 WINTER 」のルール説明",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [
+    "A1",
+    "A2",
+    "A3",
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6"
+   ],
+   "confidence": "high",
+   "audience": [
+    "事務所"
+   ],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:27:38.655Z"
+  },
+  {
+   "id": "n002da6948f99",
+   "title": "【#ポコチャアイテム通信】大熱戦間違いなしのPOCO LAND関連アイテムをチェック🔥",
+   "url": "https://report.pococha.com/n/n002da6948f99",
+   "sourceId": "pococha-official-note",
+   "sourceKind": "official",
+   "published": "2024-12-11T12:00:00.000+09:00",
+   "modified": "2024-12-11T12:01:23.000+09:00",
+   "type": "big",
+   "start": null,
+   "end": null,
+   "periods": [],
+   "ranks": [],
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:27:26.314Z"
+  },
+  {
+   "id": "nab9874c3ff80",
+   "title": "【透明カラオケ挑戦権】 自己紹介カード",
+   "url": "https://report.pococha.com/n/nab9874c3ff80",
+   "sourceId": "pococha-official-note",
+   "sourceKind": "official",
+   "published": "2024-12-05T20:12:01.000+09:00",
+   "modified": "2024-12-05T20:21:08.000+09:00",
+   "type": "notice",
+   "start": null,
+   "end": null,
+   "periods": [],
+   "ranks": [],
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:27:28.980Z"
   },
   {
    "id": "n703984165aed",
@@ -8215,18 +8343,9 @@
    "published": "2024-12-13T10:00:00.000+09:00",
    "modified": "2024-12-13T10:01:18.000+09:00",
    "type": "event",
-   "start": null,
-   "end": null,
+   "start": "2024-12-04",
+   "end": "2024-12-06",
    "periods": [
-    {
-     "start": "2024-12-04",
-     "end": "2024-12-06",
-     "startTime": null,
-     "endTime": null,
-     "label": "メインコンテンツへスキップ",
-     "labeled": false,
-     "ranks": []
-    },
     {
      "start": "2024-12-04",
      "end": "2024-12-06",
@@ -8254,97 +8373,10 @@
     "S5",
     "S6"
    ],
-   "confidence": "low"
-  },
-  {
-   "id": "n78fff4033ee7",
-   "title": "『憧れの雑誌アンケート』投票受付中✨（12/18まで）",
-   "url": "https://report.pococha.com/n/n78fff4033ee7",
-   "sourceId": "pococha-official-note",
-   "sourceKind": "official",
-   "published": "2024-12-12T12:38:55.000+09:00",
-   "modified": "2024-12-12T12:38:55.000+09:00",
-   "type": "collab",
-   "start": "2024-12-12",
-   "end": "2024-12-18",
-   "periods": [
-    {
-     "start": "2024-12-12",
-     "end": "2024-12-18",
-     "startTime": "12:00",
-     "endTime": "23:59",
-     "label": "いつもPocochaをご利用いただきありがとうございます。",
-     "labeled": false,
-     "ranks": []
-    }
-   ],
-   "ranks": [],
-   "confidence": "low"
-  },
-  {
-   "id": "ne3df246011cd",
-   "title": "事務所間対抗イベント 「ギルドカップ 2024 WINTER 」のルール説明",
-   "url": "https://report.pococha.com/n/ne3df246011cd",
-   "sourceId": "pococha-official-note",
-   "sourceKind": "official",
-   "published": "2024-12-03T17:00:00.000+09:00",
-   "modified": "2024-12-04T17:12:35.000+09:00",
-   "type": "big",
-   "start": "2024-12-12",
-   "end": null,
-   "periods": [
-    {
-     "start": "2024-12-12",
-     "end": null,
-     "startTime": null,
-     "endTime": null,
-     "label": "この記事では、",
-     "labeled": true,
-     "ranks": []
-    }
-   ],
-   "ranks": [
-    "A1",
-    "A2",
-    "A3",
-    "S1",
-    "S2",
-    "S3",
-    "S4",
-    "S5",
-    "S6"
-   ],
-   "confidence": "high"
-  },
-  {
-   "id": "n002da6948f99",
-   "title": "【#ポコチャアイテム通信】大熱戦間違いなしのPOCO LAND関連アイテムをチェック🔥",
-   "url": "https://report.pococha.com/n/n002da6948f99",
-   "sourceId": "pococha-official-note",
-   "sourceKind": "official",
-   "published": "2024-12-11T12:00:00.000+09:00",
-   "modified": "2024-12-11T12:01:23.000+09:00",
-   "type": "big",
-   "start": null,
-   "end": null,
-   "periods": [],
-   "ranks": [],
-   "confidence": "none"
-  },
-  {
-   "id": "nab9874c3ff80",
-   "title": "【透明カラオケ挑戦権】 自己紹介カード",
-   "url": "https://report.pococha.com/n/nab9874c3ff80",
-   "sourceId": "pococha-official-note",
-   "sourceKind": "official",
-   "published": "2024-12-05T20:12:01.000+09:00",
-   "modified": "2024-12-05T20:21:08.000+09:00",
-   "type": "notice",
-   "start": null,
-   "end": null,
-   "periods": [],
-   "ranks": [],
-   "confidence": "none"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:27:21.334Z"
   },
   {
    "id": "n318906ff0889",
@@ -8369,7 +8401,10 @@
     }
    ],
    "ranks": [],
-   "confidence": "low"
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-12T08:27:31.510Z"
   }
  ]
 }
