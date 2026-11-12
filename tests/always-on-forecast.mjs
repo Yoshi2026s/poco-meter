@@ -170,4 +170,11 @@ assert.equal(e.aoEventKind({type: 'newcomer', audience: ['新規ライバー']})
 assert.equal(e.aoDataTime({generatedAt: '2026-11-12T08:05:00.000Z'}), '予想データ 11/12 17:05 作成。');
 assert.equal(e.aoDataTime(null), '');
 assert.match(html, /id="aoPace"/);
+// 通常表示：目標値の下にメーター予想の行がある（目標値の欄の中、操作ボタンの前）
+assert.match(html, /id="targetMini"[\s\S]{0,600}id="miniForecast"[\s\S]{0,200}class="mini-target-actions"/);
+{
+  const page = pageEngine(undefined);
+  const el = page.element('miniForecast');
+  assert.ok(el && el.hidden === false && /^予想 /.test(el.textContent), '起動時に目標値の下へ予想の行を出す（記録が無ければ「予想 —」）');
+}
 console.log('always-on-forecast ok');
