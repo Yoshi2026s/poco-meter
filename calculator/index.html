@@ -2102,7 +2102,11 @@ html.always-on-mode body #mini.main-screen #miniNowTime{font-size:clamp(18px,5.5
 /* 379px以下：目標値の見出し行のボタンが入りきらないため、ボタンを次の行へ */
 @media (max-width:379px){
   html:root body #mini.main-screen :is(#miniTargetField,#miniCurrentField) .mini-label-row{flex-wrap:wrap!important;row-gap:3px!important}
-  html:root body #mini.main-screen :is(#miniTargetField,#miniCurrentField) .mini-label-actions{margin-left:auto}
+  /* 目標値・現在値の両方を2行にそろえ、入力欄の高さ位置を合わせる */
+  html:root body #mini.main-screen :is(#miniTargetField,#miniCurrentField) .mini-label-actions{flex:1 0 100%!important;justify-content:flex-start!important}
+  html:root body #mini.main-screen :is(#miniTargetField,#miniCurrentField) .mini-label-actions .mini-action{min-height:26px!important;height:26px!important}
+  html:root body #mini.main-screen :is(#miniTargetField,#miniCurrentField) .mini-label-row{row-gap:2px!important;min-height:0!important}
+  html:root body #mini.main-screen .main-card .ao-fvalue{font-size:26px!important}
 }
 @media (max-width:559px){
   html:root body #mini.main-screen .main-card .ao-fvalue{font-size:28px!important;line-height:1.1!important}

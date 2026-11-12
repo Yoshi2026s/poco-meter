@@ -109,11 +109,11 @@ assert.ok(r.cards.every(x=>x.scroll<=x.w),JSON.stringify({width,target,...r}));a
 if(textCheckWidth||(width===320&&target==='500000'))await checkVisibleItemText(page,width,target);
 if(target==='500000'&&mobile){await page.evaluate(()=>scrollTo(0,0));await checkOverview(page,width,height,true);}}
 // Main controls are touchable and use 16px+ text (no iOS zoom on focus).
-// 2026-11-13: phone portrait is compacted on request (one screen shows up to the forecast): inputs/selects 32px+, buttons 28px+.
+// 2026-11-13: phone portrait is compacted on request (one screen shows up to the forecast): inputs/selects 32px+, buttons 26px+ (379px and narrower).
 const sizes=await page.evaluate(()=>['targetMini','currentMini','miniPeriod','miniRank','miniBorder','miniMethod','miniBuffer','miniClose','coreCountItems'].map(id=>{const e=document.getElementById(id),r=e.getBoundingClientRect();return {id,h:r.height,font:parseFloat(getComputedStyle(e).fontSize)};}));
 for(const s of sizes){assert.ok(s.h>=32,JSON.stringify(s));assert.ok(s.font>=16,JSON.stringify(s));}
 const buttons=await page.evaluate(()=>[...document.querySelectorAll('#mini button:not([hidden]), #mini a')].filter(e=>e.offsetParent).map(e=>({id:e.id||e.textContent,h:e.getBoundingClientRect().height})));
-for(const b of buttons)assert.ok(b.h>=28,JSON.stringify(b));
+for(const b of buttons)assert.ok(b.h>=26,JSON.stringify(b));
 // Integrated menus: auxiliary menus are inside the simple menu, the duplicated detailed meter is hidden.
 assert.equal(await page.locator('#fullMeterMenu').isVisible(),false,'detailed meter hidden');assert.equal(await page.locator('header.card').isVisible(),true);
 assert.equal(await page.evaluate(()=>{const a=document.getElementById('mini').getBoundingClientRect(),b=document.getElementById('mainSubMenus').getBoundingClientRect();return Math.abs(a.x-b.x)<1&&Math.abs(a.width-b.width)<1&&b.y>=a.bottom&&b.y-a.bottom<=16;}),true,'auxiliary menus continue directly below the simple menu');assert.equal(await page.locator('#menusToolbar').isVisible(),true);

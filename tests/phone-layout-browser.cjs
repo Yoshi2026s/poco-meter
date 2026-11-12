@@ -47,7 +47,7 @@ async function step(p){await p.waitForTimeout(80);}
   // 2026-11 (integrated): the simple menu is the only visible meter; the duplicated detailed meter stays hidden.
   assert.equal((await p.locator('#miniR').innerText()).trim(),'375K');assert.equal((await p.locator('#miniPct').innerText()).trim(),'25%');
   assert.equal(await p.locator('#mini').getAttribute('aria-hidden'),'false','simple menu visible at page top');assert.ok(await p.locator('#mini').isVisible());assert.equal(await p.locator('#fullMeterMenu').isVisible(),false,'detailed meter hidden');
-  for(const id of ['#miniSub1k','#miniAdd1k','#miniAdd10k','#miniAdd100k','#miniUndoCurrent','#copyRemaining','#collapseAllMenus']){const box=await p.locator(id).boundingBox();assert.ok(box&&box.height>=28,'tap target '+id);} // 2026-11-13: compact phone layout (buttons 28px+)
+  for(const id of ['#miniSub1k','#miniAdd1k','#miniAdd10k','#miniAdd100k','#miniUndoCurrent','#copyRemaining','#collapseAllMenus']){const box=await p.locator(id).boundingBox();assert.ok(box&&box.height>=26,'tap target '+id);} // 2026-11-13: compact phone layout (buttons 26px+)
   assert.ok(await p.locator('#miniNow').isVisible(),'HUD current datetime visible');assert.equal(await p.locator('#miniNowDate').innerText(),'2026年10月5日');const hudClock=await p.locator('#miniNowTime').innerText();
   const clockDate=await p.locator('#miniNowDate').boundingBox(),clockLabel=await p.locator('#miniTimeLabel').boundingBox();
   assert.ok(clockDate&&clockLabel&&clockDate.x+clockDate.width<=clockLabel.x&&Math.abs(clockDate.y-clockLabel.y)<5,'date is left of device clock');
