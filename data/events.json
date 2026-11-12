@@ -1,7 +1,7 @@
 {
  "schema": "poco-events-v1",
  "note": "イベント名・期間・対象ランク・対象（audience）・URLなどの事実だけを記録。本文は保存しない。confidence: high=「開催期間」等の見出し付きの期間を検出 / low=見出しなしの期間 / none=期間を検出できず。使用期限・配信時間・応募や選考などの期間は除外（excluded に件数）。",
- "updatedAt": "2026-11-12T08:28:44.443Z",
+ "updatedAt": "2026-11-12T16:38:09.540Z",
  "sources": [
   {
    "id": "pococha-official-note",
@@ -799,7 +799,7 @@
    "sourceId": "pococha-official-note",
    "sourceKind": "official",
    "published": "2026-10-01T18:00:00.000+09:00",
-   "modified": "2026-11-11T14:38:57.000+09:00",
+   "modified": "2026-11-12T19:24:38.000+09:00",
    "type": "collab",
    "start": null,
    "end": null,
@@ -808,7 +808,7 @@
    "confidence": "none",
    "audience": [],
    "excluded": 0,
-   "fetchedAt": "2026-11-12T08:15:00.640Z"
+   "fetchedAt": "2026-11-12T16:38:07.574Z"
   },
   {
    "id": "n1a5fe2fdf8c2",
@@ -865,7 +865,7 @@
    "sourceId": "pococha-official-note",
    "sourceKind": "official",
    "published": "2026-09-30T12:00:00.000+09:00",
-   "modified": "2026-10-09T10:23:54.000+09:00",
+   "modified": "2026-11-12T19:07:48.000+09:00",
    "type": "big",
    "start": null,
    "end": null,
@@ -893,7 +893,7 @@
      "end": "2026-12-25",
      "startTime": null,
      "endTime": null,
-     "label": "Pocochaクリスマスパーティ2026 開催期間",
+     "label": "Pocochaクリスマスパーティ2026",
      "labeled": true,
      "ranks": []
     },
@@ -902,7 +902,7 @@
      "end": "2026-11-29",
      "startTime": null,
      "endTime": null,
-     "label": "つなごうPocochaの輪！ポコキャラバン10周年祭 開催期間",
+     "label": "つなごうPocochaの輪！ポコキャラバン10周年祭",
      "labeled": true,
      "ranks": []
     }
@@ -930,7 +930,7 @@
    "confidence": "high",
    "audience": [],
    "excluded": 0,
-   "fetchedAt": "2026-11-12T08:15:03.388Z"
+   "fetchedAt": "2026-11-12T16:38:09.532Z"
   },
   {
    "id": "n7603018611e5",
