@@ -67,7 +67,35 @@ assert.equal(e.forecastTrend(-3.5), '低め ↓');
   assert.deepEqual(b.days['2026-11-12'].events[0].ranks, ['S2']);
   assert.equal(b.days['2026-11-29'].events[0].phase, 'last');
   assert.equal(b.days['2026-11-30'].events.length, 0);
+  // 本日のイベラス：最終日（1日だけの開催も含む）を別に持つ
+  assert.equal(b.days['2026-11-29'].lasts.length, 1);
+  assert.equal(b.days['2026-11-12'].lasts.length, 0);
+  const one = forecastBundle(factors, {events: [{title: '1日', url: 'w', type: 'event', confidence: 'high', ranks: [], periods: [{start: '2026-11-12', end: '2026-11-12', endTime: '23:59', ranks: []}]}]}, '2026-11-12', {before: 0, after: 0});
+  assert.equal(one.days['2026-11-12'].lasts[0].endTime, '23:59');
+  assert.equal(one.days['2026-11-12'].events[0].ends, true);
+  // 答え合わせの要約：締め時間×ランク帯の的中率だけを入れる
+  const acc = forecastBundle(factors, events, '2026-11-12', {before: 0, after: 0, backtest: {period: {from: '2026-01-01', to: '2026-11-11'}, overall: {within10: 63, medianAbsErr: 6, n: 9, extra: 1}, byGroup: {'24|S': {within10: 58.5, within20: 75, medianAbsErr: 7.1, inRange: 42, days: 300, n: 5000, bias: 5}}}}).accuracy;
+  assert.deepEqual(acc.byGroup['24|S'], {within10: 58.5, within20: 75, medianAbsErr: 7.1, inRange: 42, days: 300, n: 5000});
+  assert.equal(e.forecastAccuracy({accuracy: acc}, '24', 'S2').within10, 58.5);
+  assert.equal(e.forecastAccuracy({accuracy: acc}, '24', 'A1'), null);
 }
+
+// 答え合わせ：画面の meterForecast を取り出して使い、補正値は検証期間より前のデータだけで作る
+{
+  const {backtest, loadMeterForecast} = await import('../automation/backtest-forecast.mjs');
+  assert.equal(typeof loadMeterForecast(html), 'function');
+  const records = [];
+  for (let t = Date.parse('2025-12-01'); t <= Date.parse('2026-01-20'); t += 864e5) records.push({date: new Date(t).toISOString().slice(0, 10), close: '24', ranks: {A1: [100000, 200000, 300000]}});
+  const r = backtest({records}, null, html, {from: '2026-01-01'});
+  assert.equal(r.period.trainTo, '2025-12-31');
+  assert.equal(r.overall.n, 20 * 3);
+  assert.equal(r.overall.within5, 100);
+  assert.equal(r.overall.medianAbsErr, 0);
+}
+
+// 画面：現メーターの手入力欄・加減算ボタン・本日のイベラス欄
+for (const id of ['aoCurrentInput', 'aoSub1k', 'aoAdd1k', 'aoAdd10k', 'aoAdd100k', 'aoLast', 'aoAccuracy']) assert.ok(html.includes(`id="${id}"`), id);
+assert.match(html, /<h3 id="aoLastHead">本日のイベラス（最終日）<\/h3>/);
 
 // 画面：入口ボタンとパネルがあり、初期表示ではパネルは閉じている。ページ初期化を通しても壊れない。
 assert.match(html, /id="alwaysOnOpen"[^>]*>常時表示パネル</);
