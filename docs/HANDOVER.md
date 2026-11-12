@@ -49,7 +49,7 @@ git switch -c codex/example-task "origin/(root)"
 - 公開：GitHub Pages https://yoshi2026s.github.io/poco-meter/ （既定ブランチ `(root)` への push で自動公開）
 - ボーダー：`data/borders.json`。GitHub Actions が毎日 05:00・17:00 JST に ONE CARAT から取得（記事本文＋月別表画像の2系統）。同じジョブでPococha公式noteのイベント新着も収集する。
 - 旧Sites・署名キー・旧ChatGPTタスクは使わない。旧Sitesには新URLへの移転案内を掲示済み。
-- ツール版：`scripts/build-pages.mjs` の `PAGES_VERSION`（v2026.11.12.1）。
+- ツール版：`scripts/build-pages.mjs` の `PAGES_VERSION`（v2026.11.12.2）。
 - メーター画面の並び：最上部にタイトル欄（使い方・目標値の算出方法・表示設定・再読み込み・アプリ更新）、その下にメーター、補助メニュー、E帯・過去ボーダーの入口。タイトル欄は `#titleTop`（`.title-top`）に入り、幅はメーターと同じ。 タイトル欄は2段（1段目：タイトルと更新日時・版、2段目：4ボタン）で、スマホでは約106px。
 - 目標のボーダー選択（メーターのボーダー欄・詳細側の `quickBorder`・`pickBorder`）は ±0・+1・+2 のみで「手入力」の選択肢は無い。目標値を直接入力した時も欄は直前のボーダー（`state.analysisBorder`、無ければ±0）を表示し、フォーカスが外れただけでは自動計算に戻さない。別のボーダーを選ぶか「既定値」で自動計算に戻る。既定値設定の `defaultBorder` だけは「手入力」を残す（JSで追加）。
 - メーター画面のYoshi1012タグ（`.tool-creator-logo`）はフッターの `.footer-support` 内、「免責事項」の右隣（2列グリッドの右）で、免責事項ボタンと同じ幅・高さ44px。免責事項を開くと本文の下に回る。
@@ -79,7 +79,7 @@ git switch -c codex/example-task "origin/(root)"
 
 ## 未確認・既知のテスト差
 
-- v2026.11.12.1（常時表示パネル）は標準チェック・vite系10本に合格。Playwright画面系は record-display 合格、hud-items（HUD target）と phone-layout（320×568）は変更前と同じ既知の失敗。[PR #48](https://github.com/Yoshi2026s/poco-meter/pull/48) で統合・公開済み（`8c8b29b`）。公開URLで版表示・`data/meter-forecast.json`（200）・375×812でのパネル表示（予想・イベント・横はみ出し無し）を確認。実機・WebKit・Wake Lockの実効は未確認。初めて開いた端末ではボーダー読込中に予想欄が「記録0日分」と出て、読込後に予想へ切り替わる。
+- v2026.11.12.1（常時表示パネル）は標準チェック・vite系10本に合格。Playwright画面系は record-display 合格、hud-items（HUD target）と phone-layout（320×568）は変更前と同じ既知の失敗。[PR #48](https://github.com/Yoshi2026s/poco-meter/pull/48) で統合・公開済み（`8c8b29b`）。公開URLで版表示・`data/meter-forecast.json`（200）・375×812でのパネル表示（予想・イベント・横はみ出し無し）を確認。実機・WebKit・Wake Lockの実効は未確認。初めて開いた端末でボーダー読込中に予想欄が「記録0日分」と出る点は v2026.11.12.2 で「読込中…」表示に修正。
 - Windowsでは `scripts/test-extra.sh` の NODE_PATH 区切り（`:`）が効かず acorn・playwright が見つからない。個別実行時は `;` 区切りで指定し、Chromiumは `POCOCHA_CHROMIUM` で ms-playwright の chromium-1248 を指定した。
 
 - v2026.11.11.5（Yoshi1012タグを免責事項の右隣へ移動・サイズ統一）は標準チェックと `npm run test:extra` のvite系10本に合格。Playwright画面系3本は未実行。Chromiumの360・700px幅で配置と免責事項の開閉を確認。[PR #45](https://github.com/Yoshi2026s/poco-meter/pull/45) で統合・公開済み（`34e83a1`）。公開URLで360px幅の版表示・免責事項と同じ行・同寸（166×44px）・横はみ出し無しを確認。WebKit・実機は未確認。
