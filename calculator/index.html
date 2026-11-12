@@ -2086,6 +2086,12 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
 #alwaysOn .ao-current input::placeholder{color:#7f97b6!important;-webkit-text-fill-color:#7f97b6}
 #alwaysOn .ao-current input[aria-invalid="true"]{border-color:#f87171!important}
 #alwaysOn :is(button,input,a):focus-visible{outline:2px solid #ffd166!important;outline-offset:2px}
+#alwaysOn .ao-history{margin-top:6px;font-size:12px}
+#alwaysOn .ao-history summary{cursor:pointer;color:#8cc4ff!important;font-weight:700;min-height:32px;display:flex;align-items:center}
+#alwaysOn .ao-history summary:focus-visible{outline:2px solid #ffd166;outline-offset:2px}
+#alwaysOn .ao-history ul{list-style:none;margin:4px 0 0;padding:0;display:grid;gap:4px}
+#alwaysOn .ao-history li{color:#c3d4ea!important;border-left:3px solid #3d8fe8;padding-left:6px}
+#alwaysOn .ao-history li.miss{border-left-color:#ffa94d}
 </style>
 </head>
 <body>
@@ -2482,7 +2488,7 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
 <div class="ao-top"><h2 id="aoTitle">ポコメーター番長 常時表示</h2><button type="button" id="alwaysOnClose" class="ao-close">閉じる</button></div>
 <section class="ao-clock" aria-label="現在日時"><div class="ao-date" id="aoDate"></div><div class="ao-time num" id="aoTime"></div><div class="ao-sub"><span id="aoClockLabel">端末時刻</span><span><span id="aoDeadlineLabel">締めまで</span> <b class="num" id="aoCountdown"></b></span></div></section>
 <section class="ao-meter" aria-label="メーター"><div class="ao-row ao-current"><label for="aoCurrentInput">現メーター</label><input class="num" id="aoCurrentInput" type="text" inputmode="decimal" placeholder="例 120000" enterkeyhint="done" autocomplete="off" spellcheck="false" aria-describedby="aoCurrentMsg"></div><div class="ao-quick" role="group" aria-label="現メーターを調整"><button type="button" id="aoSub1k" aria-label="現メーターから1,000 ptを引く">−1K</button><button type="button" id="aoAdd1k" aria-label="現メーターに1,000 ptを足す">+1K</button><button type="button" id="aoAdd10k" aria-label="現メーターに10,000 ptを足す">+10K</button><button type="button" id="aoAdd100k" aria-label="現メーターに100,000 ptを足す">+100K</button></div><small class="ao-note" id="aoCurrentMsg" role="status" aria-live="polite"></small><div class="ao-row"><span>目標メーター</span><b class="num" id="aoTarget"></b></div><div class="ao-remain"><span id="aoRemainLabel">目標まであと</span><b class="num" id="aoRemain"></b></div><div class="ao-bar" aria-hidden="true"><i id="aoFill"></i></div><div class="ao-pct num" id="aoPct"></div><div class="ao-pace num" id="aoPace"></div></section>
-<section class="ao-forecast" aria-labelledby="aoRankHead"><h3 id="aoRankHead">設定ランクの予想</h3><div class="ao-fvalue num" id="aoForecast"></div><div class="ao-frange num" id="aoRange"></div><div class="ao-trend" id="aoTrend"></div><p class="ao-accuracy" id="aoAccuracy"></p><p class="ao-accuracy ao-record" id="aoRecord"></p><ul class="ao-reasons" id="aoReasons"></ul><p class="ao-note" id="aoForecastNote"></p></section>
+<section class="ao-forecast" aria-labelledby="aoRankHead"><h3 id="aoRankHead">設定ランクの予想</h3><div class="ao-fvalue num" id="aoForecast"></div><div class="ao-frange num" id="aoRange"></div><div class="ao-trend" id="aoTrend"></div><p class="ao-accuracy" id="aoAccuracy"></p><p class="ao-accuracy ao-record" id="aoRecord"></p><details class="ao-history" id="aoHistoryBox" hidden><summary id="aoHistorySummary">直近の答え合わせ</summary><ul id="aoHistory"></ul></details><ul class="ao-reasons" id="aoReasons"></ul><p class="ao-note" id="aoForecastNote"></p></section>
 <section class="ao-events ao-last" aria-labelledby="aoLastHead"><h3 id="aoLastHead">本日のイベラス（最終日）</h3><ul id="aoLast"></ul><p class="ao-note" id="aoLastNote"></p></section>
 <section class="ao-events" aria-labelledby="aoEventsHead"><h3 id="aoEventsHead">今日の開催イベント</h3><ul id="aoEvents"></ul><h3 class="ao-next-head" id="aoTomorrowHead" hidden>明日から</h3><ul id="aoTomorrow"></ul><p class="ao-note" id="aoEventsNote"></p></section>
 <p class="ao-foot"><span class="ao-logo">Yoshi1012</span><span id="aoWake"></span><span>予想は過去のボーダーと公式noteのイベント情報から出した目安です。</span></p>
@@ -4022,6 +4028,8 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
     var destination=trigger||menu.querySelector('summary');destination.focus({preventScroll:true});scrollToControl(destination,trigger?'center':'nearest');
   }
   document.querySelectorAll('details').forEach(function(menu){
+    // 常時表示パネル内の折りたたみ（直近の答え合わせ）はメニューではないので、閉じるボタン等を付けない
+    if(typeof menu.closest==='function'&&menu.closest('#alwaysOn'))return;
     menu.open=false;menu.removeAttribute('open');
     var summary=Array.prototype.find.call(menu.children,function(child){return child.tagName==='SUMMARY';});if(!summary)return;
     var content=menu.id==='displaySettings'?menu.querySelector('.display-settings-panel'):menu.querySelector('.header-help-panel')||menu;
@@ -4397,7 +4405,7 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
     var closeLabel=close==='24'?'24時締め':close+'時締め';
     aoSet('aoRankHead','設定ランク '+rank+'・'+closeLabel+'・ボーダー'+AO_BORDERS[idx]+'（'+aoMD(dateISO)+'分）の予想');
     var reasons=$('aoReasons');reasons.textContent='';
-    aoSet('aoAccuracy','');aoSet('aoRecord',aoRecordText(forecastData,close,rank,idx,dateISO));
+    aoSet('aoAccuracy','');aoSet('aoRecord',aoRecordText(forecastData,close,rank,idx,dateISO));aoRenderHistory(aoRecordRows(forecastData,close,rank,idx,dateISO));
     if(rank==='E'){aoSet('aoForecast','—');aoSet('aoRange','');aoSet('aoTrend','');aoSet('aoForecastNote','E帯は予想の対象外です（記録が少ないため）。');return;}
     var f=meterForecast(LOG(),dateISO,rank,idx,close,forecastData);
     if(f.status!=='ok'&&liveBorderBusy){aoSet('aoForecast','読込中…');aoSet('aoRange','');aoSet('aoTrend','');aoSet('aoForecastNote','過去のボーダーを読み込み中です。読み込みが終わると予想を表示します。');return;}
@@ -4412,15 +4420,29 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
     aoSet('aoForecastNote',(forecastError?forecastError+'。':'')+(forecastLoading&&!forecastData?'予想データを読み込み中…':'')+(forecastData&&!f.inRange?'この日の暦・イベント情報は予想データの範囲外です。':'')+'基準：前日までの記録（直近14日に'+f.n+'日分）の'+f.method+' '+aoK(f.base,100)+'。'+aoDataTime(forecastData));
   }
   // 日々の予想と実際の記録（公開時に予想データの record へ入る）から、設定の系列の「前回の答え合わせ」と「記録の的中」を作る。
+  // 設定の系列について、答え合わせ済みの日を新しい順に並べる（誤差は過去の答え合わせと同じく「予想÷実際−1」）。
+  function aoRecordRows(data,close,rank,idx,dateISO){
+    var rec=data&&data.record;if(!rec)return [];
+    return (rec.recent||[]).filter(function(e){return e.close===close&&e.date<dateISO&&e.forecasts&&e.forecasts[rank]&&e.forecasts[rank][idx]&&e.actual&&e.actual[rank]&&e.actual[rank][idx]>0;}).sort(function(a,b){return a.date<b.date?1:-1;})
+      .map(function(e){var f=e.forecasts[rank][idx][0],a=e.actual[rank][idx],err=Math.round((f/a-1)*1000)/10;return {date:e.date,forecast:f,actual:a,err:err,hit:Math.abs(err)<=10};});
+  }
+  function aoErrText(r){return r.err===0?'予想どおり':'予想が'+Math.abs(r.err)+'%'+(r.err>0?'高い':'低い');}
   function aoRecordText(data,close,rank,idx,dateISO){
     var rec=data&&data.record;if(!rec)return '';
-    var last=(rec.recent||[]).filter(function(e){return e.close===close&&e.date<dateISO&&e.forecasts&&e.forecasts[rank]&&e.forecasts[rank][idx]&&e.actual&&e.actual[rank]&&e.actual[rank][idx]>0;}).sort(function(a,b){return a.date<b.date?1:-1;})[0];
+    var last=aoRecordRows(data,close,rank,idx,dateISO)[0];
     var parts=[];
-    if(last){var f=last.forecasts[rank][idx][0],a=last.actual[rank][idx],d=Math.round((a/f-1)*1000)/10;parts.push('前回の答え合わせ（'+aoMD(last.date)+'）：予想 '+aoK(f,100)+' → 実際 '+aoK(a,100)+'（'+(d>0?'+':'')+d+'%'+(Math.abs(d)<=10?'・±10%以内':'')+'）');}
+    if(last)parts.push('前回の答え合わせ（'+aoMD(last.date)+'）：予想 '+aoK(last.forecast,100)+' → 実際 '+aoK(last.actual,100)+'（'+aoErrText(last)+(last.hit?'・±10%以内':'')+'）');
     var s=rec.bySeries&&rec.bySeries[close+'|'+rank+'|'+idx];
     if(s&&s.n)parts.push('日々の記録（'+aoMD(rec.firstDate)+'〜・'+s.n+'日）：±10%以内 '+s.within10+'%');
     if(!parts.length)return rec.firstDate?'':'日々の予想と実際の記録を始めました（結果が出た日から答え合わせを表示）。';
     return parts.join(String.fromCharCode(10));
+  }
+  // 直近の答え合わせ（最大7日）を、折りたたみの一覧に出す。答え合わせ済みの日が無ければ隠す。
+  function aoRenderHistory(rows){
+    var box=$('aoHistoryBox'),list=$('aoHistory');if(!box||!list)return;
+    list.textContent='';rows=rows.slice(0,7);box.hidden=!rows.length;
+    rows.forEach(function(r){var li=document.createElement('li');li.className=r.hit?'hit':'miss';li.textContent=aoMD(r.date)+'　予想 '+aoK(r.forecast,100)+' → 実際 '+aoK(r.actual,100)+'（'+aoErrText(r)+'）';list.appendChild(li);});
+    var hits=rows.filter(function(r){return r.hit;}).length;aoSet('aoHistorySummary','直近の答え合わせ（'+rows.length+'日中 ±10%以内 '+hits+'日）');
   }
   // 予想データが古い（作成から36時間を超えた）か。オフラインで端末の写しを使い続けているときの目安。
   function forecastDataStale(data,nowMs){var t=data&&Date.parse(data.generatedAt);return Number.isFinite(t)&&nowMs-t>36*3600e3;}

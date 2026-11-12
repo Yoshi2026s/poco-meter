@@ -83,7 +83,9 @@ function applyParts(r, parts, use) {
   if (use.event && r.phase && parts.event[r.phase] !== undefined) ratio *= 1 + parts.event[r.phase] / 100;
   return ratio;
 }
-const within10 = (rs, parts, use) => rs.filter(r => Math.abs(r.base * applyParts(r, parts, use) / r.actual - 1) <= 0.1).length / Math.max(1, rs.length);
+// 誤差は0.1%単位に丸めてから判定する（ちょうど±10%が浮動小数の誤差で外れ扱いになるのを防ぐ。日々の記録と同じ）
+const near = (e, limit) => Math.round(Math.abs(e) * 1000) / 1000 <= limit;
+const within10 = (rs, parts, use) => rs.filter(r => near(r.base * applyParts(r, parts, use) / r.actual - 1, 0.1)).length / Math.max(1, rs.length);
 
 export function fitModel(rows) {
   const model = {};
@@ -121,7 +123,7 @@ function stats(rows, predict) {
   return {
     n: rows.length, days: new Set(rows.map(r => r.date)).size,
     medianAbsErr: r1(abs[abs.length >> 1] * 100), meanAbsErr: r1(abs.reduce((s, x) => s + x, 0) / abs.length * 100),
-    within5: share(x => Math.abs(x.e) <= 0.05), within10: share(x => Math.abs(x.e) <= 0.10), within20: share(x => Math.abs(x.e) <= 0.20),
+    within5: share(x => near(x.e, 0.05)), within10: share(x => near(x.e, 0.10)), within20: share(x => near(x.e, 0.20)),
     inRange: share(x => x.r.inRange), baseMedianAbsErr: r1(babs[babs.length >> 1] * 100), baseWithin10: share(x => Math.abs(x.b) <= 0.10),
   };
 }
