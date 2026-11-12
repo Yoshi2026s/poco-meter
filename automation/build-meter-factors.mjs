@@ -219,6 +219,7 @@ export function forecastBundle(factors, events, todayISO, {before = 3, after = 4
     out.days[d] = {tags: calendarTags(d).filter(x => FORECAST_TAGS.includes(x)), events: uniq, lasts};
   }
   // 過去データの答え合わせ（automation/backtest-forecast.mjs）の要約。締め時間×ランク帯の的中率だけを入れる。
+  if (backtest?.model) out.model = backtest.model; // 締め時間×ランク帯ごとの補正と目安の幅（画面の meterForecast が使う）
   if (backtest?.byGroup) out.accuracy = {period: backtest.period, overall: pickAcc(backtest.overall),
     byGroup: Object.fromEntries(Object.entries(backtest.byGroup).map(([k, s]) => [k, pickAcc(s)]))};
   return out;
