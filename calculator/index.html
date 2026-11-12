@@ -4275,9 +4275,10 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
   // 予想ボーダー：同じ締め時間・ランク・ボーダーの前日までの記録（最大42日）から、ランク帯ごとに選んだ方法で基準値を出し、
   // 予想データの model（過去データで効果を確かめた補正だけ）を掛ける。直近14日に記録が5日未満なら出さない。欠損日は0で埋めない。
   // 基準値の方法は 2025年のデータで選び、2026年のデータで答え合わせした（automation/backtest-forecast.mjs）。
-  //   D帯：指数加重平均（α=0.5、直近ほど重い）／S帯：指数加重中央値（α=0.15）／A・B・C帯：指数加重中央値（α=0.05）
-  function forecastBase(vals,band){
-    var o,alpha=band==='D'?0.5:band==='S'?0.15:0.05;
+  //   D帯：指数加重平均（α=0.5、直近ほど重い）／S6：指数加重中央値（α=0.5、値の入れ替わりが激しいため直近重視）
+  //   S1〜S5の±0：指数加重中央値（α=0.3）／それ以外（A・B・C帯、S1〜S5の+1・+2）：指数加重中央値（α=0.05）
+  function forecastBase(vals,rank,idx){
+    var o,band=String(rank).charAt(0),alpha=band==='D'||rank==='S6'?0.5:band==='S'&&idx===0?0.3:0.05;
     if(band==='D'){
       var seq=[];for(o=vals.length-1;o>=0;o--)if(vals[o])seq.push(vals[o]);
       if(!seq.length)return null;var e=aoMedian(seq.slice(0,7));
@@ -4296,7 +4297,7 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
     if(!Number.isFinite(t))return {status:'no-date'};
     for(var o=1;o<=42;o++){var row=log&&log[aoIsoDay(t-o*864e5)],v=row&&row[rank]&&row[rank][idx],ok=typeof v==='number'&&v>0;vals.push(ok?v:null);if(ok&&o<=14)recent++;}
     if(recent<5)return {status:'no-base',n:recent};
-    var band=String(rank).charAt(0),base=forecastBase(vals,band),w='日月火水木金土'[new Date(t).getUTCDay()],reasons=[],ratio=1;
+    var band=String(rank).charAt(0),base=forecastBase(vals,rank,idx),w='日月火水木金土'[new Date(t).getUTCDay()],reasons=[],ratio=1;
     function add(label,pct){if(typeof pct!=='number'||!Number.isFinite(pct))return;ratio*=1+pct/100;if(Math.abs(pct)>=0.1)reasons.push({label:label,pct:pct});}
     var m=bundle&&bundle.model&&bundle.model[close]&&bundle.model[close][band]||null,day=bundle&&bundle.days&&bundle.days[dateISO];
     if(m&&m.useWeekday&&m.weekday)add(w+'曜日',m.weekday[w]);
@@ -4313,23 +4314,31 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
   function aoK(n,unit){return fmtK(Math.round(n/unit)*unit);}
   function aoSet(id,text){var el=$(id);if(el&&el.textContent!==text)el.textContent=text;}
   function aoCleanTitle(s){return String(s||'').replace(/\p{Extended_Pictographic}|️|‍/gu,'').replace(/[＼／]/g,' ').replace(/\s+/g,' ').trim();}
+  // イベントの名前：期間の見出し（「開催期間」等を除く）を優先し、記事タイトルに含まれる・無いときは記事タイトル。
+  function aoEventName(e){var t=aoCleanTitle(e.title),l=aoCleanTitle(String(e.label||'').replace(/\s*(開催期間|イベント期間|開催日程|開催日時|キャンペーン期間)$/,''));if(!l||l.length<2||t.indexOf(l)>=0)return t;
+    // 「準決勝」「予選」など段階名だけのときは、記事タイトル（【】や記号を除いた先頭20字）を前に付ける
+    if(/^(予選|準決勝|決勝|本戦|本選|準々決勝|第d+(弾|回|ステージ|日程)|ステージd*|リーグ|前半|後半|DAYd+)/.test(l)&&l.length<=12){var q=t.match(/[『「]([^』」]{2,30})[』」]/);return (q?q[1]:t.replace(/【[^】]*】|[＼／]/g,'').trim().slice(0,20))+' '+l;}
+    return l;}
+  // 種類と対象（内容の手がかり）
+  function aoEventKind(e){var k={big:'大型イベント',event:'イベント',collab:'コラボ・出演権',newcomer:'新規ライバー向け',mission:'ミッション',item:'アイテム',notice:'お知らせ'}[e.type]||'';var a=(e.audience||[]).filter(function(x){return k.indexOf(x)<0;});return (k?'・'+k:'')+(a.length?'・'+a.join('・'):'');}
   function aoMD(d){return d?Number(d.slice(5,7))+'/'+Number(d.slice(8,10)):'';}
   function aoEventItems(list,rank,lastView){
     var ul=document.createDocumentFragment();
     list.forEach(function(e){
       var li=document.createElement('li'),a=document.createElement('a'),meta=document.createElement('small');
       if(e.type==='big')li.className='ao-big';
-      a.href=e.url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=aoCleanTitle(e.title);li.appendChild(a);
+      a.href=e.url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=aoEventName(e);li.appendChild(a);
       if((e.ranks||[]).indexOf(rank)>=0){var b=document.createElement('span');b.className='ao-badge';b.textContent='対象ランク';li.appendChild(b);}
       if(e.phase==='last'&&!lastView){var l=document.createElement('span');l.className='ao-badge last';l.textContent='最終日';li.appendChild(l);}
-      if(lastView){var endB=document.createElement('b');endB.textContent=(e.endTime?'本日 '+e.endTime+' まで':'本日まで（終了時刻は記事に記載なし）');meta.appendChild(endB);meta.appendChild(document.createTextNode('・'+aoMD(e.start)+'〜'+(e.type==='big'?'・大型イベント':'')));}
-      else meta.textContent=aoMD(e.start)+(e.end&&e.end!==e.start?'〜'+aoMD(e.end):'')+(e.endTime?' '+e.endTime+'まで':'')+(e.type==='big'?'・大型イベント':'');
+      if(lastView){var endB=document.createElement('b');endB.textContent=(e.endTime?'本日 '+e.endTime+' まで':'本日まで（終了時刻は記事に記載なし）');meta.appendChild(endB);meta.appendChild(document.createTextNode('・'+aoMD(e.start)+'〜'+aoEventKind(e)));}
+      else meta.textContent=aoMD(e.start)+(e.end&&e.end!==e.start?'〜'+aoMD(e.end):'')+(e.endTime?' '+e.endTime+'まで':'')+aoEventKind(e);
       li.appendChild(meta);ul.appendChild(li);
     });
     return ul;
   }
   // 過去データの答え合わせ（公開時に予想データへ入れる）から、締め時間×ランク帯の的中率を取り出す。
-  function forecastAccuracy(bundle,close,rank){var a=bundle&&bundle.accuracy,g=a&&a.byGroup&&a.byGroup[close+'|'+String(rank).charAt(0)];return g&&typeof g.within10==='number'?{within10:g.within10,medianAbsErr:g.medianAbsErr,from:a.period&&a.period.from,to:a.period&&a.period.to}:null;}
+  // 締め時間×ランク×ボーダーの的中率を優先し（30日分以上あるとき）、無ければ締め時間×ランク帯の値を使う。
+  function forecastAccuracy(bundle,close,rank,idx){var a=bundle&&bundle.accuracy;if(!a)return null;var s=a.bySeries&&a.bySeries[close+'|'+rank+'|'+idx],g=a.byGroup&&a.byGroup[close+'|'+String(rank).charAt(0)],use=s&&typeof s.within10==='number'&&s.days>=30?s:g;return use&&typeof use.within10==='number'?{within10:use.within10,medianAbsErr:use.medianAbsErr,from:a.period&&a.period.from,to:a.period&&a.period.to,scope:use===s?'series':'band'}:null;}
   // 自信度（10段階）：過去の答え合わせで±10%以内に入った割合を10%刻みで★にする（例：66% → ★7）。
   // 答え合わせが無いときは記録の日数から控えめに出す（直近14日に12日以上で★3、それ未満は★2）。
   function forecastStars(acc,f){if(acc&&typeof acc.within10==='number')return Math.max(1,Math.min(10,Math.round(acc.within10/10)));return f&&f.n>=12?3:2;}
@@ -4347,9 +4356,9 @@ html.always-on-open,html.always-on-open body{overflow:hidden!important}
     if(f.status!=='ok'){aoSet('aoForecast','—');aoSet('aoRange','');aoSet('aoTrend','');aoSet('aoForecastNote','直近14日のうち前日までの記録が'+(f.n||0)+'日分しかないため、予想を出していません（5日分以上で表示）。');return;}
     aoSet('aoForecast','約 '+aoK(f.value,100));
     aoSet('aoRange',f.low!==null?'目安の幅 '+aoK(f.low,1000)+' 〜 '+aoK(f.high,1000)+'（過去の予想で実際の値の半数が入った幅）':'');
-    var acc=forecastAccuracy(forecastData,close,rank),stars=forecastStars(acc,f);
+    var acc=forecastAccuracy(forecastData,close,rank,idx),stars=forecastStars(acc,f);
     var trend=$('aoTrend');aoSet('aoTrend',forecastData?'普段比 '+(f.pct>0?'+':'')+f.pct+'%　'+forecastTrend(f.pct)+'\n自信度 '+'★★★★★★★★★★'.slice(0,stars)+'☆☆☆☆☆☆☆☆☆☆'.slice(stars)+' '+stars+'/10':'直近14日の中央値（補正なし）');
-    aoSet('aoAccuracy',acc?'過去の答え合わせ（'+aoMD(acc.from)+'〜'+aoMD(acc.to)+'・'+closeLabel+'・'+rank.charAt(0)+'帯）：±10%以内 '+acc.within10+'%・誤差の中央値 '+acc.medianAbsErr+'%':'');
+    aoSet('aoAccuracy',acc?'過去の答え合わせ（'+aoMD(acc.from)+'〜'+aoMD(acc.to)+'・'+closeLabel+'・'+(acc&&acc.scope==='series'?rank+'のボーダー'+AO_BORDERS[idx]:rank.charAt(0)+'帯')+'）：±10%以内 '+acc.within10+'%・誤差の中央値 '+acc.medianAbsErr+'%':'');
     trend.className='ao-trend'+(f.pct>=1?' up':f.pct<=-1?' down':'');
     f.reasons.forEach(function(r){var li=document.createElement('li');li.textContent=r.label+' '+(r.pct>0?'+':'')+r.pct+'%';reasons.appendChild(li);});
     aoSet('aoForecastNote',(forecastError?forecastError+'。':'')+(forecastLoading&&!forecastData?'予想データを読み込み中…':'')+(forecastData&&!f.inRange?'この日の暦・イベント情報は予想データの範囲外です。':'')+'基準：前日までの記録（直近14日に'+f.n+'日分）の'+f.method+' '+aoK(f.base,100)+'。');

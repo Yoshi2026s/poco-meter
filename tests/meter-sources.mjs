@@ -1,6 +1,6 @@
 // メーター予想の情報源（イベント収集・補正値の集計）の最小テスト。ネットワーク不要。
 import assert from 'node:assert/strict';
-import {findPeriods, findRanks, classify} from '../automation/collect-events.mjs';
+import {findPeriods, findRanks, classify, pickLabel, articleText, toEvent, SOURCES} from '../automation/collect-events.mjs';
 import {paydayOf, calendarTags, buildFactors} from '../automation/build-meter-factors.mjs';
 
 // 期間：年あり・年なし・同日の時刻範囲・「より開催」・エントリ期間の区別
@@ -47,5 +47,25 @@ assert.ok(calendarTags('2026-10-25').includes('payday25'));
   assert.equal(f.weekday['24']['水'].pct, 0, '平日は普段どおり（中央値なので土曜の影響を受けない）');
   assert.equal(f.weekdayByRank['24'].B1['土'].n, 0, '0は欠損扱い');
   assert.equal(f.calendar['24'].christmas.status, 'insufficient');
+}
+// イベント名の決め方：『』「」の名前 → 短い前置き → 直前の見出し。文の切れ端は名前にしない。
+assert.equal(pickLabel('「Pococha Halloween Party」開催期間：', null), 'Pococha Halloween Party');
+assert.equal(pickLabel('👑 プレミアリーグ（S6〜B1）：', null), 'プレミアリーグ（S6〜B1）');
+assert.equal(pickLabel('開催期間：', 'POCO LAND 10周年祭'), 'POCO LAND 10周年祭 開催期間');
+assert.equal(pickLabel('こんにちは、Pococha運営です！', '世代ウォーズ'), '世代ウォーズ');
+assert.equal(pickLabel('本記事では、', null), null);
+assert.equal(pickLabel('※', '夏祭り'), '夏祭り');
+// 本文の区画だけを読み、見出しは「## 」付きの行になる
+{
+  const html = '<nav>メインコンテンツへスキップ 1/1〜1/2</nav><div class="note-common-styles__textnote-body isolate"><h2>冬祭り</h2><p>開催期間：2026年12月1日(火) 12:00 〜 2026年12月3日(木) 23:59</p><div><p>12/2(水) 20:30〜21:00 出演</p></div><p>使用期限：2026年12月1日 〜 2026年12月31日</p><p>開催期間：2026年12月1日(火) 12:00 〜 2026年12月3日(木) 23:59</p></div><footer>x</footer>';
+  const text = articleText(html);
+  assert.ok(!text.includes('メインコンテンツ') && text.includes('## 冬祭り'));
+  const p = findPeriods(text, '2026-11-20');
+  const ev = p.filter(x => !x.isEntry);
+  assert.equal(ev.length, 1, '重複はまとめ、配信枠・使用期限は除く');
+  assert.equal(ev[0].label, '冬祭り 開催期間');
+  assert.deepEqual(p.filter(x => x.isEntry).map(x => x.kind).sort(), ['other', 'slot']);
+  const e = toEvent(SOURCES[0], 'https://report.pococha.com/n/x', '<meta property="og:title" content="【ボイスライバー限定】冬祭り"><script>"datePublished":"2026-11-20T00:00:00+09:00"</script>' + html);
+  assert.equal(e.periods.length, 1); assert.equal(e.excluded, 2); assert.deepEqual(e.audience, ['ボイス']);
 }
 console.log('meter-sources ok');

@@ -48,6 +48,7 @@ export function calendarTags(d) {
   }
   if (day <= 3) tags.push('month-start');
   if (day > last - 3) tags.push('month-end');
+  if (day >= 21 && day <= 27) tags.push('month-late');
   if (HOLIDAYS.has(d)) tags.push('holiday');
   if (/-12-(2[89]|3[01])$|-01-0[1-3]$/.test(d)) tags.push('year-end');
   if (/-0(4-29|4-30|5-0[1-6])$/.test(d)) tags.push('golden-week');
@@ -61,7 +62,7 @@ export const TAG_LABELS = {
   'payday10': '10日（暦日）', 'payday10-actual': '10日払いの実支給日', 'payday10-next': '10日払いの翌日',
   'payday20': '20日（暦日）', 'payday20-actual': '20日払いの実支給日', 'payday20-next': '20日払いの翌日',
   'payday25': '25日（暦日）', 'payday25-actual': '25日払いの実支給日', 'payday25-next': '25日払いの翌日',
-  'month-start': '月初（1〜3日）', 'month-end': '月末（最後の3日）', 'holiday': '祝日・振替休日', 'year-end': '年末年始（12/28〜1/3）',
+  'month-start': '月初（1〜3日）', 'month-end': '月末（最後の3日）', 'month-late': '月の後半（21〜27日）', 'holiday': '祝日・振替休日', 'year-end': '年末年始（12/28〜1/3）',
   'golden-week': 'ゴールデンウィーク（4/29〜5/6）', 'obon': 'お盆（8/11〜8/16）', 'christmas': 'クリスマス（12/24・25）', 'valentine': 'バレンタイン（2/14）',
 };
 
@@ -182,7 +183,7 @@ export function buildFactors(borders, events) {
 // 画面（常時表示パネル）用の小さな配布物。補正値のうち予想に使えるもの（insufficient 以外）と、
 // 今日の前後の日ごとの暦タグ・開催イベントだけを入れる。公開時（scripts/build-pages.mjs）に作る。
 export const FORECAST_TAGS = ['payday10-actual', 'payday10-next', 'payday20-actual', 'payday20-next', 'payday25-actual', 'payday25-next',
-  'month-start', 'month-end', 'holiday', 'year-end', 'golden-week', 'obon', 'christmas', 'valentine'];
+  'month-start', 'month-end', 'month-late', 'holiday', 'year-end', 'golden-week', 'obon', 'christmas', 'valentine'];
 const TYPE_ORDER = {big: 0, event: 1, collab: 2, newcomer: 3, mission: 4, item: 5, notice: 6};
 export function forecastBundle(factors, events, todayISO, {before = 3, after = 45, backtest = null} = {}) {
   const usable = s => s && s.status !== 'insufficient' && Number.isFinite(s.pct);
@@ -204,24 +205,28 @@ export function forecastBundle(factors, events, todayISO, {before = 3, after = 4
         const end = p.end || p.start;
         if (!p.start || d < p.start || d > end) continue;
         list.push({title: e.title.slice(0, 60), label: p.label ? p.label.slice(0, 40) : null, type: e.type, ranks: (p.ranks?.length ? p.ranks : e.ranks) || [],
-          phase: d === p.start ? 'first' : d === end ? 'last' : 'middle', ends: d === end, start: p.start, end: p.end || null, endTime: p.endTime || null, url: e.url});
+          phase: d === p.start ? 'first' : d === end ? 'last' : 'middle', ends: d === end, start: p.start, end: p.end || null, endTime: p.endTime || null, url: e.url,
+          ...(e.audience?.length ? {audience: e.audience} : {})});
       }
     }
-    // 同じ記事の重複を除き、大型→通常イベント→その他の順に最大8件。
+    // 同じ記事の重複と、別の記事に載った同じイベント（名前と期間が同じ）を除き、大型→通常イベント→その他の順に最大8件。
     const seen = new Set();
+    const nameKey = x => `${String(x.label || x.title).replace(/\s*(開催期間|イベント期間|開催日程|キャンペーン期間)$/, '').replace(/[\s「」『』【】！!]/g, '')}|${x.start}|${x.end}`;
+    const once = x => { const k1 = x.url, k2 = nameKey(x); if (seen.has(k1) || seen.has(k2)) return false; seen.add(k1); seen.add(k2); return true; };
     const uniq = list.sort((a, b) => (a.phase === 'last' ? 0 : 1) - (b.phase === 'last' ? 0 : 1))
-      .filter(x => { if (seen.has(x.url)) return false; seen.add(x.url); return true; }) // 1記事1件（最終日の期間を優先）
+      .filter(once) // 1記事1件（最終日の期間を優先）
       .sort((a, b) => (TYPE_ORDER[a.type] ?? 9) - (TYPE_ORDER[b.type] ?? 9) || (b.ranks.length ? 1 : 0) - (a.ranks.length ? 1 : 0)).slice(0, 8);
     // 本日のイベラス（この日が最終日のもの。1日だけの開催も含む）は件数を絞りすぎないよう別に持つ。
-    const seenLast = new Set();
-    const lasts = list.filter(x => x.ends).filter(x => { if (seenLast.has(x.url)) return false; seenLast.add(x.url); return true; })
+    seen.clear();
+    const lasts = list.filter(x => x.ends).filter(once)
       .sort((a, b) => (TYPE_ORDER[a.type] ?? 9) - (TYPE_ORDER[b.type] ?? 9) || (a.endTime || '24:00').localeCompare(b.endTime || '24:00')).slice(0, 15);
     out.days[d] = {tags: calendarTags(d).filter(x => FORECAST_TAGS.includes(x)), events: uniq, lasts};
   }
   // 過去データの答え合わせ（automation/backtest-forecast.mjs）の要約。締め時間×ランク帯の的中率だけを入れる。
   if (backtest?.model) out.model = backtest.model; // 締め時間×ランク帯ごとの補正と目安の幅（画面の meterForecast が使う）
   if (backtest?.byGroup) out.accuracy = {period: backtest.period, overall: pickAcc(backtest.overall),
-    byGroup: Object.fromEntries(Object.entries(backtest.byGroup).map(([k, s]) => [k, pickAcc(s)]))};
+    byGroup: Object.fromEntries(Object.entries(backtest.byGroup).map(([k, s]) => [k, pickAcc(s)])),
+    ...(backtest.bySeries ? {bySeries: Object.fromEntries(Object.entries(backtest.bySeries).map(([k, s]) => [k, {within10: s.within10, medianAbsErr: s.medianAbsErr, days: s.days}]))} : {})};
   return out;
 }
 const pickAcc = s => s && {within10: s.within10, within20: s.within20, medianAbsErr: s.medianAbsErr, inRange: s.inRange, days: s.days, n: s.n};

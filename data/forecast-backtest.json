@@ -1,6 +1,6 @@
 {
  "schema": "poco-meter-forecast-backtest-v2",
- "generatedAt": "2026-11-12T06:58:49.414Z",
+ "generatedAt": "2026-11-12T08:29:27.984Z",
  "method": [
   "基準値は画面と同じ forecastBase（D帯：指数加重平均α0.5、S帯：指数加重中央値α0.15、A・B・C帯：指数加重中央値α0.05。前日まで最大42日）。",
   "答え合わせ：2026-01-01 より前のデータだけで補正（model）を作り、2026-01-01〜2026-11-11 の各日を前日までの記録で予想した。",
@@ -16,51 +16,51 @@
  "overall": {
   "n": 50376,
   "days": 313,
-  "medianAbsErr": 5.7,
+  "medianAbsErr": 5.6,
   "meanAbsErr": 10.5,
-  "within5": 45.9,
-  "within10": 66.1,
+  "within5": 46.5,
+  "within10": 66.8,
   "within20": 82.8,
-  "inRange": 50.7,
-  "baseMedianAbsErr": 5.8,
-  "baseWithin10": 65.6
+  "inRange": 50.8,
+  "baseMedianAbsErr": 5.6,
+  "baseWithin10": 66.3
  },
  "byClose": {
   "13": {
    "n": 16680,
    "days": 309,
-   "medianAbsErr": 5.5,
+   "medianAbsErr": 5.3,
    "meanAbsErr": 10.6,
-   "within5": 47.2,
-   "within10": 65.7,
-   "within20": 81.4,
-   "inRange": 51.7,
-   "baseMedianAbsErr": 5.4,
-   "baseWithin10": 65.8
+   "within5": 47.9,
+   "within10": 66.4,
+   "within20": 81.6,
+   "inRange": 51.2,
+   "baseMedianAbsErr": 5.2,
+   "baseWithin10": 66.4
   },
   "22": {
    "n": 16848,
    "days": 312,
-   "medianAbsErr": 6,
+   "medianAbsErr": 5.9,
    "meanAbsErr": 10.5,
-   "within5": 43.9,
-   "within10": 65.9,
-   "within20": 83.2,
-   "inRange": 50.2,
-   "baseMedianAbsErr": 6.2,
-   "baseWithin10": 64.8
+   "within5": 44.6,
+   "within10": 66.7,
+   "within20": 83.3,
+   "inRange": 50.6,
+   "baseMedianAbsErr": 6,
+   "baseWithin10": 65.5
   },
   "24": {
    "n": 16848,
    "days": 312,
-   "medianAbsErr": 5.6,
-   "meanAbsErr": 10.5,
-   "within5": 46.5,
-   "within10": 66.7,
-   "within20": 83.6,
-   "inRange": 50.2,
-   "baseMedianAbsErr": 5.7,
-   "baseWithin10": 66.2
+   "medianAbsErr": 5.5,
+   "meanAbsErr": 10.6,
+   "within5": 46.9,
+   "within10": 67.4,
+   "within20": 83.4,
+   "inRange": 50.5,
+   "baseMedianAbsErr": 5.5,
+   "baseWithin10": 66.8
   }
  },
  "byGroup": {
@@ -79,12 +79,12 @@
   "13|B": {
    "n": 2781,
    "days": 309,
-   "medianAbsErr": 3.8,
+   "medianAbsErr": 4,
    "meanAbsErr": 6.5,
-   "within5": 61.2,
-   "within10": 81.9,
-   "within20": 91.9,
-   "inRange": 52.2,
+   "within5": 59.7,
+   "within10": 82,
+   "within20": 92.2,
+   "inRange": 50.8,
    "baseMedianAbsErr": 3.7,
    "baseWithin10": 82.8
   },
@@ -104,35 +104,35 @@
    "n": 2781,
    "days": 309,
    "medianAbsErr": 12.3,
-   "meanAbsErr": 15.4,
-   "within5": 22.4,
-   "within10": 42,
-   "within20": 69.8,
-   "inRange": 51.4,
+   "meanAbsErr": 15.2,
+   "within5": 22.8,
+   "within10": 42.4,
+   "within20": 70.2,
+   "inRange": 51.2,
    "baseMedianAbsErr": 12.3,
    "baseWithin10": 41.7
   },
   "13|S": {
    "n": 5559,
    "days": 309,
-   "medianAbsErr": 8.3,
-   "meanAbsErr": 13.4,
-   "within5": 36.8,
-   "within10": 54.7,
+   "medianAbsErr": 7.3,
+   "meanAbsErr": 13.5,
+   "within5": 39.5,
+   "within10": 56.6,
    "within20": 74.7,
-   "inRange": 53.3,
-   "baseMedianAbsErr": 8.2,
-   "baseWithin10": 54.7
+   "inRange": 52.7,
+   "baseMedianAbsErr": 7.3,
+   "baseWithin10": 56.6
   },
   "22|A": {
    "n": 2808,
    "days": 312,
    "medianAbsErr": 4.3,
-   "meanAbsErr": 8.5,
-   "within5": 56.3,
-   "within10": 75.2,
-   "within20": 86.5,
-   "inRange": 54.7,
+   "meanAbsErr": 8.4,
+   "within5": 55.4,
+   "within10": 75.4,
+   "within20": 86.8,
+   "inRange": 55.6,
    "baseMedianAbsErr": 4.3,
    "baseWithin10": 75.1
   },
@@ -151,12 +151,12 @@
   "22|C": {
    "n": 2808,
    "days": 312,
-   "medianAbsErr": 5.1,
-   "meanAbsErr": 8.9,
-   "within5": 49.6,
-   "within10": 70.3,
-   "within20": 86.6,
-   "inRange": 45.9,
+   "medianAbsErr": 5.2,
+   "meanAbsErr": 8.8,
+   "within5": 49,
+   "within10": 70.2,
+   "within20": 87.1,
+   "inRange": 46.2,
    "baseMedianAbsErr": 5.2,
    "baseWithin10": 69.7
   },
@@ -165,8 +165,8 @@
    "days": 312,
    "medianAbsErr": 8.5,
    "meanAbsErr": 11,
-   "within5": 29.8,
-   "within10": 56.7,
+   "within5": 30,
+   "within10": 57.2,
    "within20": 85,
    "inRange": 54,
    "baseMedianAbsErr": 9.6,
@@ -175,14 +175,14 @@
   "22|S": {
    "n": 5616,
    "days": 312,
-   "medianAbsErr": 6.5,
+   "medianAbsErr": 5.8,
    "meanAbsErr": 12.3,
-   "within5": 42.3,
-   "within10": 62.9,
-   "within20": 78.7,
-   "inRange": 50.1,
-   "baseMedianAbsErr": 6.4,
-   "baseWithin10": 62.5
+   "within5": 45,
+   "within10": 64.9,
+   "within20": 78.6,
+   "inRange": 50.6,
+   "baseMedianAbsErr": 5.9,
+   "baseWithin10": 64.6
   },
   "24|A": {
    "n": 2808,
@@ -200,11 +200,11 @@
    "n": 2808,
    "days": 312,
    "medianAbsErr": 4.9,
-   "meanAbsErr": 9.3,
-   "within5": 50.9,
-   "within10": 71.7,
-   "within20": 85.5,
-   "inRange": 52.4,
+   "meanAbsErr": 9.2,
+   "within5": 50.7,
+   "within10": 71.9,
+   "within20": 85.7,
+   "inRange": 52.5,
    "baseMedianAbsErr": 4.7,
    "baseWithin10": 72
   },
@@ -235,38 +235,38 @@
   "24|S": {
    "n": 5616,
    "days": 312,
-   "medianAbsErr": 6.7,
-   "meanAbsErr": 13.3,
-   "within5": 41.7,
-   "within10": 59.8,
-   "within20": 76.3,
-   "inRange": 51,
-   "baseMedianAbsErr": 6.7,
-   "baseWithin10": 59.8
+   "medianAbsErr": 6.2,
+   "meanAbsErr": 13.6,
+   "within5": 43.1,
+   "within10": 61.8,
+   "within20": 75.4,
+   "inRange": 51.8,
+   "baseMedianAbsErr": 6.1,
+   "baseWithin10": 61.6
   }
  },
  "byBand": {
   "A": {
    "n": 8394,
    "days": 313,
-   "medianAbsErr": 4.3,
+   "medianAbsErr": 4.4,
    "meanAbsErr": 8.8,
-   "within5": 55.4,
-   "within10": 73.5,
-   "within20": 86.3,
-   "inRange": 51.1,
+   "within5": 55.1,
+   "within10": 73.6,
+   "within20": 86.4,
+   "inRange": 51.4,
    "baseMedianAbsErr": 4.3,
    "baseWithin10": 73.5
   },
   "B": {
    "n": 8397,
    "days": 313,
-   "medianAbsErr": 4.7,
+   "medianAbsErr": 4.9,
    "meanAbsErr": 8.6,
-   "within5": 51.7,
-   "within10": 73.7,
-   "within20": 87,
-   "inRange": 50.4,
+   "within5": 51.2,
+   "within10": 73.8,
+   "within20": 87.2,
+   "inRange": 49.9,
    "baseMedianAbsErr": 4.6,
    "baseWithin10": 74.1
   },
@@ -275,36 +275,1982 @@
    "days": 313,
    "medianAbsErr": 4,
    "meanAbsErr": 7.6,
-   "within5": 58.9,
+   "within5": 58.7,
    "within10": 78,
-   "within20": 89,
-   "inRange": 49.4,
+   "within20": 89.2,
+   "inRange": 49.5,
    "baseMedianAbsErr": 4,
    "baseWithin10": 77.8
   },
   "D": {
    "n": 8397,
    "days": 313,
-   "medianAbsErr": 9.3,
+   "medianAbsErr": 9.2,
    "meanAbsErr": 12.1,
-   "within5": 28.5,
-   "within10": 53.1,
-   "within20": 81.1,
-   "inRange": 50.4,
+   "within5": 28.7,
+   "within10": 53.4,
+   "within20": 81.3,
+   "inRange": 50.3,
    "baseMedianAbsErr": 9.9,
    "baseWithin10": 50.2
   },
   "S": {
    "n": 16791,
    "days": 313,
+   "medianAbsErr": 6.4,
+   "meanAbsErr": 13.1,
+   "within5": 42.5,
+   "within10": 61.1,
+   "within20": 76.3,
+   "inRange": 51.7,
+   "baseMedianAbsErr": 6.3,
+   "baseWithin10": 61
+  }
+ },
+ "bySeries": {
+  "13|A1|0": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 3.7,
+   "meanAbsErr": 8,
+   "within5": 62.1,
+   "within10": 78.3,
+   "within20": 82.8,
+   "inRange": 53.7,
+   "baseMedianAbsErr": 3.7,
+   "baseWithin10": 78.3
+  },
+  "13|A1|1": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 3,
+   "meanAbsErr": 6.2,
+   "within5": 70.9,
+   "within10": 83.8,
+   "within20": 90.3,
+   "inRange": 60.5,
+   "baseMedianAbsErr": 3,
+   "baseWithin10": 83.8
+  },
+  "13|A1|2": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 2.8,
+   "meanAbsErr": 4.6,
+   "within5": 77,
+   "within10": 90.3,
+   "within20": 95.5,
+   "inRange": 65.7,
+   "baseMedianAbsErr": 2.8,
+   "baseWithin10": 90.3
+  },
+  "13|A2|0": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 4.5,
+   "meanAbsErr": 8.3,
+   "within5": 54,
+   "within10": 77.3,
+   "within20": 87.7,
+   "inRange": 45,
+   "baseMedianAbsErr": 4.5,
+   "baseWithin10": 77.3
+  },
+  "13|A2|1": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 3.7,
+   "meanAbsErr": 7.6,
+   "within5": 59.5,
+   "within10": 79,
+   "within20": 90,
+   "inRange": 51.8,
+   "baseMedianAbsErr": 3.7,
+   "baseWithin10": 79
+  },
+  "13|A2|2": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 3.2,
+   "meanAbsErr": 7.1,
+   "within5": 65.4,
+   "within10": 80.9,
+   "within20": 90.3,
+   "inRange": 56,
+   "baseMedianAbsErr": 3.2,
+   "baseWithin10": 80.9
+  },
+  "13|A3|0": {
+   "n": 308,
+   "days": 308,
+   "medianAbsErr": 9.2,
+   "meanAbsErr": 11.9,
+   "within5": 28.2,
+   "within10": 53.2,
+   "within20": 84.1,
+   "inRange": 26,
+   "baseMedianAbsErr": 9.2,
+   "baseWithin10": 53.2
+  },
+  "13|A3|1": {
+   "n": 308,
+   "days": 308,
+   "medianAbsErr": 4.9,
+   "meanAbsErr": 11,
+   "within5": 51,
+   "within10": 66.9,
+   "within20": 79.5,
+   "inRange": 42.9,
+   "baseMedianAbsErr": 4.9,
+   "baseWithin10": 66.9
+  },
+  "13|A3|2": {
+   "n": 308,
+   "days": 308,
+   "medianAbsErr": 4.8,
+   "meanAbsErr": 10.7,
+   "within5": 51.6,
+   "within10": 71.4,
+   "within20": 80.5,
+   "inRange": 45.1,
+   "baseMedianAbsErr": 4.8,
+   "baseWithin10": 71.4
+  },
+  "13|B1|0": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 3.1,
+   "meanAbsErr": 5.7,
+   "within5": 71.2,
+   "within10": 87.1,
+   "within20": 91.9,
+   "inRange": 61.5,
+   "baseMedianAbsErr": 2.7,
+   "baseWithin10": 87.1
+  },
+  "13|B1|1": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 5.2,
+   "meanAbsErr": 8.2,
+   "within5": 48.5,
+   "within10": 71.8,
+   "within20": 88.7,
+   "inRange": 40.5,
+   "baseMedianAbsErr": 4.9,
+   "baseWithin10": 72.5
+  },
+  "13|B1|2": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 3,
+   "meanAbsErr": 4.8,
+   "within5": 71.8,
+   "within10": 90.9,
+   "within20": 94.8,
+   "inRange": 64.1,
+   "baseMedianAbsErr": 2.8,
+   "baseWithin10": 91.6
+  },
+  "13|B2|0": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 4.9,
+   "meanAbsErr": 6.5,
+   "within5": 51.5,
+   "within10": 81.9,
+   "within20": 96.1,
+   "inRange": 42.4,
+   "baseMedianAbsErr": 4.6,
+   "baseWithin10": 81.6
+  },
+  "13|B2|1": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 3.9,
+   "meanAbsErr": 6.6,
+   "within5": 61.8,
+   "within10": 82.8,
+   "within20": 90.3,
+   "inRange": 52.1,
+   "baseMedianAbsErr": 3.6,
+   "baseWithin10": 83.2
+  },
+  "13|B2|2": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 4.8,
+   "meanAbsErr": 8.3,
+   "within5": 51.8,
+   "within10": 77,
+   "within20": 88.7,
+   "inRange": 42.7,
+   "baseMedianAbsErr": 4.4,
+   "baseWithin10": 79.9
+  },
+  "13|B3|0": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 4.2,
+   "meanAbsErr": 6.2,
+   "within5": 56.6,
+   "within10": 79.9,
+   "within20": 94.8,
+   "inRange": 48.9,
+   "baseMedianAbsErr": 4.2,
+   "baseWithin10": 81.9
+  },
+  "13|B3|1": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 3.2,
+   "meanAbsErr": 5.2,
+   "within5": 68.9,
+   "within10": 89.3,
+   "within20": 94.2,
+   "inRange": 59.9,
+   "baseMedianAbsErr": 2.8,
+   "baseWithin10": 89.6
+  },
+  "13|B3|2": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 4.3,
+   "meanAbsErr": 7.5,
+   "within5": 55.3,
+   "within10": 77,
+   "within20": 90.3,
+   "inRange": 45.6,
+   "baseMedianAbsErr": 4.1,
+   "baseWithin10": 78
+  },
+  "13|C1|0": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 2.5,
+   "meanAbsErr": 2.8,
+   "within5": 90.3,
+   "within10": 99.4,
+   "within20": 99.4,
+   "inRange": 66.3,
+   "baseMedianAbsErr": 2.5,
+   "baseWithin10": 99.4
+  },
+  "13|C1|1": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 2.7,
+   "meanAbsErr": 4.9,
+   "within5": 73.1,
+   "within10": 90.6,
+   "within20": 94.5,
+   "inRange": 57.3,
+   "baseMedianAbsErr": 2.7,
+   "baseWithin10": 90.6
+  },
+  "13|C1|2": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 5.3,
+   "meanAbsErr": 9.8,
+   "within5": 47.6,
+   "within10": 71.5,
+   "within20": 83.5,
+   "inRange": 34.3,
+   "baseMedianAbsErr": 5.3,
+   "baseWithin10": 71.5
+  },
+  "13|C2|0": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 2.4,
+   "meanAbsErr": 2.6,
+   "within5": 91.9,
+   "within10": 99.7,
+   "within20": 99.7,
+   "inRange": 67.6,
+   "baseMedianAbsErr": 2.4,
+   "baseWithin10": 99.7
+  },
+  "13|C2|1": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 4.2,
+   "meanAbsErr": 7.8,
+   "within5": 59.5,
+   "within10": 77.7,
+   "within20": 86.4,
+   "inRange": 42.7,
+   "baseMedianAbsErr": 4.2,
+   "baseWithin10": 77.7
+  },
+  "13|C2|2": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 3.9,
+   "meanAbsErr": 8,
+   "within5": 57.6,
+   "within10": 78.6,
+   "within20": 88.7,
+   "inRange": 44,
+   "baseMedianAbsErr": 3.9,
+   "baseWithin10": 78.6
+  },
+  "13|C3|0": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 3.1,
+   "meanAbsErr": 5.9,
+   "within5": 73.8,
+   "within10": 86.4,
+   "within20": 91.6,
+   "inRange": 54,
+   "baseMedianAbsErr": 3.1,
+   "baseWithin10": 86.4
+  },
+  "13|C3|1": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 3.6,
+   "meanAbsErr": 7.1,
+   "within5": 64.7,
+   "within10": 83.2,
+   "within20": 88,
+   "inRange": 46.9,
+   "baseMedianAbsErr": 3.6,
+   "baseWithin10": 83.2
+  },
+  "13|C3|2": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 4.5,
+   "meanAbsErr": 9.3,
+   "within5": 54,
+   "within10": 78.3,
+   "within20": 85.1,
+   "inRange": 39.2,
+   "baseMedianAbsErr": 4.5,
+   "baseWithin10": 78.3
+  },
+  "13|D1|0": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 12.8,
+   "meanAbsErr": 15.1,
+   "within5": 25.6,
+   "within10": 41.4,
+   "within20": 69.3,
+   "inRange": 49.8,
+   "baseMedianAbsErr": 12,
+   "baseWithin10": 45
+  },
+  "13|D1|1": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 13.1,
+   "meanAbsErr": 16,
+   "within5": 19.4,
+   "within10": 38.2,
+   "within20": 68.6,
+   "inRange": 49.5,
+   "baseMedianAbsErr": 13.7,
+   "baseWithin10": 35
+  },
+  "13|D1|2": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 13.9,
+   "meanAbsErr": 16.9,
+   "within5": 20.4,
+   "within10": 37.9,
+   "within20": 64.7,
+   "inRange": 46.6,
+   "baseMedianAbsErr": 14.7,
+   "baseWithin10": 35.6
+  },
+  "13|D2|0": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 13.3,
+   "meanAbsErr": 16.3,
+   "within5": 19.4,
+   "within10": 38.2,
+   "within20": 67.3,
+   "inRange": 46.3,
+   "baseMedianAbsErr": 12.5,
+   "baseWithin10": 41.4
+  },
+  "13|D2|1": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 12.7,
+   "meanAbsErr": 15.5,
+   "within5": 18.4,
+   "within10": 38.5,
+   "within20": 71.8,
+   "inRange": 49.5,
+   "baseMedianAbsErr": 12.9,
+   "baseWithin10": 37.5
+  },
+  "13|D2|2": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 11,
+   "meanAbsErr": 14.9,
+   "within5": 24.3,
+   "within10": 46.6,
+   "within20": 68.6,
+   "inRange": 52.8,
+   "baseMedianAbsErr": 11.3,
+   "baseWithin10": 44.3
+  },
+  "13|D3|0": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 12.4,
+   "meanAbsErr": 14.8,
+   "within5": 20.1,
+   "within10": 41.7,
+   "within20": 72.5,
+   "inRange": 53.1,
+   "baseMedianAbsErr": 11.8,
+   "baseWithin10": 42.1
+  },
+  "13|D3|1": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 7.1,
+   "meanAbsErr": 10.8,
+   "within5": 37.2,
+   "within10": 63.8,
+   "within20": 82.8,
+   "inRange": 69.6,
+   "baseMedianAbsErr": 7.7,
+   "baseWithin10": 61.2
+  },
+  "13|D3|2": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 14.9,
+   "meanAbsErr": 16.6,
+   "within5": 20.4,
+   "within10": 35,
+   "within20": 65.7,
+   "inRange": 43.7,
+   "baseMedianAbsErr": 15.2,
+   "baseWithin10": 33.7
+  },
+  "13|S1|0": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 12.2,
+   "meanAbsErr": 14.8,
+   "within5": 32.7,
+   "within10": 45.3,
+   "within20": 69.3,
+   "inRange": 42.4,
+   "baseMedianAbsErr": 12.2,
+   "baseWithin10": 45.3
+  },
+  "13|S1|1": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 9.7,
+   "meanAbsErr": 12.5,
+   "within5": 27.5,
+   "within10": 50.8,
+   "within20": 74.8,
+   "inRange": 47.9,
+   "baseMedianAbsErr": 9.7,
+   "baseWithin10": 50.8
+  },
+  "13|S1|2": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 3.7,
+   "meanAbsErr": 7.9,
+   "within5": 57.6,
+   "within10": 75.7,
+   "within20": 85.4,
+   "inRange": 71.2,
+   "baseMedianAbsErr": 3.7,
+   "baseWithin10": 75.7
+  },
+  "13|S2|0": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 9,
+   "meanAbsErr": 13.1,
+   "within5": 34,
+   "within10": 53.1,
+   "within20": 74.8,
+   "inRange": 47.9,
+   "baseMedianAbsErr": 9,
+   "baseWithin10": 53.1
+  },
+  "13|S2|1": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 6.8,
+   "meanAbsErr": 11.1,
+   "within5": 41.4,
+   "within10": 63.8,
+   "within20": 80.6,
+   "inRange": 61.2,
+   "baseMedianAbsErr": 6.8,
+   "baseWithin10": 63.8
+  },
+  "13|S2|2": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 3.8,
+   "meanAbsErr": 8.5,
+   "within5": 57.9,
+   "within10": 77.7,
+   "within20": 85.8,
+   "inRange": 69.6,
+   "baseMedianAbsErr": 3.8,
+   "baseWithin10": 77.7
+  },
+  "13|S3|0": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 8.3,
+   "meanAbsErr": 12.7,
+   "within5": 39.5,
+   "within10": 54,
+   "within20": 75.7,
+   "inRange": 51.8,
+   "baseMedianAbsErr": 8.3,
+   "baseWithin10": 54
+  },
+  "13|S3|1": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 5.6,
+   "meanAbsErr": 9.9,
+   "within5": 45.6,
+   "within10": 66.7,
+   "within20": 78.6,
+   "inRange": 65.4,
+   "baseMedianAbsErr": 5.6,
+   "baseWithin10": 66.7
+  },
+  "13|S3|2": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 3,
+   "meanAbsErr": 6.9,
+   "within5": 65.7,
+   "within10": 82.8,
+   "within20": 88.7,
+   "inRange": 77.7,
+   "baseMedianAbsErr": 3,
+   "baseWithin10": 82.8
+  },
+  "13|S4|0": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 9.2,
+   "meanAbsErr": 14,
+   "within5": 35.3,
+   "within10": 51.5,
+   "within20": 71.8,
+   "inRange": 48.9,
+   "baseMedianAbsErr": 9.2,
+   "baseWithin10": 51.5
+  },
+  "13|S4|1": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 12.2,
+   "meanAbsErr": 12.6,
+   "within5": 23.3,
+   "within10": 40.8,
+   "within20": 80.6,
+   "inRange": 38.8,
+   "baseMedianAbsErr": 12.2,
+   "baseWithin10": 40.8
+  },
+  "13|S4|2": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 3.1,
+   "meanAbsErr": 7.7,
+   "within5": 67,
+   "within10": 83.2,
+   "within20": 86.7,
+   "inRange": 77.7,
+   "baseMedianAbsErr": 3.1,
+   "baseWithin10": 83.2
+  },
+  "13|S5|0": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 10.1,
+   "meanAbsErr": 13.6,
+   "within5": 34,
+   "within10": 49.5,
+   "within20": 71.8,
+   "inRange": 46.9,
+   "baseMedianAbsErr": 10.1,
+   "baseWithin10": 49.5
+  },
+  "13|S5|1": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 15.1,
+   "meanAbsErr": 14.9,
+   "within5": 20.7,
+   "within10": 33,
+   "within20": 69.6,
+   "inRange": 30.4,
+   "baseMedianAbsErr": 15.1,
+   "baseWithin10": 33
+  },
+  "13|S5|2": {
+   "n": 309,
+   "days": 309,
+   "medianAbsErr": 3.6,
+   "meanAbsErr": 10.7,
+   "within5": 59.9,
+   "within10": 76.4,
+   "within20": 84.8,
+   "inRange": 71.2,
+   "baseMedianAbsErr": 3.6,
+   "baseWithin10": 76.4
+  },
+  "13|S6|0": {
+   "n": 308,
+   "days": 308,
+   "medianAbsErr": 16,
+   "meanAbsErr": 21.1,
+   "within5": 23.4,
+   "within10": 38.3,
+   "within20": 57.8,
+   "inRange": 34.1,
+   "baseMedianAbsErr": 16,
+   "baseWithin10": 38.3
+  },
+  "13|S6|1": {
+   "n": 308,
+   "days": 308,
+   "medianAbsErr": 17.4,
+   "meanAbsErr": 23.5,
+   "within5": 20.5,
+   "within10": 37,
+   "within20": 52.9,
+   "inRange": 30.5,
+   "baseMedianAbsErr": 17.4,
+   "baseWithin10": 37
+  },
+  "13|S6|2": {
+   "n": 308,
+   "days": 308,
+   "medianAbsErr": 16.6,
+   "meanAbsErr": 27.6,
+   "within5": 25.3,
+   "within10": 39.9,
+   "within20": 55.5,
+   "inRange": 35.4,
+   "baseMedianAbsErr": 16.6,
+   "baseWithin10": 39.9
+  },
+  "22|A1|0": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 6.4,
+   "meanAbsErr": 11.2,
+   "within5": 42.6,
+   "within10": 66,
+   "within20": 78.8,
+   "inRange": 41.3,
+   "baseMedianAbsErr": 6.9,
+   "baseWithin10": 66
+  },
+  "22|A1|1": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 3.9,
+   "meanAbsErr": 6.5,
+   "within5": 61.2,
+   "within10": 82.4,
+   "within20": 91,
+   "inRange": 60.9,
+   "baseMedianAbsErr": 3.7,
+   "baseWithin10": 81.7
+  },
+  "22|A1|2": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 3,
+   "meanAbsErr": 4.7,
+   "within5": 73.4,
+   "within10": 91,
+   "within20": 94.9,
+   "inRange": 75,
+   "baseMedianAbsErr": 3,
+   "baseWithin10": 91
+  },
+  "22|A2|0": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 8.4,
+   "meanAbsErr": 13.4,
+   "within5": 32.7,
+   "within10": 53.5,
+   "within20": 76.3,
+   "inRange": 33,
+   "baseMedianAbsErr": 8.5,
+   "baseWithin10": 51.9
+  },
+  "22|A2|1": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 5.3,
+   "meanAbsErr": 9.8,
+   "within5": 49.4,
+   "within10": 69.2,
+   "within20": 83.7,
+   "inRange": 46.2,
+   "baseMedianAbsErr": 5.4,
+   "baseWithin10": 69.9
+  },
+  "22|A2|2": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 3.8,
+   "meanAbsErr": 7.1,
+   "within5": 58.3,
+   "within10": 80.1,
+   "within20": 89.7,
+   "inRange": 59.6,
+   "baseMedianAbsErr": 3.8,
+   "baseWithin10": 80.4
+  },
+  "22|A3|0": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 10.5,
+   "meanAbsErr": 14.8,
+   "within5": 23.1,
+   "within10": 48.1,
+   "within20": 73.1,
+   "inRange": 25,
+   "baseMedianAbsErr": 10.9,
+   "baseWithin10": 46.8
+  },
+  "22|A3|1": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 2.8,
+   "meanAbsErr": 3.8,
+   "within5": 79.5,
+   "within10": 95.5,
+   "within20": 97.4,
+   "inRange": 81.1,
+   "baseMedianAbsErr": 2.9,
+   "baseWithin10": 95.5
+  },
+  "22|A3|2": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 2.9,
+   "meanAbsErr": 4.4,
+   "within5": 78.2,
+   "within10": 92.3,
+   "within20": 96.5,
+   "inRange": 77.9,
+   "baseMedianAbsErr": 3,
+   "baseWithin10": 92.3
+  },
+  "22|B1|0": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 5.3,
+   "meanAbsErr": 9.1,
+   "within5": 47.4,
+   "within10": 70.2,
+   "within20": 85.9,
+   "inRange": 49.7,
+   "baseMedianAbsErr": 5.3,
+   "baseWithin10": 70.2
+  },
+  "22|B1|1": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 4.6,
+   "meanAbsErr": 7.6,
+   "within5": 52.9,
+   "within10": 76.9,
+   "within20": 89.1,
+   "inRange": 55.4,
+   "baseMedianAbsErr": 4.6,
+   "baseWithin10": 76.9
+  },
+  "22|B1|2": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 5.1,
+   "meanAbsErr": 7.5,
+   "within5": 49.7,
+   "within10": 76.6,
+   "within20": 90.1,
+   "inRange": 53.8,
+   "baseMedianAbsErr": 5.1,
+   "baseWithin10": 76.6
+  },
+  "22|B2|0": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 6,
+   "meanAbsErr": 10.4,
+   "within5": 45.8,
+   "within10": 67.9,
+   "within20": 80.1,
+   "inRange": 47.4,
+   "baseMedianAbsErr": 6,
+   "baseWithin10": 67.9
+  },
+  "22|B2|1": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 6.1,
+   "meanAbsErr": 9.9,
+   "within5": 43.6,
+   "within10": 69.2,
+   "within20": 84,
+   "inRange": 49,
+   "baseMedianAbsErr": 6.1,
+   "baseWithin10": 69.2
+  },
+  "22|B2|2": {
+   "n": 312,
+   "days": 312,
    "medianAbsErr": 7,
-   "meanAbsErr": 13,
-   "within5": 40.3,
-   "within10": 59.1,
-   "within20": 76.6,
-   "inRange": 51.5,
+   "meanAbsErr": 10.2,
+   "within5": 35.6,
+   "within10": 65.4,
+   "within20": 84,
+   "inRange": 40.7,
    "baseMedianAbsErr": 7,
-   "baseWithin10": 59
+   "baseWithin10": 65.4
+  },
+  "22|B3|0": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 10.7,
+   "meanAbsErr": 15.4,
+   "within5": 25.6,
+   "within10": 49,
+   "within20": 72.4,
+   "inRange": 29.5,
+   "baseMedianAbsErr": 10.7,
+   "baseWithin10": 49
+  },
+  "22|B3|1": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 8.6,
+   "meanAbsErr": 12.6,
+   "within5": 29.2,
+   "within10": 55.4,
+   "within20": 78.2,
+   "inRange": 31.1,
+   "baseMedianAbsErr": 8.6,
+   "baseWithin10": 55.4
+  },
+  "22|B3|2": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 4.1,
+   "meanAbsErr": 7.6,
+   "within5": 58.7,
+   "within10": 78.5,
+   "within20": 90.1,
+   "inRange": 61.9,
+   "baseMedianAbsErr": 4.1,
+   "baseWithin10": 78.5
+  },
+  "22|C1|0": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 2.7,
+   "meanAbsErr": 4.3,
+   "within5": 76.9,
+   "within10": 93.6,
+   "within20": 96.5,
+   "inRange": 72.8,
+   "baseMedianAbsErr": 2.8,
+   "baseWithin10": 93.6
+  },
+  "22|C1|1": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 4.7,
+   "meanAbsErr": 8.3,
+   "within5": 51.3,
+   "within10": 73.4,
+   "within20": 87.2,
+   "inRange": 49,
+   "baseMedianAbsErr": 5,
+   "baseWithin10": 74.4
+  },
+  "22|C1|2": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 10.7,
+   "meanAbsErr": 11.4,
+   "within5": 27.2,
+   "within10": 47.4,
+   "within20": 84.6,
+   "inRange": 26.6,
+   "baseMedianAbsErr": 11.2,
+   "baseWithin10": 45.8
+  },
+  "22|C2|0": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 2.8,
+   "meanAbsErr": 4.1,
+   "within5": 79.8,
+   "within10": 93.6,
+   "within20": 97.1,
+   "inRange": 77.6,
+   "baseMedianAbsErr": 2.8,
+   "baseWithin10": 93.6
+  },
+  "22|C2|1": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 4.3,
+   "meanAbsErr": 7.8,
+   "within5": 57.4,
+   "within10": 77.9,
+   "within20": 86.5,
+   "inRange": 53.2,
+   "baseMedianAbsErr": 3.9,
+   "baseWithin10": 77.9
+  },
+  "22|C2|2": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 8.7,
+   "meanAbsErr": 10.9,
+   "within5": 29.5,
+   "within10": 56.7,
+   "within20": 85.3,
+   "inRange": 28.2,
+   "baseMedianAbsErr": 8.5,
+   "baseWithin10": 56.1
+  },
+  "22|C3|0": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 9.8,
+   "meanAbsErr": 13.8,
+   "within5": 27.6,
+   "within10": 51.6,
+   "within20": 74.7,
+   "inRange": 25.6,
+   "baseMedianAbsErr": 10,
+   "baseWithin10": 50.3
+  },
+  "22|C3|1": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 6.5,
+   "meanAbsErr": 11,
+   "within5": 41,
+   "within10": 61.5,
+   "within20": 81.4,
+   "inRange": 37.5,
+   "baseMedianAbsErr": 7,
+   "baseWithin10": 60.6
+  },
+  "22|C3|2": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 4.9,
+   "meanAbsErr": 7.9,
+   "within5": 50.3,
+   "within10": 75.6,
+   "within20": 90.4,
+   "inRange": 45.5,
+   "baseMedianAbsErr": 5,
+   "baseWithin10": 75
+  },
+  "22|D1|0": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 8.9,
+   "meanAbsErr": 10.6,
+   "within5": 29.5,
+   "within10": 55.8,
+   "within20": 89.4,
+   "inRange": 53.8,
+   "baseMedianAbsErr": 8.6,
+   "baseWithin10": 58
+  },
+  "22|D1|1": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 8.9,
+   "meanAbsErr": 11,
+   "within5": 27.6,
+   "within10": 54.2,
+   "within20": 85.6,
+   "inRange": 51.6,
+   "baseMedianAbsErr": 11.2,
+   "baseWithin10": 44.2
+  },
+  "22|D1|2": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 8,
+   "meanAbsErr": 10.6,
+   "within5": 30.4,
+   "within10": 60.9,
+   "within20": 85.6,
+   "inRange": 58.3,
+   "baseMedianAbsErr": 9.4,
+   "baseWithin10": 52.2
+  },
+  "22|D2|0": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 8.2,
+   "meanAbsErr": 10.1,
+   "within5": 31.7,
+   "within10": 58.7,
+   "within20": 88.1,
+   "inRange": 54.8,
+   "baseMedianAbsErr": 8.4,
+   "baseWithin10": 56.4
+  },
+  "22|D2|1": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 7.8,
+   "meanAbsErr": 10.3,
+   "within5": 33.3,
+   "within10": 62.8,
+   "within20": 85.3,
+   "inRange": 59,
+   "baseMedianAbsErr": 8.9,
+   "baseWithin10": 57.1
+  },
+  "22|D2|2": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 8.6,
+   "meanAbsErr": 11.3,
+   "within5": 31.1,
+   "within10": 55.1,
+   "within20": 81.4,
+   "inRange": 52.6,
+   "baseMedianAbsErr": 10,
+   "baseWithin10": 49.7
+  },
+  "22|D3|0": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 9.8,
+   "meanAbsErr": 12.5,
+   "within5": 25,
+   "within10": 51,
+   "within20": 82.7,
+   "inRange": 46.8,
+   "baseMedianAbsErr": 11,
+   "baseWithin10": 45.5
+  },
+  "22|D3|1": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 8.4,
+   "meanAbsErr": 11.6,
+   "within5": 31.1,
+   "within10": 59,
+   "within20": 81.4,
+   "inRange": 53.5,
+   "baseMedianAbsErr": 10.4,
+   "baseWithin10": 47.8
+  },
+  "22|D3|2": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 8.4,
+   "meanAbsErr": 10.8,
+   "within5": 30.1,
+   "within10": 57.4,
+   "within20": 85.9,
+   "inRange": 55.4,
+   "baseMedianAbsErr": 9.5,
+   "baseWithin10": 52.9
+  },
+  "22|S1|0": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 7.6,
+   "meanAbsErr": 11.2,
+   "within5": 36.2,
+   "within10": 58,
+   "within20": 82.4,
+   "inRange": 44.6,
+   "baseMedianAbsErr": 7.9,
+   "baseWithin10": 58
+  },
+  "22|S1|1": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 4.1,
+   "meanAbsErr": 7.1,
+   "within5": 61.9,
+   "within10": 80.4,
+   "within20": 90.1,
+   "inRange": 64.7,
+   "baseMedianAbsErr": 3.8,
+   "baseWithin10": 80.4
+  },
+  "22|S1|2": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 3.3,
+   "meanAbsErr": 5.2,
+   "within5": 68.3,
+   "within10": 89.7,
+   "within20": 95.2,
+   "inRange": 75.3,
+   "baseMedianAbsErr": 3.2,
+   "baseWithin10": 89.1
+  },
+  "22|S2|0": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 7.2,
+   "meanAbsErr": 12,
+   "within5": 37.2,
+   "within10": 60.9,
+   "within20": 75.3,
+   "inRange": 47.1,
+   "baseMedianAbsErr": 6.9,
+   "baseWithin10": 59.9
+  },
+  "22|S2|1": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 4,
+   "meanAbsErr": 7.4,
+   "within5": 62.5,
+   "within10": 80.1,
+   "within20": 87.8,
+   "inRange": 65.4,
+   "baseMedianAbsErr": 3.7,
+   "baseWithin10": 80.4
+  },
+  "22|S2|2": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 5.2,
+   "meanAbsErr": 9,
+   "within5": 47.8,
+   "within10": 73.4,
+   "within20": 86.2,
+   "inRange": 54.5,
+   "baseMedianAbsErr": 5.2,
+   "baseWithin10": 73.7
+  },
+  "22|S3|0": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 12.6,
+   "meanAbsErr": 15.9,
+   "within5": 21.8,
+   "within10": 41,
+   "within20": 68.6,
+   "inRange": 27.9,
+   "baseMedianAbsErr": 12.9,
+   "baseWithin10": 40.4
+  },
+  "22|S3|1": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 3.5,
+   "meanAbsErr": 6.4,
+   "within5": 68.6,
+   "within10": 86.9,
+   "within20": 91,
+   "inRange": 73.4,
+   "baseMedianAbsErr": 3.4,
+   "baseWithin10": 86.5
+  },
+  "22|S3|2": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 5,
+   "meanAbsErr": 10.1,
+   "within5": 51,
+   "within10": 75.3,
+   "within20": 86.2,
+   "inRange": 56.1,
+   "baseMedianAbsErr": 5,
+   "baseWithin10": 75.3
+  },
+  "22|S4|0": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 8.1,
+   "meanAbsErr": 13.7,
+   "within5": 36.5,
+   "within10": 56.7,
+   "within20": 77.2,
+   "inRange": 43.6,
+   "baseMedianAbsErr": 8.3,
+   "baseWithin10": 55.4
+  },
+  "22|S4|1": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 3.5,
+   "meanAbsErr": 6,
+   "within5": 70.5,
+   "within10": 86.5,
+   "within20": 91.7,
+   "inRange": 73.7,
+   "baseMedianAbsErr": 3.2,
+   "baseWithin10": 86.2
+  },
+  "22|S4|2": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 6.1,
+   "meanAbsErr": 10.9,
+   "within5": 42.3,
+   "within10": 69.9,
+   "within20": 83.7,
+   "inRange": 48.1,
+   "baseMedianAbsErr": 6.2,
+   "baseWithin10": 68.6
+  },
+  "22|S5|0": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 16,
+   "meanAbsErr": 22.1,
+   "within5": 22.8,
+   "within10": 36.5,
+   "within20": 57.7,
+   "inRange": 26.9,
+   "baseMedianAbsErr": 16.3,
+   "baseWithin10": 36.9
+  },
+  "22|S5|1": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 4.1,
+   "meanAbsErr": 7.8,
+   "within5": 62.5,
+   "within10": 78.2,
+   "within20": 86.9,
+   "inRange": 65.7,
+   "baseMedianAbsErr": 3.8,
+   "baseWithin10": 79.2
+  },
+  "22|S5|2": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 6.7,
+   "meanAbsErr": 14.2,
+   "within5": 38.5,
+   "within10": 62.2,
+   "within20": 76.9,
+   "inRange": 41.7,
+   "baseMedianAbsErr": 7.1,
+   "baseWithin10": 62.8
+  },
+  "22|S6|0": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 20.5,
+   "meanAbsErr": 25.2,
+   "within5": 20.5,
+   "within10": 33,
+   "within20": 50,
+   "inRange": 26.3,
+   "baseMedianAbsErr": 20,
+   "baseWithin10": 34
+  },
+  "22|S6|1": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 7.9,
+   "meanAbsErr": 13.8,
+   "within5": 35.9,
+   "within10": 58.3,
+   "within20": 72.4,
+   "inRange": 44.6,
+   "baseMedianAbsErr": 7.3,
+   "baseWithin10": 58
+  },
+  "22|S6|2": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 15.4,
+   "meanAbsErr": 22.6,
+   "within5": 25.3,
+   "within10": 40.1,
+   "within20": 55.8,
+   "inRange": 30.8,
+   "baseMedianAbsErr": 15,
+   "baseWithin10": 38.5
+  },
+  "24|A1|0": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 10.8,
+   "meanAbsErr": 15.1,
+   "within5": 28.5,
+   "within10": 47.8,
+   "within20": 76,
+   "inRange": 26.6,
+   "baseMedianAbsErr": 10.8,
+   "baseWithin10": 47.8
+  },
+  "24|A1|1": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 3.8,
+   "meanAbsErr": 7.4,
+   "within5": 59.3,
+   "within10": 77.6,
+   "within20": 90.7,
+   "inRange": 54.8,
+   "baseMedianAbsErr": 3.8,
+   "baseWithin10": 77.6
+  },
+  "24|A1|2": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 3,
+   "meanAbsErr": 5.1,
+   "within5": 76.6,
+   "within10": 89.4,
+   "within20": 95.5,
+   "inRange": 70.8,
+   "baseMedianAbsErr": 3,
+   "baseWithin10": 89.4
+  },
+  "24|A2|0": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 9.5,
+   "meanAbsErr": 13.5,
+   "within5": 28.2,
+   "within10": 52.2,
+   "within20": 79.8,
+   "inRange": 28.2,
+   "baseMedianAbsErr": 9.5,
+   "baseWithin10": 52.2
+  },
+  "24|A2|1": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 5.9,
+   "meanAbsErr": 10.2,
+   "within5": 43.6,
+   "within10": 65.7,
+   "within20": 82.7,
+   "inRange": 42.3,
+   "baseMedianAbsErr": 5.9,
+   "baseWithin10": 65.7
+  },
+  "24|A2|2": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 4.3,
+   "meanAbsErr": 8.3,
+   "within5": 54.8,
+   "within10": 76.9,
+   "within20": 86.9,
+   "inRange": 51,
+   "baseMedianAbsErr": 4.3,
+   "baseWithin10": 76.9
+  },
+  "24|A3|0": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 13.2,
+   "meanAbsErr": 16.1,
+   "within5": 20.5,
+   "within10": 38.8,
+   "within20": 70.8,
+   "inRange": 19.2,
+   "baseMedianAbsErr": 13.2,
+   "baseWithin10": 38.8
+  },
+  "24|A3|1": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 2.7,
+   "meanAbsErr": 4.4,
+   "within5": 84.3,
+   "within10": 91.7,
+   "within20": 93.9,
+   "inRange": 78.8,
+   "baseMedianAbsErr": 2.7,
+   "baseWithin10": 91.7
+  },
+  "24|A3|2": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 3,
+   "meanAbsErr": 5.5,
+   "within5": 74.4,
+   "within10": 87.2,
+   "within20": 93.6,
+   "inRange": 68.3,
+   "baseMedianAbsErr": 3,
+   "baseWithin10": 87.2
+  },
+  "24|B1|0": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 3.9,
+   "meanAbsErr": 7.8,
+   "within5": 58,
+   "within10": 79.2,
+   "within20": 86.5,
+   "inRange": 59.6,
+   "baseMedianAbsErr": 3.8,
+   "baseWithin10": 79.5
+  },
+  "24|B1|1": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 3.9,
+   "meanAbsErr": 6.5,
+   "within5": 61.5,
+   "within10": 82.4,
+   "within20": 92.9,
+   "inRange": 64.4,
+   "baseMedianAbsErr": 3.2,
+   "baseWithin10": 83.3
+  },
+  "24|B1|2": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 4.2,
+   "meanAbsErr": 7.1,
+   "within5": 57.4,
+   "within10": 76.3,
+   "within20": 90.4,
+   "inRange": 56.7,
+   "baseMedianAbsErr": 3.7,
+   "baseWithin10": 79.2
+  },
+  "24|B2|0": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 5.5,
+   "meanAbsErr": 10.1,
+   "within5": 47.1,
+   "within10": 71.8,
+   "within20": 83.7,
+   "inRange": 51,
+   "baseMedianAbsErr": 5.6,
+   "baseWithin10": 69.9
+  },
+  "24|B2|1": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 5.2,
+   "meanAbsErr": 9.1,
+   "within5": 47.8,
+   "within10": 73.4,
+   "within20": 85.9,
+   "inRange": 51.9,
+   "baseMedianAbsErr": 4.8,
+   "baseWithin10": 72.4
+  },
+  "24|B2|2": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 4.6,
+   "meanAbsErr": 8.3,
+   "within5": 54.5,
+   "within10": 74.4,
+   "within20": 85.6,
+   "inRange": 54.5,
+   "baseMedianAbsErr": 4.4,
+   "baseWithin10": 74.4
+  },
+  "24|B3|0": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 12.6,
+   "meanAbsErr": 16.4,
+   "within5": 22.8,
+   "within10": 40.7,
+   "within20": 73.7,
+   "inRange": 24,
+   "baseMedianAbsErr": 12.9,
+   "baseWithin10": 40.1
+  },
+  "24|B3|1": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 6.2,
+   "meanAbsErr": 11.5,
+   "within5": 42.3,
+   "within10": 64.1,
+   "within20": 80.8,
+   "inRange": 43.6,
+   "baseMedianAbsErr": 6.5,
+   "baseWithin10": 63.1
+  },
+  "24|B3|2": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 3.7,
+   "meanAbsErr": 6.2,
+   "within5": 64.7,
+   "within10": 85.3,
+   "within20": 91.7,
+   "inRange": 66.7,
+   "baseMedianAbsErr": 3.3,
+   "baseWithin10": 85.9
+  },
+  "24|C1|0": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 2.4,
+   "meanAbsErr": 3,
+   "within5": 91.7,
+   "within10": 98.4,
+   "within20": 98.7,
+   "inRange": 82.4,
+   "baseMedianAbsErr": 2.4,
+   "baseWithin10": 98.4
+  },
+  "24|C1|1": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 3,
+   "meanAbsErr": 5.1,
+   "within5": 72.4,
+   "within10": 87.5,
+   "within20": 94.9,
+   "inRange": 63.8,
+   "baseMedianAbsErr": 3,
+   "baseWithin10": 87.5
+  },
+  "24|C1|2": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 6.7,
+   "meanAbsErr": 9.5,
+   "within5": 35.6,
+   "within10": 67.3,
+   "within20": 86.9,
+   "inRange": 30.8,
+   "baseMedianAbsErr": 6.7,
+   "baseWithin10": 67.3
+  },
+  "24|C2|0": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 2.5,
+   "meanAbsErr": 3.7,
+   "within5": 84.3,
+   "within10": 94.9,
+   "within20": 97.8,
+   "inRange": 75.6,
+   "baseMedianAbsErr": 2.5,
+   "baseWithin10": 94.9
+  },
+  "24|C2|1": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 2.6,
+   "meanAbsErr": 5.1,
+   "within5": 75,
+   "within10": 87.8,
+   "within20": 93.6,
+   "inRange": 69.2,
+   "baseMedianAbsErr": 2.6,
+   "baseWithin10": 87.8
+  },
+  "24|C2|2": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 6.3,
+   "meanAbsErr": 9.4,
+   "within5": 40.7,
+   "within10": 72.4,
+   "within20": 88.5,
+   "inRange": 32.7,
+   "baseMedianAbsErr": 6.3,
+   "baseWithin10": 72.4
+  },
+  "24|C3|0": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 8.4,
+   "meanAbsErr": 12.7,
+   "within5": 34,
+   "within10": 56.7,
+   "within20": 76.3,
+   "inRange": 28.8,
+   "baseMedianAbsErr": 8.4,
+   "baseWithin10": 56.7
+  },
+  "24|C3|1": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 5.5,
+   "meanAbsErr": 10.9,
+   "within5": 44.6,
+   "within10": 67.6,
+   "within20": 79.8,
+   "inRange": 37.2,
+   "baseMedianAbsErr": 5.5,
+   "baseWithin10": 67.6
+  },
+  "24|C3|2": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 4.7,
+   "meanAbsErr": 7.3,
+   "within5": 53.2,
+   "within10": 77.2,
+   "within20": 90.4,
+   "inRange": 48.1,
+   "baseMedianAbsErr": 4.7,
+   "baseWithin10": 77.2
+  },
+  "24|D1|0": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 8,
+   "meanAbsErr": 9.4,
+   "within5": 31.4,
+   "within10": 59.9,
+   "within20": 92.9,
+   "inRange": 44.2,
+   "baseMedianAbsErr": 8.9,
+   "baseWithin10": 55.8
+  },
+  "24|D1|1": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 7.3,
+   "meanAbsErr": 9.2,
+   "within5": 34.9,
+   "within10": 62.8,
+   "within20": 91,
+   "inRange": 48.1,
+   "baseMedianAbsErr": 8.7,
+   "baseWithin10": 57.1
+  },
+  "24|D1|2": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 8.2,
+   "meanAbsErr": 10,
+   "within5": 35.3,
+   "within10": 59.6,
+   "within20": 88.1,
+   "inRange": 43.6,
+   "baseMedianAbsErr": 8.7,
+   "baseWithin10": 56.4
+  },
+  "24|D2|0": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 7.8,
+   "meanAbsErr": 10.6,
+   "within5": 30.4,
+   "within10": 61.2,
+   "within20": 86.2,
+   "inRange": 45.8,
+   "baseMedianAbsErr": 9.5,
+   "baseWithin10": 51.9
+  },
+  "24|D2|1": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 7.8,
+   "meanAbsErr": 9.5,
+   "within5": 35.9,
+   "within10": 62.5,
+   "within20": 90.7,
+   "inRange": 47.1,
+   "baseMedianAbsErr": 8.2,
+   "baseWithin10": 59.6
+  },
+  "24|D2|2": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 8.2,
+   "meanAbsErr": 10.3,
+   "within5": 30.4,
+   "within10": 60.3,
+   "within20": 87.2,
+   "inRange": 47.1,
+   "baseMedianAbsErr": 7.8,
+   "baseWithin10": 60.9
+  },
+  "24|D3|0": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 10.3,
+   "meanAbsErr": 12.8,
+   "within5": 26.3,
+   "within10": 48.7,
+   "within20": 82.1,
+   "inRange": 34.9,
+   "baseMedianAbsErr": 10.6,
+   "baseWithin10": 47.8
+  },
+  "24|D3|1": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 5.1,
+   "meanAbsErr": 7.1,
+   "within5": 49.4,
+   "within10": 78.8,
+   "within20": 94.2,
+   "inRange": 64.4,
+   "baseMedianAbsErr": 4.2,
+   "baseWithin10": 78.5
+  },
+  "24|D3|2": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 10,
+   "meanAbsErr": 11.9,
+   "within5": 25.6,
+   "within10": 50.3,
+   "within20": 84.6,
+   "inRange": 37.2,
+   "baseMedianAbsErr": 10.7,
+   "baseWithin10": 47.1
+  },
+  "24|S1|0": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 10.3,
+   "meanAbsErr": 14.3,
+   "within5": 23.7,
+   "within10": 49,
+   "within20": 74.7,
+   "inRange": 38.8,
+   "baseMedianAbsErr": 10.5,
+   "baseWithin10": 47.1
+  },
+  "24|S1|1": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 3.6,
+   "meanAbsErr": 6.3,
+   "within5": 63.5,
+   "within10": 84,
+   "within20": 91.3,
+   "inRange": 74.4,
+   "baseMedianAbsErr": 3.3,
+   "baseWithin10": 84.3
+  },
+  "24|S1|2": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 2.9,
+   "meanAbsErr": 3.9,
+   "within5": 79.5,
+   "within10": 93.3,
+   "within20": 97.1,
+   "inRange": 88.5,
+   "baseMedianAbsErr": 2.7,
+   "baseWithin10": 93.6
+  },
+  "24|S2|0": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 11.5,
+   "meanAbsErr": 15.3,
+   "within5": 26.9,
+   "within10": 47.1,
+   "within20": 69.2,
+   "inRange": 37.8,
+   "baseMedianAbsErr": 11.5,
+   "baseWithin10": 46.5
+  },
+  "24|S2|1": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 5.1,
+   "meanAbsErr": 10.5,
+   "within5": 48.7,
+   "within10": 69.6,
+   "within20": 82.4,
+   "inRange": 56.7,
+   "baseMedianAbsErr": 4.9,
+   "baseWithin10": 69.6
+  },
+  "24|S2|2": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 3,
+   "meanAbsErr": 5.6,
+   "within5": 70.2,
+   "within10": 86.2,
+   "within20": 92,
+   "inRange": 77.9,
+   "baseMedianAbsErr": 2.8,
+   "baseWithin10": 86.2
+  },
+  "24|S3|0": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 11.8,
+   "meanAbsErr": 17,
+   "within5": 26.6,
+   "within10": 45.5,
+   "within20": 67.3,
+   "inRange": 34.9,
+   "baseMedianAbsErr": 11.7,
+   "baseWithin10": 44.6
+  },
+  "24|S3|1": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 5.8,
+   "meanAbsErr": 11.1,
+   "within5": 45.2,
+   "within10": 64.1,
+   "within20": 78.5,
+   "inRange": 51.3,
+   "baseMedianAbsErr": 5.8,
+   "baseWithin10": 64.7
+  },
+  "24|S3|2": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 5.5,
+   "meanAbsErr": 11.7,
+   "within5": 47.1,
+   "within10": 70.5,
+   "within20": 79.2,
+   "inRange": 54.8,
+   "baseMedianAbsErr": 5.4,
+   "baseWithin10": 69.6
+  },
+  "24|S4|0": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 10.2,
+   "meanAbsErr": 15,
+   "within5": 27.9,
+   "within10": 50,
+   "within20": 72.1,
+   "inRange": 39.7,
+   "baseMedianAbsErr": 10.4,
+   "baseWithin10": 48.7
+  },
+  "24|S4|1": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 3.7,
+   "meanAbsErr": 7.4,
+   "within5": 62.2,
+   "within10": 80.4,
+   "within20": 88.1,
+   "inRange": 70.5,
+   "baseMedianAbsErr": 3.6,
+   "baseWithin10": 80.8
+  },
+  "24|S4|2": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 4.4,
+   "meanAbsErr": 10.1,
+   "within5": 56.1,
+   "within10": 75,
+   "within20": 82.4,
+   "inRange": 62.5,
+   "baseMedianAbsErr": 4.4,
+   "baseWithin10": 75.3
+  },
+  "24|S5|0": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 21.1,
+   "meanAbsErr": 24.7,
+   "within5": 17.9,
+   "within10": 30.1,
+   "within20": 49,
+   "inRange": 25.3,
+   "baseMedianAbsErr": 20.7,
+   "baseWithin10": 30.4
+  },
+  "24|S5|1": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 5.2,
+   "meanAbsErr": 11,
+   "within5": 47.8,
+   "within10": 71.5,
+   "within20": 79.8,
+   "inRange": 55.8,
+   "baseMedianAbsErr": 5.2,
+   "baseWithin10": 72.1
+  },
+  "24|S5|2": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 5.1,
+   "meanAbsErr": 12.7,
+   "within5": 49.4,
+   "within10": 68.9,
+   "within20": 81.1,
+   "inRange": 56.7,
+   "baseMedianAbsErr": 5.3,
+   "baseWithin10": 68.9
+  },
+  "24|S6|0": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 15.6,
+   "meanAbsErr": 23.5,
+   "within5": 23.7,
+   "within10": 39.4,
+   "within20": 56.1,
+   "inRange": 30.4,
+   "baseMedianAbsErr": 15.7,
+   "baseWithin10": 39.1
+  },
+  "24|S6|1": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 10.6,
+   "meanAbsErr": 15.9,
+   "within5": 34.3,
+   "within10": 49.7,
+   "within20": 66.3,
+   "inRange": 42.9,
+   "baseMedianAbsErr": 10.4,
+   "baseWithin10": 49
+  },
+  "24|S6|2": {
+   "n": 312,
+   "days": 312,
+   "medianAbsErr": 19.6,
+   "meanAbsErr": 29.2,
+   "within5": 24.7,
+   "within10": 38.8,
+   "within20": 50.6,
+   "inRange": 33.3,
+   "baseMedianAbsErr": 20,
+   "baseWithin10": 39.1
   }
  },
  "byBorder": {
@@ -314,35 +2260,35 @@
    "medianAbsErr": 5,
    "meanAbsErr": 9.4,
    "within5": 49.7,
-   "within10": 69.8,
-   "within20": 84.6,
-   "inRange": 54.4,
-   "baseMedianAbsErr": 5.1,
-   "baseWithin10": 69.1
+   "within10": 70.1,
+   "within20": 84.7,
+   "inRange": 54.3,
+   "baseMedianAbsErr": 5,
+   "baseWithin10": 69.4
   },
   "+2": {
    "n": 16792,
    "days": 313,
-   "medianAbsErr": 5.1,
-   "meanAbsErr": 10,
-   "within5": 49.2,
-   "within10": 70,
-   "within20": 84.7,
+   "medianAbsErr": 5,
+   "meanAbsErr": 9.9,
+   "within5": 49.7,
+   "within10": 70.9,
+   "within20": 84.8,
    "inRange": 53.8,
-   "baseMedianAbsErr": 5.2,
-   "baseWithin10": 69.7
+   "baseMedianAbsErr": 5,
+   "baseWithin10": 70.4
   },
   "±0": {
    "n": 16792,
    "days": 313,
-   "medianAbsErr": 7.5,
-   "meanAbsErr": 12.2,
-   "within5": 38.7,
-   "within10": 58.5,
-   "within20": 78.9,
-   "inRange": 43.9,
-   "baseMedianAbsErr": 7.5,
-   "baseWithin10": 58.1
+   "medianAbsErr": 7.1,
+   "meanAbsErr": 12.3,
+   "within5": 39.9,
+   "within10": 59.5,
+   "within20": 78.8,
+   "inRange": 44.2,
+   "baseMedianAbsErr": 7.2,
+   "baseWithin10": 59
   }
  },
  "evalModel": {
@@ -393,6 +2339,10 @@
       "pct": 0.4,
       "label": "月末（最後の3日）"
      },
+     "month-late": {
+      "pct": -1.8,
+      "label": "月の後半（21〜27日）"
+     },
      "holiday": {
       "pct": -2.3,
       "label": "祝日・振替休日"
@@ -407,8 +2357,8 @@
      "middle": -0.1,
      "last": 1.3
     },
-    "p25": -5.1,
-    "p75": 3.5,
+    "p25": -4.7,
+    "p75": 3.9,
     "days": 360
    },
    "A": {
@@ -456,6 +2406,10 @@
       "pct": 6.1,
       "label": "月末（最後の3日）"
      },
+     "month-late": {
+      "pct": -2.1,
+      "label": "月の後半（21〜27日）"
+     },
      "holiday": {
       "pct": -4.6,
       "label": "祝日・振替休日"
@@ -470,8 +2424,8 @@
      "middle": 1.1,
      "last": -1.7
     },
-    "p25": -13.7,
-    "p75": 11.3,
+    "p25": -13.2,
+    "p75": 11.8,
     "days": 360
    },
    "C": {
@@ -484,52 +2438,10 @@
    },
    "S": {
     "useWeekday": false,
-    "useCalendar": true,
+    "useCalendar": false,
     "useEvent": false,
-    "calendar": {
-     "payday10-actual": {
-      "pct": 0.9,
-      "label": "10日払いの実支給日"
-     },
-     "payday10-next": {
-      "pct": 0.5,
-      "label": "10日払いの翌日"
-     },
-     "payday20-actual": {
-      "pct": -5.2,
-      "label": "20日払いの実支給日"
-     },
-     "payday20-next": {
-      "pct": -2.7,
-      "label": "20日払いの翌日"
-     },
-     "payday25-actual": {
-      "pct": 0.9,
-      "label": "25日払いの実支給日"
-     },
-     "payday25-next": {
-      "pct": -1.1,
-      "label": "25日払いの翌日"
-     },
-     "month-start": {
-      "pct": 1.2,
-      "label": "月初（1〜3日）"
-     },
-     "month-end": {
-      "pct": 2.4,
-      "label": "月末（最後の3日）"
-     },
-     "holiday": {
-      "pct": -1.7,
-      "label": "祝日・振替休日"
-     },
-     "golden-week": {
-      "pct": -1.6,
-      "label": "ゴールデンウィーク（4/29〜5/6）"
-     }
-    },
-    "p25": -10.9,
-    "p75": 7.2,
+    "p25": -10.5,
+    "p75": 6.3,
     "days": 360
    }
   },
@@ -545,7 +2457,7 @@
    "A": {
     "useWeekday": false,
     "useCalendar": true,
-    "useEvent": false,
+    "useEvent": true,
     "calendar": {
      "payday10-actual": {
       "pct": 1,
@@ -579,6 +2491,10 @@
       "pct": -0.3,
       "label": "月末（最後の3日）"
      },
+     "month-late": {
+      "pct": -1.8,
+      "label": "月の後半（21〜27日）"
+     },
      "holiday": {
       "pct": -1.1,
       "label": "祝日・振替休日"
@@ -588,8 +2504,13 @@
       "label": "ゴールデンウィーク（4/29〜5/6）"
      }
     },
-    "p25": -6.6,
-    "p75": 4.1,
+    "event": {
+     "first": 0,
+     "middle": 0.7,
+     "last": 1.1
+    },
+    "p25": -6.4,
+    "p75": 4.5,
     "days": 360
    },
    "D": {
@@ -638,6 +2559,10 @@
       "pct": 7.8,
       "label": "月末（最後の3日）"
      },
+     "month-late": {
+      "pct": -1,
+      "label": "月の後半（21〜27日）"
+     },
      "holiday": {
       "pct": 1.6,
       "label": "祝日・振替休日"
@@ -647,8 +2572,8 @@
       "label": "ゴールデンウィーク（4/29〜5/6）"
      }
     },
-    "p25": -9.8,
-    "p75": 8.6,
+    "p25": -9.5,
+    "p75": 8.9,
     "days": 360
    },
    "C": {
@@ -688,6 +2613,10 @@
       "pct": 1.9,
       "label": "月末（最後の3日）"
      },
+     "month-late": {
+      "pct": -1.7,
+      "label": "月の後半（21〜27日）"
+     },
      "holiday": {
       "pct": -0.3,
       "label": "祝日・振替休日"
@@ -697,25 +2626,30 @@
       "label": "ゴールデンウィーク（4/29〜5/6）"
      }
     },
-    "p25": -5.7,
-    "p75": 3.8,
+    "p25": -5.3,
+    "p75": 4.2,
     "days": 360
    },
    "S": {
     "useWeekday": true,
     "useCalendar": false,
-    "useEvent": false,
+    "useEvent": true,
     "weekday": {
-     "日": -0.6,
-     "月": 1.3,
-     "火": 1.3,
-     "水": -0.7,
-     "木": -0.5,
+     "日": -0.7,
+     "月": 1,
+     "火": 1.2,
+     "水": -1.1,
+     "木": -0.3,
      "金": -1,
-     "土": 1.3
+     "土": 1.4
     },
-    "p25": -9.8,
-    "p75": 5.1,
+    "event": {
+     "first": 0.3,
+     "middle": 0.6,
+     "last": 0.7
+    },
+    "p25": -8.9,
+    "p75": 4.9,
     "days": 360
    }
   },
@@ -766,6 +2700,10 @@
       "pct": 0.6,
       "label": "月末（最後の3日）"
      },
+     "month-late": {
+      "pct": -0.8,
+      "label": "月の後半（21〜27日）"
+     },
      "holiday": {
       "pct": 0,
       "label": "祝日・振替休日"
@@ -775,8 +2713,8 @@
       "label": "ゴールデンウィーク（4/29〜5/6）"
      }
     },
-    "p25": -8.1,
-    "p75": 3.7,
+    "p25": -8,
+    "p75": 3.9,
     "days": 360
    },
    "A": {
@@ -818,11 +2756,20 @@
     "days": 360
    },
    "S": {
-    "useWeekday": false,
+    "useWeekday": true,
     "useCalendar": false,
     "useEvent": false,
-    "p25": -10.7,
-    "p75": 5.7,
+    "weekday": {
+     "日": 0.1,
+     "月": 3,
+     "火": 0.5,
+     "水": -0.7,
+     "木": -0.3,
+     "金": -0.6,
+     "土": 0.3
+    },
+    "p25": -10.1,
+    "p75": 5.2,
     "days": 360
    }
   }
@@ -847,10 +2794,60 @@
    },
    "D": {
     "useWeekday": false,
-    "useCalendar": false,
+    "useCalendar": true,
     "useEvent": false,
-    "p25": -13.1,
-    "p75": 12.2,
+    "calendar": {
+     "payday10-actual": {
+      "pct": 2.9,
+      "label": "10日払いの実支給日"
+     },
+     "payday10-next": {
+      "pct": 1.2,
+      "label": "10日払いの翌日"
+     },
+     "payday20-actual": {
+      "pct": -5.2,
+      "label": "20日払いの実支給日"
+     },
+     "payday20-next": {
+      "pct": -3.7,
+      "label": "20日払いの翌日"
+     },
+     "payday25-actual": {
+      "pct": 3.3,
+      "label": "25日払いの実支給日"
+     },
+     "payday25-next": {
+      "pct": 3.5,
+      "label": "25日払いの翌日"
+     },
+     "month-start": {
+      "pct": 5.7,
+      "label": "月初（1〜3日）"
+     },
+     "month-end": {
+      "pct": 7.1,
+      "label": "月末（最後の3日）"
+     },
+     "month-late": {
+      "pct": -2.6,
+      "label": "月の後半（21〜27日）"
+     },
+     "holiday": {
+      "pct": -3,
+      "label": "祝日・振替休日"
+     },
+     "golden-week": {
+      "pct": 2.7,
+      "label": "ゴールデンウィーク（4/29〜5/6）"
+     },
+     "obon": {
+      "pct": 2.7,
+      "label": "お盆（8/11〜8/16）"
+     }
+    },
+    "p25": -13.2,
+    "p75": 11.2,
     "days": 669
    },
    "C": {
@@ -865,23 +2862,73 @@
     "useWeekday": false,
     "useCalendar": false,
     "useEvent": false,
-    "p25": -9.5,
-    "p75": 7.4,
+    "p25": -8.9,
+    "p75": 6.6,
     "days": 669
    }
   },
   "22": {
    "B": {
     "useWeekday": false,
-    "useCalendar": false,
+    "useCalendar": true,
     "useEvent": false,
-    "p25": -9.2,
-    "p75": 4.6,
+    "calendar": {
+     "payday10-actual": {
+      "pct": -0.2,
+      "label": "10日払いの実支給日"
+     },
+     "payday10-next": {
+      "pct": 1.3,
+      "label": "10日払いの翌日"
+     },
+     "payday20-actual": {
+      "pct": -0.7,
+      "label": "20日払いの実支給日"
+     },
+     "payday20-next": {
+      "pct": -1.8,
+      "label": "20日払いの翌日"
+     },
+     "payday25-actual": {
+      "pct": 0.1,
+      "label": "25日払いの実支給日"
+     },
+     "payday25-next": {
+      "pct": -1.2,
+      "label": "25日払いの翌日"
+     },
+     "month-start": {
+      "pct": 3.4,
+      "label": "月初（1〜3日）"
+     },
+     "month-end": {
+      "pct": 1,
+      "label": "月末（最後の3日）"
+     },
+     "month-late": {
+      "pct": -2.9,
+      "label": "月の後半（21〜27日）"
+     },
+     "holiday": {
+      "pct": 1.6,
+      "label": "祝日・振替休日"
+     },
+     "golden-week": {
+      "pct": 2.8,
+      "label": "ゴールデンウィーク（4/29〜5/6）"
+     },
+     "obon": {
+      "pct": 2.6,
+      "label": "お盆（8/11〜8/16）"
+     }
+    },
+    "p25": -8.7,
+    "p75": 4.5,
     "days": 672
    },
    "A": {
     "useWeekday": true,
-    "useCalendar": false,
+    "useCalendar": true,
     "useEvent": false,
     "weekday": {
      "日": 0.1,
@@ -891,6 +2938,56 @@
      "木": -1.4,
      "金": -0.4,
      "土": 0.2
+    },
+    "calendar": {
+     "payday10-actual": {
+      "pct": 0.1,
+      "label": "10日払いの実支給日"
+     },
+     "payday10-next": {
+      "pct": 1.3,
+      "label": "10日払いの翌日"
+     },
+     "payday20-actual": {
+      "pct": -1.1,
+      "label": "20日払いの実支給日"
+     },
+     "payday20-next": {
+      "pct": -1.4,
+      "label": "20日払いの翌日"
+     },
+     "payday25-actual": {
+      "pct": 0.8,
+      "label": "25日払いの実支給日"
+     },
+     "payday25-next": {
+      "pct": -0.6,
+      "label": "25日払いの翌日"
+     },
+     "month-start": {
+      "pct": 2.9,
+      "label": "月初（1〜3日）"
+     },
+     "month-end": {
+      "pct": 0,
+      "label": "月末（最後の3日）"
+     },
+     "month-late": {
+      "pct": -2,
+      "label": "月の後半（21〜27日）"
+     },
+     "holiday": {
+      "pct": 0.1,
+      "label": "祝日・振替休日"
+     },
+     "golden-week": {
+      "pct": 1.4,
+      "label": "ゴールデンウィーク（4/29〜5/6）"
+     },
+     "obon": {
+      "pct": 2.7,
+      "label": "お盆（8/11〜8/16）"
+     }
     },
     "p25": -6.1,
     "p75": 4.1,
@@ -942,6 +3039,10 @@
       "pct": 9.5,
       "label": "月末（最後の3日）"
      },
+     "month-late": {
+      "pct": -0.9,
+      "label": "月の後半（21〜27日）"
+     },
      "holiday": {
       "pct": 2.6,
       "label": "祝日・振替休日"
@@ -955,8 +3056,8 @@
       "label": "お盆（8/11〜8/16）"
      }
     },
-    "p25": -9.3,
-    "p75": 8.2,
+    "p25": -9.1,
+    "p75": 8.5,
     "days": 672
    },
    "C": {
@@ -1005,6 +3106,10 @@
       "pct": 2.3,
       "label": "月末（最後の3日）"
      },
+     "month-late": {
+      "pct": -1.5,
+      "label": "月の後半（21〜27日）"
+     },
      "holiday": {
       "pct": 0.1,
       "label": "祝日・振替休日"
@@ -1018,8 +3123,8 @@
       "label": "お盆（8/11〜8/16）"
      }
     },
-    "p25": -6.4,
-    "p75": 3.8,
+    "p25": -6.1,
+    "p75": 4.1,
     "days": 672
    },
    "S": {
@@ -1027,16 +3132,16 @@
     "useCalendar": false,
     "useEvent": false,
     "weekday": {
-     "日": 0.1,
-     "月": 0.9,
-     "火": 1,
+     "日": -0.1,
+     "月": 0.8,
+     "火": 0.9,
      "水": -0.7,
-     "木": -1,
-     "金": -0.9,
-     "土": 0.8
+     "木": -1.1,
+     "金": -0.6,
+     "土": 1.1
     },
-    "p25": -9.6,
-    "p75": 5.2,
+    "p25": -8.6,
+    "p75": 5.1,
     "days": 672
    }
   },
@@ -1112,6 +3217,10 @@
       "pct": 6.3,
       "label": "月末（最後の3日）"
      },
+     "month-late": {
+      "pct": -0.1,
+      "label": "月の後半（21〜27日）"
+     },
      "holiday": {
       "pct": 3.3,
       "label": "祝日・振替休日"
@@ -1126,7 +3235,7 @@
      }
     },
     "p25": -8.1,
-    "p75": 6.5,
+    "p75": 6.6,
     "days": 672
    },
    "C": {
@@ -1175,6 +3284,10 @@
       "pct": 1.6,
       "label": "月末（最後の3日）"
      },
+     "month-late": {
+      "pct": -0.9,
+      "label": "月の後半（21〜27日）"
+     },
      "holiday": {
       "pct": -0.3,
       "label": "祝日・振替休日"
@@ -1188,8 +3301,8 @@
       "label": "お盆（8/11〜8/16）"
      }
     },
-    "p25": -5.2,
-    "p75": 3.4,
+    "p25": -5.1,
+    "p75": 3.6,
     "days": 672
    },
    "S": {
@@ -1197,16 +3310,16 @@
     "useCalendar": false,
     "useEvent": false,
     "weekday": {
-     "日": -0.8,
-     "月": 1.8,
-     "火": 1.2,
-     "水": -0.8,
-     "木": -1.2,
-     "金": -0.9,
-     "土": 0
+     "日": -0.4,
+     "月": 1.9,
+     "火": 0.8,
+     "水": -1.1,
+     "木": -0.5,
+     "金": -0.6,
+     "土": 0.3
     },
-    "p25": -10.7,
-    "p75": 5.6,
+    "p25": -9.9,
+    "p75": 5.2,
     "days": 672
    }
   }
