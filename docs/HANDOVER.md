@@ -80,6 +80,8 @@ git switch -c codex/example-task "origin/(root)"
 
 ## 未確認・既知のテスト差
 
+- v2026.11.12.4（ランク帯ごとの予想方法・効果を確かめた補正だけ・自信度10段階）は標準チェック・vite系10本に合格、Playwrightは record-display 合格・hud-items と phone-layout は既知の失敗のみ。[PR #53](https://github.com/Yoshi2026s/poco-meter/pull/53) で統合・公開済み（`7013537`）。公開URLで版表示・予想データの model・375×812でのパネル（予想・幅・★6/10・的中率、スクリプトエラー無し）を確認。実機・WebKitは未確認。
+
 - v2026.11.12.3（予想の答え合わせ・パネルでの現メーター変更・本日のイベラス・的中率表示）は標準チェック・vite系10本に合格、Playwrightは record-display 合格・hud-items と phone-layout は既知の失敗のみ。[PR #51](https://github.com/Yoshi2026s/poco-meter/pull/51) で統合・公開済み（`f80a260`）。公開URLで版表示・予想データの accuracy と lasts・375×812でのパネル（予想・的中率・イベラス・横はみ出し無し）を確認。実機・WebKitは未確認。
 
 - v2026.11.12.1（常時表示パネル）は標準チェック・vite系10本に合格。Playwright画面系は record-display 合格、hud-items（HUD target）と phone-layout（320×568）は変更前と同じ既知の失敗。[PR #48](https://github.com/Yoshi2026s/poco-meter/pull/48) で統合・公開済み（`8c8b29b`）。公開URLで版表示・`data/meter-forecast.json`（200）・375×812でのパネル表示（予想・イベント・横はみ出し無し）を確認。実機・WebKit・Wake Lockの実効は未確認。初めて開いた端末でボーダー読込中に予想欄が「記録0日分」と出る点は v2026.11.12.2 で「読込中…」表示に修正。
