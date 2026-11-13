@@ -174,7 +174,11 @@ assert.equal(e.aoDataTime(null), '');
 // 必要ペースは通常表示の「必要ペース」（1時間あたり・10分あたり）に一本化した
 assert.ok(html.includes('id="perHour"') && !html.includes('id="aoPace"'));
 // 通常表示：目標値の下にメーター予想の行がある（目標値の欄の中、操作ボタンの前）
-assert.match(html, /id="targetMini"[\s\S]{0,600}id="miniForecast"[\s\S]{0,200}class="mini-target-actions"/);
+assert.match(html, /id="targetMini"[\s\S]{0,600}id="miniForecast"/);
+// 目標値・現在値の操作ボタンは見出し行に並べる（ボタンだけの行を作らない）
+assert.match(html, /<label for="targetMini">目標値<\/label><span class="mini-label-actions">[\s\S]{0,200}id="restoreTargetMini"[\s\S]{0,300}id="openMiniTargetDetails"[\s\S]{0,300}id="resetTargetMini"/);
+assert.match(html, /<label for="currentMini">現在値<\/label><span class="mini-label-actions">[\s\S]{0,200}id="miniUndoCurrent"[\s\S]{0,200}id="resetCurrentMini"/);
+assert.ok(!html.includes('class="mini-target-actions"'), 'ボタンだけの行は無い');
 {
   const page = pageEngine(undefined);
   const el = page.element('miniForecast');
