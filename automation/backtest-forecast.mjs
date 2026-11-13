@@ -131,6 +131,18 @@ function stats(rows, predict) {
 // 答え合わせ（from 指定なし＝全期間）：記録のある全期間を月ごとに、その月より前のデータだけで補正（model）を作り直して予想する
 // （ウォークフォワード。未来のデータを使わない）。各日の基準値はもともと前日までの記録だけで作る。
 // from を指定したときは従来どおり「from より前で補正を作り、from 以降を予想」。
+// 日ごとの答え合わせ（画面の「的中率カレンダー」用）：締め時間×ランク×ボーダーごとに、日付の並びにそろえた誤差（予想÷実際−1、0.1%単位の整数）。
+// 予想値は画面で「実際の値×(1＋誤差)」から復元する。答え合わせが無い日は null。
+export function forecastHistory(rows, predict, from, to) {
+  const dates = [...new Set(rows.map(r => r.date))].sort(), at = new Map(dates.map((d, i) => [d, i])), series = {};
+  for (const r of rows) {
+    const key = `${r.close}|${r.rank}|${r.idx}`;
+    (series[key] ||= new Array(dates.length).fill(null))[at.get(r.date)] = Math.round((predict(r) / r.actual - 1) * 1000);
+  }
+  return {schema: 'poco-meter-forecast-history-v1', from, to, unit: '0.1%', dates, series};
+}
+let history = null;
+export function lastHistory() { return history; }
 export function backtest(borders, events, html, {from = null} = {}) {
   const meterForecast = loadMeterForecast(html);
   const dates = [...new Set(borders.records.map(r => r.date))].sort();
@@ -154,6 +166,7 @@ export function backtest(borders, events, html, {from = null} = {}) {
   for (const r of test) { const m = modelOf(r)?.[r.close]?.[r.band], p = predict(r); r.inRange = m ? p * (1 + m.p25 / 100) <= r.actual && r.actual <= p * (1 + m.p75 / 100) : false; }
   const by = key => Object.fromEntries([...new Set(test.map(key))].sort().map(k => [k, stats(test.filter(r => key(r) === k), predict)]));
   const testFrom = test.length ? test.map(r => r.date).sort()[0] : from;
+  history = forecastHistory(test, predict, testFrom, to);
   return {
     schema: 'poco-meter-forecast-backtest-v2',
     generatedAt: new Date().toISOString(),
@@ -192,5 +205,9 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   let prev = null; try { prev = JSON.parse(await readFile(file, 'utf8')); } catch {}
   const same = prev && JSON.stringify({...prev, generatedAt: null}) === JSON.stringify({...out, generatedAt: null});
   if (!same) await writeFile(file, JSON.stringify(out, null, 1) + '\n');
-  console.log(JSON.stringify({period: out.period, overall: out.overall, written: !same}));
+  // 日ごとの答え合わせ（的中率カレンダー用。公開時に data/forecast-history.json として配る）
+  const hfile = arg('history', 'data/forecast-history.json'), hjson = JSON.stringify(lastHistory()) + '\n';
+  let hprev = null; try { hprev = await readFile(hfile, 'utf8'); } catch {}
+  if (hprev !== hjson) await writeFile(hfile, hjson);
+  console.log(JSON.stringify({period: out.period, overall: out.overall, written: !same, history: hprev !== hjson}));
 }

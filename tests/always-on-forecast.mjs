@@ -128,7 +128,27 @@ assert.equal(e.forecastTrend(-3.5), '低め ↓');
   assert.ok(w.overall.n > r.overall.n);
   assert.deepEqual(Object.keys(w.byYear), ['2025', '2026']);
   assert.equal(w.evalModel, undefined, '全期間の答え合わせは月ごとの補正を使う（単一の評価用補正は持たない）');
+  // 日ごとの答え合わせ（的中率カレンダー用）：日付の並びにそろえた誤差（0.1%単位の整数）。一定値の系列なので誤差0。
+  const {lastHistory} = await import('../automation/backtest-forecast.mjs');
+  const h = lastHistory();
+  assert.equal(h.schema, 'poco-meter-forecast-history-v1');
+  assert.equal(h.dates.length, w.overall.days);
+  assert.deepEqual(Object.keys(h.series).sort(), ['24|A1|0', '24|A1|1', '24|A1|2']);
+  assert.ok(h.series['24|A1|0'].every(x => x === 0));
 }
+// 的中率カレンダー：月の並び・曜日のずれ・±10%以内の数え方（ちょうど10%は以内）・毎日の記録の優先
+{
+  const hist = {from: '2025-12-30', to: '2026-02-02', dates: ['2025-12-30', '2026-01-01', '2026-01-02', '2026-01-03'], series: {'22|S2|0': [5, 100, -101, null]}};
+  const plain = x => JSON.parse(JSON.stringify(x)); // 画面スクリプトは別の実行環境で動くため、比較前に普通の値へ
+  assert.deepEqual(plain(e.hitCalMonths(hist)), ['2025-12', '2026-01', '2026-02']);
+  const jan = plain(e.hitCalendarMonth(hist, '22|S2|0', '2026-01', {'2026-01-03': 2.5}));
+  assert.equal(jan.lead, 4, '2026/1/1は木曜');
+  assert.equal(jan.cells.length, 31);
+  assert.deepEqual(jan.cells.slice(0, 3).map(c => [c.err, c.live]), [[10, false], [-10.1, false], [2.5, true]]);
+  assert.deepEqual([jan.hits, jan.total], [2, 3]);
+  assert.equal(e.hitCalendarMonth(hist, '22|S6|0', '2026-01', null).total, 0, '系列が無い月は答え合わせなし');
+}
+assert.match(html, /<details class="ao-calendar" id="hitCalendar"><summary>📅 的中率カレンダー（日ごとの答え合わせ）<\/summary>/);
 // 的中率の期間：年をまたぐときは年も出す
 assert.equal(e.aoSpan('2025-01-06', '2026-11-11'), '2025/1/6〜2026/11/11');
 assert.equal(e.aoSpan('2026-01-01', '2026-11-11'), '1/1〜11/11');
