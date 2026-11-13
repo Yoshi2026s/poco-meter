@@ -2061,6 +2061,21 @@ html.always-on-mode body #mini.main-screen #miniNowTime{font-size:clamp(18px,5.5
 :root body #mini.main-screen .main-card .ao-calendar[open]>summary::after{content:"▲"}
 :root body #mini.main-screen .main-card .ao-calendar>summary:active{background:#0d3b66!important;box-shadow:none!important;transform:translateY(1px)}
 :root body #mini.main-screen .main-card .ao-calendar>summary:focus-visible{outline:3px solid #ffd166;outline-offset:2px}
+/* 公式X・インスタの告知の貼り付け（イベントカード内の折りたたみ。開閉の部分は的中率カレンダーと同じ青いボタン） */
+:root body #mini.main-screen .main-card .ao-sns{border-top-color:#b2d6e4}
+:root body #mini.main-screen .main-card .ao-sns-body{display:grid;gap:6px;padding-top:4px}
+:root body #mini.main-screen .main-card .ao-sns-label{display:block;margin:0;font-size:12px!important;font-weight:700;color:#2c4a6b!important}
+:root body #mini.main-screen .main-card .ao-sns textarea,:root body #mini.main-screen .main-card .ao-sns input{box-sizing:border-box;width:100%;min-width:0;min-height:40px;margin:0;padding:6px 8px!important;border-radius:8px;border:1px solid #7fa6d1!important;background:#fff!important;color:#17283a!important;font-size:16px!important;line-height:1.4;box-shadow:none!important}
+:root body #mini.main-screen .main-card .ao-sns textarea{min-height:84px;resize:vertical}
+:root body #mini.main-screen .main-card .ao-sns-row{display:grid;gap:4px}
+:root body #mini.main-screen .main-card .ao-sns-btn{min-height:40px;padding:6px 12px!important;border-radius:8px;border:1px solid #0d3b66!important;background:#1763b5!important;color:#fff!important;font-size:14px!important;font-weight:800;box-shadow:none!important}
+:root body #mini.main-screen .main-card .ao-sns-btn.sub{background:#fff!important;color:#0d3b66!important;border-color:#7fa6d1!important}
+:root body #mini.main-screen .main-card .ao-sns-share{display:flex;align-items:center;min-height:32px;font-size:12px!important;font-weight:700;color:#0d3b66!important;text-decoration:underline}
+:root body #mini.main-screen .main-card .ao-sns-result{margin:0;font-size:13px!important;font-weight:700;color:#17283a!important}
+:root body #mini.main-screen .main-card .ao-sns-list{display:grid;gap:4px;margin:0;padding:0;list-style:none}
+:root body #mini.main-screen .main-card .ao-sns-list li{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:4px 6px;border-radius:8px;background:#fff;font-size:13px!important;color:#17283a!important}
+:root body #mini.main-screen .main-card .ao-sns-list li span{min-width:0;overflow-wrap:anywhere}
+:root body #mini.main-screen .main-card .ao-sns-list button{flex:none;min-width:44px;min-height:32px;padding:0 8px!important;border-radius:8px;border:1px solid #b42318!important;background:#fff!important;color:#b42318!important;font-size:13px!important;font-weight:800;box-shadow:none!important}
 :root body #mini.main-screen .main-card .ao-cal-nav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:4px 0}
 :root body #mini.main-screen .main-card .ao-cal-nav b{font-size:15px!important;font-weight:800}
 :root body #mini.main-screen .main-card .ao-cal-nav button{min-width:44px;min-height:32px;padding:0 10px!important;border-radius:8px;border:1px solid #7fa6d1!important;background:#fff!important;color:#0d3b66!important;font-size:14px!important;font-weight:800;box-shadow:none!important}
@@ -2257,7 +2272,7 @@ html:root body #mini.main-screen #itemsWindowTitle{color:#0d3b66!important}
 <!-- phone-current:end -->
 <section id="itemsWindow" aria-labelledby="itemsWindowTitle"><div class="items-window-head"><h2 id="itemsWindowTitle">残りアイテムの目安</h2><div class="items-core"><label for="coreCountItems">現コア数</label><input id="coreCountItems" class="num" type="text" inputmode="numeric" enterkeyhint="done" autocomplete="off" placeholder="0" aria-label="現コア数（0〜1000人）" aria-describedby="coreCountItemsError inputStatus" value="0"></div></div><small id="coreCountItemsError" class="items-core-error" hidden></small><div id="itemsWindowRow"></div></section>
 <section class="main-card main-forecast-card" id="mainForecastCard" aria-labelledby="aoRankHead"><h2 class="main-card-head" id="aoRankHead" tabindex="-1">設定ランクの予想</h2><div class="ao-fvalue num" id="aoForecast"></div><div class="ao-frange num" id="aoRange"></div><div class="ao-trend" id="aoTrend"></div><p class="ao-accuracy" id="aoAccuracy"></p><p class="ao-accuracy ao-record" id="aoRecord"></p><div class="ao-history" id="aoHistoryBox" hidden><button type="button" class="ao-history-toggle" id="aoHistoryToggle" aria-expanded="false" aria-controls="aoHistory"><span class="ao-history-mark" aria-hidden="true">▸</span> <span id="aoHistorySummary">直近の答え合わせ</span></button><ul id="aoHistory" hidden></ul></div><ul class="ao-reasons" id="aoReasons"></ul><p class="ao-note" id="aoForecastNote"></p><details class="ao-calendar" id="hitCalendar"><summary>📅 的中率カレンダー（日ごとの答え合わせ）</summary><div class="ao-cal-body"><div class="ao-cal-nav"><button type="button" id="hitCalPrev" aria-label="前の月">◀</button><b id="hitCalMonth" aria-live="polite"></b><button type="button" id="hitCalNext" aria-label="次の月">▶</button></div><p class="ao-cal-sum" id="hitCalSummary"></p><div class="ao-cal-grid" id="hitCalGrid"></div><p class="ao-cal-detail" id="hitCalDetail" role="status" aria-live="polite"></p><p class="ao-note" id="hitCalNote">緑は±10%以内、橙は±10%超。その日より前のデータだけで作った予想と実際のボーダーの比較です（補正は月ごとに作り直し）。下線は毎日の自動記録の予想。●は設定ランクが対象の大型イベント、◆はイベラス（その日が最終日のイベント）がある日。日付をタップすると、その日のイベントも表示します（イベラスは橙、開催中は青の文字）。</p></div></details></section>
-<section class="main-card main-events-card" id="mainEventsCard" aria-labelledby="aoEventsHead"><h2 class="main-card-head ao-last-head" id="aoLastHead">本日のイベラス（最終日）</h2><ul class="ao-list ao-last" id="aoLast"></ul><p class="ao-note" id="aoLastNote"></p><h2 class="main-card-head" id="aoEventsHead">今日の開催イベント</h2><ul class="ao-list" id="aoEvents"></ul><h2 class="main-card-head ao-next-head" id="aoTomorrowHead" hidden>明日から</h2><ul class="ao-list" id="aoTomorrow"></ul><p class="ao-note" id="aoEventsNote"></p></section>
+<section class="main-card main-events-card" id="mainEventsCard" aria-labelledby="aoEventsHead"><h2 class="main-card-head ao-last-head" id="aoLastHead">本日のイベラス（最終日）</h2><ul class="ao-list ao-last" id="aoLast"></ul><p class="ao-note" id="aoLastNote"></p><h2 class="main-card-head" id="aoEventsHead">今日の開催イベント</h2><ul class="ao-list" id="aoEvents"></ul><h2 class="main-card-head ao-next-head" id="aoTomorrowHead" hidden>明日から</h2><ul class="ao-list" id="aoTomorrow"></ul><p class="ao-note" id="aoEventsNote"></p><details class="ao-calendar ao-sns" id="aoSns"><summary>公式X・インスタの告知を読み取る</summary><div class="ao-sns-body"><p class="ao-note">半日・時間限定のイベントは公式X（@pococha_jp）やインスタだけで告知されることがあります。X・インスタは規約で自動収集が禁止のため自動では取りに行きません。投稿文をコピーしてここに貼ると、期間・時間帯・対象ランクを読み取り、この端末の「今日の開催イベント」と的中率カレンダーに出します（本文は保存しません）。</p><label class="ao-sns-label" for="aoSnsText">投稿文</label><textarea id="aoSnsText" rows="4" placeholder="例：本日21時〜24時 夜の部ランキング開催！対象：S1〜S6"></textarea><div class="ao-sns-row"><label class="ao-sns-label" for="aoSnsDate">投稿日</label><input type="date" id="aoSnsDate"><label class="ao-sns-label" for="aoSnsUrl">投稿のURL（任意）</label><input type="url" id="aoSnsUrl" inputmode="url" placeholder="https://x.com/pococha_jp/status/…"></div><button type="button" class="ao-sns-btn" id="aoSnsRead">読み取って追加</button><p class="ao-sns-result" id="aoSnsResult" role="status" aria-live="polite"></p><ul class="ao-sns-list" id="aoSnsList"></ul><div class="ao-sns-row"><button type="button" class="ao-sns-btn sub" id="aoSnsCopy">共有用の行をコピー</button><a class="ao-sns-share" id="aoSnsShare" href="https://github.com/Yoshi2026s/poco-meter/edit/%28root%29/data/sns-events.txt" target="_blank" rel="noopener noreferrer">全員の画面に出す（管理者：GitHubに行を追加）</a></div></div></details></section>
 <section class="main-tools" id="mainTools" aria-label="目標の条件・コピー・換算"><p class="hint goal-context" id="appliedContext" tabindex="0" aria-label="目標設定時の条件"></p><p id="manualTargetMsg" class="toast" role="status"></p>
     <div class="meter-tools"><button type="button" id="copyRemaining">残りポイントをコピー</button><button type="button" id="alwaysOnOpen" aria-pressed="false">常時表示モード</button></div><textarea id="summaryText" readonly hidden aria-label="手動コピー用の現在の残り"></textarea>
     
@@ -4457,14 +4472,323 @@ html:root body #mini.main-screen #itemsWindowTitle{color:#0d3b66!important}
   function aoSet(id,text){var el=$(id);if(el&&el.textContent!==text)el.textContent=text;}
   function aoCleanTitle(s){return String(s||'').replace(/\p{Extended_Pictographic}|️|‍/gu,'').replace(/[＼／]/g,' ').replace(/\s+/g,' ').trim();}
   // イベントの名前：収集時に整えた名前（見出しの決まり文句・末尾の「開催期間」等を除いたもの）を優先し、無いときは記事タイトル。
+  /* event-parse:begin（calculator/event-parse.mjs から npm run pages:prepare で生成。ここは手で書き換えない） */
+  var PocoEventParse=(function(){
+'use strict';
+// イベント記事・お知らせ・SNSの投稿文から、期間・時間帯・対象ランク・名前などの事実を読み取る部品（ネットワーク・Node専用の機能を使わない）。
+// 自動収集（automation/collect-events.mjs）と画面（calculator/index.html の貼り付け読み取り）で共用する。
+// 画面へは scripts/prepare-event-parse.mjs が index.html の目印の間に書き写す（npm run pages:prepare）。直したら作り直してコミットする。
+const RANKS = ['D1','D2','D3','C1','C2','C3','B1','B2','B3','A1','A2','A3','S1','S2','S3','S4','S5','S6'];
+
+const decode = s => s.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;|&#x27;/g, "'").replace(/&nbsp;/g, ' ');
+
+// note の記事本文（note-common-styles__textnote-body の div）だけを取り出す。見つからなければページ全体。
+function articleBody(html) {
+  const i = html.indexOf('note-common-styles__textnote-body');
+  if (i < 0) return html;
+  const s = html.lastIndexOf('<div', i);
+  const re = /<\/?div\b/g; re.lastIndex = s;
+  let depth = 0, m;
+  while ((m = re.exec(html))) { depth += m[0] === '<div' ? 1 : -1; if (depth === 0) return html.slice(s, m.index); }
+  return html.slice(s);
+}
+
+function articleText(html) {
+  return decode(articleBody(html)
+    .replace(/<script[\s\S]*?<\/script>/gi, '').replace(/<style[\s\S]*?<\/style>/gi, '')
+    .replace(/<h[2-4][^>]*>/gi, '\n## ')
+    .replace(/<(br|\/p|\/h[1-6]|\/li|\/div|\/tr|\/td|\/th|\/figcaption)[^>]*>/gi, '\n')
+    .replace(/<[^>]+>/g, ''))
+    .replace(/[ \t　]+/g, ' ').replace(/\n\s*\n+/g, '\n');
+}
+
+function articleMeta(html) {
+  const title = decode(html.match(/<meta[^>]+property="og:title"[^>]+content="([^"]*)"/)?.[1] || html.match(/<title>([^<]*)<\/title>/)?.[1] || '')
+    .replace(/｜Pococha\(ポコチャ\)公式\s*$/, '').trim();
+  const published = html.match(/"datePublished":"([^"]+)"/)?.[1] || null;
+  const modified = html.match(/"dateModified":"([^"]+)"/)?.[1] || published;
+  return {title, published, modified};
+}
+
+const z = n => String(n).padStart(2, '0');
+const toFull = (s) => s.replace(/[０-９]/g, c => String.fromCharCode(c.charCodeAt(0) - 0xFEE0)).replace(/：/g, ':').replace(/／/g, '/');
+
+// 「2026年10月9日(金) 12:00 〜 2026年10月13日(火) 23:59」「10/9(金)12:00〜10/13(火)23:59」などを拾う。
+function findPeriods(text, publishedISO) {
+  const t = toFull(text);
+  const pubYear = publishedISO ? +publishedISO.slice(0, 4) : new Date().getFullYear();
+  const pubMonth = publishedISO ? +publishedISO.slice(5, 7) : 1;
+  const D = String.raw`(?:(\d{4})年)?(\d{1,2})(?:月|/)(\d{1,2})日?\s*(?:[\(（][^)）]{1,3}[\)）])?\s*(\d{1,2}:\d{2})?`;
+  // 範囲：日付〜日付／日付 時刻〜時刻（同日）／日付より開催（開始のみ）
+  const re = new RegExp(D + String.raw`\s*(?:[〜~～\-–]\s*(?:` + D + String.raw`|(\d{1,2}:\d{2}))|より(?:開催|スタート|開始))`, 'g');
+  const yearOf = (y, mo) => { if (y) return +y; let v = pubYear; if (+mo < pubMonth - 6) v++; return v; };
+  const out = [];
+  const lines = t.split('\n');
+  lines.forEach((line, li) => {
+    for (const m of line.matchAll(re)) {
+      const [, y1, mo1, d1, h1, y2, mo2, d2, h2, hOnly] = m;
+      if (+mo1 > 12 || +d1 > 31 || +mo1 < 1 || +d1 < 1) continue;
+      const ys = yearOf(y1, mo1);
+      const start = `${ys}-${z(mo1)}-${z(d1)}`;
+      let end = null, endTime = null;
+      if (mo2) {
+        if (+mo2 > 12 || +d2 > 31) continue;
+        let ye = y2 ? +y2 : ys; if (!y2 && +mo2 < +mo1) ye = ys + 1;
+        end = `${ye}-${z(mo2)}-${z(d2)}`; endTime = h2 || null;
+      } else if (hOnly) { end = start; endTime = hOnly; }
+      if (!h1 && !mo2 && hOnly) continue; // 「10:00〜12:00」だけの行は日付範囲ではない
+      if (end && (end < start || (Date.parse(end) - Date.parse(start)) / 864e5 > 120)) continue;
+      const prefix = line.slice(0, m.index).replace(/^## /, '');
+      const head = [lines[li - 1], lines[li - 2]].filter(Boolean).join(' ');
+      // 直前の見出し（## 行）。日付の行から12行以内のもの。
+      let heading = null;
+      for (let k = li - 1; k >= Math.max(0, li - 12); k--) if (/^## /.test(lines[k] || '')) { heading = cleanLabel(lines[k].slice(3)); break; }
+      const ctx = `${heading || ''} ${prefix}`;
+      const labeled = /開催期間|イベント期間|開催日程|開催日時|キャンペーン期間|期間[:：]|予選|本戦|準決勝|決勝|ステージ|リーグ|より(開催|スタート|開始)/.test(prefix + m[0]);
+      const isEntry = /エントリー?期間|応募期間|申込|受付/.test(prefix);
+      // イベントそのものの期間ではないもの（使用期限・配信時間・募集や選考・結果発表など）
+      const nonEvent = NON_EVENT.test(prefix) || (!labeled && NON_EVENT.test(heading || ''));
+      const mins = x => x ? +x.split(':')[0] * 60 + +x.split(':')[1] : null;
+      const slot = end === start && h1 && endTime && mins(endTime) > mins(h1) && mins(endTime) - mins(h1) <= 180 && !labeled;
+      out.push({start, end, startTime: h1 || null, endTime, label: pickLabel(prefix, heading), labeled, isEntry: isEntry || nonEvent || slot,
+        kind: isEntry ? 'entry' : nonEvent ? 'other' : slot ? 'slot' : 'event', ranks: findRanks(ctx).length ? findRanks(ctx) : findRanks(head)});
+    }
+  });
+  // 同じ期間の重複はまとめる（名前は見出し付き・具体的なものを残す）。
+  const best = new Map();
+  for (const p of out) {
+    const k = `${p.start}|${p.end}|${p.isEntry}`, cur = best.get(k);
+    const score = q => (q.labeled ? 2 : 0) + (q.label ? 1 : 0) + (q.ranks.length ? 1 : 0);
+    if (!cur || score(p) > score(cur)) best.set(k, p);
+  }
+  return [...best.values()];
+}
+
+const NON_EVENT = /使用期限|有効期限|利用期限|交換期限|獲得対象期限|次回配信|配信日時|配信スケジュール|配信予定|放送|募集期間|応募|選考|審査|結果発表|発表日|受け?取り期限|付与|適用期間|お届け予定|販売期間|購入期間/;
+const GENERIC = /^(開催期間|イベント期間|開催日程|開催日時|キャンペーン期間|集計期間|期間|日程|スケジュール|第\d+日程|イベント名)$/;
+function cleanLabel(s) {
+  return String(s || '').replace(/\p{Extended_Pictographic}|\uFE0F|\u200D/gu, '').replace(/[:：\s・■▼▶︎●◆◇★☆【】]+$/, '').replace(/^[\s・■▼▶︎●◆◇★☆]+/, '')
+    .replace(/^イベント名\s*[:：]\s*/, '').replace(/\s+/g, ' ').trim();
+}
+// 見出しの決まり文句（概要・詳細・ルール・「〜について」・末尾の「開催期間」等）を名前から外す。
+// 決まり文句しか残らないときは記事タイトルの名前を使う。予選・本戦・投票などの段階名は残す。
+const BOILER = /^(?:(?:イベント|キャンペーン|企画|大会)?(?:概要|詳細|内容|ルール|の流れ)(?:[/・／](?:概要|詳細|ルール|内容))*|この記事でご紹介する内容|この記事の内容|豪華賞品はこちら[！!]?|対象ランク|対象者?|スケジュール|エントリー?|(?:投票|公開|対象|確認|検証|計測対象|アンケート|配信|通常配信)期間)$/;
+// 記事タイトルから名前を作る：『』「」の名前を優先し、日付やお知らせの【】と「のご紹介」を外し、切れた括弧を残さない。
+// 括弧の外に残る語が短い（「〜」開催決定！）か決まり文句（の概要）なら、括弧内だけを名前にする
+const QUOTE_TAIL = /^(?:の?(?:概要|詳細|内容|ご紹介|お知らせ|ルール説明)|(?:開催|決定|に関する|をPocochaで).*|.{0,10})$/;
+// 閉じていない括弧は記号だけ外し（中身は残す）、末尾の区切り記号を落とす
+function cutDangling(t) {
+  for (const [o, c] of [['【', '】'], ['「', '」'], ['『', '』'], ['（', '）'], ['(', ')']]) {
+    if (t.lastIndexOf(o) > t.lastIndexOf(c)) t = t.slice(0, t.lastIndexOf(o)) + ' ' + t.slice(t.lastIndexOf(o) + 1);
+  }
+  return t.replace(/\s+/g, ' ').replace(/[\s：:・、〜~×-]+$/, '').trim();
+}
+// 長い名前は区切り（空白・！・」など）で切る。区切りが前すぎるときは文字数で切る
+function cutAt(t, max) {
+  if (t.length <= max) return t;
+  const head = t.slice(0, max), i = Math.max(...[' ', '！', '!', '」', '』', '】', '×'].map(ch => head.lastIndexOf(ch)));
+  return i >= 20 ? head.slice(0, i + (/[！!」』】]/.test(head[i]) ? 1 : 0)) : head;
+}
+function titleNameOf(title) {
+  const raw = cleanLabel(String(title || '').replace(/[＼／]/g, ' '));
+  // 日付・お知らせだけの【】（【9/16〜9/29】【期間限定】【新イベ開催予告】など）は外す
+  const stripped = raw.replace(/【[^】]*(?:\d+\s*[/月]|限定|登場|開催予告|お知らせ|告知|更新|追記|速報|NEW|予告|結果発表)[^】]*】/g, ' ').replace(/\s+/g, ' ').trim();
+  let t = stripped.length >= 6 ? stripped : raw;
+  t = t.replace(/(?:のご紹介|開催決定|を開催|開催)[！!]*$/, '').trim();
+  const q = t.match(/^[^『「]{0,20}[『「]([^』」]{4,40})[』」](.*)$/);
+  if (q && QUOTE_TAIL.test(q[2].trim())) return q[1];
+  return cutDangling(cutAt(t, 48)) || cutDangling(raw.slice(0, 48));
+}
+function tidyLabel(label, titleName) {
+  let l = cleanLabel(label);
+  for (let i = 0; i < 3; i++) {
+    const before = l;
+    l = l.replace(/\s*(?:の)?(?:開催期間|イベント期間|キャンペーン期間|開催日程|開催日時)$/, '').replace(/\s*について$/, '').trim();
+    const parts = l.split(' ');
+    if (parts.length > 1 && BOILER.test(parts[0])) l = parts.slice(1).join(' ');
+    if (parts.length > 1 && BOILER.test(parts[parts.length - 1])) l = parts.slice(0, -1).join(' ');
+    l = l.replace(/^(?:\d+月実施予定[！!]?\s*)?Pococha内イベント/, '').trim();
+    const q = l.match(/^[^「『]{0,30}[「『]([^」』]{2,40})[」』](.+)$/);
+    if (q && QUOTE_TAIL.test(q[2].trim())) l = q[1];
+    l = cutDangling(l);
+    if (l === before) break;
+  }
+  if (!l || l.length < 2 || GENERIC.test(l) || BOILER.test(l) || /^(?:イベント|キャンペーン)$/.test(l)) return titleName || null;
+  // 以前の収集で記事タイトルを途中で切った名前は、整えた記事タイトルの名前に置き換える
+  if (titleName && titleName.length > l.length && titleName.startsWith(l)) return titleName;
+  return l;
+}
+// 名前の決め方：①行内の『』「」で囲まれた名前 ②行の前置きが短い名前ならそれ ③直前の見出し（＋前置きが「開催期間」等なら付ける）
+function pickLabel(prefix, heading) {
+  const p = cleanLabel(prefix);
+  const quoted = p.match(/[『「]([^』」]{2,40})[』」]/);
+  if (quoted) return quoted[1];
+  const short = p && p.length >= 2 && p.length <= 24 && !/[。、！？!?]|です|ます|こちら|以下|本記事|こんにちは/.test(p) && !/^[\d※＊*（(]|\/$|^【?$/.test(p);
+  if (short && !GENERIC.test(p)) return p;
+  if (heading && heading.length <= 40) return short && GENERIC.test(p) ? `${heading} ${p}` : heading;
+  return short ? p : null;
+}
+
+// 「S1〜S6」「B1-A3」「Aランク」「全ランク」などから対象ランクを集める。
+function findRanks(text) {
+  const t = toFull(text).replace(/ランク/g, 'ランク ');
+  const set = new Set();
+  if (/全ランク|すべてのランク|全てのランク/.test(t)) RANKS.forEach(r => set.add(r));
+  const ORDER = ['E1', 'E2', 'E3', ...RANKS]; // E帯は範囲の端としてだけ使い、結果には含めない
+  for (const m of t.matchAll(/([SABCDE])([1-6])\s*[〜~～\-–ー]\s*([SABCDE])([1-6])/g)) {
+    const a = ORDER.indexOf(m[1] + m[2]), b = ORDER.indexOf(m[3] + m[4]);
+    if (a >= 0 && b >= 0) for (let i = Math.min(a, b); i <= Math.max(a, b); i++) set.add(ORDER[i]);
+  }
+  for (const m of t.matchAll(/(?:^|[^A-Za-z])([SABCD])ランク/g)) RANKS.filter(r => r[0] === m[1]).forEach(r => set.add(r));
+  return RANKS.filter(r => set.has(r));
+}
+
+// 大型イベント：全体のボーダーを動かしうる、ランク横断の年間・季節の大会だけ（タイトルで判定）。
+const BIG = /POCO\s?LAND|POCO\s?AWARD|ギルドカップ|Pococha\s?甲子園|世代ウォーズ|周年祭|総合ランキング/i;
+function classify(title, text) {
+  const s = `${title}\n${text.slice(0, 1500)}`;
+  if (BIG.test(title)) return 'big';
+  if (/新規ライバー|デビュー|ルーキー/.test(title)) return 'newcomer';
+  if (/ミッション/.test(title)) return 'mission';
+  if (/アイテム|イベントカレンダー/.test(title)) return 'item';
+  if (/×|コラボ|出演権|モデル|オーディション|決定戦|選抜/.test(s.slice(0, 200))) return 'collab';
+  if (/イベント|ランキング|開催/.test(title)) return 'event';
+  return 'notice';
+}
+
+function toEvent(source, url, html) {
+  return eventFrom(source, url, articleMeta(html), articleText(html));
+}
+// 記事のタイトル・公開日・更新日と本文の文字から、イベントの事実（期間・ランク・種類など）を作る。
+function eventFrom(source, url, {title, published, modified}, text, {sns = false} = {}) {
+  // SNSの告知は短い時間帯（3時間以下）の開催も多いので、配信枠として除外しない
+  const periods = findPeriods(text, modified || published).map(p => sns && p.kind === 'slot' ? {...p, isEntry: false, kind: 'event'} : p);
+  // 公開日〜最終更新日の前後だけを対象にする（過去の実績紹介や翌年の予告を拾いすぎないため）。
+  const lo = published ? Date.parse(published.slice(0, 10)) - 30 * 864e5 : -Infinity;
+  const hi = modified ? Date.parse(modified.slice(0, 10)) + 90 * 864e5 : Infinity;
+  const titleName = titleNameOf(title);
+  const main = periods.filter(p => !p.isEntry && Date.parse(p.start) >= lo && Date.parse(p.start) <= hi).map(p => ({...p, label: p.label && !GENERIC.test(p.label) ? tidyLabel(p.label, titleName) : titleName}));
+  const type = classify(title, text);
+  const ranks = findRanks(text);
+  // 期間が1つだけのときは記事全体の期間とみなす。複数あるとき（予定表・まとめ記事）は periods を個別に使う。
+  const single = main.length === 1 ? main[0] : null;
+  const confidence = !main.length ? 'none' : main.some(p => p.labeled) ? 'high' : 'low';
+  return {id: url.replace(/\/+$/, '').split('/').pop(), title, url, sourceId: source.id, sourceKind: source.kind, published, modified, type,
+    start: single?.start || null, end: single?.end || null, periods: main.map(({isEntry, kind, ...p}) => p), ranks, confidence, audience: audienceOf(title, text),
+    excluded: periods.filter(p => p.isEntry).length, fetchedAt: new Date().toISOString()};
+}
+
+// イベントの対象（内容の手がかり）。タイトルと本文の冒頭から判定する。
+function audienceOf(title, text) {
+  const s = `${title}\n${String(text).slice(0, 2000)}`, out = [];
+  if (/ボイス(ライバー|配信)/.test(s)) out.push('ボイス');
+  if (/新規ライバー|デビュー|ルーキー/.test(title)) out.push('新規ライバー');
+  if (/リスナー(限定|向け|のみ)|リスナーランキング/.test(s)) out.push('リスナー');
+  if (/事務所|ギルド/.test(title)) out.push('事務所');
+  if (/ファミリー/.test(title)) out.push('ファミリー');
+  return out;
+}
+
+// 公式サイトの「お知らせ」一覧ページ（Next.js の埋め込みデータ）から、記事（id・タイトル・公開日・更新日・本文）を取り出す。
+function newsItems(html) {
+  const m = html.match(/<script id="__NEXT_DATA__" type="application\/json">([\s\S]*?)<\/script>/);
+  if (!m) return {items: [], pages: 0};
+  const pp = JSON.parse(m[1])?.props?.pageProps || {};
+  const items = (pp.newsList || []).filter(n => n && n.id && n.title).map(n => ({id: n.id, title: String(n.title), published: n.publishedAt || n.createdAt || null, modified: n.revisedAt || n.updatedAt || n.publishedAt || null, body: String(n.body || '')}));
+  return {items, pages: +pp.totalPageCount || 0};
+}
+
+// ---- 公式X・Instagram の告知（人が貼り付けた投稿文）----
+// 各SNSは規約で許可のない自動収集が禁止のため、自動では取りに行かない。人が貼り付けた投稿文から事実（名前・期間・時間帯・対象ランク・投稿URL）だけを取り出し、
+// 「共有用の1行」（投稿日｜名前｜開催期間：…｜対象：…｜URL）にする。本文は保存しない。画面の端末保存と data/sns-events.txt はこの1行の形で持つ。
+const SNS_DECOR = /^(?:【[^】]{0,8}】)?\s*(?:本日|今日|今夜|明日|まもなく)?\s*(?:開催|スタート|開始|告知|お知らせ|速報|START|NEW|予告|開催決定|ついに)?[!！]*$/i;
+const SNS_SOURCE = {id: 'pococha-official-sns', kind: 'official'};
+// 投稿文の相対的な日付（本日・今日・今夜・明日・明後日）を投稿日からの月/日に、「12時」「21時30分」「21時半」を「12:00」形式に、「12:00スタート」を「12:00より開始」にする。
+function snsText(text, postedISO) {
+  const base = Date.parse(String(postedISO || '').slice(0, 10) + 'T00:00:00Z');
+  const md = n => { if (!Number.isFinite(base)) return ''; const d = new Date(base + n * 864e5); return `${d.getUTCFullYear()}年${d.getUTCMonth() + 1}月${d.getUTCDate()}日 `; };
+  return toFull(String(text || ''))
+    .replace(/(\d{1,2})時(?:(\d{1,2})分|(半))?/g, (m, h, mi, half) => `${h}:${half ? '30' : z(mi || 0)}`)
+    .replace(/明後日/g, () => md(2)).replace(/明日/g, () => md(1)).replace(/本日|今日|今夜|今晩/g, () => md(0))
+    .replace(/(\d{1,2}:\d{2})\s*(?:から|～|〜|~)?\s*(?:スタート|開始|開幕)/g, '$1より開始');
+}
+const fmtDay = iso => `${+iso.slice(0, 4)}年${+iso.slice(5, 7)}月${+iso.slice(8, 10)}日`;
+// 対象ランクを「S1〜S6」「全ランク」のように続き番号でまとめる
+function rankText(ranks) {
+  const set = new Set(ranks || []);
+  if (!set.size) return '';
+  if (RANKS.every(r => set.has(r))) return '全ランク';
+  const runs = []; let a = null, b = null;
+  RANKS.forEach((r, i) => { if (set.has(r)) { if (a === null) a = i; b = i; } if ((!set.has(r) || i === RANKS.length - 1) && a !== null) { runs.push(a === b ? RANKS[a] : `${RANKS[a]}〜${RANKS[b]}`); a = null; } });
+  return runs.join('、');
+}
+// 投稿文 → イベント（期間ごと）。posted は投稿日（YYYY-MM-DD）。
+function snsEvent(text, {posted, url = ''} = {}) {
+  // 名前：「」『』の名前 → 飾りだけの行（＼本日開催／・【告知】など）・URL・ハッシュタグを除いた最初の行
+  const lines = String(text || '').split('\n').map(x => cleanLabel(x.replace(/[＼／\\/]/g, ' ').replace(/https?:\S+|#\S+/g, ' '))).filter(x => x && !SNS_DECOR.test(x));
+  const quoted = String(text || '').match(/[『「]([^』」\n]{2,40})[』」]/);
+  const title = (quoted ? quoted[1] : lines[0] || '').slice(0, 80);
+  return eventFrom(SNS_SOURCE, url || `sns:${posted}`, {title, published: posted, modified: posted}, snsText(text, posted), {sns: true});
+}
+// イベント → 共有用の1行（期間ごと）。
+function snsLines(ev, {posted, url = ''} = {}) {
+  const titleName = titleNameOf(ev.title) || ev.title || 'イベント';
+  return (ev.periods || []).map(p => {
+    const name = String(p.label || titleName).replace(/[｜|]/g, ' ').slice(0, 60);
+    const period = `${fmtDay(p.start)}${p.startTime ? ' ' + p.startTime : ''}${p.end ? `〜${fmtDay(p.end)}${p.endTime ? ' ' + p.endTime : ''}` : 'より開始'}`;
+    const ranks = rankText(p.ranks && p.ranks.length ? p.ranks : ev.ranks);
+    return [`投稿日 ${posted}`, name, `開催期間：${period}`, ranks ? `対象：${ranks}` : '', url].filter(Boolean).join('｜');
+  });
+}
+// 共有用の1行 → イベント（期間は1つ）。読めない行は null。
+function snsLineEvent(line) {
+  const s = String(line || '').trim();
+  if (!s || /^#/.test(s)) return null;
+  const parts = s.split('｜').map(x => x.trim());
+  const posted = (s.match(/投稿日\s*(\d{4}-\d{2}-\d{2})/) || [])[1];
+  if (!posted || parts.length < 3) return null;
+  const url = (s.match(/https?:\/\/[^\s｜]+/) || [''])[0];
+  const name = parts[1];
+  const rest = parts.slice(2).filter(x => !/^https?:\/\//.test(x)).join('\n');
+  // URLの無い行は公式Xのページに印（#投稿日-名前）を付けて区別する（一覧の重複除外がURLで判定するため）
+  const link = url || `https://x.com/pococha_jp#${encodeURIComponent(posted + '-' + name)}`;
+  const ev = eventFrom(SNS_SOURCE, link, {title: name, published: posted, modified: posted}, `## ${name}\n${rest}`, {sns: true});
+  if (!ev.periods.length) return null;
+  return {...ev, id: url ? ev.id : `sns-${posted}-${name}`, url: link, line: s, periods: ev.periods.map(p => ({...p, label: name}))};
+}
+// その日のイベント（予想データ meter-forecast.json の days[日].events と同じ形・同じ決め方）。phase：first=初日 middle=途中 last=最終日。終了日不明は開始日だけ。
+function snsDayItems(ev, date) {
+  const out = [];
+  for (const p of (ev && ev.periods) || []) {
+    const end = p.end || p.start;
+    if (!p.start || date < p.start || date > end) continue;
+    out.push({title: ev.title, label: p.label || ev.title, type: ev.type, ranks: p.ranks && p.ranks.length ? p.ranks : ev.ranks || [],
+      phase: date === p.start ? 'first' : date === end ? 'last' : 'middle', ends: date === end,
+      start: p.start, end: p.end || null, startTime: p.startTime || null, endTime: p.endTime || null, url: ev.url || '', sns: true});
+  }
+  return out;
+}
+return {snsEvent:snsEvent,snsLines:snsLines,snsLineEvent:snsLineEvent,snsDayItems:snsDayItems,rankText:rankText};
+})();
+  /* event-parse:end */
+  // 公式X・インスタの告知（貼り付け）。X・インスタは規約で自動収集が禁止のため、利用者が貼った投稿文をこの端末で読み取り、
+  // 事実だけの「共有用の1行」（投稿日｜名前｜開催期間：…｜対象：…｜URL）を端末に保存する（本文は保存しない）。
+  var SNS_KEY='pococha-meter-sns-events-v1',SNS_SCHEMA='poco-sns-events-v1',snsCache={raw:null,events:[]},snsVersion=0;
+  function snsSaved(){try{var d=JSON.parse(localStorage.getItem(SNS_KEY)||'null');return d&&d.schema===SNS_SCHEMA&&Array.isArray(d.lines)?d.lines.filter(function(x){return typeof x==='string'&&x;}):[];}catch(e){return [];}}
+  function snsStore(lines){try{localStorage.setItem(SNS_KEY,JSON.stringify({schema:SNS_SCHEMA,lines:lines}));}catch(e){}snsVersion++;snsCache.raw=null;}
+  function snsEvents(){var lines=snsSaved(),raw=lines.join(String.fromCharCode(10));if(snsCache.raw!==raw){snsCache={raw:raw,events:lines.map(function(l){try{return PocoEventParse.snsLineEvent(l);}catch(e){return null;}}).filter(Boolean)};}return snsCache.events;}
+  // その日の貼り付けイベント（予想データの days[日].events と同じ形）
+  function snsDay(date){var out=[];snsEvents().forEach(function(ev){out=out.concat(PocoEventParse.snsDayItems(ev,date));});return out;}
+  // 予想データのイベントに貼り付けのものを足す（同じ名前・同じ開始日は足さない）
+  function aoMergeEvents(base,extra){var seen={},key=function(x){return aoEventName(x)+'|'+x.start;};base.forEach(function(x){seen[key(x)]=1;});return base.concat(extra.filter(function(x){if(seen[key(x)])return false;seen[key(x)]=1;return true;}));}
   function aoEventName(e){var t=aoCleanTitle(e.title),l=aoCleanTitle(String(e.label||'').replace(/\s*(開催期間|イベント期間|開催日程|開催日時|キャンペーン期間)$/,''));if(!l||l.length<2)return t;
     // 「準決勝」「予選」など段階名だけのときは、記事タイトル（【】や記号を除いた先頭20字）を前に付ける
     if(/^(予選|準決勝|決勝|本戦|本選|準々決勝|第d+(弾|回|ステージ|日程)|ステージd*|リーグ|前半|後半|DAYd+)/.test(l)&&l.length<=12){var q=t.match(/[『「]([^』」]{2,30})[』」]/);return (q?q[1]:t.replace(/【[^】]*】|[＼／]/g,'').trim().slice(0,20))+' '+l;}
     return l;}
   // 種類と対象（内容の手がかり）
-  function aoEventKind(e){var k={big:'大型イベント',event:'イベント',collab:'コラボ・出演権',newcomer:'新規ライバー向け',mission:'ミッション',item:'アイテム',notice:'お知らせ'}[e.type]||'';var a=(e.audience||[]).filter(function(x){return k.indexOf(x)<0;});return (k?'・'+k:'')+(a.length?'・'+a.join('・'):'');}
+  function aoEventKind(e){var k={big:'大型イベント',event:'イベント',collab:'コラボ・出演権',newcomer:'新規ライバー向け',mission:'ミッション',item:'アイテム',notice:'お知らせ'}[e.type]||'';var a=(e.audience||[]).filter(function(x){return k.indexOf(x)<0;});return (k?'・'+k:'')+(a.length?'・'+a.join('・'):'')+(e.sns?'・公式X/インスタ':'');}
   // 同じ日の時刻つき開催の時間帯（例：12:00〜23:59（半日）、0:00〜23:59（1日））。それ以外は空。
-  function aoTimeSpan(e){if(!e||!e.start||(e.end&&e.end!==e.start)||!e.startTime||!e.endTime)return '';var m=function(t){var p=String(t).split(':');return +p[0]*60+ +p[1];},d=m(e.endTime)-m(e.startTime);return e.startTime+'〜'+e.endTime+(d>0&&d<=13*60?'（半日）':d>=23*60?'（1日）':'');}
+  function aoTimeSpan(e){if(!e||!e.start||(e.end&&e.end!==e.start)||!e.startTime||!e.endTime)return '';var m=function(t){var p=String(t).split(':');return +p[0]*60+ +p[1];},d=m(e.endTime)-m(e.startTime);return e.startTime+'〜'+e.endTime+(d>0&&d<=6*60?'（'+Math.floor(d/60)+'時間'+(d%60?d%60+'分':'')+'）':d>6*60&&d<=13*60?'（半日）':d>=23*60?'（1日）':'');}
   function aoMD(d){return d?Number(d.slice(5,7))+'/'+Number(d.slice(8,10)):'';}
   function aoEventItems(list,rank,lastView){
     var ul=typeof document.createDocumentFragment==="function"?document.createDocumentFragment():document.createElement("div");
@@ -4543,13 +4867,14 @@ html:root body #mini.main-screen #itemsWindowTitle{color:#0d3b66!important}
   function aoDataTime(data){var t=data&&Date.parse(data.generatedAt);if(!Number.isFinite(t))return '';var d=new Date(t+9*3600e3);return '予想データ '+(d.getUTCMonth()+1)+'/'+d.getUTCDate()+' '+String(d.getUTCHours()).padStart(2,'0')+':'+String(d.getUTCMinutes()).padStart(2,'0')+' 作成。';}
   function renderAlwaysOnEvents(nowMs){
     var now=jstNow(nowMs),today=now.y+'-'+String(now.m).padStart(2,'0')+'-'+String(now.d).padStart(2,'0'),tomorrow=aoIsoDay(Date.parse(today+'T00:00:00Z')+864e5),rank=state.rank;
-    var key=[today,rank,forecastData&&forecastData.generatedAt,forecastError,forecastLoading].join('|');
+    var key=[today,rank,forecastData&&forecastData.generatedAt,forecastError,forecastLoading,snsVersion].join('|');
     if(key===alwaysOnEventsKey)return;alwaysOnEventsKey=key;
     var days=forecastData&&forecastData.days||{},lasts=days[today]&&days[today].lasts||[],list=(days[today]&&days[today].events||[]).filter(function(e){return !e.ends&&e.phase!=='last';}),next=(days[tomorrow]&&days[tomorrow].events||[]).filter(function(e){return e.phase==='first';});
+    var sToday=snsDay(today),hasSns=sToday.length>0;lasts=aoMergeEvents(lasts,sToday.filter(function(e){return e.ends;}));list=aoMergeEvents(list,sToday.filter(function(e){return !e.ends&&e.phase!=='last';}));next=aoMergeEvents(next,snsDay(tomorrow).filter(function(e){return e.phase==='first';}));
     $('aoEvents').textContent='';$('aoTomorrow').textContent='';$('aoLast').textContent='';$('aoLast').appendChild(aoEventItems(lasts,rank,true));
     aoSet('aoLastNote',!forecastData?'':!days[today]?'今日のイベント情報は予想データの範囲外です。':!lasts.length?'本日が最終日のイベントはありません（公式noteで期間を確認できたもの）。':'終了時刻はアプリ内の表示を優先してください。');
     $('aoEvents').appendChild(aoEventItems(list,rank));$('aoTomorrow').appendChild(aoEventItems(next,rank));$('aoTomorrowHead').hidden=!next.length;
-    aoSet('aoEventsNote',!forecastData?(forecastLoading?'イベント情報を読み込み中…':'イベント情報を取得できませんでした。'):!days[today]?'今日のイベント情報は予想データの範囲外です。':!list.length?'公式note・公式サイトで期間を確認できたイベントはありません。':'公式note・公式サイトのお知らせから読み取った期間です。正式な内容はアプリ内で確認してください。');
+    aoSet('aoEventsNote',!forecastData&&!hasSns?(forecastLoading?'イベント情報を読み込み中…':'イベント情報を取得できませんでした。'):!days[today]&&!hasSns?'今日のイベント情報は予想データの範囲外です。':!list.length?'公式note・公式サイト・公式X/インスタ（貼り付け）で期間を確認できたイベントはありません。':'公式note・公式サイトのお知らせ・公式X/インスタの告知（貼り付け）から読み取った期間です。正式な内容はアプリ内で確認してください。');
   }
   // 通常表示の「予想」「イベント」カードを描く（1秒ごと。内容が変わったときだけ書き換える）。締め30分前・10分前は締めまでの表示色を変える。
   function renderAlwaysOn(){
@@ -4659,9 +4984,11 @@ html:root body #mini.main-screen #itemsWindowTitle{color:#0d3b66!important}
   }
   // その日のイベント（開催中・イベラス）。ranks に設定ランクがあれば「対象」。名前はパネルと同じ決め方。
   function hitDayEvents(events,date,rank){
-    var day=events&&events.days&&events.days[date],list=events&&events.list||[];if(!day)return {running:[],lasts:[],bigForRank:false};
+    var day=events&&events.days&&events.days[date],list=events&&events.list||[];
     var pick=function(i){var x=list[i];return x?{name:aoEventName(x),type:x.type,target:(x.ranks||[]).indexOf(rank)>=0,startTime:x.startTime||'',endTime:x.endTime||'',start:x.start,end:x.end,span:aoTimeSpan(x)}:null;};
-    var running=(day.e||[]).map(pick).filter(Boolean),lasts=(day.l||[]).map(pick).filter(Boolean);
+    var running=day?(day.e||[]).map(pick).filter(Boolean):[],lasts=day?(day.l||[]).map(pick).filter(Boolean):[];
+    // 貼り付けた公式X・インスタの告知（この端末だけ）も足す
+    snsDay(date).forEach(function(x){var o={name:aoEventName(x),type:x.type,target:(x.ranks||[]).indexOf(rank)>=0,startTime:x.startTime||'',endTime:x.endTime||'',start:x.start,end:x.end,span:aoTimeSpan(x)};if(running.concat(lasts).some(function(y){return y.name===o.name&&y.start===o.start;}))return;(x.ends?lasts:running).push(o);});
     return {running:running,lasts:lasts,bigForRank:running.concat(lasts).some(function(x){return x.type==='big'&&x.target;})};
   }
   // その日のイベントを行ごとに（kind：last＝イベラス、run＝開催中、none＝なし）。画面では行ごとに文字色を変える。
@@ -4670,7 +4997,7 @@ html:root body #mini.main-screen #itemsWindowTitle{color:#0d3b66!important}
     var out=[];
     if(ev.lasts.length)out.push({kind:'last',text:'イベラス：'+ev.lasts.map(function(x){return mark(x)+(x.endTime&&!x.span?' '+x.endTime+'まで':'');}).join('、')});
     if(ev.running.length)out.push({kind:'run',text:'開催中：'+ev.running.map(mark).join('、')});
-    return out.length?out:[{kind:'none',text:'この日のイベント情報はありません（公式noteで期間を確認できたもの）。'}];
+    return out.length?out:[{kind:'none',text:'この日のイベント情報はありません（公式note・公式サイト・貼り付けた公式X/インスタで期間を確認できたもの）。'}];
   }
   function hitDayEventText(ev){return hitDayEventLines(ev).map(function(x){return x.text;}).join(String.fromCharCode(10));}
   // 日付をタップしたときの内容：1行目（日付と予想・実際）と、イベラス・開催中の行（色分け）
@@ -4716,6 +5043,33 @@ html:root body #mini.main-screen #itemsWindowTitle{color:#0d3b66!important}
     $('hitCalPrev').addEventListener('click',function(){var ms=hitCalMonths(hitHistories[closeKey()]),p=ms.indexOf(hitCalMonth);if(p>0){hitCalMonth=ms[p-1];hitCalSelected='';renderHitCalendar();}});
     $('hitCalNext').addEventListener('click',function(){var ms=hitCalMonths(hitHistories[closeKey()]),p=ms.indexOf(hitCalMonth);if(p>=0&&p<ms.length-1){hitCalMonth=ms[p+1];hitCalSelected='';renderHitCalendar();}});
     setInterval(function(){if(!document.hidden)renderHitCalendar();},1000);
+  }
+  // 公式X・インスタの告知の貼り付け：読み取り → 端末に保存 → 一覧・カレンダーへ。保存済みの一覧（削除ボタンつき）と共有用の行のコピー。
+  function snsTodayISO(){var n=jstNow();return n.y+'-'+String(n.m).padStart(2,'0')+'-'+String(n.d).padStart(2,'0');}
+  function snsLineText(l){var ev=null;try{ev=PocoEventParse.snsLineEvent(l);}catch(e){}var p=ev&&ev.periods[0];if(!p)return l;return aoEventName({title:ev.title,label:p.label})+' '+aoMD(p.start)+(aoTimeSpan(p)?' '+aoTimeSpan(p):(p.end&&p.end!==p.start?'〜'+aoMD(p.end):'')+(p.endTime?' '+p.endTime+'まで':''))+(p.ranks&&p.ranks.length||ev.ranks.length?'（'+PocoEventParse.rankText(p.ranks&&p.ranks.length?p.ranks:ev.ranks)+'）':'');}
+  function snsRenderList(){
+    var ul=$('aoSnsList');if(!ul)return;ul.textContent='';var lines=snsSaved();
+    lines.forEach(function(l,i){var li=document.createElement('li'),t=document.createElement('span'),b=document.createElement('button');t.textContent=snsLineText(l);b.type='button';b.textContent='削除';b.setAttribute('aria-label',t.textContent+' を削除');
+      b.addEventListener('click',function(){var cur=snsSaved(),k=cur.indexOf(l);if(k>=0)cur.splice(k,1);snsStore(cur);snsAfterChange('削除しました。');});li.appendChild(t);li.appendChild(b);ul.appendChild(li);});
+    if($('aoSnsCopy'))$('aoSnsCopy').disabled=!lines.length;
+  }
+  function snsAfterChange(msg){aoSet('aoSnsResult',msg);alwaysOnEventsKey='';hitCalKey='';snsRenderList();renderAlwaysOn();renderHitCalendar();}
+  function snsRead(){
+    var text=$('aoSnsText').value||'',posted=$('aoSnsDate').value||snsTodayISO(),url=String($('aoSnsUrl').value||'').trim();
+    if(!text.trim()){aoSet('aoSnsResult','投稿文を貼り付けてください。');return [];}
+    if(url&&!/^https:\/\/(?:(?:www\.|mobile\.)?(?:x|twitter)\.com|(?:www\.)?instagram\.com)\/\S+$/.test(url)){aoSet('aoSnsResult','URLは公式X（x.com）か公式インスタ（instagram.com）の投稿のものを入れてください（空欄でも追加できます）。');return [];}
+    var lines=[];try{lines=PocoEventParse.snsLines(PocoEventParse.snsEvent(text,{posted:posted,url:url}),{posted:posted,url:url});}catch(e){lines=[];}
+    if(!lines.length){aoSet('aoSnsResult','期間を読み取れませんでした。「11/15 12:00〜23:59」「本日21時〜24時」のように日付と時間の範囲が入っているか確認してください。');return [];}
+    var cur=snsSaved();lines.forEach(function(l){if(cur.indexOf(l)<0)cur.push(l);});snsStore(cur.slice(-200));$('aoSnsText').value='';
+    snsAfterChange(lines.length+'件を追加しました（この端末だけ）：'+lines.map(snsLineText).join('、'));return lines;
+  }
+  if($('aoSns')){
+    $('aoSns').addEventListener('toggle',function(){if(this.open){if(!$('aoSnsDate').value)$('aoSnsDate').value=snsTodayISO();snsRenderList();}});
+    $('aoSnsRead').addEventListener('click',snsRead);
+    $('aoSnsCopy').addEventListener('click',function(){var text=snsSaved().join(String.fromCharCode(10));if(!text){aoSet('aoSnsResult','コピーする行がありません。');return;}
+      var done=function(){aoSet('aoSnsResult','共有用の行をコピーしました。「全員の画面に出す」から data/sns-events.txt の末尾に貼って保存すると、数分で全員の画面に出ます。');};
+      var fail=function(){$('aoSnsText').value=text;$('aoSnsText').focus();$('aoSnsText').select();aoSet('aoSnsResult','自動でコピーできませんでした。投稿文の欄に出した行を選んでコピーしてください。');};
+      try{if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text).then(done,fail);else fail();}catch(e){fail();}});
   }
   if($('alwaysOnOpen')&&$('alwaysOnClose')){
     $('alwaysOnOpen').addEventListener('click',function(){if(alwaysOnIsOpen)closeAlwaysOn();else openAlwaysOn();});

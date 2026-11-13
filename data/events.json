@@ -1,7 +1,7 @@
 {
  "schema": "poco-events-v1",
  "note": "イベント名・期間・対象ランク・対象（audience）・URLなどの事実だけを記録。本文は保存しない。confidence: high=「開催期間」等の見出し付きの期間を検出 / low=見出しなしの期間 / none=期間を検出できず。使用期限・配信時間・応募や選考などの期間は除外（excluded に件数）。",
- "updatedAt": "2026-11-13T05:32:04.936Z",
+ "updatedAt": "2026-11-13T06:17:45.222Z",
  "sources": [
   {
    "id": "pococha-official-note",
@@ -23,6 +23,17 @@
     "date": "2026-11-13",
     "robots": "www.pococha.com の robots.txt は無し（404）。event.pococha.com は画像の一部だけ不許可",
     "terms": "Pococha会員規約 第10条はアプリ・サーバーの解析やボットでの「本サービス」利用を禁止 → アプリ内・非公開の通信は使わず、公開のお知らせページだけを1回2ページまで読む。本文は保存せず、期間・ランク等の事実とURLのみ記録"
+   }
+  },
+  {
+   "id": "pococha-official-sns",
+   "name": "Pococha公式X・Instagram（手動の貼り付け）",
+   "kind": "official",
+   "home": "https://x.com/pococha_jp",
+   "checked": {
+    "date": "2026-11-13",
+    "robots": "x.com・instagram.com へはアクセスしない（自動取得しない）",
+    "terms": "X・Instagramの規約は許可のない自動収集（スクレイピング）を禁止。公式APIは有料・登録が必要なため不使用 → 人が貼った投稿文から、名前・期間・時間帯・対象ランク・投稿URLの事実だけを1行にして記録。本文は保存しない"
    }
   }
  ],

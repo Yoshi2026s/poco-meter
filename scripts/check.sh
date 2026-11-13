@@ -20,10 +20,10 @@ run() {
 run pages-borders+table-channel node --test tests/pages-borders.mjs tests/table-channel.mjs
 for t in calculation-engine periods-default-rank items-core-input border-write-auth history-search meter-sources always-on-forecast forecast-log; do run "$t" node "tests/$t.mjs"; done
 run pages-build node scripts/build-pages.mjs --out="$log/_site"
-# 生成物（過去ボーダー・E帯）が元ファイルと一致するか。不一致なら元に戻して知らせる。
-gen=(calculator/border-history.html calculator/e-border.html)
+# 生成物（過去ボーダー・E帯・メーター画面に書き写したイベント読み取り部品）が元ファイルと一致するか。不一致なら元に戻して知らせる。
+gen=(calculator/border-history.html calculator/e-border.html calculator/index.html)
 for f in "${gen[@]}"; do cp "$f" "$log/$(basename "$f").bak"; done
-if node scripts/prepare-e-border.mjs >"$log/prepare.log" 2>&1 && node scripts/prepare-history-page.mjs >>"$log/prepare.log" 2>&1; then
+if node scripts/prepare-event-parse.mjs >"$log/prepare.log" 2>&1 && node scripts/prepare-e-border.mjs >>"$log/prepare.log" 2>&1 && node scripts/prepare-history-page.mjs >>"$log/prepare.log" 2>&1; then
   stale=0
   for f in "${gen[@]}"; do cmp -s "$f" "$log/$(basename "$f").bak" || stale=1; cp "$log/$(basename "$f").bak" "$f"; done
   if [[ $stale == 0 ]]; then echo "ok  generated-pages"; else echo "NG  generated-pages（テンプレート等の変更が生成物に未反映。npm run pages:prepare の結果をコミット）"; failed=1; fi

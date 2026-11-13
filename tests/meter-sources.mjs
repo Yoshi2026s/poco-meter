@@ -1,6 +1,9 @@
 // メーター予想の情報源（イベント収集・補正値の集計）の最小テスト。ネットワーク不要。
 import assert from 'node:assert/strict';
-import {findPeriods, findRanks, classify, pickLabel, articleText, toEvent, SOURCES, tidyLabel, titleNameOf, newsItems, eventFrom} from '../automation/collect-events.mjs';
+import {findPeriods, findRanks, classify, pickLabel, articleText, toEvent, SOURCES, tidyLabel, titleNameOf, newsItems, eventFrom, readPasted} from '../automation/collect-events.mjs';
+import {snsText, snsEvent, snsLines, snsLineEvent, snsDayItems, rankText} from '../calculator/event-parse.mjs';
+import {readFileSync} from 'node:fs';
+import {eventParseBlock, injectEventParse} from '../scripts/prepare-event-parse.mjs';
 import {paydayOf, calendarTags, buildFactors} from '../automation/build-meter-factors.mjs';
 
 // 期間：年あり・年なし・同日の時刻範囲・「より開催」・エントリ期間の区別
@@ -102,5 +105,44 @@ assert.equal(titleNameOf('「ヒーロー戦隊」アイテム登場!'), 'ヒー
   assert.equal(ev.sourceId, 'pococha-official-site');
   assert.ok(ev.ranks.includes('S1') && ev.ranks.includes('S6'));
   assert.deepEqual(newsItems('<html></html>'), {items: [], pages: 0});
+}
+// 公式X・インスタの告知（貼り付け）：相対的な日付・「21時」・3時間の開催も読み、共有用の1行にして読み戻せる
+{
+  assert.equal(snsText('本日21時〜24時', '2026-11-14'), '2026年11月14日 21:00〜24:00');
+  assert.equal(snsText('明日12時半スタート', '2026-12-31'), '2027年1月1日 12:30より開始');
+  const post = '＼本日開催／\n夜の部ランキングイベント🌙\n本日21時〜24時の3時間限定！\n対象：S1〜S6ランク\n#ポコチャ\nhttps://x.com/pococha_jp/status/123';
+  const ev = snsEvent(post, {posted: '2026-11-14', url: 'https://x.com/pococha_jp/status/123'});
+  assert.equal(ev.title, '夜の部ランキングイベント', '飾りの行・ハッシュタグ・URLは名前にしない');
+  assert.deepEqual(ev.periods.map(p => [p.start, p.startTime, p.end, p.endTime]), [['2026-11-14', '21:00', '2026-11-14', '24:00']], 'SNSでは3時間の開催も配信枠として除外しない');
+  const lines = snsLines(ev, {posted: '2026-11-14', url: 'https://x.com/pococha_jp/status/123'});
+  assert.deepEqual(lines, ['投稿日 2026-11-14｜夜の部ランキングイベント｜開催期間：2026年11月14日 21:00〜2026年11月14日 24:00｜対象：S1〜S6｜https://x.com/pococha_jp/status/123']);
+  assert.ok(!lines[0].includes('限定'), '本文は残さない（事実だけ）');
+  const back = snsLineEvent(lines[0]);
+  assert.equal(back.sourceId, 'pococha-official-sns'); assert.equal(back.id, '123');
+  assert.deepEqual(back.periods.map(p => [p.label, p.start, p.startTime, p.endTime]), [['夜の部ランキングイベント', '2026-11-14', '21:00', '24:00']]);
+  assert.deepEqual(back.ranks, ['S1', 'S2', 'S3', 'S4', 'S5', 'S6']);
+  const day = snsDayItems(back, '2026-11-14');
+  assert.equal(day.length, 1); assert.equal(day[0].ends, true); assert.equal(day[0].phase, 'first');
+  assert.deepEqual(snsDayItems(back, '2026-11-15'), []);
+  assert.equal(snsLineEvent('# 説明'), null); assert.equal(snsLineEvent('投稿日 2026-11-14｜名前だけ'), null);
+  const noUrl = snsLineEvent('投稿日 2026-11-14｜秋祭り｜開催期間：2026年11月20日 12:00より開始');
+  assert.ok(noUrl.url.startsWith('https://x.com/pococha_jp#'), 'URLの無い行も区別できる印を付ける'); assert.equal(noUrl.periods[0].end, null);
+  assert.equal(rankText(['A1', 'A2', 'A3', 'S1']), 'A1〜S1'); assert.equal(rankText(['B1', 'B3']), 'B1、B3');
+  assert.equal(rankText(findRanks('全ランク')), '全ランク'); assert.equal(rankText([]), '');
+  // data/sns-events.txt：毎回作り直す（消した行は消える）・本文を持たない
+  const site = SOURCES.find(x => x.id === 'pococha-official-sns');
+  assert.ok(site && site.pasted === 'data/sns-events.txt' && /自動収集/.test(site.checked.terms), '取得元：公式X・インスタ（手動の貼り付け、規約の確認つき）');
+  const byId = new Map([['old', {sourceId: 'pococha-official-sns', url: 'old'}], ['n', {sourceId: 'pococha-official-note', url: 'n'}]]);
+  assert.equal(readPasted(site, byId, '# x\n' + lines[0] + '\nこわれた行'), 1);
+  assert.deepEqual([...byId.keys()].sort(), ['https://x.com/pococha_jp/status/123', 'n']);
+  assert.equal(byId.get('https://x.com/pococha_jp/status/123').line, undefined);
+  assert.equal(readPasted(site, new Map(), readFileSync(new URL('../data/sns-events.txt', import.meta.url), 'utf8')), 0, '説明の行は読まない');
+}
+// 画面に書き写した読み取り部品が calculator/event-parse.mjs と一致すること（npm run pages:prepare）
+{
+  const page = readFileSync(new URL('../calculator/index.html', import.meta.url), 'utf8');
+  const source = readFileSync(new URL('../calculator/event-parse.mjs', import.meta.url), 'utf8');
+  assert.equal(injectEventParse(page, source), page, 'index.html の読み取り部品が古い（npm run pages:prepare）');
+  assert.ok(eventParseBlock(source).includes('var PocoEventParse=(function(){'));
 }
 console.log('meter-sources ok');

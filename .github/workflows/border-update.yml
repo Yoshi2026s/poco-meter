@@ -4,11 +4,15 @@ name: ボーダー自動更新
 #  1. 記事本文の「前日ランクボーダー」（主）
 #  2. 月別の表画像（3日以上前の欠けた日だけを補う。既知の日と全一致した画像だけを使う）
 # 毎日 05:00 と 17:00（日本時間）。GitHub の定期実行は混雑で数分〜数十分遅れることがある。
+# data/sns-events.txt（公式X・インスタの告知の貼り付け）を変えたときは、取得元へはアクセスせず、その行だけを読んでイベント情報を作り直す。
 on:
   schedule:
     - cron: '0 20 * * *'   # 05:00 JST
     - cron: '0 8 * * *'    # 17:00 JST
   workflow_dispatch:
+  push:
+    branches: ['(root)']
+    paths: ['data/sns-events.txt']
 
 permissions:
   contents: write
@@ -30,23 +34,28 @@ jobs:
         run: node --test tests/pages-borders.mjs tests/table-channel.mjs
       - name: 取得元を確認して data/borders.json を更新
         id: update
+        if: github.event_name != 'push'
         run: |
           set +e
           node automation/update-borders-json.mjs --file=data/borders.json | tee update-report.json
           echo "exit=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
       # メーター予想の情報源。公式noteのRSSから新しい記事だけを取り、事実（名前・期間・対象ランク・URL）を
       # data/events.json に追記する。失敗してもボーダーの保存は止めない。
-      - name: イベント情報を収集（Pococha公式note・公式サイトのお知らせ、新着のみ）
+      - name: イベント情報を収集（Pococha公式note・公式サイトのお知らせ、新着のみ。公式X・インスタは貼り付けの行だけ）
         id: events
         continue-on-error: true
-        run: node automation/collect-events.mjs --file=data/events.json | tee events-report.json
+        run: |
+          if [ "${{ github.event_name }}" = push ]; then only=--only=pococha-official-sns; else only=; fi
+          node automation/collect-events.mjs --file=data/events.json $only | tee events-report.json
       - name: メーター予想の補正値を集計
         continue-on-error: true
         run: node automation/build-meter-factors.mjs
       - name: 予想の答え合わせ（記録のある全期間・月ごとに過去のデータだけで補正）
+        if: github.event_name != 'push'
         continue-on-error: true
         run: node automation/backtest-forecast.mjs
       - name: 日々の予想を記録し、実際のボーダーで答え合わせ
+        if: github.event_name != 'push'
         continue-on-error: true
         run: node automation/record-forecast.mjs | tee forecast-log-report.json
       - name: 変更があればコミット
@@ -77,7 +86,7 @@ jobs:
             { echo '### 予想の記録と答え合わせ'; echo '```json'; cat forecast-log-report.json; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
           fi
       - name: 取得が止まった場合は失敗として通知
-        if: steps.update.outputs.exit != '0'
+        if: github.event_name != 'push' && steps.update.outputs.exit != '0'
         run: |
           echo "取得元の確認が止まりました（403は再試行しません）。保存済みの値は保持しています。"
           exit 1

@@ -207,7 +207,7 @@ export function forecastBundle(factors, events, todayISO, {before = 3, after = 4
         if (!p.start || d < p.start || d > end) continue;
         list.push({title: e.title.slice(0, 60), label: (tidyLabel(p.label || "", titleNameOf(e.title)) || "").slice(0, 48) || null, type: e.type, ranks: (p.ranks?.length ? p.ranks : e.ranks) || [],
           phase: d === p.start ? 'first' : d === end ? 'last' : 'middle', ends: d === end, start: p.start, end: p.end || null, startTime: p.startTime || null, endTime: p.endTime || null, url: e.url,
-          ...(e.audience?.length ? {audience: e.audience} : {})});
+          ...(e.audience?.length ? {audience: e.audience} : {}), ...(e.sourceId === 'pococha-official-sns' ? {sns: true} : {})});
       }
     }
     // 同じ記事の重複と、別の記事に載った同じイベント（名前と期間が同じ）を除き、大型→通常イベント→その他の順に最大8件。

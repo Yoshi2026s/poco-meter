@@ -190,6 +190,29 @@ assert.match(html, /<details class="ao-calendar" id="hitCalendar"><summary>📅 
   assert.deepEqual(plain(e.hitDayEventLines(e.hitDayEvents(cd, '2026-01-01', 'S2'))).map(x => x.kind), ['none']);
   assert.ok(html.includes('.ao-cal-detail .ao-cal-line.last{color:#9a3412!important}') && html.includes('.ao-cal-detail .ao-cal-line.run{color:#0b4f8a!important}'));
 }
+// 時間帯：6時間以下は「（3時間）」「（1時間30分）」、6〜13時間は半日、23時間以上は1日
+assert.equal(e.aoTimeSpan({start: '2026-11-14', end: '2026-11-14', startTime: '21:00', endTime: '24:00'}), '21:00〜24:00（3時間）');
+assert.equal(e.aoTimeSpan({start: '2026-11-14', end: '2026-11-14', startTime: '20:00', endTime: '21:30'}), '20:00〜21:30（1時間30分）');
+// 貼り付けた公式X・インスタの告知（端末保存の共有用の1行）が、的中率カレンダーの日ごとの内容とイベントカードに足される
+{
+  const plain = x => JSON.parse(JSON.stringify(x));
+  const store = new Map([['pococha-meter-sns-events-v1', JSON.stringify({schema: 'poco-sns-events-v1', lines: ['投稿日 2026-01-06｜夜の部ランキング｜開催期間：2026年1月6日 21:00〜2026年1月6日 24:00｜対象：S1〜S6｜https://x.com/pococha_jp/status/1']})]]);
+  e.localStorage = {getItem: k => store.get(k) ?? null, setItem: (k, v) => store.set(k, v)};
+  e.snsCache = {raw: null, events: []};
+  assert.equal(e.hitDayEventText(e.hitDayEvents(null, '2026-01-06', 'S2')), 'イベラス：夜の部ランキング（対象ランク） 21:00〜24:00（3時間）', '予想データが無い日でも貼り付けのものは出す');
+  const half = {list: [{title: '夜の部ランキング', label: '夜の部ランキング', type: 'event', ranks: ['S2'], start: '2026-01-06', end: '2026-01-06', startTime: '21:00', endTime: '24:00', url: 'h'}], days: {'2026-01-06': {e: [], l: [0]}}};
+  assert.equal(plain(e.hitDayEvents(half, '2026-01-06', 'S2')).lasts.length, 1, '同じ名前・同じ開始日は二重に出さない');
+  const items = plain(e.snsDay('2026-01-06'));
+  assert.equal(items.length, 1); assert.equal(items[0].sns, true); assert.equal(items[0].ends, true);
+  assert.match(e.aoEventKind(items[0]), /公式X\/インスタ/);
+  assert.equal(plain(e.aoMergeEvents([{title: 'A', label: 'A', start: '2026-01-06'}], [{title: 'A', label: 'A', start: '2026-01-06'}, {title: 'B', label: 'B', start: '2026-01-06'}])).length, 2);
+  store.set('pococha-meter-sns-events-v1', 'こわれた値'); e.snsCache = {raw: null, events: []};
+  assert.deepEqual(plain(e.snsDay('2026-01-06')), [], '壊れた保存値は読まない');
+  e.localStorage = undefined;
+}
+// 画面：貼り付け欄（X・インスタは自動収集しない旨の説明・投稿日・URL・読み取り・共有用の行のコピー）
+for (const id of ['aoSns', 'aoSnsText', 'aoSnsDate', 'aoSnsUrl', 'aoSnsRead', 'aoSnsResult', 'aoSnsList', 'aoSnsCopy', 'aoSnsShare']) assert.ok(html.includes('id="' + id + '"'), id);
+assert.ok(html.includes('規約で自動収集が禁止のため自動では取りに行きません'));
 // 的中率の期間：年をまたぐときは年も出す
 assert.equal(e.aoSpan('2025-01-06', '2026-11-11'), '2025/1/6〜2026/11/11');
 assert.equal(e.aoSpan('2026-01-01', '2026-11-11'), '1/1〜11/11');
