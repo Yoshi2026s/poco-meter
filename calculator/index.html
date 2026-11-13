@@ -2179,6 +2179,18 @@ html.always-on-mode body #mini.main-screen #miniNowTime{font-size:clamp(18px,5.5
   html:root body #mini.main-screen :is(#targetMini,#currentMini){min-height:34px!important;height:34px!important}
   html:root body #mini.main-screen .mini-quick-add button{min-height:30px!important;height:30px!important}
 }
+/* 2026-11-13 配色の統一：メーター画面の淡い色の欄を、的中率カレンダーと同じ青系（背景は淡い青、枠は青灰、見出しは紺）にそろえ、
+   欄ごとに色合いを少しだけ変えて見分けやすくする（入力＝青、計算条件＝灰みの青、残りアイテム＝藤色寄りの青、予想＝空色、イベント＝水色）。
+   入力欄・選択欄・アイテムの数字など、黒地の部品は変えない。 */
+html:root body #mini.main-screen .main-inputs{background:#e3eefc!important;border-color:#b9cde6!important}
+html:root body #mini.main-screen .mini-goal-menu{background:#e9eff7!important;border:1px solid #bccbdc!important;border-radius:12px}
+html:root body #mini.main-screen #itemsWindow{background:#eaedfb!important;border:1px solid #c2c9e8!important}
+html:root body #mini.main-screen .main-forecast-card{background:#e6f1ff!important;border-color:#b9cde6!important}
+html:root body #mini.main-screen .main-events-card{background:#e3f3f9!important;border-color:#b2d6e4!important}
+html:root body #mini.main-screen :is(.mini-input label,.items-core label){color:#2c4a6b!important}
+/* 「目標値」「現在値」の末尾の「値」（狭い画面で隠す部分）も見出しと同じ色に（テーマの文字色を受けて薄くなっていた） */
+html:root body #mini.main-screen .mini-input label .lbl-tail{color:inherit!important}
+html:root body #mini.main-screen #itemsWindowTitle{color:#0d3b66!important}
 </style>
 </head>
 <body>
