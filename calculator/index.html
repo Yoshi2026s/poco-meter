@@ -4549,7 +4549,7 @@ html:root body #mini.main-screen #itemsWindowTitle{color:#0d3b66!important}
     $('aoEvents').textContent='';$('aoTomorrow').textContent='';$('aoLast').textContent='';$('aoLast').appendChild(aoEventItems(lasts,rank,true));
     aoSet('aoLastNote',!forecastData?'':!days[today]?'今日のイベント情報は予想データの範囲外です。':!lasts.length?'本日が最終日のイベントはありません（公式noteで期間を確認できたもの）。':'終了時刻はアプリ内の表示を優先してください。');
     $('aoEvents').appendChild(aoEventItems(list,rank));$('aoTomorrow').appendChild(aoEventItems(next,rank));$('aoTomorrowHead').hidden=!next.length;
-    aoSet('aoEventsNote',!forecastData?(forecastLoading?'イベント情報を読み込み中…':'イベント情報を取得できませんでした。'):!days[today]?'今日のイベント情報は予想データの範囲外です。':!list.length?'公式noteで期間を確認できたイベントはありません。':'公式noteの記事から読み取った期間です。正式な内容はアプリ内で確認してください。');
+    aoSet('aoEventsNote',!forecastData?(forecastLoading?'イベント情報を読み込み中…':'イベント情報を取得できませんでした。'):!days[today]?'今日のイベント情報は予想データの範囲外です。':!list.length?'公式note・公式サイトで期間を確認できたイベントはありません。':'公式note・公式サイトのお知らせから読み取った期間です。正式な内容はアプリ内で確認してください。');
   }
   // 通常表示の「予想」「イベント」カードを描く（1秒ごと。内容が変わったときだけ書き換える）。締め30分前・10分前は締めまでの表示色を変える。
   function renderAlwaysOn(){
