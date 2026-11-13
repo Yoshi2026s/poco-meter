@@ -127,6 +127,12 @@ assert.equal(titleNameOf('「ヒーロー戦隊」アイテム登場!'), 'ヒー
   assert.equal(snsLineEvent('# 説明'), null); assert.equal(snsLineEvent('投稿日 2026-11-14｜名前だけ'), null);
   const noUrl = snsLineEvent('投稿日 2026-11-14｜秋祭り｜開催期間：2026年11月20日 12:00より開始');
   assert.ok(noUrl.url.startsWith('https://x.com/pococha_jp#'), 'URLの無い行も区別できる印を付ける'); assert.equal(noUrl.periods[0].end, null);
+  // 1行だけの告知：名前に日時・対象・「開催！」を入れない。「12時から24時まで」「B帯」も読む
+  const one = snsEvent('本日21時〜24時 夜の部ランキング開催！対象：S1〜S6', {posted: '2026-11-13'});
+  assert.equal(one.title, '夜の部ランキング'); assert.deepEqual(one.ranks, ['S1', 'S2', 'S3', 'S4', 'S5', 'S6']);
+  assert.equal(snsEvent('11/20 12時〜23時59分 「ハロウィン前夜祭」開催決定！', {posted: '2026-11-13'}).title, 'ハロウィン前夜祭');
+  const b = snsEvent('明日12時から24時まで、B帯限定のランキングを開催します', {posted: '2026-11-13'});
+  assert.deepEqual(b.periods.map(p => [p.start, p.startTime, p.endTime]), [['2026-11-14', '12:00', '24:00']]); assert.deepEqual(b.ranks, ['B1', 'B2', 'B3']);
   assert.equal(rankText(['A1', 'A2', 'A3', 'S1']), 'A1〜S1'); assert.equal(rankText(['B1', 'B3']), 'B1、B3');
   assert.equal(rankText(findRanks('全ランク')), '全ランク'); assert.equal(rankText([]), '');
   // data/sns-events.txt：毎回作り直す（消した行は消える）・本文を持たない
