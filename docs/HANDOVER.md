@@ -85,6 +85,7 @@ git switch -c codex/example-task "origin/(root)"
 
 ## 未確認・既知のテスト差
 
+- v2026.11.13.4（予想カードに的中率カレンダー・日ごとの答え合わせ data/forecast-history.json）は標準チェック・vite系10本・record-display に合格、hud-items（320×568）と phone-layout（HUD target）は既知の失敗のみ。[PR #75](https://github.com/Yoshi2026s/poco-meter/pull/75) で統合・公開済み（`0abfe80`）。公開URLでカレンダーの表示（2026年11月 S2±0 22時締め 5/11日）を確認。履歴ファイル（417KB）の読み込みは確認環境で約8.5秒かかった（締め時間ごとに分けると約1/3になる）。iPhone実機は未確認。
 - v2026.11.13.3（予想の答え合わせを前年分を含む全期間に・月ごとに過去のデータだけで補正）は標準チェックに合格（CSS変更なしのため画面系テストは未実行）。[PR #73](https://github.com/Yoshi2026s/poco-meter/pull/73) で統合・公開済み（`c8caa8d`）。公開URLで版表示と「過去の的中率（2025/1/6〜2026/11/11・672日）：±10%以内 63.1%」の表示を確認。
 - v2026.11.13.2（スマホ縦画面の詰め表示：ボタン・余白の縮小、操作ボタンを見出し行へ）は標準チェック・vite系10本・record-display に合格、hud-items（320×568、概要の下端 690→606px に改善）と phone-layout（HUD target）は既知の失敗のみ。phone-layout は1回目に379px以下で入力欄の高さ位置がずれて不合格→修正して合格。[PR #71](https://github.com/Yoshi2026s/poco-meter/pull/71) で統合・公開済み（`233032d`）。公開URLの390×664で予想値の下端650px（1画面内）を確認。iPhone実機（Safari）は未確認。
 - v2026.11.13.1（常時表示パネルを通常表示に統合・常時表示モード・文言と小さい文字の整理）は標準チェック・vite系10本・record-display に合格（record-display は1回目に320px幅の版表示のはみ出しで不合格→修正して合格）、hud-items（320×568）と phone-layout（HUD target）は既知の失敗のみ。[PR #69](https://github.com/Yoshi2026s/poco-meter/pull/69) で統合・公開済み（`2fa7388`）。公開URLで版表示、予想・イベントのカード、常時表示モードの切り替え（ツール欄が隠れる・終了で戻る）を確認。iPhone実機（Safari）での Wake Lock とモード表示は未確認。
