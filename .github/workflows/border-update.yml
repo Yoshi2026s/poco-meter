@@ -36,7 +36,7 @@ jobs:
           echo "exit=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
       # メーター予想の情報源。公式noteのRSSから新しい記事だけを取り、事実（名前・期間・対象ランク・URL）を
       # data/events.json に追記する。失敗してもボーダーの保存は止めない。
-      - name: イベント情報を収集（Pococha公式note・新着のみ）
+      - name: イベント情報を収集（Pococha公式note・公式サイトのお知らせ、新着のみ）
         id: events
         continue-on-error: true
         run: node automation/collect-events.mjs --file=data/events.json | tee events-report.json
