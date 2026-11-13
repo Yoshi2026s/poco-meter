@@ -1,0 +1,59 @@
+# 過去の半日イベントの調査メモ（照合用・画面には出さない）
+# - 2026/11/13 取り込み。アプリ・自動更新はこのファイルを読まない（公開物にも入らない）。
+# - candidate_events は参加者・ライバーの記録で、公式の確認が取れていない。data/sns-events.txt・data/events.json には入れない。
+# - 公式投稿・公式イベントページで確認できたものだけ official_confirmed_events に移し、
+#   そのうえで「公式X・インスタの告知を読み取る」→ data/sns-events.txt の手順で反映する。
+# - 取り込み時点の照合：data/events.json（公式note・公式サイト由来）に、下記の日付・名称と一致する半日イベントはなかった。
+
+dataset: "Pococha日本版・過去の半日イベント調査"
+timezone: "Asia/Tokyo"
+official_confirmed_events: []
+
+source_links:
+  official_x: "https://x.com/pococha_jp"
+  official_event_faq: "https://pococha-jp.pococha.com/hc/ja/articles/31821579542297"
+
+candidate_events:
+  - name_as_reported: "推し御守"
+    reported_date: "2024-10-26"
+    start_at: null
+    end_at: null
+    source_type: "参加者の事後記録"
+    source_url: "https://note.com/aoba815aoba/n/n39b93ea45538"
+    details: "C2〜C3の部門で、2グループに分かれて各ブロックの1〜3位を競ったとの記録。"
+    notes: "本文の12:30は参加枠の配信開始時刻。イベントの開始時刻には使用しない。"
+
+  - name_as_reported: "ポコリンKOKO"
+    reported_date: "2025-10-15"
+    start_at: null
+    end_at: null
+    source_type: "ライバーの当日告知"
+    source_url: "https://note.com/marumaru_o07/n/n7ff198ee10a3"
+    details: "投稿日の本文で「今日」の半日イベントとして告知。"
+    notes: "投稿内のナイト特典は配信枠独自のもの。公式プライズ欄には入れない。"
+
+  - name_as_reported: null
+    reported_dates: ["2026-01-16", "2026-01-20", "2026-01-26"]
+    start_at: null
+    end_at: null
+    source_type: "ライバーの事前告知"
+    source_url: "https://note.com/hoppe_/n/nc96c0afd9c41"
+    details: "1月13日の投稿で、16日・20日・26日の3日を対象に枠独自の特典を案内。"
+    notes: "年月は投稿日をもとに補完。3日分のイベント名と、同一企画かどうかは未確認。"
+
+  - name_as_reported: "ポコリンガーガー"
+    reported_period: "2026年5月月初"
+    reported_date: null
+    start_at: null
+    end_at: null
+    source_type: "ライバーの事後記録"
+    source_url: "https://note.com/kind_mango539/n/nb75c7d06e7e5"
+    details: "5月月初のコア解禁に合わせた半日イベントとして言及。"
+    notes: "正式名称、開催日、対象ランク、公式プライズは未確認。"
+
+import_rules:
+  - "candidate_eventsは検索・照合用の資料として扱う。公開用の開催履歴にはofficial_confirmed_eventsを使う。"
+  - "公式投稿の本文・画像、または公式イベントページで確認できた項目だけを採用する。"
+  - "開催開始・終了、エントリー締切、ライバーの配信時刻、メーターの22時締めは個別に記録する。"
+  - "空欄はnullのまま保持し、推定で時刻やプライズを補完しない。"
+  - "同名イベントでも開催日が異なれば別記録とする。公式イベントIDが判明したら照合に使う。"
