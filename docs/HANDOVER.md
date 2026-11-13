@@ -84,6 +84,7 @@ git switch -c codex/example-task "origin/(root)"
 
 ## 未確認・既知のテスト差
 
+- v2026.11.13.2（スマホ縦画面の詰め表示：ボタン・余白の縮小、操作ボタンを見出し行へ）は標準チェック・vite系10本・record-display に合格、hud-items（320×568、概要の下端 690→606px に改善）と phone-layout（HUD target）は既知の失敗のみ。phone-layout は1回目に379px以下で入力欄の高さ位置がずれて不合格→修正して合格。[PR #71](https://github.com/Yoshi2026s/poco-meter/pull/71) で統合・公開済み（`233032d`）。公開URLの390×664で予想値の下端650px（1画面内）を確認。iPhone実機（Safari）は未確認。
 - v2026.11.13.1（常時表示パネルを通常表示に統合・常時表示モード・文言と小さい文字の整理）は標準チェック・vite系10本・record-display に合格（record-display は1回目に320px幅の版表示のはみ出しで不合格→修正して合格）、hud-items（320×568）と phone-layout（HUD target）は既知の失敗のみ。[PR #69](https://github.com/Yoshi2026s/poco-meter/pull/69) で統合・公開済み（`2fa7388`）。公開URLで版表示、予想・イベントのカード、常時表示モードの切り替え（ツール欄が隠れる・終了で戻る）を確認。iPhone実機（Safari）での Wake Lock とモード表示は未確認。
 - v2026.11.12.12（日々の記録の誤差を過去の答え合わせとそろえる・パネルに直近の答え合わせの一覧・過去の答え合わせの±10%判定を丸め）は標準チェック・vite系10本（custom-display 含む）に合格、Playwrightは record-display 合格・hud-items と phone-layout は既知の失敗のみ。[PR #67](https://github.com/Yoshi2026s/poco-meter/pull/67) で統合・公開済み（`3099756`）。公開URLで版表示、一覧の開閉ボタン（答え合わせ前のため非表示）を確認。iPhone実機は未確認。
 - v2026.11.12.11（日々の予想と実際の記録・パネルの前回の答え合わせ・予想の行タップでパネル・古いデータの「※古」）は標準チェック・vite系10本に合格、Playwrightは record-display 合格・hud-items と phone-layout は既知の失敗のみ。[PR #65](https://github.com/Yoshi2026s/poco-meter/pull/65) で統合・公開済み（`588a2b3`）。公開URLで版表示、予想の行のタップでパネルが開くこと、記録開始の案内を確認。答え合わせの実データは 11/13 05:00 の自動更新から（その後の公開でパネルに反映）。iPhone実機は未確認。
