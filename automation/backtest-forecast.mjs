@@ -143,6 +143,19 @@ export function forecastHistory(rows, predict, from, to) {
 }
 let history = null;
 export function lastHistory() { return history; }
+// 締め時間ごとに分ける。各ファイルはその締め時間に答え合わせがある日だけを並べ、系列のキーは「ランク|ボーダー」。
+export function splitHistory(h) {
+  const out = {};
+  if (!h) return out;
+  for (const close of [...new Set(Object.keys(h.series).map(k => k.split('|')[0]))].sort()) {
+    const keys = Object.keys(h.series).filter(k => k.startsWith(close + '|'));
+    const used = h.dates.map((_, i) => keys.some(k => h.series[k][i] !== null));
+    const dates = h.dates.filter((_, i) => used[i]);
+    const series = Object.fromEntries(keys.map(k => [k.slice(close.length + 1), h.series[k].filter((_, i) => used[i])]));
+    out[close] = {schema: 'poco-meter-forecast-history-v2', close, from: dates[0] || null, to: dates.at(-1) || null, unit: h.unit, dates, series};
+  }
+  return out;
+}
 export function backtest(borders, events, html, {from = null} = {}) {
   const meterForecast = loadMeterForecast(html);
   const dates = [...new Set(borders.records.map(r => r.date))].sort();
@@ -205,9 +218,13 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   let prev = null; try { prev = JSON.parse(await readFile(file, 'utf8')); } catch {}
   const same = prev && JSON.stringify({...prev, generatedAt: null}) === JSON.stringify({...out, generatedAt: null});
   if (!same) await writeFile(file, JSON.stringify(out, null, 1) + '\n');
-  // 日ごとの答え合わせ（的中率カレンダー用。公開時に data/forecast-history.json として配る）
-  const hfile = arg('history', 'data/forecast-history.json'), hjson = JSON.stringify(lastHistory()) + '\n';
-  let hprev = null; try { hprev = await readFile(hfile, 'utf8'); } catch {}
-  if (hprev !== hjson) await writeFile(hfile, hjson);
-  console.log(JSON.stringify({period: out.period, overall: out.overall, written: !same, history: hprev !== hjson}));
+  // 日ごとの答え合わせ（的中率カレンダー用）。画面は今の締め時間の分だけ読むので、締め時間ごとのファイルに分けて
+  // data/forecast-history-13.json・-22.json・-24.json として配る（1ファイル約1/3の大きさ）。
+  const dir = arg('history-dir', 'data'), written = [];
+  for (const [close, part] of Object.entries(splitHistory(lastHistory()))) {
+    const hfile = `${dir}/forecast-history-${close}.json`, hjson = JSON.stringify(part) + '\n';
+    let hprev = null; try { hprev = await readFile(hfile, 'utf8'); } catch {}
+    if (hprev !== hjson) { await writeFile(hfile, hjson); written.push(close); }
+  }
+  console.log(JSON.stringify({period: out.period, overall: out.overall, written: !same, history: written}));
 }
