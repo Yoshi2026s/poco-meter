@@ -4404,7 +4404,9 @@ html.always-on-mode body #mini.main-screen #miniNowTime{font-size:clamp(18px,5.5
   }
   // 過去データの答え合わせ（公開時に予想データへ入れる）から、締め時間×ランク帯の的中率を取り出す。
   // 締め時間×ランク×ボーダーの的中率を優先し（30日分以上あるとき）、無ければ締め時間×ランク帯の値を使う。
-  function forecastAccuracy(bundle,close,rank,idx){var a=bundle&&bundle.accuracy;if(!a)return null;var s=a.bySeries&&a.bySeries[close+'|'+rank+'|'+idx],g=a.byGroup&&a.byGroup[close+'|'+String(rank).charAt(0)],use=s&&typeof s.within10==='number'&&s.days>=30?s:g;return use&&typeof use.within10==='number'?{within10:use.within10,medianAbsErr:use.medianAbsErr,from:a.period&&a.period.from,to:a.period&&a.period.to,scope:use===s?'series':'band'}:null;}
+  function forecastAccuracy(bundle,close,rank,idx){var a=bundle&&bundle.accuracy;if(!a)return null;var s=a.bySeries&&a.bySeries[close+'|'+rank+'|'+idx],g=a.byGroup&&a.byGroup[close+'|'+String(rank).charAt(0)],use=s&&typeof s.within10==='number'&&s.days>=30?s:g;return use&&typeof use.within10==='number'?{within10:use.within10,medianAbsErr:use.medianAbsErr,from:a.period&&a.period.from,to:a.period&&a.period.to,days:use.days||null,scope:use===s?'series':'band'}:null;}
+  // 答え合わせの期間：年をまたぐときは年も出す（例：2025/1/6〜2026/11/11）
+  function aoSpan(from,to){if(!from||!to)return '';var y=function(d){return d.slice(0,4)+'/'+aoMD(d);};return from.slice(0,4)===to.slice(0,4)?aoMD(from)+'〜'+aoMD(to):y(from)+'〜'+y(to);}
   // 自信度（10段階）：過去の答え合わせで±10%以内に入った割合を10%刻みで★にする（例：66% → ★7）。
   // 答え合わせが無いときは記録の日数から控えめに出す（直近14日に12日以上で★3、それ未満は★2）。
   function forecastStars(acc,f){if(acc&&typeof acc.within10==='number')return Math.max(1,Math.min(10,Math.round(acc.within10/10)));return f&&f.n>=12?3:2;}
@@ -4424,7 +4426,7 @@ html.always-on-mode body #mini.main-screen #miniNowTime{font-size:clamp(18px,5.5
     aoSet('aoRange',f.low!==null?'目安の幅 '+aoK(f.low,1000)+' 〜 '+aoK(f.high,1000)+'（過去は2回に1回この幅に入った）':'');
     var acc=forecastAccuracy(forecastData,close,rank,idx),stars=forecastStars(acc,f);
     var trend=$('aoTrend');aoSet('aoTrend',forecastData?'普段比 '+(f.pct>0?'+':'')+f.pct+'%　'+forecastTrend(f.pct)+'\n自信度 '+'★★★★★★★★★★'.slice(0,stars)+'☆☆☆☆☆☆☆☆☆☆'.slice(stars)+' '+stars+'/10':'直近14日の中央値（補正なし）');
-    aoSet('aoAccuracy',acc?'過去の的中率（'+aoMD(acc.from)+'〜'+aoMD(acc.to)+(acc.scope==='series'?'':'・'+rank.charAt(0)+'帯全体')+'）：±10%以内 '+acc.within10+'%・誤差の中央値 '+acc.medianAbsErr+'%':'');
+    aoSet('aoAccuracy',acc?'過去の的中率（'+aoSpan(acc.from,acc.to)+(acc.days?'・'+acc.days+'日':'')+(acc.scope==='series'?'':'・'+rank.charAt(0)+'帯全体')+'）：±10%以内 '+acc.within10+'%・誤差の中央値 '+acc.medianAbsErr+'%':'');
     trend.className='ao-trend'+(f.pct>=1?' up':f.pct<=-1?' down':'');
     f.reasons.forEach(function(r){var li=document.createElement('li');li.textContent=r.label+' '+(r.pct>0?'+':'')+r.pct+'%';reasons.appendChild(li);});
     aoSet('aoForecastNote',(forecastError?forecastError+'。':'')+(forecastLoading&&!forecastData?'予想データを読み込み中…':'')+(forecastData&&!f.inRange?'この日の暦・イベント情報は予想データの範囲外です。':'')+'基準 '+aoK(f.base,100)+'（前日までの直近14日のうち'+f.n+'日分から）。'+aoDataTime(forecastData));

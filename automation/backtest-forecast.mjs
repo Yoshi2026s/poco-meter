@@ -4,7 +4,7 @@
 //   各補正は「学習期間の前7割で作り、後3割で±10%以内の割合が上がったときだけ使う」（use* フラグ）。
 // - 答え合わせ：from より前のデータだけで model を作り、from 以降の各日を前日までの記録で予想して比べる。
 // - 画面用 model：全期間のデータで同じ手順で作り直したもの（data/forecast-backtest.json の model → 公開時に予想データへ）。
-// 使い方：node automation/backtest-forecast.mjs [--from=2026-01-01] [--out=data/forecast-backtest.json]
+// 使い方：node automation/backtest-forecast.mjs [--from=2026-01-01（省略時は全期間を月ごとに）] [--out=data/forecast-backtest.json]
 import {readFile, writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -128,28 +128,44 @@ function stats(rows, predict) {
   };
 }
 
-export function backtest(borders, events, html, {from}) {
+// 答え合わせ（from 指定なし＝全期間）：記録のある全期間を月ごとに、その月より前のデータだけで補正（model）を作り直して予想する
+// （ウォークフォワード。未来のデータを使わない）。各日の基準値はもともと前日までの記録だけで作る。
+// from を指定したときは従来どおり「from より前で補正を作り、from 以降を予想」。
+export function backtest(borders, events, html, {from = null} = {}) {
   const meterForecast = loadMeterForecast(html);
   const dates = [...new Set(borders.records.map(r => r.date))].sort();
   const first = dates[0], to = dates.at(-1);
   const all = baseRows(borders, events, meterForecast, first, to);
-  const train = all.filter(r => r.date < from), test = all.filter(r => r.date >= from);
-  const evalModel = fitModel(train);
-  const predict = r => { const m = evalModel[r.close]?.[r.band]; if (!m) return r.base;
+  const walk = !from;
+  let test, modelOf, evalModel = null;
+  if (walk) {
+    test = all;
+    const months = [...new Set(all.map(r => r.date.slice(0, 7)))].sort();
+    const models = Object.fromEntries(months.map(m => [m, fitModel(all.filter(r => r.date < m + '-01'))]));
+    modelOf = r => models[r.date.slice(0, 7)];
+  } else {
+    test = all.filter(r => r.date >= from);
+    evalModel = fitModel(all.filter(r => r.date < from));
+    modelOf = () => evalModel;
+  }
+  const predict = r => { const m = modelOf(r)?.[r.close]?.[r.band]; if (!m) return r.base;
     const parts = {weekday: m.weekday || {}, calendar: m.calendar || {}, event: m.event || {}};
     return r.base * applyParts(r, parts, {weekday: m.useWeekday, calendar: m.useCalendar, event: m.useEvent}); };
-  for (const r of test) { const m = evalModel[r.close]?.[r.band], p = predict(r); r.inRange = m ? p * (1 + m.p25 / 100) <= r.actual && r.actual <= p * (1 + m.p75 / 100) : false; }
+  for (const r of test) { const m = modelOf(r)?.[r.close]?.[r.band], p = predict(r); r.inRange = m ? p * (1 + m.p25 / 100) <= r.actual && r.actual <= p * (1 + m.p75 / 100) : false; }
   const by = key => Object.fromEntries([...new Set(test.map(key))].sort().map(k => [k, stats(test.filter(r => key(r) === k), predict)]));
+  const testFrom = test.length ? test.map(r => r.date).sort()[0] : from;
   return {
     schema: 'poco-meter-forecast-backtest-v2',
     generatedAt: new Date().toISOString(),
     method: [
-      '基準値は画面と同じ forecastBase（D帯：指数加重平均α0.5、S帯：指数加重中央値α0.15、A・B・C帯：指数加重中央値α0.05。前日まで最大42日）。',
-      `答え合わせ：${from} より前のデータだけで補正（model）を作り、${from}〜${to} の各日を前日までの記録で予想した。`,
-      '補正（曜日・暦・大型イベント）は締め時間×ランク帯ごとに、学習期間の前7割で作って後3割で±10%以内が上がったものだけを使う。',
+      '基準値は画面と同じ forecastBase（D帯：指数加重平均α0.5、S6：指数加重中央値α0.5、S1〜S5の±0：同α0.3、A・B・C帯とS1〜S5の+1・+2：同α0.05。前日まで最大42日）。',
+      walk
+        ? `答え合わせ：記録のある全期間（${testFrom}〜${to}）の各日を前日までの記録で予想した。補正（model）は月ごとに、その月より前のデータだけで作り直した（未来のデータは使わない）。`
+        : `答え合わせ：${from} より前のデータだけで補正（model）を作り、${from}〜${to} の各日を前日までの記録で予想した。`,
+      '補正（曜日・暦・大型イベント）は締め時間×ランク帯ごとに、学習期間の前7割で作って後3割で±10%以内が上がったものだけを使う。学習データが足りない初めのうちは補正なし。',
       'within10 は誤差±10%以内の割合、inRange は目安の幅（過去の予想で実際の値の25〜75%点）に入った割合。base* は補正なしの場合。',
     ],
-    period: {from, to, trainFrom: first, trainTo: iso(Date.parse(from) - DAY)},
+    period: walk ? {from: testFrom, to, mode: 'walk-forward-monthly', trainFrom: first} : {from, to, trainFrom: first, trainTo: iso(Date.parse(from) - DAY)},
     overall: stats(test, predict),
     byClose: by(r => r.close),
     byGroup: by(r => `${r.close}|${r.band}`),
@@ -157,7 +173,9 @@ export function backtest(borders, events, html, {from}) {
     // 締め時間×ランク×ボーダーごと（画面の的中率・自信度に使う。同じ帯でも±0やS6は外れやすいため）
     bySeries: by(r => `${r.close}|${r.rank}|${r.idx}`),
     byBorder: by(r => ['±0', '+1', '+2'][r.idx]),
-    evalModel,
+    // 年ごと（前年と今年の当たり方の違いを見る）
+    byYear: by(r => r.date.slice(0, 4)),
+    ...(evalModel ? {evalModel} : {}),
     // 画面用：全期間で作り直した補正
     model: fitModel(all),
   };
@@ -169,7 +187,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     readFile(arg('events', 'data/events.json'), 'utf8').then(JSON.parse).catch(() => null),
     readFile('calculator/index.html', 'utf8'),
   ]);
-  const out = backtest(borders, events, html, {from: arg('from', '2026-01-01')});
+  const out = backtest(borders, events, html, {from: arg('from', null)});
   const file = arg('out', 'data/forecast-backtest.json');
   let prev = null; try { prev = JSON.parse(await readFile(file, 'utf8')); } catch {}
   const same = prev && JSON.stringify({...prev, generatedAt: null}) === JSON.stringify({...out, generatedAt: null});
