@@ -2053,6 +2053,31 @@ html.always-on-mode body #mini.main-screen #miniNowTime{font-size:clamp(18px,5.5
 :root body #mini.main-screen :is(#miniTargetField,#miniCurrentField) .mini-label-row>label{flex:0 0 auto;white-space:nowrap}
 :root body #mini.main-screen :is(#miniTargetField,#miniCurrentField) .mini-label-actions{display:flex;gap:4px;flex:0 1 auto;min-width:0;justify-content:flex-end}
 :root body #mini.main-screen :is(#miniTargetField,#miniCurrentField) .mini-label-actions .mini-action{flex:0 0 auto!important;width:auto!important;min-width:0!important;min-height:32px!important;height:32px!important;padding:0 8px!important;font-size:12px!important;line-height:1!important;white-space:nowrap}
+/* 的中率カレンダー（予想カード内の折りたたみ） */
+:root body #mini.main-screen .main-card .ao-calendar{margin-top:8px;border-top:1px solid #b9cde6;padding-top:4px}
+:root body #mini.main-screen .main-card .ao-calendar>summary{min-height:36px;display:flex;align-items:center;cursor:pointer;font-size:14px!important;font-weight:800;color:#0b4f8a!important}
+:root body #mini.main-screen .main-card .ao-cal-nav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:4px 0}
+:root body #mini.main-screen .main-card .ao-cal-nav b{font-size:15px!important;font-weight:800}
+:root body #mini.main-screen .main-card .ao-cal-nav button{min-width:44px;min-height:32px;padding:0 10px!important;border-radius:8px;border:1px solid #7fa6d1!important;background:#fff!important;color:#0d3b66!important;font-size:14px!important;font-weight:800;box-shadow:none!important}
+:root body #mini.main-screen .main-card .ao-cal-nav button:disabled{opacity:.35}
+:root body #mini.main-screen .main-card .ao-cal-sum{margin:2px 0 4px;font-size:13px!important;font-weight:700}
+:root body #mini.main-screen .main-card .ao-cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px}
+:root body #mini.main-screen .main-card .ao-cal-wd{text-align:center;font-size:11px!important;font-weight:700;color:#445466!important}
+:root body #mini.main-screen .main-card .ao-cal-wd.sun{color:#b42318!important}
+:root body #mini.main-screen .main-card .ao-cal-wd.sat{color:#1d4ed8!important}
+:root body #mini.main-screen .main-card .ao-cal-day{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:0;min-height:40px;height:auto!important;padding:2px 0!important;border-radius:6px;border:1px solid transparent!important;background:#f3f6fa!important;color:#17283a!important;box-shadow:none!important;line-height:1.1;cursor:pointer}
+:root body #mini.main-screen .main-card .ao-cal-day .ao-cal-dn{font-size:11px!important;font-weight:600;color:#445466!important}
+:root body #mini.main-screen .main-card .ao-cal-day .ao-cal-err{font-size:12px!important;font-weight:800}
+:root body #mini.main-screen .main-card .ao-cal-day.hit{background:#d6f0de!important;border-color:#8fcca2!important}
+:root body #mini.main-screen .main-card .ao-cal-day.hit .ao-cal-err{color:#14532d!important}
+:root body #mini.main-screen .main-card .ao-cal-day.miss{background:#ffe2cc!important;border-color:#f0a46c!important}
+:root body #mini.main-screen .main-card .ao-cal-day.miss .ao-cal-err{color:#8a2c0d!important}
+:root body #mini.main-screen .main-card .ao-cal-day.none{cursor:default;opacity:.6}
+:root body #mini.main-screen .main-card .ao-cal-day.live{box-shadow:inset 0 -3px 0 #1763b5!important}
+:root body #mini.main-screen .main-card .ao-cal-day.sel{outline:2px solid #0d3b66;outline-offset:1px}
+:root body #mini.main-screen .main-card .menu-close-actions{margin:6px 0 0}
+:root body #mini.main-screen .main-card .menu-close-button{min-height:32px!important;padding:0 14px!important;border-radius:8px;border:1px solid #7fa6d1!important;background:#fff!important;color:#0d3b66!important;font-size:13px!important;font-weight:800;box-shadow:none!important}
+:root body #mini.main-screen .main-card .ao-cal-detail{margin:6px 0 0;font-size:13px!important;font-weight:700;line-height:1.45}
 /* 2026-11-13 スマホ縦画面の詰め表示：スクロールなしで「予想」まで見えるよう、ボタン・余白を小さくする。
    入力欄・選択欄の文字は16px（iPhoneの入力時の自動拡大を防ぐ）のまま、高さだけ詰める。ボタンは32〜36px。 */
 @media (max-width:559px){
@@ -2177,7 +2202,7 @@ html.always-on-mode body #mini.main-screen #miniNowTime{font-size:clamp(18px,5.5
 <small id="miniBufferError" hidden role="status" aria-live="polite"></small>
 <!-- phone-current:end -->
 <section id="itemsWindow" aria-labelledby="itemsWindowTitle"><div class="items-window-head"><h2 id="itemsWindowTitle">残りアイテムの目安</h2><div class="items-core"><label for="coreCountItems">現コア数</label><input id="coreCountItems" class="num" type="text" inputmode="numeric" enterkeyhint="done" autocomplete="off" placeholder="0" aria-label="現コア数（0〜1000人）" aria-describedby="coreCountItemsError inputStatus" value="0"></div></div><small id="coreCountItemsError" class="items-core-error" hidden></small><div id="itemsWindowRow"></div></section>
-<section class="main-card main-forecast-card" id="mainForecastCard" aria-labelledby="aoRankHead"><h2 class="main-card-head" id="aoRankHead" tabindex="-1">設定ランクの予想</h2><div class="ao-fvalue num" id="aoForecast"></div><div class="ao-frange num" id="aoRange"></div><div class="ao-trend" id="aoTrend"></div><p class="ao-accuracy" id="aoAccuracy"></p><p class="ao-accuracy ao-record" id="aoRecord"></p><div class="ao-history" id="aoHistoryBox" hidden><button type="button" class="ao-history-toggle" id="aoHistoryToggle" aria-expanded="false" aria-controls="aoHistory"><span class="ao-history-mark" aria-hidden="true">▸</span> <span id="aoHistorySummary">直近の答え合わせ</span></button><ul id="aoHistory" hidden></ul></div><ul class="ao-reasons" id="aoReasons"></ul><p class="ao-note" id="aoForecastNote"></p></section>
+<section class="main-card main-forecast-card" id="mainForecastCard" aria-labelledby="aoRankHead"><h2 class="main-card-head" id="aoRankHead" tabindex="-1">設定ランクの予想</h2><div class="ao-fvalue num" id="aoForecast"></div><div class="ao-frange num" id="aoRange"></div><div class="ao-trend" id="aoTrend"></div><p class="ao-accuracy" id="aoAccuracy"></p><p class="ao-accuracy ao-record" id="aoRecord"></p><div class="ao-history" id="aoHistoryBox" hidden><button type="button" class="ao-history-toggle" id="aoHistoryToggle" aria-expanded="false" aria-controls="aoHistory"><span class="ao-history-mark" aria-hidden="true">▸</span> <span id="aoHistorySummary">直近の答え合わせ</span></button><ul id="aoHistory" hidden></ul></div><ul class="ao-reasons" id="aoReasons"></ul><p class="ao-note" id="aoForecastNote"></p><details class="ao-calendar" id="hitCalendar"><summary>📅 的中率カレンダー（日ごとの答え合わせ）</summary><div class="ao-cal-body"><div class="ao-cal-nav"><button type="button" id="hitCalPrev" aria-label="前の月">◀</button><b id="hitCalMonth" aria-live="polite"></b><button type="button" id="hitCalNext" aria-label="次の月">▶</button></div><p class="ao-cal-sum" id="hitCalSummary"></p><div class="ao-cal-grid" id="hitCalGrid"></div><p class="ao-cal-detail" id="hitCalDetail" role="status" aria-live="polite"></p><p class="ao-note" id="hitCalNote">緑は±10%以内、橙は±10%超。その日より前のデータだけで作った予想と実際のボーダーの比較です（補正は月ごとに作り直し）。下線は毎日の自動記録の予想。</p></div></details></section>
 <section class="main-card main-events-card" id="mainEventsCard" aria-labelledby="aoEventsHead"><h2 class="main-card-head ao-last-head" id="aoLastHead">本日のイベラス（最終日）</h2><ul class="ao-list ao-last" id="aoLast"></ul><p class="ao-note" id="aoLastNote"></p><h2 class="main-card-head" id="aoEventsHead">今日の開催イベント</h2><ul class="ao-list" id="aoEvents"></ul><h2 class="main-card-head ao-next-head" id="aoTomorrowHead" hidden>明日から</h2><ul class="ao-list" id="aoTomorrow"></ul><p class="ao-note" id="aoEventsNote"></p></section>
 <section class="main-tools" id="mainTools" aria-label="目標の条件・コピー・換算"><p class="hint goal-context" id="appliedContext" tabindex="0" aria-label="目標設定時の条件"></p><p id="manualTargetMsg" class="toast" role="status"></p>
     <div class="meter-tools"><button type="button" id="copyRemaining">残りポイントをコピー</button><button type="button" id="alwaysOnOpen" aria-pressed="false">常時表示モード</button></div><textarea id="summaryText" readonly hidden aria-label="手動コピー用の現在の残り"></textarea>
@@ -4546,6 +4571,66 @@ html.always-on-mode body #mini.main-screen #miniNowTime{font-size:clamp(18px,5.5
   }
   // 直近の答え合わせの一覧を開閉する（details ではなくボタン。メニュー用の閉じるボタンの対象外にするため）
   if($('aoHistoryToggle'))$('aoHistoryToggle').addEventListener('click',function(){var open=this.getAttribute('aria-expanded')!=='true';this.setAttribute('aria-expanded',String(open));$('aoHistory').hidden=!open;var mark=this.querySelector('.ao-history-mark');if(mark)mark.textContent=open?'▾':'▸';});
+  // ---- 的中率カレンダー：過去の答え合わせ（data/forecast-history.json、メニューを開いたときだけ読む）を月ごとのカレンダーで見る ----
+  var hitHistory=null,hitHistoryLoading=false,hitHistoryError='',hitCalMonth='',hitCalSelected='',hitCalKey='',hitCalSeries='';
+  // その月の各日の誤差（予想÷実際−1、%）。毎日の自動記録（live：日付→誤差%）がある日はそちらを優先して印を付ける。
+  function hitCalendarMonth(history,key,ym,live){
+    var y=+ym.slice(0,4),m=+ym.slice(5,7),days=new Date(Date.UTC(y,m,0)).getUTCDate(),lead=new Date(Date.UTC(y,m-1,1)).getUTCDay();
+    var at={},arr=(history&&history.series&&history.series[key])||[];(history&&history.dates||[]).forEach(function(d,i){at[d]=i;});
+    var cells=[],hits=0,total=0;
+    for(var d=1;d<=days;d++){
+      var iso=ym+'-'+String(d).padStart(2,'0'),i=at[iso],raw=i===undefined?null:arr[i],err=raw===null||raw===undefined?null:raw/10,isLive=false;
+      if(live&&typeof live[iso]==='number'){err=live[iso];isLive=true;}
+      if(err!==null){total++;if(Math.round(Math.abs(err)*10)/10<=10)hits++;}
+      cells.push({date:iso,day:d,err:err,live:isLive});
+    }
+    return {lead:lead,cells:cells,hits:hits,total:total};
+  }
+  function hitCalMonths(history){if(!history||!history.from||!history.to)return [];var out=[],y=+history.from.slice(0,4),m=+history.from.slice(5,7),end=history.to.slice(0,7);while(true){var ym=y+'-'+String(m).padStart(2,'0');out.push(ym);if(ym>=end)break;m++;if(m>12){m=1;y++;}}return out;}
+  async function loadHitHistory(){
+    if(hitHistory||hitHistoryLoading)return;hitHistoryLoading=true;hitCalKey='';renderHitCalendar();
+    try{var r=await fetch('./data/forecast-history.json',{cache:'no-cache',credentials:'same-origin'});if(!r.ok)throw new Error(String(r.status));var d=await r.json();if(!d||d.schema!=='poco-meter-forecast-history-v1')throw new Error('形式が違います');hitHistory=d;hitHistoryError='';}
+    catch(e){hitHistoryError='履歴を読み込めませんでした（通信できる状態で開き直してください）。';}
+    finally{hitHistoryLoading=false;hitCalKey='';renderHitCalendar();}
+  }
+  function renderHitCalendar(){
+    var box=$('hitCalendar');if(!box||!box.open)return;
+    var close=closeKey(),rank=state.rank,idx=[0,1,2].indexOf(state.analysisBorder)>=0?state.analysisBorder:0,key=close+'|'+rank+'|'+idx,closeLabel=close==='24'?'24時締め':close+'時締め';
+    if(hitCalSeries!==key){hitCalSeries=key;hitCalSelected='';}
+    var months=hitCalMonths(hitHistory);if(months.length&&months.indexOf(hitCalMonth)<0)hitCalMonth=months[months.length-1];
+    var rec=forecastData&&forecastData.record,ck=[key,hitCalMonth,hitCalSelected,!!hitHistory,hitHistoryLoading,hitHistoryError,rec&&rec.recent&&rec.recent.length,dataRevision].join('|');
+    if(ck===hitCalKey)return;hitCalKey=ck;
+    var grid=$('hitCalGrid');grid.textContent='';
+    if(!hitHistory){aoSet('hitCalMonth','');aoSet('hitCalSummary',hitHistoryLoading?'読み込み中…':hitHistoryError);aoSet('hitCalDetail','');$('hitCalPrev').disabled=$('hitCalNext').disabled=true;return;}
+    if(rank==='E'){aoSet('hitCalMonth','');aoSet('hitCalSummary','E帯は予想の対象外です。');aoSet('hitCalDetail','');$('hitCalPrev').disabled=$('hitCalNext').disabled=true;return;}
+    var live={};(rec&&rec.recent||[]).forEach(function(e){var f=e.close===close&&e.forecasts&&e.forecasts[rank]&&e.forecasts[rank][idx],a=e.actual&&e.actual[rank]&&e.actual[rank][idx];if(f&&f[0]>0&&a>0)live[e.date]=Math.round((f[0]/a-1)*1000)/10;});
+    var cal=hitCalendarMonth(hitHistory,key,hitCalMonth,live),pos=months.indexOf(hitCalMonth);
+    aoSet('hitCalMonth',hitCalMonth.slice(0,4)+'年'+Number(hitCalMonth.slice(5,7))+'月');
+    $('hitCalPrev').disabled=pos<=0;$('hitCalNext').disabled=pos>=months.length-1;
+    aoSet('hitCalSummary',rank+' '+AO_BORDERS[idx]+'・'+closeLabel+'：'+(cal.total?'±10%以内 '+cal.hits+'/'+cal.total+'日（'+Math.round(cal.hits/cal.total*1000)/10+'%）':'この月は答え合わせがありません'));
+    '日月火水木金土'.split('').forEach(function(w,i){var h=document.createElement('span');h.className='ao-cal-wd'+(i===0?' sun':i===6?' sat':'');h.textContent=w;h.setAttribute('aria-hidden','true');grid.appendChild(h);});
+    for(var i=0;i<cal.lead;i++){var b=document.createElement('span');b.className='ao-cal-blank';b.setAttribute('aria-hidden','true');grid.appendChild(b);}
+    var log=LOG()||{};
+    cal.cells.forEach(function(c){
+      var el=document.createElement('button');el.type='button';el.className='ao-cal-day'+(c.err===null?' none':Math.round(Math.abs(c.err)*10)/10<=10?' hit':' miss')+(c.live?' live':'')+(c.date===hitCalSelected?' sel':'');
+      var dn=document.createElement('span');dn.className='ao-cal-dn';dn.textContent=String(c.day);el.appendChild(dn);
+      var ev=document.createElement('span');ev.className='ao-cal-err';ev.textContent=c.err===null?'—':(c.err>0?'+':'')+Math.round(c.err)+'%';el.appendChild(ev);
+      el.setAttribute('aria-label',aoMD(c.date)+(c.err===null?' 答え合わせなし':'　予想の誤差 '+(c.err>0?'+':'')+c.err+'%'+(Math.round(Math.abs(c.err)*10)/10<=10?'（±10%以内）':'（±10%超）')+(c.live?'・毎日の記録':'')));
+      if(c.err===null)el.disabled=true;
+      el.addEventListener('click',function(){hitCalSelected=c.date;hitCalKey='';
+        var a=log[c.date]&&log[c.date][rank]&&log[c.date][rank][idx],r={err:c.err};
+        var txt=aoMD(c.date)+'（'+AO_WEEKDAYS[new Date(c.date+'T00:00:00Z').getUTCDay()]+'）'+(a>0?'　予想 '+aoK(a*(1+c.err/100),100)+' → 実際 '+aoK(a,100):'')+'（'+aoErrText(r)+(Math.round(Math.abs(c.err)*10)/10<=10?'・±10%以内':'')+'）'+(c.live?'・毎日の記録':'');
+        renderHitCalendar();aoSet('hitCalDetail',txt);});
+      grid.appendChild(el);
+    });
+    if(!hitCalSelected||hitCalSelected.slice(0,7)!==hitCalMonth)aoSet('hitCalDetail','日付をタップすると、その日の予想と実際の値を表示します。');
+  }
+  if($('hitCalendar')){
+    $('hitCalendar').addEventListener('toggle',function(){if(this.open){hitCalKey='';loadHitHistory();renderHitCalendar();}});
+    $('hitCalPrev').addEventListener('click',function(){var ms=hitCalMonths(hitHistory),p=ms.indexOf(hitCalMonth);if(p>0){hitCalMonth=ms[p-1];hitCalSelected='';renderHitCalendar();}});
+    $('hitCalNext').addEventListener('click',function(){var ms=hitCalMonths(hitHistory),p=ms.indexOf(hitCalMonth);if(p>=0&&p<ms.length-1){hitCalMonth=ms[p+1];hitCalSelected='';renderHitCalendar();}});
+    setInterval(function(){if(!document.hidden)renderHitCalendar();},1000);
+  }
   if($('alwaysOnOpen')&&$('alwaysOnClose')){
     $('alwaysOnOpen').addEventListener('click',function(){if(alwaysOnIsOpen)closeAlwaysOn();else openAlwaysOn();});
     $('alwaysOnClose').addEventListener('click',closeAlwaysOn);
