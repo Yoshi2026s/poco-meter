@@ -17,7 +17,7 @@
     "check": "bash scripts/check.sh",
     "test:extra": "bash scripts/test-extra.sh",
     "pages:build": "node scripts/build-pages.mjs --out=_site",
-    "pages:prepare": "node scripts/prepare-e-border.mjs && node scripts/prepare-history-page.mjs",
+    "pages:prepare": "node scripts/prepare-event-parse.mjs && node scripts/prepare-e-border.mjs && node scripts/prepare-history-page.mjs",
     "borders:update": "node automation/update-borders-json.mjs --file=data/borders.json",
     "version:bump": "node scripts/bump-version.mjs"
   },

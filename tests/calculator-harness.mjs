@@ -20,7 +20,8 @@ const statements = iife.expression.callee.body.body;
 const constants = new Set(['automaticDataMissing', 'E_TARGET_SEEDS', 'eTargetCache', 'RANKS', 'deviceDrift', 'finishDeviceDrift', 'deviceDriftAt', 'PERIOD_KEYS', 'RECENT_PERIODS', 'PERIOD_LABELS', 'MAX_VALUE', 'state', 'storageFailed', 'DISPLAY_COLORS', 'DISPLAY_CUSTOM', 'DISPLAY_WEIGHTS', 'DISPLAY_THEMES', 'fmt', 'fmtK',
   'fmtRemainingK', 'DOGCAT', 'PANDA', 'HANABI', 'BASHA', 'CORE_TIERS',
   'METHOD_LABELS', 'BLABEL', 'offlineReadToken', 'offlineReader', 'offlineReadContext',
-  'clockSample', 'clockBusy', 'clockAttemptMono', 'clockState']);
+  'clockSample', 'clockBusy', 'clockAttemptMono', 'clockState',
+  'PocoEventParse', 'SNS_KEY', 'SNS_SCHEMA', 'snsCache', 'snsVersion']);
 const definitions = statements.flatMap(node => {
   if (node.type === 'FunctionDeclaration') return [script.slice(node.start, node.end)];
   if (node.type !== 'VariableDeclaration') return [];
