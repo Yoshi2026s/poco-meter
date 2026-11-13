@@ -22,6 +22,9 @@ candidate_events:
     source_url: "https://note.com/aoba815aoba/n/n39b93ea45538"
     details: "C2〜C3の部門で、2グループに分かれて各ブロックの1〜3位を競ったとの記録。"
     notes: "本文の12:30は参加枠の配信開始時刻。イベントの開始時刻には使用しない。"
+    official_event_id: "oshi_charm_1_001_200880"   # 公式イベントページのID（2026/11/13確認）
+    official_event_page: "https://event.pococha.com/ja-jp/festivals/oshi_charm_1_001_200880"
+    official_check: "公式イベントページは実在するが掲載終了で本文なし（ウェブアーカイブにも保存なし）。開催日・時間・対象ランクは公式では未確認。"
 
   - name_as_reported: "ポコリンKOKO"
     reported_date: "2025-10-15"
@@ -50,6 +53,19 @@ candidate_events:
     source_url: "https://note.com/kind_mango539/n/nb75c7d06e7e5"
     details: "5月月初のコア解禁に合わせた半日イベントとして言及。"
     notes: "正式名称、開催日、対象ランク、公式プライズは未確認。"
+
+official_checks:
+  checked_at: "2026-11-13"
+  searched: "公式note（report.pococha.com）・公式サイトのお知らせ・公式イベントページ（event.pococha.com）・data/events.json・ウェブ検索"
+  not_searched: "公式X・Instagram（規約上、自動での閲覧・収集をしないため。人が投稿を見て確認する）"
+  result: "4件とも開催日・時間を公式で確認できず。official_confirmed_events は空のまま。"
+  related_official_notes:
+    - url: "https://report.pococha.com/n/nbffca0b3282f"
+      published: "2025-03-25"
+      summary: "ぽこ賞形式のPOCOTOMOポコリン（各キャラ・ミニ）は終了し、今後はぽこ賞形式ではないイベントのプライズとして適宜開催する予定、との告知。半日・開催時間の記述はない。ポコリンKOKO・ポコリンガーガーの背景情報で、開催の確認にはならない。"
+    - url: "https://report.pococha.com/n/nd6dceefa0ffa"
+      published: "2024-12-17"
+      summary: "「ぽこ賞でゲット！POCOTOMOポコリン～各キャラクター（ミニ）～」（C3〜D2向け）の2025年1月からの調整。開催日・半日の記述はない。"
 
 import_rules:
   - "candidate_eventsは検索・照合用の資料として扱う。公開用の開催履歴にはofficial_confirmed_eventsを使う。"
