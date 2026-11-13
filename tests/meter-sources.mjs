@@ -1,6 +1,6 @@
 // メーター予想の情報源（イベント収集・補正値の集計）の最小テスト。ネットワーク不要。
 import assert from 'node:assert/strict';
-import {findPeriods, findRanks, classify, pickLabel, articleText, toEvent, SOURCES, tidyLabel, titleNameOf} from '../automation/collect-events.mjs';
+import {findPeriods, findRanks, classify, pickLabel, articleText, toEvent, SOURCES, tidyLabel, titleNameOf, newsItems, eventFrom} from '../automation/collect-events.mjs';
 import {paydayOf, calendarTags, buildFactors} from '../automation/build-meter-factors.mjs';
 
 // 期間：年あり・年なし・同日の時刻範囲・「より開催」・エントリ期間の区別
@@ -78,6 +78,7 @@ assert.equal(tidyLabel('「JOYSOUND認定 歌うまライバー決定戦！2026 
 assert.equal(tidyLabel('5月実施予定！Pococha内イベント「ミューズ プレオーディション」の概要 イベント期間', 'x'), 'ミューズ プレオーディション');
 assert.equal(tidyLabel('ついに本戦！「ar30周年企画 年間出演モデルオーディション', 'x'), 'ついに本戦！ ar30周年企画 年間出演モデルオーディション', '閉じていない括弧は記号だけ外す');
 assert.equal(tidyLabel('新人戦 予選期間', 'x'), '新人戦 予選期間', '段階名は残す');
+assert.equal(tidyLabel('投票期間', 'きせかえコンテスト'), 'きせかえコンテスト', '期間の呼び名だけの名前は記事タイトルの名前に');
 assert.equal(tidyLabel('', 'タイトル名'), 'タイトル名');
 // 記事タイトルの名前：『』「」の名前を優先、日付・お知らせの【】や「のご紹介」を外す、内容のある【】は残す
 assert.equal(titleNameOf('Pococha 年末の一大イベント「POCO LAND 10周年祭」開催決定！〜10年分の、いつもに拍手を〜'), 'POCO LAND 10周年祭');
@@ -85,4 +86,21 @@ assert.equal(titleNameOf('【9/16〜9/29】ファミリーみんなで新しい�
 assert.equal(titleNameOf('【IDOL RISING】 アイドル応援ミッションのご紹介！'), '【IDOL RISING】 アイドル応援ミッション');
 assert.equal(titleNameOf('【Music Pococha LIVE!!🎤 -福岡クリスマスアドベント 2026- 開催🌲✨】'), 'Music Pococha LIVE!! -福岡クリスマスアドベント 2026');
 assert.equal(titleNameOf('「ヒーロー戦隊」アイテム登場!'), 'ヒーロー戦隊');
+// 公式サイトの「お知らせ」：一覧ページの埋め込みデータから記事を取り出し、本文から期間（同じ日の時刻つき＝半日も）を読む
+{
+  const news = {props: {pageProps: {totalPageCount: 27, newsList: [
+    {id: 'abc', title: '半日イベント開催', publishedAt: '2026-11-10T00:00:00Z', revisedAt: '2026-11-11T00:00:00Z', body: '<h3>■概要</h3><ul><li>開催期間：2026年11月20日（金）12:00〜23:59</li><li>対象：S1〜S6</li></ul>'},
+    {id: 'def', title: 'お知らせ', publishedAt: '2026-11-01T00:00:00Z', body: '<p>アプリを更新しました。</p>'}]}}};
+  const html = '<html><script id="__NEXT_DATA__" type="application/json">' + JSON.stringify(news) + '</script></html>';
+  const r = newsItems(html);
+  assert.equal(r.pages, 27); assert.equal(r.items.length, 2);
+  assert.equal(r.items[0].modified, '2026-11-11T00:00:00Z', '更新日は revisedAt');
+  const site = SOURCES.find(x => x.id === 'pococha-official-site');
+  assert.ok(site && site.news && site.checked.terms.includes('第10条'), '取得元：公式サイトのお知らせ（規約の確認つき）');
+  const ev = eventFrom(site, 'https://www.pococha.com/ja/news/abc', r.items[0], articleText(r.items[0].body));
+  assert.deepEqual(ev.periods.map(p => [p.start, p.startTime, p.end, p.endTime]), [['2026-11-20', '12:00', '2026-11-20', '23:59']], '同じ日の12時間（半日）は配信枠として除外しない');
+  assert.equal(ev.sourceId, 'pococha-official-site');
+  assert.ok(ev.ranks.includes('S1') && ev.ranks.includes('S6'));
+  assert.deepEqual(newsItems('<html></html>'), {items: [], pages: 0});
+}
 console.log('meter-sources ok');

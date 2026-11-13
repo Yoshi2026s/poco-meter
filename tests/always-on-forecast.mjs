@@ -178,6 +178,13 @@ assert.match(html, /<details class="ao-calendar" id="hitCalendar"><summary>📅 
   assert.match(e.hitDayEventText(e.hitDayEvents(cd, '2026-01-03', 'A1')), /^イベラス：新春ミッション\n開催中：冬祭り（大型）$/);
   assert.equal(plain(e.hitDayEvents(cd, '2026-01-04', 'A1')).bigForRank, false, '対象外のランクには●を付けない');
   assert.match(e.hitDayEventText(e.hitDayEvents(cd, '2026-01-01', 'S2')), /イベント情報はありません/);
+  // 同じ日の時刻つき開催は時間帯を出す（13時間以下＝半日、23時間以上＝1日）。複数日の開催には出さない。
+  assert.equal(e.aoTimeSpan({start: '2026-11-20', end: '2026-11-20', startTime: '12:00', endTime: '23:59'}), '12:00〜23:59（半日）');
+  assert.equal(e.aoTimeSpan({start: '2026-11-20', end: null, startTime: '0:00', endTime: '23:59'}), '0:00〜23:59（1日）');
+  assert.equal(e.aoTimeSpan({start: '2026-11-20', end: '2026-11-22', startTime: '12:00', endTime: '23:59'}), '');
+  assert.equal(e.aoTimeSpan({start: '2026-11-20', end: '2026-11-20', startTime: null, endTime: '23:59'}), '');
+  const half = {list: [{title: '夜の部', label: '夜の部', type: 'event', ranks: ['S2'], start: '2026-01-06', end: '2026-01-06', startTime: '12:00', endTime: '23:59', url: 'h'}], days: {'2026-01-06': {l: [0]}}};
+  assert.equal(e.hitDayEventText(e.hitDayEvents(half, '2026-01-06', 'S2')), 'イベラス：夜の部（対象ランク） 12:00〜23:59（半日）');
   // 行ごとの種類（イベラス＝last・開催中＝run・なし＝none）で文字色を変える
   assert.deepEqual(plain(e.hitDayEventLines(e.hitDayEvents(cd, '2026-01-03', 'A1'))).map(x => x.kind), ['last', 'run']);
   assert.deepEqual(plain(e.hitDayEventLines(e.hitDayEvents(cd, '2026-01-01', 'S2'))).map(x => x.kind), ['none']);

@@ -4463,6 +4463,8 @@ html:root body #mini.main-screen #itemsWindowTitle{color:#0d3b66!important}
     return l;}
   // 種類と対象（内容の手がかり）
   function aoEventKind(e){var k={big:'大型イベント',event:'イベント',collab:'コラボ・出演権',newcomer:'新規ライバー向け',mission:'ミッション',item:'アイテム',notice:'お知らせ'}[e.type]||'';var a=(e.audience||[]).filter(function(x){return k.indexOf(x)<0;});return (k?'・'+k:'')+(a.length?'・'+a.join('・'):'');}
+  // 同じ日の時刻つき開催の時間帯（例：12:00〜23:59（半日）、0:00〜23:59（1日））。それ以外は空。
+  function aoTimeSpan(e){if(!e||!e.start||(e.end&&e.end!==e.start)||!e.startTime||!e.endTime)return '';var m=function(t){var p=String(t).split(':');return +p[0]*60+ +p[1];},d=m(e.endTime)-m(e.startTime);return e.startTime+'〜'+e.endTime+(d>0&&d<=13*60?'（半日）':d>=23*60?'（1日）':'');}
   function aoMD(d){return d?Number(d.slice(5,7))+'/'+Number(d.slice(8,10)):'';}
   function aoEventItems(list,rank,lastView){
     var ul=typeof document.createDocumentFragment==="function"?document.createDocumentFragment():document.createElement("div");
@@ -4474,8 +4476,8 @@ html:root body #mini.main-screen #itemsWindowTitle{color:#0d3b66!important}
       var badges=[];
       if((e.ranks||[]).indexOf(rank)>=0){var b=document.createElement('span');b.className='ao-badge';b.textContent='対象ランク';badges.push(b);}
       if(e.phase==='last'&&!lastView){var l=document.createElement('span');l.className='ao-badge last';l.textContent='最終日';badges.push(l);}
-      if(lastView){var endB=document.createElement('b');endB.textContent=(e.endTime?'本日 '+e.endTime+' まで':'本日まで');meta.appendChild(endB);meta.appendChild(document.createTextNode('・'+(e.start&&e.start!==(e.end||e.start)?aoMD(e.start)+'〜':'1日開催')+aoEventKind(e)));}
-      else meta.textContent=aoMD(e.start)+(e.end&&e.end!==e.start?'〜'+aoMD(e.end):'')+(e.endTime?' '+e.endTime+'まで':'')+aoEventKind(e);
+      if(lastView){var endB=document.createElement('b');endB.textContent=aoTimeSpan(e)?'本日 '+aoTimeSpan(e):(e.endTime?'本日 '+e.endTime+' まで':'本日まで');meta.appendChild(endB);meta.appendChild(document.createTextNode('・'+(e.start&&e.start!==(e.end||e.start)?aoMD(e.start)+'〜':'1日開催')+aoEventKind(e)));}
+      else meta.textContent=aoMD(e.start)+(aoTimeSpan(e)?' '+aoTimeSpan(e):(e.end&&e.end!==e.start?'〜'+aoMD(e.end):'')+(e.endTime?' '+e.endTime+'まで':''))+aoEventKind(e);
       badges.forEach(function(x){meta.appendChild(x);});
       li.appendChild(meta);ul.appendChild(li);
     });
@@ -4658,15 +4660,15 @@ html:root body #mini.main-screen #itemsWindowTitle{color:#0d3b66!important}
   // その日のイベント（開催中・イベラス）。ranks に設定ランクがあれば「対象」。名前はパネルと同じ決め方。
   function hitDayEvents(events,date,rank){
     var day=events&&events.days&&events.days[date],list=events&&events.list||[];if(!day)return {running:[],lasts:[],bigForRank:false};
-    var pick=function(i){var x=list[i];return x?{name:aoEventName(x),type:x.type,target:(x.ranks||[]).indexOf(rank)>=0,endTime:x.endTime||'',start:x.start,end:x.end}:null;};
+    var pick=function(i){var x=list[i];return x?{name:aoEventName(x),type:x.type,target:(x.ranks||[]).indexOf(rank)>=0,startTime:x.startTime||'',endTime:x.endTime||'',start:x.start,end:x.end,span:aoTimeSpan(x)}:null;};
     var running=(day.e||[]).map(pick).filter(Boolean),lasts=(day.l||[]).map(pick).filter(Boolean);
     return {running:running,lasts:lasts,bigForRank:running.concat(lasts).some(function(x){return x.type==='big'&&x.target;})};
   }
   // その日のイベントを行ごとに（kind：last＝イベラス、run＝開催中、none＝なし）。画面では行ごとに文字色を変える。
   function hitDayEventLines(ev){
-    var mark=function(x){return x.name+(x.type==='big'?'（大型'+(x.target?'・対象ランク':'')+'）':x.target?'（対象ランク）':'');};
+    var mark=function(x){return x.name+(x.type==='big'?'（大型'+(x.target?'・対象ランク':'')+'）':x.target?'（対象ランク）':'')+(x.span?' '+x.span:'');};
     var out=[];
-    if(ev.lasts.length)out.push({kind:'last',text:'イベラス：'+ev.lasts.map(function(x){return mark(x)+(x.endTime?' '+x.endTime+'まで':'');}).join('、')});
+    if(ev.lasts.length)out.push({kind:'last',text:'イベラス：'+ev.lasts.map(function(x){return mark(x)+(x.endTime&&!x.span?' '+x.endTime+'まで':'');}).join('、')});
     if(ev.running.length)out.push({kind:'run',text:'開催中：'+ev.running.map(mark).join('、')});
     return out.length?out:[{kind:'none',text:'この日のイベント情報はありません（公式noteで期間を確認できたもの）。'}];
   }

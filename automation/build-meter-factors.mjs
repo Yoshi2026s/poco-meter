@@ -206,7 +206,7 @@ export function forecastBundle(factors, events, todayISO, {before = 3, after = 4
         const end = p.end || p.start;
         if (!p.start || d < p.start || d > end) continue;
         list.push({title: e.title.slice(0, 60), label: (tidyLabel(p.label || "", titleNameOf(e.title)) || "").slice(0, 48) || null, type: e.type, ranks: (p.ranks?.length ? p.ranks : e.ranks) || [],
-          phase: d === p.start ? 'first' : d === end ? 'last' : 'middle', ends: d === end, start: p.start, end: p.end || null, endTime: p.endTime || null, url: e.url,
+          phase: d === p.start ? 'first' : d === end ? 'last' : 'middle', ends: d === end, start: p.start, end: p.end || null, startTime: p.startTime || null, endTime: p.endTime || null, url: e.url,
           ...(e.audience?.length ? {audience: e.audience} : {})});
       }
     }
@@ -248,7 +248,7 @@ export function calendarEventDays(events, fromISO, toISO) {
   const list = [], at = new Map(), out = {};
   const ref = x => {
     const key = `${x.url}|${x.label || ''}|${x.start}|${x.end || ''}`;
-    if (!at.has(key)) { at.set(key, list.length); list.push({title: x.title, label: x.label, type: x.type, ranks: x.ranks, start: x.start, end: x.end, ...(x.endTime ? {endTime: x.endTime} : {}), url: x.url}); }
+    if (!at.has(key)) { at.set(key, list.length); list.push({title: x.title, label: x.label, type: x.type, ranks: x.ranks, start: x.start, end: x.end, ...(x.startTime ? {startTime: x.startTime} : {}), ...(x.endTime ? {endTime: x.endTime} : {}), url: x.url}); }
     return at.get(key);
   };
   for (const [d, day] of Object.entries(days)) {

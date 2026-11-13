@@ -18,6 +18,12 @@ export const SOURCES = [
     home: 'https://report.pococha.com', rss: 'https://report.pococha.com/rss', sitemap: 'https://report.pococha.com/sitemap.xml.gz',
     checked: {date: '2026-11-12', robots: '/n/*・/sitemap.xml.gz を許可（/n/*/comments 等は不許可）', terms: 'note利用規約：クリエイターの承諾なく本文を複製・公衆送信しない → 本文は保存せず、期間・ランク等の事実とURLのみ記録'},
   },
+  {
+    // 公式サイトの「お知らせ」。一覧ページ（/ja/news・/ja/news/pages/N）の埋め込みデータ（__NEXT_DATA__）に本文があるので、一覧だけを読む。
+    id: 'pococha-official-site', name: 'Pococha公式サイト（お知らせ）', kind: 'official', news: 'https://www.pococha.com/ja/news',
+    home: 'https://www.pococha.com/ja/news',
+    checked: {date: '2026-11-13', robots: 'www.pococha.com の robots.txt は無し（404）。event.pococha.com は画像の一部だけ不許可', terms: 'Pococha会員規約 第10条はアプリ・サーバーの解析やボットでの「本サービス」利用を禁止 → アプリ内・非公開の通信は使わず、公開のお知らせページだけを1回2ページまで読む。本文は保存せず、期間・ランク等の事実とURLのみ記録'},
+  },
 ];
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -134,7 +140,7 @@ export function cleanLabel(s) {
 }
 // 見出しの決まり文句（概要・詳細・ルール・「〜について」・末尾の「開催期間」等）を名前から外す。
 // 決まり文句しか残らないときは記事タイトルの名前を使う。予選・本戦・投票などの段階名は残す。
-const BOILER = /^(?:(?:イベント|キャンペーン|企画|大会)?(?:概要|詳細|内容|ルール|の流れ)(?:[/・／](?:概要|詳細|ルール|内容))*|この記事でご紹介する内容|この記事の内容|豪華賞品はこちら[！!]?|対象ランク|対象者?|スケジュール|エントリー?)$/;
+const BOILER = /^(?:(?:イベント|キャンペーン|企画|大会)?(?:概要|詳細|内容|ルール|の流れ)(?:[/・／](?:概要|詳細|ルール|内容))*|この記事でご紹介する内容|この記事の内容|豪華賞品はこちら[！!]?|対象ランク|対象者?|スケジュール|エントリー?|(?:投票|公開|対象|確認|検証|計測対象|アンケート|配信|通常配信)期間)$/;
 // 記事タイトルから名前を作る：『』「」の名前を優先し、日付やお知らせの【】と「のご紹介」を外し、切れた括弧を残さない。
 // 括弧の外に残る語が短い（「〜」開催決定！）か決まり文句（の概要）なら、括弧内だけを名前にする
 const QUOTE_TAIL = /^(?:の?(?:概要|詳細|内容|ご紹介|お知らせ|ルール説明)|(?:開催|決定|に関する|をPocochaで).*|.{0,10})$/;
@@ -219,8 +225,10 @@ export function classify(title, text) {
 }
 
 export function toEvent(source, url, html) {
-  const {title, published, modified} = articleMeta(html);
-  const text = articleText(html);
+  return eventFrom(source, url, articleMeta(html), articleText(html));
+}
+// 記事のタイトル・公開日・更新日と本文の文字から、イベントの事実（期間・ランク・種類など）を作る。
+export function eventFrom(source, url, {title, published, modified}, text) {
   const periods = findPeriods(text, modified || published);
   // 公開日〜最終更新日の前後だけを対象にする（過去の実績紹介や翌年の予告を拾いすぎないため）。
   const lo = published ? Date.parse(published.slice(0, 10)) - 30 * 864e5 : -Infinity;
@@ -248,6 +256,34 @@ export function audienceOf(title, text) {
   return out;
 }
 
+// 公式サイトの「お知らせ」一覧ページ（Next.js の埋め込みデータ）から、記事（id・タイトル・公開日・更新日・本文）を取り出す。
+export function newsItems(html) {
+  const m = html.match(/<script id="__NEXT_DATA__" type="application\/json">([\s\S]*?)<\/script>/);
+  if (!m) return {items: [], pages: 0};
+  const pp = JSON.parse(m[1])?.props?.pageProps || {};
+  const items = (pp.newsList || []).filter(n => n && n.id && n.title).map(n => ({id: n.id, title: String(n.title), published: n.publishedAt || n.createdAt || null, modified: n.revisedAt || n.updatedAt || n.publishedAt || null, body: String(n.body || '')}));
+  return {items, pages: +pp.totalPageCount || 0};
+}
+async function collectNews(source, {byId, since, backfill, delay, report, log}) {
+  let pages = 1;
+  const limit = backfill ? 60 : 2; // 普段は新しい2ページ（約20件）だけ。--backfill で全ページ
+  for (let page = 1; page <= Math.min(pages, limit); page++) {
+    await sleep(delay);
+    let html;
+    try { html = await get(page === 1 ? source.news : `${source.news}/pages/${page}`); } catch (e) { if (e instanceof Blocked) { report.blocked = e.message; log(`停止: ${e.message}`); return; } report.errors.push(String(e.message)); return; }
+    const {items, pages: total} = newsItems(html);
+    pages = total || 1;
+    if (items.length && items.every(n => n.published && n.published.slice(0, 10) < since)) break; // 古い記事だけのページから先は読まない
+    for (const n of items) {
+      if (n.published && n.published.slice(0, 10) < since) continue;
+      const url = `https://www.pococha.com/ja/news/${n.id}`, prev = byId.get(url);
+      if (prev && prev.modified === n.modified && !process.argv.includes('--refresh')) continue; // 未更新は作り直さない
+      const ev = eventFrom(source, url, n, articleText(n.body));
+      report.fetched++; report[prev ? 'updated' : 'added']++;
+      byId.set(url, ev);
+    }
+  }
+}
 async function listArticles(source, {since, backfill}) {
   const urls = new Map();
   const rss = await get(source.rss);
@@ -270,6 +306,7 @@ export async function collect({file, since, backfill, delay, log = console.error
   const byId = new Map(store.events.map(e => [e.url, e]));
   const report = {fetched: 0, added: 0, updated: 0, blocked: null, errors: []};
   for (const source of SOURCES) {
+    if (source.news) { await collectNews(source, {byId, since, backfill, delay, report, log}); continue; }
     let list;
     let lastmod;
     try { ({list, lastmod} = await listArticles(source, {since, backfill})); } catch (e) { if (e instanceof Blocked) { report.blocked = e.message; continue; } throw e; }
