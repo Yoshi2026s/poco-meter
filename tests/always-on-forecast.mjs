@@ -157,6 +157,28 @@ assert.match(html, /fetch\('\.\/data\/forecast-history-'\+close\+'\.json'/);
   assert.equal(e.hitCalendarMonth(hist, '22|S6|0', '2026-01', null).total, 0, '系列が無い月は答え合わせなし');
 }
 assert.match(html, /<details class="ao-calendar" id="hitCalendar"><summary>📅 的中率カレンダー（日ごとの答え合わせ）<\/summary>/);
+// 的中率カレンダーの各日のイベント：開催中とイベラス（その日が最終日）を一覧の番号で持つ
+{
+  const {calendarEventDays} = await import('../automation/build-meter-factors.mjs');
+  const evs = {events: [
+    {title: '冬祭り開催', url: 'a', type: 'big', confidence: 'high', ranks: ['S2'], periods: [{start: '2026-01-02', end: '2026-01-04', label: '冬祭り', ranks: ['S2'], endTime: '23:59'}]},
+    {title: '新春ミッション', url: 'b', type: 'mission', confidence: 'high', ranks: [], periods: [{start: '2026-01-03', end: '2026-01-03', label: '新春ミッション', ranks: []}]}]};
+  const cd = calendarEventDays(evs, '2026-01-01', '2026-01-05');
+  assert.equal(cd.schema, 'poco-meter-event-days-v1');
+  assert.equal(cd.list.length, 2);
+  assert.equal(cd.days['2026-01-01'], undefined, 'イベントの無い日は持たない');
+  assert.deepEqual(cd.days['2026-01-02'], {e: [0]});
+  assert.deepEqual(cd.days['2026-01-03'].l, [1], '1日開催はその日のイベラス');
+  assert.deepEqual(cd.days['2026-01-04'], {l: [0]});
+  const plain = x => JSON.parse(JSON.stringify(x));
+  const d4 = plain(e.hitDayEvents(cd, '2026-01-04', 'S2'));
+  assert.equal(d4.bigForRank, true);
+  assert.deepEqual(d4.lasts.map(x => [x.name, x.target, x.endTime]), [['冬祭り', true, '23:59']]);
+  assert.equal(e.hitDayEventText(e.hitDayEvents(cd, '2026-01-04', 'S2')), 'イベラス：冬祭り（大型・対象ランク） 23:59まで');
+  assert.match(e.hitDayEventText(e.hitDayEvents(cd, '2026-01-03', 'A1')), /^イベラス：新春ミッション\n開催中：冬祭り（大型）$/);
+  assert.equal(plain(e.hitDayEvents(cd, '2026-01-04', 'A1')).bigForRank, false, '対象外のランクには●を付けない');
+  assert.match(e.hitDayEventText(e.hitDayEvents(cd, '2026-01-01', 'S2')), /イベント情報はありません/);
+}
 // 的中率の期間：年をまたぐときは年も出す
 assert.equal(e.aoSpan('2025-01-06', '2026-11-11'), '2025/1/6〜2026/11/11');
 assert.equal(e.aoSpan('2026-01-01', '2026-11-11'), '1/1〜11/11');

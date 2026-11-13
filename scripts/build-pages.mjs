@@ -9,12 +9,12 @@ import {manifest, iconData} from '../calculator/offline-assets.mjs';
 import {exportWorker} from './prepare-github-meter.mjs';
 import {sealCalculatorHTML, scriptSources} from '../lib/browser-security.mjs';
 import {validateData} from '../automation/update-borders-json.mjs';
-import {forecastBundle} from '../automation/build-meter-factors.mjs';
+import {forecastBundle, calendarEventDays} from '../automation/build-meter-factors.mjs';
 
 const ROOT = fileURLToPath(new URL('../', import.meta.url));
 // Tool version shown on the page. Change only when the tool itself changes
 // (data updates do not change it).
-export const PAGES_VERSION = {version: 'v2026.11.13.7', updatedAt: '2026-11-13T11:19:00+09:00', label: '2026/11/13 11:19:00'};
+export const PAGES_VERSION = {version: 'v2026.11.13.8', updatedAt: '2026-11-13T11:42:00+09:00', label: '2026/11/13 11:42:00'};
 const SITES_ORIGIN = 'https://poco-meter.freefreelife2000.chatgpt.site';
 const COLLECTOR_ORIGIN = 'https://pococha-comment-access.freefreelife2000.chatgpt.site';
 const BORDER_FETCH = "fetch('/api/borders',{cache:'no-cache',credentials:'same-origin',signal:controller.signal})";
@@ -167,11 +167,14 @@ export async function buildPages({root = ROOT, out = resolve(ROOT, '_site')} = {
   ]);
   validateData(JSON.parse(borders));
   // 常時表示パネル用の予想データ（補正値＋今日の前後の暦・イベント）。情報源が無ければ作らない。
-  let forecast = null;
+  let forecast = null, eventDaysJson = null;
   try {
     const [factors, events] = await Promise.all([read('data/meter-factors.json'), read('data/events.json')]);
     const backtest = await read('data/forecast-backtest.json').then(JSON.parse, () => null);
     const log = await read('data/forecast-log.json').then(JSON.parse, () => null);
+    // 的中率カレンダー用：記録のある最初の日から今日までの各日の開催中イベントとイベラス（開いたときだけ読み込む）
+    const firstDate = JSON.parse(borders).records.reduce((m, r) => (r.date < m ? r.date : m), '9999');
+    eventDaysJson = JSON.stringify(calendarEventDays(JSON.parse(events), firstDate, new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10)));
     forecast = JSON.stringify(forecastBundle(JSON.parse(factors), JSON.parse(events), new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10), {backtest, log}));
   } catch (error) { if (error.code !== 'ENOENT') throw error; }
   // 日ごとの答え合わせ（的中率カレンダー用）：締め時間ごとのファイル。無ければ配らない。
@@ -198,6 +201,7 @@ export async function buildPages({root = ROOT, out = resolve(ROOT, '_site')} = {
     ...(forecast ? {'data/meter-forecast.json': forecast} : {}),
     // 日ごとの答え合わせ（的中率カレンダー用。メニューを開いたときだけ読み込む）
     ...hitHistory,
+    ...(eventDaysJson ? {'data/event-days.json': eventDaysJson} : {}),
     '404.html': notFoundPage(),
     '.nojekyll': '',
   };
