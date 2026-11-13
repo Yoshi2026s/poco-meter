@@ -14,7 +14,7 @@ import {forecastBundle} from '../automation/build-meter-factors.mjs';
 const ROOT = fileURLToPath(new URL('../', import.meta.url));
 // Tool version shown on the page. Change only when the tool itself changes
 // (data updates do not change it).
-export const PAGES_VERSION = {version: 'v2026.11.13.4', updatedAt: '2026-11-13T09:37:00+09:00', label: '2026/11/13 09:37:00'};
+export const PAGES_VERSION = {version: 'v2026.11.13.5', updatedAt: '2026-11-13T10:00:00+09:00', label: '2026/11/13 10:00:00'};
 const SITES_ORIGIN = 'https://poco-meter.freefreelife2000.chatgpt.site';
 const COLLECTOR_ORIGIN = 'https://pococha-comment-access.freefreelife2000.chatgpt.site';
 const BORDER_FETCH = "fetch('/api/borders',{cache:'no-cache',credentials:'same-origin',signal:controller.signal})";
@@ -174,7 +174,12 @@ export async function buildPages({root = ROOT, out = resolve(ROOT, '_site')} = {
     const log = await read('data/forecast-log.json').then(JSON.parse, () => null);
     forecast = JSON.stringify(forecastBundle(JSON.parse(factors), JSON.parse(events), new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10), {backtest, log}));
   } catch (error) { if (error.code !== 'ENOENT') throw error; }
-  const hitHistory = await read('data/forecast-history.json').catch(error => { if (error.code === 'ENOENT') return null; throw error; });
+  // 日ごとの答え合わせ（的中率カレンダー用）：締め時間ごとのファイル。無ければ配らない。
+  const hitHistory = {};
+  for (const close of ['13', '22', '24']) {
+    const body = await read(`data/forecast-history-${close}.json`).catch(error => { if (error.code === 'ENOENT') return null; throw error; });
+    if (body) hitHistory[`data/forecast-history-${close}.json`] = body;
+  }
   if ((methods.match(/href="\/"/g) || []).length !== 2) throw new Error('Pages build: expected two help return links');
   const pagesManifest = structuredClone(manifest);
   pagesManifest.id = pagesManifest.start_url = pagesManifest.scope = './';
@@ -192,7 +197,7 @@ export async function buildPages({root = ROOT, out = resolve(ROOT, '_site')} = {
     'data/borders.json': borders,
     ...(forecast ? {'data/meter-forecast.json': forecast} : {}),
     // 日ごとの答え合わせ（的中率カレンダー用。メニューを開いたときだけ読み込む）
-    ...(hitHistory ? {'data/forecast-history.json': hitHistory} : {}),
+    ...hitHistory,
     '404.html': notFoundPage(),
     '.nojekyll': '',
   };

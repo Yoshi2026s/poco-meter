@@ -135,7 +135,15 @@ assert.equal(e.forecastTrend(-3.5), '低め ↓');
   assert.equal(h.dates.length, w.overall.days);
   assert.deepEqual(Object.keys(h.series).sort(), ['24|A1|0', '24|A1|1', '24|A1|2']);
   assert.ok(h.series['24|A1|0'].every(x => x === 0));
+  // 画面は今の締め時間の分だけ読むため、締め時間ごとに分ける（キーは「ランク|ボーダー」、答え合わせのある日だけ）
+  const {splitHistory} = await import('../automation/backtest-forecast.mjs');
+  const parts = splitHistory({unit: '0.1%', dates: ['2026-01-01', '2026-01-02', '2026-01-03'], series: {'22|S2|0': [1, null, 3], '13|S2|0': [null, 5, null]}});
+  assert.deepEqual(Object.keys(parts), ['13', '22']);
+  assert.deepEqual(parts['22'], {schema: 'poco-meter-forecast-history-v2', close: '22', from: '2026-01-01', to: '2026-01-03', unit: '0.1%', dates: ['2026-01-01', '2026-01-03'], series: {'S2|0': [1, 3]}});
+  assert.deepEqual(parts['13'].dates, ['2026-01-02']);
+  assert.deepEqual(splitHistory(null), {});
 }
+assert.match(html, /fetch\('\.\/data\/forecast-history-'\+close\+'\.json'/);
 // 的中率カレンダー：月の並び・曜日のずれ・±10%以内の数え方（ちょうど10%は以内）・毎日の記録の優先
 {
   const hist = {from: '2025-12-30', to: '2026-02-02', dates: ['2025-12-30', '2026-01-01', '2026-01-02', '2026-01-03'], series: {'22|S2|0': [5, 100, -101, null]}};

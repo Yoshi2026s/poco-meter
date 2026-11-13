@@ -4572,7 +4572,7 @@ html.always-on-mode body #mini.main-screen #miniNowTime{font-size:clamp(18px,5.5
   // 直近の答え合わせの一覧を開閉する（details ではなくボタン。メニュー用の閉じるボタンの対象外にするため）
   if($('aoHistoryToggle'))$('aoHistoryToggle').addEventListener('click',function(){var open=this.getAttribute('aria-expanded')!=='true';this.setAttribute('aria-expanded',String(open));$('aoHistory').hidden=!open;var mark=this.querySelector('.ao-history-mark');if(mark)mark.textContent=open?'▾':'▸';});
   // ---- 的中率カレンダー：過去の答え合わせ（data/forecast-history.json、メニューを開いたときだけ読む）を月ごとのカレンダーで見る ----
-  var hitHistory=null,hitHistoryLoading=false,hitHistoryError='',hitCalMonth='',hitCalSelected='',hitCalKey='',hitCalSeries='';
+  var hitHistories={},hitHistoryLoading='',hitHistoryError='',hitCalMonth='',hitCalSelected='',hitCalKey='',hitCalSeries='';
   // その月の各日の誤差（予想÷実際−1、%）。毎日の自動記録（live：日付→誤差%）がある日はそちらを優先して印を付ける。
   function hitCalendarMonth(history,key,ym,live){
     var y=+ym.slice(0,4),m=+ym.slice(5,7),days=new Date(Date.UTC(y,m,0)).getUTCDate(),lead=new Date(Date.UTC(y,m-1,1)).getUTCDay();
@@ -4587,16 +4587,18 @@ html.always-on-mode body #mini.main-screen #miniNowTime{font-size:clamp(18px,5.5
     return {lead:lead,cells:cells,hits:hits,total:total};
   }
   function hitCalMonths(history){if(!history||!history.from||!history.to)return [];var out=[],y=+history.from.slice(0,4),m=+history.from.slice(5,7),end=history.to.slice(0,7);while(true){var ym=y+'-'+String(m).padStart(2,'0');out.push(ym);if(ym>=end)break;m++;if(m>12){m=1;y++;}}return out;}
-  async function loadHitHistory(){
-    if(hitHistory||hitHistoryLoading)return;hitHistoryLoading=true;hitCalKey='';renderHitCalendar();
-    try{var r=await fetch('./data/forecast-history.json',{cache:'no-cache',credentials:'same-origin'});if(!r.ok)throw new Error(String(r.status));var d=await r.json();if(!d||d.schema!=='poco-meter-forecast-history-v1')throw new Error('形式が違います');hitHistory=d;hitHistoryError='';}
+  // 締め時間ごとのファイル（data/forecast-history-13.json など）を、使う締め時間の分だけ読む。読んだ分は覚えておく。
+  async function loadHitHistory(close){
+    if(!close||hitHistories[close]||hitHistoryLoading)return;hitHistoryLoading=close;hitCalKey='';renderHitCalendar();
+    try{var r=await fetch('./data/forecast-history-'+close+'.json',{cache:'no-cache',credentials:'same-origin'});if(!r.ok)throw new Error(String(r.status));var d=await r.json();if(!d||d.schema!=='poco-meter-forecast-history-v2'||d.close!==close)throw new Error('形式が違います');hitHistories[close]=d;hitHistoryError='';}
     catch(e){hitHistoryError='履歴を読み込めませんでした（通信できる状態で開き直してください）。';}
-    finally{hitHistoryLoading=false;hitCalKey='';renderHitCalendar();}
+    finally{hitHistoryLoading='';hitCalKey='';renderHitCalendar();}
   }
   function renderHitCalendar(){
     var box=$('hitCalendar');if(!box||!box.open)return;
     var close=closeKey(),rank=state.rank,idx=[0,1,2].indexOf(state.analysisBorder)>=0?state.analysisBorder:0,key=close+'|'+rank+'|'+idx,closeLabel=close==='24'?'24時締め':close+'時締め';
     if(hitCalSeries!==key){hitCalSeries=key;hitCalSelected='';}
+    var hitHistory=hitHistories[close]||null,skey=rank+'|'+idx;if(!hitHistory&&!hitHistoryLoading&&!hitHistoryError)loadHitHistory(close);
     var months=hitCalMonths(hitHistory);if(months.length&&months.indexOf(hitCalMonth)<0)hitCalMonth=months[months.length-1];
     var rec=forecastData&&forecastData.record,ck=[key,hitCalMonth,hitCalSelected,!!hitHistory,hitHistoryLoading,hitHistoryError,rec&&rec.recent&&rec.recent.length,dataRevision].join('|');
     if(ck===hitCalKey)return;hitCalKey=ck;
@@ -4604,7 +4606,7 @@ html.always-on-mode body #mini.main-screen #miniNowTime{font-size:clamp(18px,5.5
     if(!hitHistory){aoSet('hitCalMonth','');aoSet('hitCalSummary',hitHistoryLoading?'読み込み中…':hitHistoryError);aoSet('hitCalDetail','');$('hitCalPrev').disabled=$('hitCalNext').disabled=true;return;}
     if(rank==='E'){aoSet('hitCalMonth','');aoSet('hitCalSummary','E帯は予想の対象外です。');aoSet('hitCalDetail','');$('hitCalPrev').disabled=$('hitCalNext').disabled=true;return;}
     var live={};(rec&&rec.recent||[]).forEach(function(e){var f=e.close===close&&e.forecasts&&e.forecasts[rank]&&e.forecasts[rank][idx],a=e.actual&&e.actual[rank]&&e.actual[rank][idx];if(f&&f[0]>0&&a>0)live[e.date]=Math.round((f[0]/a-1)*1000)/10;});
-    var cal=hitCalendarMonth(hitHistory,key,hitCalMonth,live),pos=months.indexOf(hitCalMonth);
+    var cal=hitCalendarMonth(hitHistory,skey,hitCalMonth,live),pos=months.indexOf(hitCalMonth);
     aoSet('hitCalMonth',hitCalMonth.slice(0,4)+'年'+Number(hitCalMonth.slice(5,7))+'月');
     $('hitCalPrev').disabled=pos<=0;$('hitCalNext').disabled=pos>=months.length-1;
     aoSet('hitCalSummary',rank+' '+AO_BORDERS[idx]+'・'+closeLabel+'：'+(cal.total?'±10%以内 '+cal.hits+'/'+cal.total+'日（'+Math.round(cal.hits/cal.total*1000)/10+'%）':'この月は答え合わせがありません'));
@@ -4626,9 +4628,9 @@ html.always-on-mode body #mini.main-screen #miniNowTime{font-size:clamp(18px,5.5
     if(!hitCalSelected||hitCalSelected.slice(0,7)!==hitCalMonth)aoSet('hitCalDetail','日付をタップすると、その日の予想と実際の値を表示します。');
   }
   if($('hitCalendar')){
-    $('hitCalendar').addEventListener('toggle',function(){if(this.open){hitCalKey='';loadHitHistory();renderHitCalendar();}});
-    $('hitCalPrev').addEventListener('click',function(){var ms=hitCalMonths(hitHistory),p=ms.indexOf(hitCalMonth);if(p>0){hitCalMonth=ms[p-1];hitCalSelected='';renderHitCalendar();}});
-    $('hitCalNext').addEventListener('click',function(){var ms=hitCalMonths(hitHistory),p=ms.indexOf(hitCalMonth);if(p>=0&&p<ms.length-1){hitCalMonth=ms[p+1];hitCalSelected='';renderHitCalendar();}});
+    $('hitCalendar').addEventListener('toggle',function(){if(this.open){hitCalKey='';hitHistoryError='';loadHitHistory(closeKey());renderHitCalendar();}});
+    $('hitCalPrev').addEventListener('click',function(){var ms=hitCalMonths(hitHistories[closeKey()]),p=ms.indexOf(hitCalMonth);if(p>0){hitCalMonth=ms[p-1];hitCalSelected='';renderHitCalendar();}});
+    $('hitCalNext').addEventListener('click',function(){var ms=hitCalMonths(hitHistories[closeKey()]),p=ms.indexOf(hitCalMonth);if(p>=0&&p<ms.length-1){hitCalMonth=ms[p+1];hitCalSelected='';renderHitCalendar();}});
     setInterval(function(){if(!document.hidden)renderHitCalendar();},1000);
   }
   if($('alwaysOnOpen')&&$('alwaysOnClose')){
