@@ -90,7 +90,8 @@ for (const value of ['1000', '１０００']) {
     const textWidth = text.getBoundingClientRect().width;
     text.remove();
     const contentWidth = input.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
-    const minHeight = matchMedia('(max-width:700px),(pointer:coarse)').matches ? 48 : 44;
+    // 2026-11-13: phone portrait is compacted on request (inputs 32px+, text stays 16px); larger screens keep 44px.
+    const minHeight = matchMedia('(max-width:559px)').matches ? 32 : matchMedia('(max-width:700px),(pointer:coarse)').matches ? 48 : 44;
     return {textWidth, contentWidth, height:input.getBoundingClientRect().height, minHeight};
   });
   assert.ok(size.contentWidth >= size.textWidth, `${width}px: all digits of ${value} fit (${JSON.stringify(size)})`);
