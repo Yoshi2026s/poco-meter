@@ -2079,6 +2079,10 @@ html.always-on-mode body #mini.main-screen #miniNowTime{font-size:clamp(18px,5.5
 :root body #mini.main-screen .main-card .menu-close-button{min-height:32px!important;padding:0 14px!important;border-radius:8px;border:1px solid #7fa6d1!important;background:#fff!important;color:#0d3b66!important;font-size:13px!important;font-weight:800;box-shadow:none!important}
 :root body #mini.main-screen .main-card .ao-cal-day{position:relative}
 :root body #mini.main-screen .main-card .ao-cal-mark{position:absolute;top:1px;right:2px;font-size:9px!important;line-height:1;color:#7c2d12!important}
+:root body #mini.main-screen .main-card .ao-cal-detail .ao-cal-line{display:block}
+:root body #mini.main-screen .main-card .ao-cal-detail .ao-cal-line.last{color:#9a3412!important}
+:root body #mini.main-screen .main-card .ao-cal-detail .ao-cal-line.run{color:#0b4f8a!important}
+:root body #mini.main-screen .main-card .ao-cal-detail .ao-cal-line.none{color:#445466!important;font-weight:600}
 :root body #mini.main-screen .main-card .ao-cal-detail{white-space:pre-line;margin:6px 0 0;font-size:13px!important;font-weight:700;line-height:1.45}
 /* 2026-11-13 スマホ縦画面の詰め表示：スクロールなしで「予想」まで見えるよう、ボタン・余白を小さくする。
    入力欄・選択欄の文字は16px（iPhoneの入力時の自動拡大を防ぐ）のまま、高さだけ詰める。ボタンは32〜36px。 */
@@ -2235,7 +2239,7 @@ html.always-on-mode body #mini.main-screen #miniNowTime{font-size:clamp(18px,5.5
 <small id="miniBufferError" hidden role="status" aria-live="polite"></small>
 <!-- phone-current:end -->
 <section id="itemsWindow" aria-labelledby="itemsWindowTitle"><div class="items-window-head"><h2 id="itemsWindowTitle">残りアイテムの目安</h2><div class="items-core"><label for="coreCountItems">現コア数</label><input id="coreCountItems" class="num" type="text" inputmode="numeric" enterkeyhint="done" autocomplete="off" placeholder="0" aria-label="現コア数（0〜1000人）" aria-describedby="coreCountItemsError inputStatus" value="0"></div></div><small id="coreCountItemsError" class="items-core-error" hidden></small><div id="itemsWindowRow"></div></section>
-<section class="main-card main-forecast-card" id="mainForecastCard" aria-labelledby="aoRankHead"><h2 class="main-card-head" id="aoRankHead" tabindex="-1">設定ランクの予想</h2><div class="ao-fvalue num" id="aoForecast"></div><div class="ao-frange num" id="aoRange"></div><div class="ao-trend" id="aoTrend"></div><p class="ao-accuracy" id="aoAccuracy"></p><p class="ao-accuracy ao-record" id="aoRecord"></p><div class="ao-history" id="aoHistoryBox" hidden><button type="button" class="ao-history-toggle" id="aoHistoryToggle" aria-expanded="false" aria-controls="aoHistory"><span class="ao-history-mark" aria-hidden="true">▸</span> <span id="aoHistorySummary">直近の答え合わせ</span></button><ul id="aoHistory" hidden></ul></div><ul class="ao-reasons" id="aoReasons"></ul><p class="ao-note" id="aoForecastNote"></p><details class="ao-calendar" id="hitCalendar"><summary>📅 的中率カレンダー（日ごとの答え合わせ）</summary><div class="ao-cal-body"><div class="ao-cal-nav"><button type="button" id="hitCalPrev" aria-label="前の月">◀</button><b id="hitCalMonth" aria-live="polite"></b><button type="button" id="hitCalNext" aria-label="次の月">▶</button></div><p class="ao-cal-sum" id="hitCalSummary"></p><div class="ao-cal-grid" id="hitCalGrid"></div><p class="ao-cal-detail" id="hitCalDetail" role="status" aria-live="polite"></p><p class="ao-note" id="hitCalNote">緑は±10%以内、橙は±10%超。その日より前のデータだけで作った予想と実際のボーダーの比較です（補正は月ごとに作り直し）。下線は毎日の自動記録の予想。●は設定ランクが対象の大型イベント、◆はイベラス（その日が最終日のイベント）がある日。日付をタップすると、その日のイベントも表示します。</p></div></details></section>
+<section class="main-card main-forecast-card" id="mainForecastCard" aria-labelledby="aoRankHead"><h2 class="main-card-head" id="aoRankHead" tabindex="-1">設定ランクの予想</h2><div class="ao-fvalue num" id="aoForecast"></div><div class="ao-frange num" id="aoRange"></div><div class="ao-trend" id="aoTrend"></div><p class="ao-accuracy" id="aoAccuracy"></p><p class="ao-accuracy ao-record" id="aoRecord"></p><div class="ao-history" id="aoHistoryBox" hidden><button type="button" class="ao-history-toggle" id="aoHistoryToggle" aria-expanded="false" aria-controls="aoHistory"><span class="ao-history-mark" aria-hidden="true">▸</span> <span id="aoHistorySummary">直近の答え合わせ</span></button><ul id="aoHistory" hidden></ul></div><ul class="ao-reasons" id="aoReasons"></ul><p class="ao-note" id="aoForecastNote"></p><details class="ao-calendar" id="hitCalendar"><summary>📅 的中率カレンダー（日ごとの答え合わせ）</summary><div class="ao-cal-body"><div class="ao-cal-nav"><button type="button" id="hitCalPrev" aria-label="前の月">◀</button><b id="hitCalMonth" aria-live="polite"></b><button type="button" id="hitCalNext" aria-label="次の月">▶</button></div><p class="ao-cal-sum" id="hitCalSummary"></p><div class="ao-cal-grid" id="hitCalGrid"></div><p class="ao-cal-detail" id="hitCalDetail" role="status" aria-live="polite"></p><p class="ao-note" id="hitCalNote">緑は±10%以内、橙は±10%超。その日より前のデータだけで作った予想と実際のボーダーの比較です（補正は月ごとに作り直し）。下線は毎日の自動記録の予想。●は設定ランクが対象の大型イベント、◆はイベラス（その日が最終日のイベント）がある日。日付をタップすると、その日のイベントも表示します（イベラスは橙、開催中は青の文字）。</p></div></details></section>
 <section class="main-card main-events-card" id="mainEventsCard" aria-labelledby="aoEventsHead"><h2 class="main-card-head ao-last-head" id="aoLastHead">本日のイベラス（最終日）</h2><ul class="ao-list ao-last" id="aoLast"></ul><p class="ao-note" id="aoLastNote"></p><h2 class="main-card-head" id="aoEventsHead">今日の開催イベント</h2><ul class="ao-list" id="aoEvents"></ul><h2 class="main-card-head ao-next-head" id="aoTomorrowHead" hidden>明日から</h2><ul class="ao-list" id="aoTomorrow"></ul><p class="ao-note" id="aoEventsNote"></p></section>
 <section class="main-tools" id="mainTools" aria-label="目標の条件・コピー・換算"><p class="hint goal-context" id="appliedContext" tabindex="0" aria-label="目標設定時の条件"></p><p id="manualTargetMsg" class="toast" role="status"></p>
     <div class="meter-tools"><button type="button" id="copyRemaining">残りポイントをコピー</button><button type="button" id="alwaysOnOpen" aria-pressed="false">常時表示モード</button></div><textarea id="summaryText" readonly hidden aria-label="手動コピー用の現在の残り"></textarea>
@@ -4641,13 +4645,17 @@ html.always-on-mode body #mini.main-screen #miniNowTime{font-size:clamp(18px,5.5
     var running=(day.e||[]).map(pick).filter(Boolean),lasts=(day.l||[]).map(pick).filter(Boolean);
     return {running:running,lasts:lasts,bigForRank:running.concat(lasts).some(function(x){return x.type==='big'&&x.target;})};
   }
-  function hitDayEventText(ev){
+  // その日のイベントを行ごとに（kind：last＝イベラス、run＝開催中、none＝なし）。画面では行ごとに文字色を変える。
+  function hitDayEventLines(ev){
     var mark=function(x){return x.name+(x.type==='big'?'（大型'+(x.target?'・対象ランク':'')+'）':x.target?'（対象ランク）':'');};
     var out=[];
-    if(ev.lasts.length)out.push('イベラス：'+ev.lasts.map(function(x){return mark(x)+(x.endTime?' '+x.endTime+'まで':'');}).join('、'));
-    if(ev.running.length)out.push('開催中：'+ev.running.map(mark).join('、'));
-    return out.length?out.join(String.fromCharCode(10)):'この日のイベント情報はありません（公式noteで期間を確認できたもの）。';
+    if(ev.lasts.length)out.push({kind:'last',text:'イベラス：'+ev.lasts.map(function(x){return mark(x)+(x.endTime?' '+x.endTime+'まで':'');}).join('、')});
+    if(ev.running.length)out.push({kind:'run',text:'開催中：'+ev.running.map(mark).join('、')});
+    return out.length?out:[{kind:'none',text:'この日のイベント情報はありません（公式noteで期間を確認できたもの）。'}];
   }
+  function hitDayEventText(ev){return hitDayEventLines(ev).map(function(x){return x.text;}).join(String.fromCharCode(10));}
+  // 日付をタップしたときの内容：1行目（日付と予想・実際）と、イベラス・開催中の行（色分け）
+  function setHitCalDetail(head,lines){var box=$('hitCalDetail');if(!box)return;box.textContent='';var h=document.createElement('span');h.className='ao-cal-line head';h.textContent=head;box.appendChild(h);(lines||[]).forEach(function(x){var el=document.createElement('span');el.className='ao-cal-line '+x.kind;el.textContent=x.text;box.appendChild(el);});}
   function renderHitCalendar(){
     var box=$('hitCalendar');if(!box||!box.open)return;
     var close=closeKey(),rank=state.rank,idx=[0,1,2].indexOf(state.analysisBorder)>=0?state.analysisBorder:0,key=close+'|'+rank+'|'+idx,closeLabel=close==='24'?'24時締め':close+'時締め';
@@ -4678,8 +4686,8 @@ html.always-on-mode body #mini.main-screen #miniNowTime{font-size:clamp(18px,5.5
       el.addEventListener('click',function(){hitCalSelected=c.date;hitCalKey='';
         var a=log[c.date]&&log[c.date][rank]&&log[c.date][rank][idx],r={err:c.err};
         var head=aoMD(c.date)+'（'+AO_WEEKDAYS[new Date(c.date+'T00:00:00Z').getUTCDay()]+'）',txt=head+(c.err===null?'　答え合わせなし':(a>0?'　予想 '+aoK(a*(1+c.err/100),100)+' → 実際 '+aoK(a,100):'')+'（'+aoErrText(r)+(Math.round(Math.abs(c.err)*10)/10<=10?'・±10%以内':'')+'）'+(c.live?'・毎日の記録':''));
-        txt+=String.fromCharCode(10)+(hitEvents?hitDayEventText(hitDayEvents(hitEvents,c.date,rank)):(hitEventsLoading?'イベント情報を読み込み中…':'イベント情報を読み込めませんでした。'));
-        renderHitCalendar();aoSet('hitCalDetail',txt);});
+        var lines=hitEvents?hitDayEventLines(hitDayEvents(hitEvents,c.date,rank)):[{kind:'none',text:hitEventsLoading?'イベント情報を読み込み中…':'イベント情報を読み込めませんでした。'}];
+        renderHitCalendar();setHitCalDetail(txt,lines);});
       grid.appendChild(el);
     });
     if(!hitCalSelected||hitCalSelected.slice(0,7)!==hitCalMonth)aoSet('hitCalDetail','日付をタップすると、その日の予想と実際の値を表示します。');
