@@ -240,6 +240,24 @@ export function forecastBundle(factors, events, todayISO, {before = 3, after = 4
 }
 const pickAcc = s => s && {within10: s.within10, within20: s.within20, medianAbsErr: s.medianAbsErr, inRange: s.inRange, days: s.days, n: s.n};
 
+// 的中率カレンダー用：fromISO〜toISO の各日の「開催中のイベント」と「イベラス（その日が最終日）」。
+// 予想データと同じ選び方（forecastBundle の days）を使い、同じイベントは一覧（list）に1回だけ持って番号で参照する。
+export function calendarEventDays(events, fromISO, toISO) {
+  const span = Math.round((Date.parse(toISO) - Date.parse(fromISO)) / DAY);
+  const days = forecastBundle({weekday: {}}, events, toISO, {before: span, after: 0}).days;
+  const list = [], at = new Map(), out = {};
+  const ref = x => {
+    const key = `${x.url}|${x.label || ''}|${x.start}|${x.end || ''}`;
+    if (!at.has(key)) { at.set(key, list.length); list.push({title: x.title, label: x.label, type: x.type, ranks: x.ranks, start: x.start, end: x.end, ...(x.endTime ? {endTime: x.endTime} : {}), url: x.url}); }
+    return at.get(key);
+  };
+  for (const [d, day] of Object.entries(days)) {
+    const e = (day.events || []).filter(x => !x.ends).map(ref), l = (day.lasts || []).map(ref);
+    if (e.length || l.length) out[d] = {...(e.length ? {e} : {}), ...(l.length ? {l} : {})};
+  }
+  return {schema: 'poco-meter-event-days-v1', from: fromISO, to: toISO, list, days: out};
+}
+
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const borders = JSON.parse(await readFile(arg('borders', 'data/borders.json'), 'utf8'));
   let events = null; try { events = JSON.parse(await readFile(arg('events', 'data/events.json'), 'utf8')); } catch {}
