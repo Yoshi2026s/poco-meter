@@ -178,6 +178,10 @@ assert.match(html, /<details class="ao-calendar" id="hitCalendar"><summary>📅 
   assert.match(e.hitDayEventText(e.hitDayEvents(cd, '2026-01-03', 'A1')), /^イベラス：新春ミッション\n開催中：冬祭り（大型）$/);
   assert.equal(plain(e.hitDayEvents(cd, '2026-01-04', 'A1')).bigForRank, false, '対象外のランクには●を付けない');
   assert.match(e.hitDayEventText(e.hitDayEvents(cd, '2026-01-01', 'S2')), /イベント情報はありません/);
+  // 行ごとの種類（イベラス＝last・開催中＝run・なし＝none）で文字色を変える
+  assert.deepEqual(plain(e.hitDayEventLines(e.hitDayEvents(cd, '2026-01-03', 'A1'))).map(x => x.kind), ['last', 'run']);
+  assert.deepEqual(plain(e.hitDayEventLines(e.hitDayEvents(cd, '2026-01-01', 'S2'))).map(x => x.kind), ['none']);
+  assert.ok(html.includes('.ao-cal-detail .ao-cal-line.last{color:#9a3412!important}') && html.includes('.ao-cal-detail .ao-cal-line.run{color:#0b4f8a!important}'));
 }
 // 的中率の期間：年をまたぐときは年も出す
 assert.equal(e.aoSpan('2025-01-06', '2026-11-11'), '2025/1/6〜2026/11/11');
