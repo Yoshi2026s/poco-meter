@@ -43,7 +43,7 @@ jobs:
       - name: メーター予想の補正値を集計
         continue-on-error: true
         run: node automation/build-meter-factors.mjs
-      - name: 予想の答え合わせ（2026年以降の過去データ）
+      - name: 予想の答え合わせ（記録のある全期間・月ごとに過去のデータだけで補正）
         continue-on-error: true
         run: node automation/backtest-forecast.mjs
       - name: 日々の予想を記録し、実際のボーダーで答え合わせ

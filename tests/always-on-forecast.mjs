@@ -121,7 +121,17 @@ assert.equal(e.forecastTrend(-3.5), '低め ↓');
   assert.equal(r.overall.n, 20 * 3);
   assert.equal(r.overall.within5, 100);
   assert.equal(r.overall.medianAbsErr, 0);
+  // from 省略：記録のある全期間を月ごとに、その月より前のデータだけで補正を作って予想する（前年分も含む）
+  const w = backtest({records}, null, html);
+  assert.equal(w.period.mode, 'walk-forward-monthly');
+  assert.ok(w.period.from < '2026-01-01' && w.period.to === '2026-01-20', '前年（2025年12月）分も答え合わせに入る');
+  assert.ok(w.overall.n > r.overall.n);
+  assert.deepEqual(Object.keys(w.byYear), ['2025', '2026']);
+  assert.equal(w.evalModel, undefined, '全期間の答え合わせは月ごとの補正を使う（単一の評価用補正は持たない）');
 }
+// 的中率の期間：年をまたぐときは年も出す
+assert.equal(e.aoSpan('2025-01-06', '2026-11-11'), '2025/1/6〜2026/11/11');
+assert.equal(e.aoSpan('2026-01-01', '2026-11-11'), '1/1〜11/11');
 
 // 画面：常時表示パネルは通常表示に統合した。予想・イベントのカードは通常表示（#mini）の中にあり、別画面のパネルは無い。
 for (const id of ['mainForecastCard', 'mainEventsCard', 'aoForecast', 'aoAccuracy', 'aoRecord', 'aoLast', 'aoEvents', 'aoTomorrow']) assert.ok(html.includes(`id="${id}"`), id);
