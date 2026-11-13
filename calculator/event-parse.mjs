@@ -225,6 +225,14 @@ export function newsItems(html) {
 // 各SNSは規約で許可のない自動収集が禁止のため、自動では取りに行かない。人が貼り付けた投稿文から事実（名前・期間・時間帯・対象ランク・投稿URL）だけを取り出し、
 // 「共有用の1行」（投稿日｜名前｜開催期間：…｜対象：…｜URL）にする。本文は保存しない。画面の端末保存と data/sns-events.txt はこの1行の形で持つ。
 const SNS_DECOR = /^(?:【[^】]{0,8}】)?\s*(?:本日|今日|今夜|明日|まもなく)?\s*(?:開催|スタート|開始|告知|お知らせ|速報|START|NEW|予告|開催決定|ついに)?[!！]*$/i;
+// 1行の告知（「本日21時〜24時 夜の部ランキング開催！対象：S1〜S6」）から名前だけを残す：日付・時刻・期間の語・対象・「開催！」などを外す
+function snsName(line) {
+  return cleanLabel(toFull(String(line || ''))
+    .replace(/(?:対象|対象ランク)[:：]?\s*[^\s、。]*/g, ' ').replace(/[SABCDE][1-6]\s*[〜~～\-–ー]\s*[SABCDE][1-6](?:ランク)?|[SABCD](?:ランク|帯)(?:対象)?|全ランク(?:対象)?/g, ' ')
+    .replace(/(?:\d{4}年)?\d{1,2}(?:月|\/)\d{1,2}日?\s*(?:[(（][^)）]{1,3}[)）])?/g, ' ').replace(/\d{1,2}(?::\d{2}|時(?:\d{1,2}分|半)?)/g, ' ')
+    .replace(/本日|今日|今夜|今晩|明後日|明日|より|から|まで|限定|の?\d+時間|開催期間|期間|[〜~～\-–]/g, ' ')
+    .replace(/(?:を|が)?(?:開催|スタート|開始|開幕)(?:決定|します|中)?[!！]*/g, ' ').replace(/[!！。、]+/g, ' ')).replace(/^の\s*/, '').trim();
+}
 export const SNS_SOURCE = {id: 'pococha-official-sns', kind: 'official'};
 // 投稿文の相対的な日付（本日・今日・今夜・明日・明後日）を投稿日からの月/日に、「12時」「21時30分」「21時半」を「12:00」形式に、「12:00スタート」を「12:00より開始」にする。
 export function snsText(text, postedISO) {
@@ -233,7 +241,9 @@ export function snsText(text, postedISO) {
   return toFull(String(text || ''))
     .replace(/(\d{1,2})時(?:(\d{1,2})分|(半))?/g, (m, h, mi, half) => `${h}:${half ? '30' : z(mi || 0)}`)
     .replace(/明後日/g, () => md(2)).replace(/明日/g, () => md(1)).replace(/本日|今日|今夜|今晩/g, () => md(0))
-    .replace(/(\d{1,2}:\d{2})\s*(?:から|～|〜|~)?\s*(?:スタート|開始|開幕)/g, '$1より開始');
+    .replace(/(\d{1,2}:\d{2})\s*から\s*(\d{1,2}:\d{2})\s*(?:まで)?/g, '$1〜$2')
+    .replace(/(\d{1,2}:\d{2})\s*(?:から|～|〜|~)?\s*(?:スタート|開始|開幕)/g, '$1より開始')
+    .replace(/([SABCD])帯/g, '$1ランク');
 }
 const fmtDay = iso => `${+iso.slice(0, 4)}年${+iso.slice(5, 7)}月${+iso.slice(8, 10)}日`;
 // 対象ランクを「S1〜S6」「全ランク」のように続き番号でまとめる
@@ -250,7 +260,7 @@ export function snsEvent(text, {posted, url = ''} = {}) {
   // 名前：「」『』の名前 → 飾りだけの行（＼本日開催／・【告知】など）・URL・ハッシュタグを除いた最初の行
   const lines = String(text || '').split('\n').map(x => cleanLabel(x.replace(/[＼／\\/]/g, ' ').replace(/https?:\S+|#\S+/g, ' '))).filter(x => x && !SNS_DECOR.test(x));
   const quoted = String(text || '').match(/[『「]([^』」\n]{2,40})[』」]/);
-  const title = (quoted ? quoted[1] : lines[0] || '').slice(0, 80);
+  const title = (quoted ? quoted[1] : snsName(lines[0] || '') || snsName(lines.join(' ')) || '公式Xの告知').slice(0, 80);
   return eventFrom(SNS_SOURCE, url || `sns:${posted}`, {title, published: posted, modified: posted}, snsText(text, posted), {sns: true});
 }
 // イベント → 共有用の1行（期間ごと）。
