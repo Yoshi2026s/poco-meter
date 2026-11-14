@@ -9,3 +9,10 @@
 #   - 確認の記録（どの項目を読んだか）は docs/research/half-day-event-candidates.yaml の official_confirmed_events に残す。
 確認日 2026-11-14｜デビューぽこトレ｜開催期間：2026年8月13日 12:00〜2026年8月13日 23:59｜対象：E1〜D3｜https://event.pococha.com/ja-jp/festivals/ca5ef77c015f65720cede95fb8c252e32_1_001_222810
 確認日 2026-11-14｜デビューぽこトレ｜開催期間：2026年9月21日 12:00〜2026年9月21日 23:59｜対象：E1〜D3｜https://event.pococha.com/ja-jp/festivals/ca374131ce49f4765b4bc2b284d8e647b_1_001_223950
+確認日 2026-11-14｜【22時締め】メーターマラソン｜開催期間：2026年8月21日 12:00〜2026年8月25日 21:59｜対象：D1〜D3｜https://event.pococha.com/ja-jp/festivals/c9a86469ed88c7c0e392d4ac8419ca019_1_001_222940
+確認日 2026-11-14｜【24時締め】メーターマラソン｜開催期間：2026年9月4日 12:00〜2026年9月8日 23:59｜対象：D1〜D3｜https://event.pococha.com/ja-jp/festivals/cbd4ab875133656e6ee6909753dcf9ba6_1_001_223740
+確認日 2026-11-14｜11月生まれ集合！バースデーオリジナルプロフィール｜開催期間：2026年9月14日 12:00〜2026年9月18日 23:59｜対象：D3〜S6｜https://event.pococha.com/ja-jp/festivals/original_profile_november_birthday_1_001_223450
+確認日 2026-11-14｜新人戦｜開催期間：2026年9月19日 12:00〜2026年9月22日 23:59｜対象：D1〜S6｜https://event.pococha.com/ja-jp/festivals/pococha_rookies_202609_1st_1_001_223870
+確認日 2026-11-14｜新人戦 決勝戦｜開催期間：2026年9月25日 12:00〜2026年9月27日 23:59｜https://event.pococha.com/ja-jp/festivals/pococha_rookies_202609_2nd_1_001_223880
+確認日 2026-11-14｜12月生まれ集合！バースデーオリジナルプロフィール｜開催期間：2026年10月14日 12:00〜2026年10月18日 23:59｜対象：D3〜S6｜https://event.pococha.com/ja-jp/festivals/original_profile_december_birthday_1_001_224380
+確認日 2026-11-14｜新人戦 決勝戦｜開催期間：2026年10月26日 12:00〜2026年10月28日 23:59｜https://event.pococha.com/ja-jp/festivals/pococha_rookies_202610_2nd_1_001_224770
