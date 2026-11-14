@@ -143,6 +143,21 @@ assert.equal(titleNameOf('「ヒーロー戦隊」アイテム登場!'), 'ヒー
   assert.deepEqual([...byId.keys()].sort(), ['https://x.com/pococha_jp/status/123', 'n']);
   assert.equal(byId.get('https://x.com/pococha_jp/status/123').line, undefined);
   assert.equal(readPasted(site, new Map(), readFileSync(new URL('../data/sns-events.txt', import.meta.url), 'utf8')), 0, '説明の行は読まない');
+  // data/event-page-events.txt：公式イベントページを人が開いて確認した行。確認日が開催より後でも読み、取得元を分けて記録する
+  const page = SOURCES.find(x => x.id === 'pococha-official-event-page');
+  assert.ok(page && page.pasted === 'data/event-page-events.txt' && /ログイン/.test(page.checked.terms), '取得元：公式イベントページ（手動の確認、規約の確認つき）');
+  const pageById = new Map([['keep', {sourceId: 'pococha-official-sns', url: 'keep'}], ['gone', {sourceId: 'pococha-official-event-page', url: 'gone'}]]);
+  const pageLine = '確認日 2026-11-14｜デビューぽこトレ｜開催期間：2026年9月21日 12:00〜2026年9月21日 23:59｜対象：D1〜D3｜https://event.pococha.com/ja-jp/festivals/x_1';
+  assert.equal(readPasted(page, pageById, '# x\n' + pageLine + '\n確認日 2026-11-14｜期間のない行｜対象：D1〜D3'), 1);
+  assert.deepEqual([...pageById.keys()].sort(), ['https://event.pococha.com/ja-jp/festivals/x_1', 'keep'], '同じ取得元の古い行だけ消える');
+  const pageEv = pageById.get('https://event.pococha.com/ja-jp/festivals/x_1');
+  assert.deepEqual([pageEv.sourceId, pageEv.confirmedAt, pageEv.published, pageEv.line], ['pococha-official-event-page', '2026-11-14', null, undefined]);
+  assert.deepEqual(pageEv.periods.map(p => [p.start, p.end, p.startTime, p.endTime]), [['2026-09-21', '2026-09-21', '12:00', '23:59']]);
+  assert.deepEqual(pageEv.ranks, ['D1', 'D2', 'D3']);
+  const pageFile = new Map();
+  const pageCount = readPasted(page, pageFile, readFileSync(new URL('../data/event-page-events.txt', import.meta.url), 'utf8'));
+  assert.ok(pageCount >= 2 && pageFile.size === pageCount, 'data/event-page-events.txt の行はすべて読めて、URLが重ならない');
+  assert.ok([...pageFile.values()].every(e => /^https:\/\/event\.pococha\.com\//.test(e.url) && e.periods.length === 1 && e.periods[0].startTime), '公式イベントページのURLと開始時刻つき');
 }
 // 画面に書き写した読み取り部品が calculator/event-parse.mjs と一致すること（npm run pages:prepare）
 {
