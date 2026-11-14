@@ -2,14 +2,15 @@
 # - 2026/11/13 取り込み。アプリ・自動更新はこのファイルを読まない（公開物にも入らない）。
 # - candidate_events は参加者・ライバーの記録で、公式の確認が取れていない。data/sns-events.txt・data/events.json には入れない。
 # - 公式投稿・公式イベントページで確認できたものだけ official_confirmed_events に移し、
-#   そのうえで「公式X・インスタの告知を読み取る」→ data/sns-events.txt の手順で反映する。
+#   そのうえで、公式X・インスタの告知は「公式X・インスタの告知を読み取る」→ data/sns-events.txt、
+#   公式イベントページで確認したものは data/event-page-events.txt に1行で足して反映する。
 # - 取り込み時点の照合：data/events.json（公式note・公式サイト由来）に、下記の日付・名称と一致する半日イベントはなかった。
 
 dataset: "Pococha日本版・過去の半日イベント調査"
 timezone: "Asia/Tokyo"
 official_confirmed_events:
   # 公式イベントページ（event.pococha.com）の「イベントスケジュール」を、ブラウザーでページを開いて読み取ったもの（2026/11/14）。
-  # 画面（data/sns-events.txt）にはまだ反映していない。
+  # 画面には data/event-page-events.txt の行として反映済み（2026/11/14）。ここは確認の記録、画面に出すのは data/event-page-events.txt。
   - name: "デビューぽこトレ"
     start_at: "2026-08-13T12:00+09:00"
     end_at: "2026-08-13T23:59+09:00"

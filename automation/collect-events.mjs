@@ -2,7 +2,7 @@
 // - 本文は保存しない（イベント名・期間・対象ランク・URL・公開日のみ）。
 // - robots.txt で許可された経路（RSS・サイトマップ・記事ページ）だけを使う。
 // - 403/429 は再試行せず、その情報源の収集を打ち切る（取得元のアクセス制限を回避しない）。
-// 使い方：node automation/collect-events.mjs [--file=data/events.json] [--since=2024-12-01] [--backfill] [--delay=1500] [--only=pococha-official-sns]
+// 使い方：node automation/collect-events.mjs [--file=data/events.json] [--since=2024-12-01] [--backfill] [--delay=1500] [--only=pococha-official-sns,pococha-official-event-page]
 import {readFile, writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -29,6 +29,12 @@ export const SOURCES = [
     // 人が投稿を見て貼り付け、画面の「公式X・インスタの告知を読み取る」で作った共有用の1行（事実だけ）を data/sns-events.txt から読む。
     ...SNS_SOURCE, name: 'Pococha公式X・Instagram（手動の貼り付け）', pasted: 'data/sns-events.txt', home: 'https://x.com/pococha_jp',
     checked: {date: '2026-11-13', robots: 'x.com・instagram.com へはアクセスしない（自動取得しない）', terms: 'X・Instagramの規約は許可のない自動収集（スクレイピング）を禁止。公式APIは有料・登録が必要なため不使用 → 人が貼った投稿文から、名前・期間・時間帯・対象ランク・投稿URLの事実だけを1行にして記録。本文は保存しない'},
+  },
+  {
+    // 公式イベントページ（event.pococha.com）。開催期間は画面の表示時に読み込まれ、ページの文字だけでは取れないため自動では取りに行かず、
+    // 人（またはブラウザーでページを開いた作業者）が「イベントスケジュール」を見て確認した事実の1行を data/event-page-events.txt から読む。
+    id: 'pococha-official-event-page', kind: 'official', name: 'Pococha公式イベントページ（手動の確認）', pasted: 'data/event-page-events.txt', home: 'https://event.pococha.com',
+    checked: {date: '2026-11-14', robots: 'event.pococha.com の robots.txt は画像の一部だけ不許可。自動取得はしない（人がページを開いて確認する）', terms: 'Pococha会員規約 第10条はアプリ・サーバーの解析やボットでの「本サービス」利用を禁止 → ログインが必要な範囲・非公開の通信は使わず、公開ページに表示された名前・期間・対象ランク・URLだけを記録'},
   },
 ];
 
@@ -74,18 +80,22 @@ async function collectNews(source, {byId, since, backfill, delay, report, log}) 
     }
   }
 }
-// 貼り付けの1行（data/sns-events.txt）から作るイベント。毎回作り直す（ファイルから消した行はイベントからも消える）。
+// 貼り付けの1行（data/sns-events.txt・data/event-page-events.txt）から作るイベント。毎回作り直す（ファイルから消した行はイベントからも消える）。
 export function readPasted(source, byId, text, report = {}) {
   for (const [k, e] of byId) if (e.sourceId === source.id) byId.delete(k);
   let n = 0;
   for (const line of String(text).split(/\r?\n/)) {
-    const ev = snsLineEvent(line);
+    // 公式イベントページの行は「確認日」で始まる。確認日は開催より後のことがあるため、読み取りは開催開始日を基準にし、確認日は confirmedAt に残す。
+    const checked = line.match(/^\s*確認日\s*(\d{4}-\d{2}-\d{2})/);
+    const day = checked && line.match(/開催期間[:：]\s*(\d{4})年(\d{1,2})月(\d{1,2})日/);
+    if (checked && !day) continue;
+    const ev = snsLineEvent(checked ? line.replace(/^\s*確認日\s*\d{4}-\d{2}-\d{2}/, `投稿日 ${day[1]}-${String(day[2]).padStart(2, '0')}-${String(day[3]).padStart(2, '0')}`) : line);
     if (!ev) continue;
     const {line: _l, ...fact} = ev;
-    byId.set(fact.url, {...fact, sourceKind: source.kind, fetchedAt: null});
+    byId.set(fact.url, {...fact, sourceId: source.id, sourceKind: source.kind, ...(checked ? {published: null, modified: null, confirmedAt: checked[1]} : {}), fetchedAt: null});
     n++;
   }
-  report.pasted = n;
+  report.pasted = (report.pasted || 0) + n;
   return n;
 }
 async function listArticles(source, {since, backfill}) {
@@ -110,7 +120,7 @@ export async function collect({file, since, backfill, delay, only = null, log = 
   const byId = new Map(store.events.map(e => [e.url, e]));
   const report = {fetched: 0, added: 0, updated: 0, blocked: null, errors: []};
   for (const source of SOURCES) {
-    if (only && source.id !== only) continue;
+    if (only && !String(only).split(',').includes(source.id)) continue;
     if (source.news) { await collectNews(source, {byId, since, backfill, delay, report, log}); continue; }
     if (source.pasted) { readPasted(source, byId, await readFile(resolve(fileURLToPath(new URL('..', import.meta.url)), source.pasted), 'utf8').catch(() => ''), report); continue; }
     let list;
