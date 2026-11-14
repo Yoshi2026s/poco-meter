@@ -1,7 +1,7 @@
 {
  "schema": "poco-events-v1",
  "note": "イベント名・期間・対象ランク・対象（audience）・URLなどの事実だけを記録。本文は保存しない。confidence: high=「開催期間」等の見出し付きの期間を検出 / low=見出しなしの期間 / none=期間を検出できず。使用期限・配信時間・応募や選考などの期間は除外（excluded に件数）。",
- "updatedAt": "2026-11-14T01:44:11.939Z",
+ "updatedAt": "2026-11-14T01:57:30.398Z",
  "sources": [
   {
    "id": "pococha-official-note",
@@ -5478,6 +5478,39 @@
    "confirmedAt": "2026-11-14"
   },
   {
+   "id": "n4225f3aae07f#5",
+   "title": "まぼろし陣営バトル 龍凰決戦 第5試合",
+   "url": "https://report.pococha.com/n/n4225f3aae07f#5",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "notice",
+   "start": "2026-03-31",
+   "end": "2026-03-31",
+   "periods": [
+    {
+     "start": "2026-03-31",
+     "end": "2026-03-31",
+     "startTime": null,
+     "endTime": null,
+     "label": "まぼろし陣営バトル 龍凰決戦 第5試合",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [
+    "S4",
+    "S5",
+    "S6"
+   ],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
+  },
+  {
    "id": "n06eebfe1348a",
    "title": "「魔法少女」アイテム登場！",
    "url": "https://report.pococha.com/n/n06eebfe1348a",
@@ -5496,6 +5529,105 @@
    "fetchedAt": "2026-11-12T08:20:41.670Z"
   },
   {
+   "id": "n4225f3aae07f#4",
+   "title": "まぼろし陣営バトル 龍凰決戦 第4試合",
+   "url": "https://report.pococha.com/n/n4225f3aae07f#4",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "notice",
+   "start": "2026-03-30",
+   "end": "2026-03-30",
+   "periods": [
+    {
+     "start": "2026-03-30",
+     "end": "2026-03-30",
+     "startTime": null,
+     "endTime": null,
+     "label": "まぼろし陣営バトル 龍凰決戦 第4試合",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [
+    "S1",
+    "S2",
+    "S3"
+   ],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
+  },
+  {
+   "id": "n4225f3aae07f#3",
+   "title": "まぼろし陣営バトル 龍凰決戦 第3試合",
+   "url": "https://report.pococha.com/n/n4225f3aae07f#3",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "notice",
+   "start": "2026-03-29",
+   "end": "2026-03-29",
+   "periods": [
+    {
+     "start": "2026-03-29",
+     "end": "2026-03-29",
+     "startTime": null,
+     "endTime": null,
+     "label": "まぼろし陣営バトル 龍凰決戦 第3試合",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [
+    "A1",
+    "A2",
+    "A3"
+   ],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
+  },
+  {
+   "id": "n4225f3aae07f#2",
+   "title": "まぼろし陣営バトル 龍凰決戦 第2試合",
+   "url": "https://report.pococha.com/n/n4225f3aae07f#2",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "notice",
+   "start": "2026-03-28",
+   "end": "2026-03-28",
+   "periods": [
+    {
+     "start": "2026-03-28",
+     "end": "2026-03-28",
+     "startTime": null,
+     "endTime": null,
+     "label": "まぼろし陣営バトル 龍凰決戦 第2試合",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [
+    "B1",
+    "B2",
+    "B3"
+   ],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
+  },
+  {
    "id": "wcygdpxznx1p",
    "title": "【3月27日放送】KADOKAWA新番組『エビデンス・ポリス ウォーカープラスTV』にPocochaライバー3名の出演が決定！",
    "url": "https://www.pococha.com/ja/news/wcygdpxznx1p",
@@ -5512,6 +5644,42 @@
    "audience": [],
    "excluded": 0,
    "fetchedAt": "2026-11-13T05:31:54.235Z"
+  },
+  {
+   "id": "n4225f3aae07f#1",
+   "title": "まぼろし陣営バトル 龍凰決戦 第1試合",
+   "url": "https://report.pococha.com/n/n4225f3aae07f#1",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "notice",
+   "start": "2026-03-27",
+   "end": "2026-03-27",
+   "periods": [
+    {
+     "start": "2026-03-27",
+     "end": "2026-03-27",
+     "startTime": null,
+     "endTime": null,
+     "label": "まぼろし陣営バトル 龍凰決戦 第1試合",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [
+    "D1",
+    "D2",
+    "D3",
+    "C1",
+    "C2",
+    "C3"
+   ],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
   },
   {
    "id": "n2f80f2bd678a",
@@ -5706,6 +5874,35 @@
    "audience": [],
    "excluded": 1,
    "fetchedAt": "2026-11-13T05:31:54.236Z"
+  },
+  {
+   "id": "n1f88703f1b73#1",
+   "title": "那須川天心 ボクシング9戦目 ラウンドガール出演権",
+   "url": "https://report.pococha.com/n/n1f88703f1b73#1",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "collab",
+   "start": "2026-02-20",
+   "end": "2026-02-26",
+   "periods": [
+    {
+     "start": "2026-02-20",
+     "end": "2026-02-26",
+     "startTime": null,
+     "endTime": null,
+     "label": "那須川天心 ボクシング9戦目 ラウンドガール出演権",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
   },
   {
    "id": "wv-g-db2espf",
@@ -6400,6 +6597,51 @@
    "audience": [],
    "excluded": 1,
    "fetchedAt": "2026-11-12T08:21:48.197Z"
+  },
+  {
+   "id": "n3d1a4b61ebcf#1",
+   "title": "tulle アンバサダーオーディション",
+   "url": "https://report.pococha.com/n/n3d1a4b61ebcf#1",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "collab",
+   "start": "2026-01-15",
+   "end": "2026-01-21",
+   "periods": [
+    {
+     "start": "2026-01-15",
+     "end": "2026-01-21",
+     "startTime": null,
+     "endTime": null,
+     "label": "tulle アンバサダーオーディション",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [
+    "C1",
+    "C2",
+    "C3",
+    "B1",
+    "B2",
+    "B3",
+    "A1",
+    "A2",
+    "A3",
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6"
+   ],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
   },
   {
    "id": "ne913c1c0c275",
@@ -8507,6 +8749,35 @@
    "fetchedAt": "2026-11-12T08:24:41.126Z"
   },
   {
+   "id": "n40edcef875d5#10",
+   "title": "cheer on your dream 推しうちわプロフィール",
+   "url": "https://report.pococha.com/n/n40edcef875d5#10",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "notice",
+   "start": "2025-06-30",
+   "end": "2025-06-30",
+   "periods": [
+    {
+     "start": "2025-06-30",
+     "end": "2025-06-30",
+     "startTime": null,
+     "endTime": null,
+     "label": "cheer on your dream 推しうちわプロフィール",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
+  },
+  {
    "id": "n5461af7beb47",
    "title": "🏆「みんなが目指せる！POCO AWARD」始動のお知らせ！",
    "url": "https://report.pococha.com/n/n5461af7beb47",
@@ -8553,6 +8824,35 @@
    "fetchedAt": "2026-11-12T08:24:47.238Z"
   },
   {
+   "id": "n40edcef875d5#9",
+   "title": "ポコリンミニ スピー",
+   "url": "https://report.pococha.com/n/n40edcef875d5#9",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "notice",
+   "start": "2025-06-28",
+   "end": "2025-06-28",
+   "periods": [
+    {
+     "start": "2025-06-28",
+     "end": "2025-06-28",
+     "startTime": null,
+     "endTime": null,
+     "label": "ポコリンミニ スピー",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
+  },
+  {
    "id": "n6778a051b7c5",
    "title": "【Pococha DAY開催！京セラドーム大阪で始球式に登板しよう！】プライズ「のぼり」設置場所についてのご案内",
    "url": "https://report.pococha.com/n/n6778a051b7c5",
@@ -8571,6 +8871,93 @@
    "fetchedAt": "2026-11-12T08:24:49.784Z"
   },
   {
+   "id": "n40edcef875d5#8",
+   "title": "ポコリンミニ キャピン",
+   "url": "https://report.pococha.com/n/n40edcef875d5#8",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "notice",
+   "start": "2025-06-27",
+   "end": "2025-06-27",
+   "periods": [
+    {
+     "start": "2025-06-27",
+     "end": "2025-06-27",
+     "startTime": null,
+     "endTime": null,
+     "label": "ポコリンミニ キャピン",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
+  },
+  {
+   "id": "n40edcef875d5#6",
+   "title": "エレガントでかわいらしい♪タルトプロフィール",
+   "url": "https://report.pococha.com/n/n40edcef875d5#6",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "notice",
+   "start": "2025-06-26",
+   "end": "2025-06-28",
+   "periods": [
+    {
+     "start": "2025-06-26",
+     "end": "2025-06-28",
+     "startTime": null,
+     "endTime": null,
+     "label": "エレガントでかわいらしい♪タルトプロフィール",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
+  },
+  {
+   "id": "n40edcef875d5#7",
+   "title": "フニャのアンブレラマーカー",
+   "url": "https://report.pococha.com/n/n40edcef875d5#7",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "notice",
+   "start": "2025-06-26",
+   "end": "2025-06-26",
+   "periods": [
+    {
+     "start": "2025-06-26",
+     "end": "2025-06-26",
+     "startTime": null,
+     "endTime": null,
+     "label": "フニャのアンブレラマーカー",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
+  },
+  {
    "id": "n940e3ce52d64",
    "title": "˗ˏˋ 📣 Music Pococha Live!!  - in  TOKYO - 出演者＆歌唱楽曲のお知らせ📣 ˊˎ˗",
    "url": "https://report.pococha.com/n/n940e3ce52d64",
@@ -8587,6 +8974,93 @@
    "audience": [],
    "excluded": 0,
    "fetchedAt": "2026-11-12T08:24:52.046Z"
+  },
+  {
+   "id": "n40edcef875d5#5",
+   "title": "配信で食べ比べよう！東と西のご当地ラーメンセット",
+   "url": "https://report.pococha.com/n/n40edcef875d5#5",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "notice",
+   "start": "2025-06-25",
+   "end": "2025-06-25",
+   "periods": [
+    {
+     "start": "2025-06-25",
+     "end": "2025-06-25",
+     "startTime": null,
+     "endTime": null,
+     "label": "配信で食べ比べよう！東と西のご当地ラーメンセット",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
+  },
+  {
+   "id": "n40edcef875d5#3",
+   "title": "POCOTOMOコレクション ウルクのモバイルタンブラー",
+   "url": "https://report.pococha.com/n/n40edcef875d5#3",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "notice",
+   "start": "2025-06-24",
+   "end": "2025-06-24",
+   "periods": [
+    {
+     "start": "2025-06-24",
+     "end": "2025-06-24",
+     "startTime": null,
+     "endTime": null,
+     "label": "POCOTOMOコレクション ウルクのモバイルタンブラー",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
+  },
+  {
+   "id": "n40edcef875d5#4",
+   "title": "まるまるアニまる プロフィール ひよこ編",
+   "url": "https://report.pococha.com/n/n40edcef875d5#4",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "notice",
+   "start": "2025-06-24",
+   "end": "2025-06-26",
+   "periods": [
+    {
+     "start": "2025-06-24",
+     "end": "2025-06-26",
+     "startTime": null,
+     "endTime": null,
+     "label": "まるまるアニまる プロフィール ひよこ編",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
   },
   {
    "id": "n9f31d38c0b96",
@@ -8624,6 +9098,64 @@
    "audience": [],
    "excluded": 0,
    "fetchedAt": "2026-11-12T08:24:54.978Z"
+  },
+  {
+   "id": "n40edcef875d5#2",
+   "title": "ぽこボぬいぐるみ",
+   "url": "https://report.pococha.com/n/n40edcef875d5#2",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "notice",
+   "start": "2025-06-16",
+   "end": "2025-06-16",
+   "periods": [
+    {
+     "start": "2025-06-16",
+     "end": "2025-06-16",
+     "startTime": null,
+     "endTime": null,
+     "label": "ぽこボぬいぐるみ",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
+  },
+  {
+   "id": "n40edcef875d5#1",
+   "title": "ポコリンミニ ポポ",
+   "url": "https://report.pococha.com/n/n40edcef875d5#1",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "notice",
+   "start": "2025-06-14",
+   "end": "2025-06-14",
+   "periods": [
+    {
+     "start": "2025-06-14",
+     "end": "2025-06-14",
+     "startTime": null,
+     "endTime": null,
+     "label": "ポコリンミニ ポポ",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
   },
   {
    "id": "nf0af84b1ee8c",
