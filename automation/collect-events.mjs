@@ -36,6 +36,11 @@ export const SOURCES = [
     id: 'pococha-official-event-page', kind: 'official', name: 'Pococha公式イベントページ（手動の確認）', pasted: 'data/event-page-events.txt', home: 'https://event.pococha.com',
     checked: {date: '2026-11-14', robots: 'event.pococha.com の robots.txt は画像の一部だけ不許可。自動取得はしない（人がページを開いて確認する）', terms: 'Pococha会員規約 第10条はアプリ・サーバーの解析やボットでの「本サービス」利用を禁止 → ログインが必要な範囲・非公開の通信は使わず、公開ページに表示された名前・期間・対象ランク・URLだけを記録'},
   },
+  {
+    // 公式note の記事のうち、自動の読み取りが拾えない書き方の期間や、画像の中にだけある日程。記事を開いて確認した事実の1行を data/official-note-events.txt から読む。
+    id: 'pococha-official-note-manual', kind: 'official', name: 'Pococha(ポコチャ)公式（note・手動の確認）', pasted: 'data/official-note-events.txt', home: 'https://report.pococha.com',
+    checked: {date: '2026-11-14', robots: '/n/* を許可（自動収集と同じ記事。画像は記事に表示されるものを開いて見るだけで保存しない）', terms: 'note利用規約：クリエイターの承諾なく本文・画像を複製・公衆送信しない → 本文・画像は保存せず、名前・期間・対象ランクの事実とURLのみ記録'},
+  },
 ];
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -80,7 +85,7 @@ async function collectNews(source, {byId, since, backfill, delay, report, log}) 
     }
   }
 }
-// 貼り付けの1行（data/sns-events.txt・data/event-page-events.txt）から作るイベント。毎回作り直す（ファイルから消した行はイベントからも消える）。
+// 貼り付けの1行（data/sns-events.txt・data/event-page-events.txt・data/official-note-events.txt）から作るイベント。毎回作り直す（ファイルから消した行はイベントからも消える）。
 export function readPasted(source, byId, text, report = {}) {
   for (const [k, e] of byId) if (e.sourceId === source.id) byId.delete(k);
   let n = 0;

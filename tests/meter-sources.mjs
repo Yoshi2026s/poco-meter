@@ -158,6 +158,17 @@ assert.equal(titleNameOf('「ヒーロー戦隊」アイテム登場!'), 'ヒー
   const pageCount = readPasted(page, pageFile, readFileSync(new URL('../data/event-page-events.txt', import.meta.url), 'utf8'));
   assert.ok(pageCount >= 2 && pageFile.size === pageCount, 'data/event-page-events.txt の行はすべて読めて、URLが重ならない');
   assert.ok([...pageFile.values()].every(e => /^https:\/\/event\.pococha\.com\//.test(e.url) && e.periods.length === 1 && e.periods[0].startTime), '公式イベントページのURLと開始時刻つき');
+  // data/official-note-events.txt：公式noteを開いて確認した行。URLに #番号 を付け、自動で集めた記事の記録（同じ記事のURL）を上書きしない
+  const manual = SOURCES.find(x => x.id === 'pococha-official-note-manual');
+  assert.ok(manual && manual.pasted === 'data/official-note-events.txt' && /画像は保存せず/.test(manual.checked.terms), '取得元：公式note（手動の確認、規約の確認つき）');
+  const noteFile = new Map([['https://report.pococha.com/n/n803868883e7d', {sourceId: 'pococha-official-note', url: 'https://report.pococha.com/n/n803868883e7d'}]]);
+  const noteLines = readFileSync(new URL('../data/official-note-events.txt', import.meta.url), 'utf8');
+  const noteCount = readPasted(manual, noteFile, noteLines);
+  assert.equal(noteCount, noteLines.split('\n').filter(x => /^確認日/.test(x)).length, 'data/official-note-events.txt の行はすべて読める');
+  assert.equal(noteFile.size, noteCount + 1, 'URLが重ならず、自動で集めた記事の記録も残る');
+  assert.ok([...noteFile.values()].filter(e => e.sourceId === manual.id).every(e => /^https:\/\/report\.pococha\.com\/n\/n[0-9a-f]+#\d+$/.test(e.url) && e.periods.length === 1 && !e.periods[0].isEntry), '公式noteのURL#番号・期間1つ');
+  const xmas = noteFile.get('https://report.pococha.com/n/n803868883e7d#12');
+  assert.deepEqual([xmas.title, xmas.periods[0].start, xmas.periods[0].end, xmas.periods[0].startTime], ['Pococha クリスマス', '2026-12-24', '2026-12-25', null], '時刻の無い行は時刻を足さない');
 }
 // 画面に書き写した読み取り部品が calculator/event-parse.mjs と一致すること（npm run pages:prepare）
 {

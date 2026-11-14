@@ -4,7 +4,7 @@ name: ボーダー自動更新
 #  1. 記事本文の「前日ランクボーダー」（主）
 #  2. 月別の表画像（3日以上前の欠けた日だけを補う。既知の日と全一致した画像だけを使う）
 # 毎日 05:00 と 17:00（日本時間）。GitHub の定期実行は混雑で数分〜数十分遅れることがある。
-# data/sns-events.txt（公式X・インスタの告知の貼り付け）・data/event-page-events.txt（公式イベントページの確認結果）を変えたときは、取得元へはアクセスせず、その行だけを読んでイベント情報を作り直す。
+# data/sns-events.txt（公式X・インスタの告知の貼り付け）・data/event-page-events.txt（公式イベントページの確認結果）・data/official-note-events.txt（公式noteの確認結果）を変えたときは、取得元へはアクセスせず、その行だけを読んでイベント情報を作り直す。
 on:
   schedule:
     - cron: '0 20 * * *'   # 05:00 JST
@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
   push:
     branches: ['(root)']
-    paths: ['data/sns-events.txt', 'data/event-page-events.txt']
+    paths: ['data/sns-events.txt', 'data/event-page-events.txt', 'data/official-note-events.txt']
 
 permissions:
   contents: write
@@ -45,7 +45,7 @@ jobs:
         id: events
         continue-on-error: true
         run: |
-          if [ "${{ github.event_name }}" = push ]; then only=--only=pococha-official-sns,pococha-official-event-page; else only=; fi
+          if [ "${{ github.event_name }}" = push ]; then only=--only=pococha-official-sns,pococha-official-event-page,pococha-official-note-manual; else only=; fi
           node automation/collect-events.mjs --file=data/events.json $only | tee events-report.json
       - name: メーター予想の補正値を集計
         continue-on-error: true
