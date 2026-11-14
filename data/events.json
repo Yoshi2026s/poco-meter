@@ -1,7 +1,7 @@
 {
  "schema": "poco-events-v1",
  "note": "イベント名・期間・対象ランク・対象（audience）・URLなどの事実だけを記録。本文は保存しない。confidence: high=「開催期間」等の見出し付きの期間を検出 / low=見出しなしの期間 / none=期間を検出できず。使用期限・配信時間・応募や選考などの期間は除外（excluded に件数）。",
- "updatedAt": "2026-11-14T01:29:01.582Z",
+ "updatedAt": "2026-11-14T01:44:11.939Z",
  "sources": [
   {
    "id": "pococha-official-note",
@@ -45,6 +45,17 @@
     "date": "2026-11-14",
     "robots": "event.pococha.com の robots.txt は画像の一部だけ不許可。自動取得はしない（人がページを開いて確認する）",
     "terms": "Pococha会員規約 第10条はアプリ・サーバーの解析やボットでの「本サービス」利用を禁止 → ログインが必要な範囲・非公開の通信は使わず、公開ページに表示された名前・期間・対象ランク・URLだけを記録"
+   }
+  },
+  {
+   "id": "pococha-official-note-manual",
+   "name": "Pococha(ポコチャ)公式（note・手動の確認）",
+   "kind": "official",
+   "home": "https://report.pococha.com",
+   "checked": {
+    "date": "2026-11-14",
+    "robots": "/n/* を許可（自動収集と同じ記事。画像は記事に表示されるものを開いて見るだけで保存しない）",
+    "terms": "note利用規約：クリエイターの承諾なく本文・画像を複製・公衆送信しない → 本文・画像は保存せず、名前・期間・対象ランクの事実とURLのみ記録"
    }
   }
  ],
@@ -105,6 +116,180 @@
    "audience": [],
    "excluded": 0,
    "fetchedAt": "2026-11-12T08:15:28.115Z"
+  },
+  {
+   "id": "n803868883e7d#13",
+   "title": "マンスリーエンタメミッション（ダービー）",
+   "url": "https://report.pococha.com/n/n803868883e7d#13",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "mission",
+   "start": "2026-12-26",
+   "end": "2026-12-28",
+   "periods": [
+    {
+     "start": "2026-12-26",
+     "end": "2026-12-28",
+     "startTime": null,
+     "endTime": null,
+     "label": "マンスリーエンタメミッション（ダービー）",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
+  },
+  {
+   "id": "n803868883e7d#12",
+   "title": "Pococha クリスマス",
+   "url": "https://report.pococha.com/n/n803868883e7d#12",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "notice",
+   "start": "2026-12-24",
+   "end": "2026-12-25",
+   "periods": [
+    {
+     "start": "2026-12-24",
+     "end": "2026-12-25",
+     "startTime": null,
+     "endTime": null,
+     "label": "Pococha クリスマス",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
+  },
+  {
+   "id": "n803868883e7d#11",
+   "title": "クリスマス ログインボーナス",
+   "url": "https://report.pococha.com/n/n803868883e7d#11",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "notice",
+   "start": "2026-12-19",
+   "end": "2026-12-25",
+   "periods": [
+    {
+     "start": "2026-12-19",
+     "end": "2026-12-25",
+     "startTime": null,
+     "endTime": null,
+     "label": "クリスマス ログインボーナス",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
+  },
+  {
+   "id": "n803868883e7d#10",
+   "title": "12月誕生日アイテムランキング",
+   "url": "https://report.pococha.com/n/n803868883e7d#10",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "item",
+   "start": "2026-12-01",
+   "end": "2026-12-31",
+   "periods": [
+    {
+     "start": "2026-12-01",
+     "end": "2026-12-31",
+     "startTime": null,
+     "endTime": null,
+     "label": "12月誕生日アイテムランキング",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
+  },
+  {
+   "id": "n803868883e7d#9",
+   "title": "さつまいもミッション",
+   "url": "https://report.pococha.com/n/n803868883e7d#9",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "mission",
+   "start": "2026-11-25",
+   "end": "2026-11-28",
+   "periods": [
+    {
+     "start": "2026-11-25",
+     "end": "2026-11-28",
+     "startTime": null,
+     "endTime": null,
+     "label": "さつまいもミッション",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
+  },
+  {
+   "id": "n267fac9a3a1c#1",
+   "title": "アルコ＆ピースのトークバラエティ出演権",
+   "url": "https://report.pococha.com/n/n267fac9a3a1c#1",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "collab",
+   "start": "2026-11-17",
+   "end": "2026-11-21",
+   "periods": [
+    {
+     "start": "2026-11-17",
+     "end": "2026-11-21",
+     "startTime": null,
+     "endTime": null,
+     "label": "アルコ＆ピースのトークバラエティ出演権",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
   },
   {
    "id": "n0f40d159ce34",
@@ -170,6 +355,64 @@
    "audience": [],
    "excluded": 0,
    "fetchedAt": "2026-11-14T00:41:19.722Z"
+  },
+  {
+   "id": "n803868883e7d#7",
+   "title": "世代ウォーズ",
+   "url": "https://report.pococha.com/n/n803868883e7d#7",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "big",
+   "start": "2026-11-13",
+   "end": "2026-11-17",
+   "periods": [
+    {
+     "start": "2026-11-13",
+     "end": "2026-11-17",
+     "startTime": null,
+     "endTime": null,
+     "label": "世代ウォーズ",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
+  },
+  {
+   "id": "n803868883e7d#8",
+   "title": "世代ウォーズ ログインボーナス",
+   "url": "https://report.pococha.com/n/n803868883e7d#8",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "big",
+   "start": "2026-11-13",
+   "end": "2026-11-17",
+   "periods": [
+    {
+     "start": "2026-11-13",
+     "end": "2026-11-17",
+     "startTime": null,
+     "endTime": null,
+     "label": "世代ウォーズ ログインボーナス",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
   },
   {
    "id": "n00250f9f9546",
@@ -312,6 +555,35 @@
    "fetchedAt": "2026-11-12T08:15:33.009Z"
   },
   {
+   "id": "n52344eb6a125#1",
+   "title": "マンスリーエンタメミッション（メイド）",
+   "url": "https://report.pococha.com/n/n52344eb6a125#1",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "mission",
+   "start": "2026-11-06",
+   "end": "2026-11-08",
+   "periods": [
+    {
+     "start": "2026-11-06",
+     "end": "2026-11-08",
+     "startTime": "12:00",
+     "endTime": "23:59",
+     "label": "マンスリーエンタメミッション（メイド）",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
+  },
+  {
    "id": "n2c3804d98d8d",
    "title": "【マンスリーエンタメ大賞2026】マンスリーエンタメアワード 受賞作品発表！🏆",
    "url": "https://report.pococha.com/n/n2c3804d98d8d",
@@ -346,6 +618,35 @@
    "audience": [],
    "excluded": 0,
    "fetchedAt": "2026-11-12T08:15:35.618Z"
+  },
+  {
+   "id": "n803868883e7d#6",
+   "title": "11月誕生日アイテムランキング",
+   "url": "https://report.pococha.com/n/n803868883e7d#6",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "item",
+   "start": "2026-11-01",
+   "end": "2026-11-30",
+   "periods": [
+    {
+     "start": "2026-11-01",
+     "end": "2026-11-30",
+     "startTime": null,
+     "endTime": null,
+     "label": "11月誕生日アイテムランキング",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
   },
   {
    "id": "n52344eb6a125",
@@ -438,6 +739,35 @@
    "audience": [],
    "excluded": 0,
    "fetchedAt": "2026-11-12T08:15:39.734Z"
+  },
+  {
+   "id": "n803868883e7d#5",
+   "title": "ハロウィンパーティ",
+   "url": "https://report.pococha.com/n/n803868883e7d#5",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "notice",
+   "start": "2026-10-30",
+   "end": "2026-10-31",
+   "periods": [
+    {
+     "start": "2026-10-30",
+     "end": "2026-10-31",
+     "startTime": null,
+     "endTime": null,
+     "label": "ハロウィンパーティ",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
   },
   {
    "id": "n6983231af142",
@@ -638,6 +968,64 @@
    "fetchedAt": "2026-11-12T08:14:36.065Z"
   },
   {
+   "id": "pococha_rookies_202610_2nd_1_001_224770",
+   "title": "新人戦 決勝戦",
+   "url": "https://event.pococha.com/ja-jp/festivals/pococha_rookies_202610_2nd_1_001_224770",
+   "sourceId": "pococha-official-event-page",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "notice",
+   "start": "2026-10-26",
+   "end": "2026-10-28",
+   "periods": [
+    {
+     "start": "2026-10-26",
+     "end": "2026-10-28",
+     "startTime": "12:00",
+     "endTime": "23:59",
+     "label": "新人戦 決勝戦",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
+  },
+  {
+   "id": "n803868883e7d#4",
+   "title": "ハロウィン ログインボーナス",
+   "url": "https://report.pococha.com/n/n803868883e7d#4",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "notice",
+   "start": "2026-10-25",
+   "end": "2026-10-31",
+   "periods": [
+    {
+     "start": "2026-10-25",
+     "end": "2026-10-31",
+     "startTime": null,
+     "endTime": null,
+     "label": "ハロウィン ログインボーナス",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
+  },
+  {
    "id": "n1002621d703d",
    "title": "「JOYSOUND認定 歌うまライバー決定戦！2026 Autumn」採点対象楽曲一覧",
    "url": "https://report.pococha.com/n/n1002621d703d",
@@ -833,6 +1221,93 @@
    "fetchedAt": "2026-11-13T05:31:52.312Z"
   },
   {
+   "id": "n803868883e7d#2",
+   "title": "プレ世代ウォーズ",
+   "url": "https://report.pococha.com/n/n803868883e7d#2",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "big",
+   "start": "2026-10-21",
+   "end": "2026-10-25",
+   "periods": [
+    {
+     "start": "2026-10-21",
+     "end": "2026-10-25",
+     "startTime": null,
+     "endTime": null,
+     "label": "プレ世代ウォーズ",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
+  },
+  {
+   "id": "n803868883e7d#3",
+   "title": "プレ世代ウォーズ ログインボーナス",
+   "url": "https://report.pococha.com/n/n803868883e7d#3",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "big",
+   "start": "2026-10-21",
+   "end": "2026-10-25",
+   "periods": [
+    {
+     "start": "2026-10-21",
+     "end": "2026-10-25",
+     "startTime": null,
+     "endTime": null,
+     "label": "プレ世代ウォーズ ログインボーナス",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
+  },
+  {
+   "id": "ncc56314e49dd#1",
+   "title": "新人戦",
+   "url": "https://report.pococha.com/n/ncc56314e49dd#1",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "notice",
+   "start": "2026-10-21",
+   "end": "2026-10-24",
+   "periods": [
+    {
+     "start": "2026-10-21",
+     "end": "2026-10-24",
+     "startTime": null,
+     "endTime": null,
+     "label": "新人戦",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
+  },
+  {
    "id": "n9a990927ce64",
    "title": "【全ミッション一覧】 LARME FES'26 × Pococha タイムトライアルバトル",
    "url": "https://report.pococha.com/n/n9a990927ce64",
@@ -877,6 +1352,52 @@
    "audience": [],
    "excluded": 0,
    "fetchedAt": "2026-11-12T08:14:48.255Z"
+  },
+  {
+   "id": "original_profile_december_birthday_1_001_224380",
+   "title": "12月生まれ集合！バースデーオリジナルプロフィール",
+   "url": "https://event.pococha.com/ja-jp/festivals/original_profile_december_birthday_1_001_224380",
+   "sourceId": "pococha-official-event-page",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "notice",
+   "start": "2026-10-14",
+   "end": "2026-10-18",
+   "periods": [
+    {
+     "start": "2026-10-14",
+     "end": "2026-10-18",
+     "startTime": "12:00",
+     "endTime": "23:59",
+     "label": "12月生まれ集合！バースデーオリジナルプロフィール",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [
+    "D3",
+    "C1",
+    "C2",
+    "C3",
+    "B1",
+    "B2",
+    "B3",
+    "A1",
+    "A2",
+    "A3",
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6"
+   ],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
   },
   {
    "id": "nff2586f52f67",
@@ -991,6 +1512,35 @@
    "fetchedAt": "2026-11-12T08:18:12.872Z"
   },
   {
+   "id": "n803868883e7d#1",
+   "title": "10月誕生日アイテムランキング",
+   "url": "https://report.pococha.com/n/n803868883e7d#1",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "item",
+   "start": "2026-10-01",
+   "end": "2026-10-31",
+   "periods": [
+    {
+     "start": "2026-10-01",
+     "end": "2026-10-31",
+     "startTime": null,
+     "endTime": null,
+     "label": "10月誕生日アイテムランキング",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
+  },
+  {
    "id": "nf99dfd7294e6",
    "title": "【重要】TOPライバーボーナスの仕組みの変更",
    "url": "https://report.pococha.com/n/nf99dfd7294e6",
@@ -1083,6 +1633,35 @@
    "audience": [],
    "excluded": 0,
    "fetchedAt": "2026-11-12T16:38:09.532Z"
+  },
+  {
+   "id": "pococha_rookies_202609_2nd_1_001_223880",
+   "title": "新人戦 決勝戦",
+   "url": "https://event.pococha.com/ja-jp/festivals/pococha_rookies_202609_2nd_1_001_223880",
+   "sourceId": "pococha-official-event-page",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "notice",
+   "start": "2026-09-25",
+   "end": "2026-09-27",
+   "periods": [
+    {
+     "start": "2026-09-25",
+     "end": "2026-09-27",
+     "startTime": "12:00",
+     "endTime": "23:59",
+     "label": "新人戦 決勝戦",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
   },
   {
    "id": "n7603018611e5",
@@ -1194,6 +1773,83 @@
    "fetchedAt": "2026-11-12T08:16:02.073Z"
   },
   {
+   "id": "n811eb4dd0ddb#1",
+   "title": "マンスリーエンタメ オリジナルアイテムコンテスト（募集）",
+   "url": "https://report.pococha.com/n/n811eb4dd0ddb#1",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "item",
+   "start": "2026-09-20",
+   "end": "2026-10-15",
+   "periods": [
+    {
+     "start": "2026-09-20",
+     "end": "2026-10-15",
+     "startTime": null,
+     "endTime": null,
+     "label": "マンスリーエンタメ オリジナルアイテムコンテスト（募集）",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
+  },
+  {
+   "id": "pococha_rookies_202609_1st_1_001_223870",
+   "title": "新人戦",
+   "url": "https://event.pococha.com/ja-jp/festivals/pococha_rookies_202609_1st_1_001_223870",
+   "sourceId": "pococha-official-event-page",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "notice",
+   "start": "2026-09-19",
+   "end": "2026-09-22",
+   "periods": [
+    {
+     "start": "2026-09-19",
+     "end": "2026-09-22",
+     "startTime": "12:00",
+     "endTime": "23:59",
+     "label": "新人戦",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [
+    "D1",
+    "D2",
+    "D3",
+    "C1",
+    "C2",
+    "C3",
+    "B1",
+    "B2",
+    "B3",
+    "A1",
+    "A2",
+    "A3",
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6"
+   ],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
+  },
+  {
    "id": "n599d3a27d832",
    "title": "【重要】ロイヤルチャージをご利用の方：決済システムが変わります（2026年11月〜）※一部ご利用画面に変更あり",
    "url": "https://report.pococha.com/n/n599d3a27d832",
@@ -1240,6 +1896,52 @@
    ],
    "excluded": 1,
    "fetchedAt": "2026-11-12T08:16:13.803Z"
+  },
+  {
+   "id": "original_profile_november_birthday_1_001_223450",
+   "title": "11月生まれ集合！バースデーオリジナルプロフィール",
+   "url": "https://event.pococha.com/ja-jp/festivals/original_profile_november_birthday_1_001_223450",
+   "sourceId": "pococha-official-event-page",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "notice",
+   "start": "2026-09-14",
+   "end": "2026-09-18",
+   "periods": [
+    {
+     "start": "2026-09-14",
+     "end": "2026-09-18",
+     "startTime": "12:00",
+     "endTime": "23:59",
+     "label": "11月生まれ集合！バースデーオリジナルプロフィール",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [
+    "D3",
+    "C1",
+    "C2",
+    "C3",
+    "B1",
+    "B2",
+    "B3",
+    "A1",
+    "A2",
+    "A3",
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6"
+   ],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
   },
   {
    "id": "n7154ccf8460f",
@@ -1565,6 +2267,68 @@
    "fetchedAt": "2026-11-12T08:17:22.453Z"
   },
   {
+   "id": "n42a3b7cb3d4b#1",
+   "title": "マンスリーエンタメミッション（ギャル）",
+   "url": "https://report.pococha.com/n/n42a3b7cb3d4b#1",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "mission",
+   "start": "2026-09-07",
+   "end": "2026-09-09",
+   "periods": [
+    {
+     "start": "2026-09-07",
+     "end": "2026-09-09",
+     "startTime": "12:00",
+     "endTime": "23:59",
+     "label": "マンスリーエンタメミッション（ギャル）",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
+  },
+  {
+   "id": "cbd4ab875133656e6ee6909753dcf9ba6_1_001_223740",
+   "title": "【24時締め】メーターマラソン",
+   "url": "https://event.pococha.com/ja-jp/festivals/cbd4ab875133656e6ee6909753dcf9ba6_1_001_223740",
+   "sourceId": "pococha-official-event-page",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "notice",
+   "start": "2026-09-04",
+   "end": "2026-09-08",
+   "periods": [
+    {
+     "start": "2026-09-04",
+     "end": "2026-09-08",
+     "startTime": "12:00",
+     "endTime": "23:59",
+     "label": "【24時締め】メーターマラソン",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [
+    "D1",
+    "D2",
+    "D3"
+   ],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
+  },
+  {
    "id": "ncc56314e49dd",
    "title": "【新人戦 ボイス部門】 イベント概要",
    "url": "https://report.pococha.com/n/ncc56314e49dd",
@@ -1834,6 +2598,35 @@
    "fetchedAt": "2026-11-12T08:16:36.329Z"
   },
   {
+   "id": "n818db46c191c#1",
+   "title": "マンスリーエンタメミッション（ヤンキー）",
+   "url": "https://report.pococha.com/n/n818db46c191c#1",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "mission",
+   "start": "2026-08-26",
+   "end": "2026-08-28",
+   "periods": [
+    {
+     "start": "2026-08-26",
+     "end": "2026-08-28",
+     "startTime": "12:00",
+     "endTime": "23:59",
+     "label": "マンスリーエンタメミッション（ヤンキー）",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
+  },
+  {
    "id": "n6de6014fdf0c",
    "title": "【Be The MODEL 👠✨】 9月1日より準決勝イベント開催！ 出場者発表👸",
    "url": "https://report.pococha.com/n/n6de6014fdf0c",
@@ -1957,6 +2750,39 @@
    "audience": [],
    "excluded": 0,
    "fetchedAt": "2026-11-12T08:16:44.056Z"
+  },
+  {
+   "id": "c9a86469ed88c7c0e392d4ac8419ca019_1_001_222940",
+   "title": "【22時締め】メーターマラソン",
+   "url": "https://event.pococha.com/ja-jp/festivals/c9a86469ed88c7c0e392d4ac8419ca019_1_001_222940",
+   "sourceId": "pococha-official-event-page",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "notice",
+   "start": "2026-08-21",
+   "end": "2026-08-25",
+   "periods": [
+    {
+     "start": "2026-08-21",
+     "end": "2026-08-25",
+     "startTime": "12:00",
+     "endTime": "21:59",
+     "label": "【22時締め】メーターマラソン",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [
+    "D1",
+    "D2",
+    "D3"
+   ],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
   },
   {
    "id": "nda3a2d87f1f2",
@@ -2961,6 +3787,35 @@
    "fetchedAt": "2026-11-13T05:31:52.314Z"
   },
   {
+   "id": "n7d4d01d6f594#1",
+   "title": "マンスリーエンタメミッション（マッチョ）",
+   "url": "https://report.pococha.com/n/n7d4d01d6f594#1",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "mission",
+   "start": "2026-07-20",
+   "end": "2026-07-23",
+   "periods": [
+    {
+     "start": "2026-07-20",
+     "end": "2026-07-23",
+     "startTime": "12:00",
+     "endTime": "23:59",
+     "label": "マンスリーエンタメミッション（マッチョ）",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
+  },
+  {
    "id": "n6a4a23dc33ed",
    "title": "「六本木アイドルフェスティバル」アイドル応援ミッションのご紹介！",
    "url": "https://report.pococha.com/n/n6a4a23dc33ed",
@@ -3251,6 +4106,35 @@
    "fetchedAt": "2026-11-12T08:18:45.258Z"
   },
   {
+   "id": "nd57e967d84a4#1",
+   "title": "マンスリーエンタメミッション（学園生活）",
+   "url": "https://report.pococha.com/n/nd57e967d84a4#1",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "mission",
+   "start": "2026-06-22",
+   "end": "2026-06-24",
+   "periods": [
+    {
+     "start": "2026-06-22",
+     "end": "2026-06-24",
+     "startTime": "12:00",
+     "endTime": "23:59",
+     "label": "マンスリーエンタメミッション（学園生活）",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
+  },
+  {
    "id": "nba33c92660ee",
    "title": "「Pococha甲子園2026 全国大会-Voice-」 開催決定！",
    "url": "https://report.pococha.com/n/nba33c92660ee",
@@ -3462,6 +4346,35 @@
    "audience": [],
    "excluded": 1,
    "fetchedAt": "2026-11-12T08:19:19.091Z"
+  },
+  {
+   "id": "n5337ecc40970#1",
+   "title": "雨上りの虹ミッション",
+   "url": "https://report.pococha.com/n/n5337ecc40970#1",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "mission",
+   "start": "2026-06-10",
+   "end": "2026-06-13",
+   "periods": [
+    {
+     "start": "2026-06-10",
+     "end": "2026-06-13",
+     "startTime": null,
+     "endTime": null,
+     "label": "雨上りの虹ミッション",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
   },
   {
    "id": "n6ef96885387f",
@@ -4034,6 +4947,35 @@
    "fetchedAt": "2026-11-12T08:20:12.382Z"
   },
   {
+   "id": "n5e416650ae7a#1",
+   "title": "マンスリーエンタメミッション（フィーバー）",
+   "url": "https://report.pococha.com/n/n5e416650ae7a#1",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "mission",
+   "start": "2026-05-07",
+   "end": "2026-05-09",
+   "periods": [
+    {
+     "start": "2026-05-07",
+     "end": "2026-05-09",
+     "startTime": "12:00",
+     "endTime": "23:59",
+     "label": "マンスリーエンタメミッション（フィーバー）",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
+  },
+  {
    "id": "rfmrnjwxd",
    "title": "Pococha、国内最大の国際音楽賞「MUSIC AWARDS JAPAN 2026」初の公認ライバー決定戦を開催！",
    "url": "https://www.pococha.com/ja/news/rfmrnjwxd",
@@ -4478,6 +5420,64 @@
    "fetchedAt": "2026-11-12T08:20:39.509Z"
   },
   {
+   "id": "n06eebfe1348a#1",
+   "title": "マンスリーエンタメミッション（魔法少女）",
+   "url": "https://report.pococha.com/n/n06eebfe1348a#1",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "mission",
+   "start": "2026-04-10",
+   "end": "2026-04-13",
+   "periods": [
+    {
+     "start": "2026-04-10",
+     "end": "2026-04-13",
+     "startTime": "12:00",
+     "endTime": "23:59",
+     "label": "マンスリーエンタメミッション（魔法少女）",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
+  },
+  {
+   "id": "n2f80f2bd678a#1",
+   "title": "サッカー世界大会 取材ツアーinアメリカ",
+   "url": "https://report.pococha.com/n/n2f80f2bd678a#1",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "notice",
+   "start": "2026-04-03",
+   "end": "2026-04-09",
+   "periods": [
+    {
+     "start": "2026-04-03",
+     "end": "2026-04-09",
+     "startTime": "12:00",
+     "endTime": "23:59",
+     "label": "サッカー世界大会 取材ツアーinアメリカ",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
+  },
+  {
    "id": "n06eebfe1348a",
    "title": "「魔法少女」アイテム登場！",
    "url": "https://report.pococha.com/n/n06eebfe1348a",
@@ -4576,6 +5576,35 @@
    "audience": [],
    "excluded": 0,
    "fetchedAt": "2026-11-12T08:20:50.971Z"
+  },
+  {
+   "id": "n87a8a6bd22af#1",
+   "title": "マンスリーエンタメミッション（ビジュアル系）",
+   "url": "https://report.pococha.com/n/n87a8a6bd22af#1",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "mission",
+   "start": "2026-03-18",
+   "end": "2026-03-20",
+   "periods": [
+    {
+     "start": "2026-03-18",
+     "end": "2026-03-20",
+     "startTime": "12:00",
+     "endTime": "23:59",
+     "label": "マンスリーエンタメミッション（ビジュアル系）",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
   },
   {
    "id": "nfc345f9c951e",
@@ -5686,6 +6715,35 @@
    "audience": [],
    "excluded": 0,
    "fetchedAt": "2026-11-12T08:22:19.152Z"
+  },
+  {
+   "id": "n5c31f1895730#1",
+   "title": "アイドル応援ミッション",
+   "url": "https://report.pococha.com/n/n5c31f1895730#1",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "mission",
+   "start": "2025-12-01",
+   "end": null,
+   "periods": [
+    {
+     "start": "2025-12-01",
+     "end": null,
+     "startTime": "12:00",
+     "endTime": null,
+     "label": "アイドル応援ミッション",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
   },
   {
    "id": "n9b955ffdb495",
@@ -8401,6 +9459,35 @@
    "audience": [],
    "excluded": 0,
    "fetchedAt": "2026-11-13T05:31:56.004Z"
+  },
+  {
+   "id": "neb237d377cc5#1",
+   "title": "まぼろしアイテム 永遠の煌",
+   "url": "https://report.pococha.com/n/neb237d377cc5#1",
+   "sourceId": "pococha-official-note-manual",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "item",
+   "start": "2025-03-29",
+   "end": "2025-03-30",
+   "periods": [
+    {
+     "start": "2025-03-29",
+     "end": "2025-03-30",
+     "startTime": null,
+     "endTime": null,
+     "label": "まぼろしアイテム 永遠の煌",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
   },
   {
    "id": "nf069d216d51e",
