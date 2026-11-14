@@ -2206,6 +2206,32 @@ html:root body #mini.main-screen :is(.mini-input label,.items-core label){color:
 /* 「目標値」「現在値」の末尾の「値」（狭い画面で隠す部分）も見出しと同じ色に（テーマの文字色を受けて薄くなっていた） */
 html:root body #mini.main-screen .mini-input label .lbl-tail{color:inherit!important}
 html:root body #mini.main-screen #itemsWindowTitle{color:#0d3b66!important}
+/* 2026-11-14 見た目の手直し（スマホ画面の写真の指摘）
+   ・ヘッダー：古い6列の配置名が残り、4つのボタンの右に空きができていた → 配置名を消して4列いっぱいに
+   ・版表示：右端からはみ出していた → タイトルの残り幅に収め、入らないときは「v…」の前で折り返す
+   ・折りたたみの見出し（換算条件・必要ペース・補助メニュー）：見出しの下に枠より短い線が浮いていた → 線を消す
+   ・制作者ロゴ：明るい表示のとき文字色が濃紺になり、黒地で読めなかった → ロゴの水色を固定
+   ・E帯／過去のボーダー表のリンク：アイコン・矢印・間隔をそろえる */
+:root body #titleTop>header.card>.header-main:first-child{grid-template-areas:none!important}
+@media (max-width:559px){
+  :root body #titleTop>header.card>.header-main>#toolUpdatedDate{max-width:calc(100% - 136px)!important}
+  :root body #titleTop>header.card>.header-main>#toolUpdatedDate>#toolVersion{white-space:normal!important;overflow-wrap:break-word}
+}
+:root[data-theme][data-screen-color] body :is(#mainTools details>summary,.secondary-menus .sectionToggle){box-shadow:none!important}
+html:root[data-theme] body footer .tool-creator-logo,html:root body .tool-creator-logo{color:#66d5ff!important;-webkit-text-fill-color:#66d5ff!important;text-shadow:0 0 8px #008cce!important}
+html:root body .wrap>.history-portal{margin:0}
+html:root body .history-portal>a>span[aria-hidden="true"]:first-child{flex:0 0 auto;width:1.5em;text-align:center;font-size:1.25rem}
+html:root body .history-portal-arrow{font-size:1.4rem!important;line-height:1}
+/* 359px以下：残りアイテムの数字が2行に折れて欠けていた（例「111,91／5」）→ 文字を少し小さくして普段の桁数は1行に（桁が極端に多いときは従来どおり折り返す）。見出しも1行に */
+@media (max-width:359px){
+  html:root body #mini.main-screen #itemsWindowRow .coin-card:not(:first-child)>b{font-size:13px!important}
+  html:root body #mini.main-screen #itemsWindowRow .coin-card>b{letter-spacing:-.03em}
+  html:root body #mini.main-screen #itemsWindowRow .coin-card:first-child>b{font-size:14px!important}
+  html:root body #mini.main-screen #itemsWindowRow .coin-card>b>.item-unit{font-size:10px!important;letter-spacing:0}
+  html:root body #mini.main-screen #itemsWindowRow .coin-card>span{white-space:nowrap!important}
+  html:root body #mini.main-screen #itemsWindowTitle{white-space:nowrap!important}
+  html:root body #mini.main-screen #coreCountItems{width:80px!important;min-width:0!important;padding-left:6px!important;padding-right:6px!important}
+}
 </style>
 </head>
 <body>
@@ -2508,8 +2534,8 @@ html:root body #mini.main-screen #itemsWindowTitle{color:#0d3b66!important}
 <div class="wrap">
   <p class="hint" id="borderSyncStatus" role="status" style="font-size:.68rem;margin:5px 2px 8px;line-height:1.5">ボーダー確認中…</p>
   
-  <div class="history-portal"><a href="https://poco-meter.freefreelife2000.chatgpt.site/e-border.html" class="manual-link" id="eBorderPortalLink"><span class="history-portal-text"><span class="history-portal-title">E帯のボーダー記録</span><span class="hint">画像取り込み・手入力・未記録日の確認</span></span><span aria-hidden="true">›</span></a></div>
-  <div class="history-portal"><a href="/border-history" class="manual-link" id="historyPortalLink"><span aria-hidden="true">🗂️</span><span class="history-portal-text"><span class="history-portal-title">過去のボーダー表</span><span class="hint">日付・ランクで検索</span></span><span class="history-portal-arrow" aria-hidden="true">›</span></a></div>
+  <div class="history-portal"><a href="https://poco-meter.freefreelife2000.chatgpt.site/e-border.html" class="manual-link" id="eBorderPortalLink"><span aria-hidden="true">📝</span><span class="history-portal-text"><span class="history-portal-title">E帯のボーダー記録</span><span class="hint">画像取り込み・手入力・未記録日の確認</span></span><span class="history-portal-arrow" aria-hidden="true">›</span></a></div>
+  <div class="history-portal"><a href="/border-history" class="manual-link" id="historyPortalLink"><span aria-hidden="true">📋</span><span class="history-portal-text"><span class="history-portal-title">過去のボーダー表</span><span class="hint">日付・ランクで検索</span></span><span class="history-portal-arrow" aria-hidden="true">›</span></a></div>
   
   <div class="period-notice-actions" id="periodNoticeActions" hidden><button type="button" id="reviewPeriodCurrent">現在値を確認・入力</button><button type="button" id="resetPeriodCurrent">0にリセット</button></div>
 
