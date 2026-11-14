@@ -1,7 +1,7 @@
 {
  "schema": "poco-events-v1",
  "note": "イベント名・期間・対象ランク・対象（audience）・URLなどの事実だけを記録。本文は保存しない。confidence: high=「開催期間」等の見出し付きの期間を検出 / low=見出しなしの期間 / none=期間を検出できず。使用期限・配信時間・応募や選考などの期間は除外（excluded に件数）。",
- "updatedAt": "2026-11-14T00:41:23.423Z",
+ "updatedAt": "2026-11-14T01:29:01.582Z",
  "sources": [
   {
    "id": "pococha-official-note",
@@ -34,6 +34,17 @@
     "date": "2026-11-13",
     "robots": "x.com・instagram.com へはアクセスしない（自動取得しない）",
     "terms": "X・Instagramの規約は許可のない自動収集（スクレイピング）を禁止。公式APIは有料・登録が必要なため不使用 → 人が貼った投稿文から、名前・期間・時間帯・対象ランク・投稿URLの事実だけを1行にして記録。本文は保存しない"
+   }
+  },
+  {
+   "id": "pococha-official-event-page",
+   "name": "Pococha公式イベントページ（手動の確認）",
+   "kind": "official",
+   "home": "https://event.pococha.com",
+   "checked": {
+    "date": "2026-11-14",
+    "robots": "event.pococha.com の robots.txt は画像の一部だけ不許可。自動取得はしない（人がページを開いて確認する）",
+    "terms": "Pococha会員規約 第10条はアプリ・サーバーの解析やボットでの「本サービス」利用を禁止 → ログインが必要な範囲・非公開の通信は使わず、公開ページに表示された名前・期間・対象ランク・URLだけを記録"
    }
   }
  ],
@@ -1128,6 +1139,41 @@
    "audience": [],
    "excluded": 0,
    "fetchedAt": "2026-11-12T08:16:20.971Z"
+  },
+  {
+   "id": "ca374131ce49f4765b4bc2b284d8e647b_1_001_223950",
+   "title": "デビューぽこトレ",
+   "url": "https://event.pococha.com/ja-jp/festivals/ca374131ce49f4765b4bc2b284d8e647b_1_001_223950",
+   "sourceId": "pococha-official-event-page",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "newcomer",
+   "start": "2026-09-21",
+   "end": "2026-09-21",
+   "periods": [
+    {
+     "start": "2026-09-21",
+     "end": "2026-09-21",
+     "startTime": "12:00",
+     "endTime": "23:59",
+     "label": "デビューぽこトレ",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [
+    "D1",
+    "D2",
+    "D3"
+   ],
+   "confidence": "high",
+   "audience": [
+    "新規ライバー"
+   ],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
   },
   {
    "id": "n811eb4dd0ddb",
@@ -2423,6 +2469,41 @@
    ],
    "excluded": 0,
    "fetchedAt": "2026-11-12T08:17:46.790Z"
+  },
+  {
+   "id": "ca5ef77c015f65720cede95fb8c252e32_1_001_222810",
+   "title": "デビューぽこトレ",
+   "url": "https://event.pococha.com/ja-jp/festivals/ca5ef77c015f65720cede95fb8c252e32_1_001_222810",
+   "sourceId": "pococha-official-event-page",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "newcomer",
+   "start": "2026-08-13",
+   "end": "2026-08-13",
+   "periods": [
+    {
+     "start": "2026-08-13",
+     "end": "2026-08-13",
+     "startTime": "12:00",
+     "endTime": "23:59",
+     "label": "デビューぽこトレ",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [
+    "D1",
+    "D2",
+    "D3"
+   ],
+   "confidence": "high",
+   "audience": [
+    "新規ライバー"
+   ],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-14"
   },
   {
    "id": "n521465494e0d",
