@@ -1,7 +1,7 @@
 import vm from 'node:vm';import {readFileSync} from 'node:fs';import {webcrypto} from 'node:crypto';
 const html=readFileSync(new URL('../calculator/e-border.html',import.meta.url),'utf8'),template=readFileSync(new URL('../calculator/e-border-template.html',import.meta.url),'utf8');
-export function eHarness({initial=null,failStore=false,clipboardFail=false,lock=true,now='2026-10-18T00:30:00+09:00',workerMode='normal',extras={}}={}){
- const callbacks=new Map(),docCallbacks=new Map(),timers=new Set(),ids=new Map(),objects=new Map(),copy=[],downloads=[],writes=[],memory=new Map([...(initial?[['pococha-e-display-v1',initial]]:[]),...Object.entries(extras)]);let lastFocus=null,urlId=0;
+export function eHarness({initial=null,failStore=false,clipboardFail=false,lock=true,now='2026-10-18T00:30:00+09:00',workerMode='normal',extras={},view='list'}={}){
+ const callbacks=new Map(),docCallbacks=new Map(),timers=new Set(),ids=new Map(),objects=new Map(),copy=[],downloads=[],writes=[],memory=new Map([...(initial?[['pococha-e-display-v1',initial]]:[]),...(view==='list'?[['pococha-e-records-view-v1','list']]:[]),...Object.entries(extras)]);let lastFocus=null,urlId=0;
  class Element{
   constructor(tag='div'){this.tagName=tag.toUpperCase();this.children=[];this.listeners=new Map();this.attributes=new Map();this.style={};this.value='';this.checked=false;this.disabled=false;this.hidden=false;this.open=false;this.textContent='';this.classList={toggle:(c,on)=>{const a=new Set((this.className||'').split(/\s+/));on?a.add(c):a.delete(c);this.className=[...a].join(' ');}};}
   append(...items){for(const c of items){if(c&&typeof c==='object'){c.parent=this;this.children.push(c);}else this.children.push(String(c));}if(this.tagName==='SELECT'&&this.children.length===1)this.value=this.children[0].value;}
