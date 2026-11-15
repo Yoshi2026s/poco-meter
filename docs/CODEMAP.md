@@ -38,7 +38,7 @@
 - メニュー開閉：`setSectionCollapsed`・`applyCollapsedPreferences`（3510〜）
 
 ## 端末の保存キー（変えない）
-`pococha-meter-calc-v1`（本体）・`pococha-meter-display-v1`・`pococha-meter-hud-v1`・`pococha-meter-items-window-v1`・`pococha-e-display-v1`・`pococha-e-drafts-v1`・`pococha-e-records-view-v1`（E帯の保存済みの記録の表示：calendar／list）・`pococha-meter-history-v1`・`pococha-meter-history-theme-v1`・`pococha-site-time-v1`（ほか常時表示パネルの予想データの写し `pococha-meter-forecast-v1`）
+`pococha-meter-calc-v1`（本体）・`pococha-meter-display-v1`・`pococha-meter-hud-v1`・`pococha-meter-items-window-v1`・`pococha-e-display-v1`・`pococha-e-drafts-v1`・`pococha-meter-history-v1`・`pococha-meter-history-theme-v1`・`pococha-site-time-v1`（ほか常時表示パネルの予想データの写し `pococha-meter-forecast-v1`）
 
 ## テストの選び方
 - 計算：`tests/calculation-engine.mjs`、締め時間別：`tests/cutoff-reference-target.mjs`

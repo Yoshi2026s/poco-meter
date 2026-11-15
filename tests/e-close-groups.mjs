@@ -23,14 +23,3 @@ test('record copy fallback stays in the card and returns focus to its copy butto
   assert.equal(h.get('copyFeedback').parentElement,h.get('recordActions').parentElement);
  }finally{h.close();}
 });
-// 2026-11-15: saved records open as a month calendar by default; days show ±0, tapping a day shows its record with edit/copy/delete,
-// and an unrecorded past day opens a manual-entry draft. The list view stays available and the choice is remembered.
-test('calendar view is the default, shows ±0 per day and the tapped day record, and switches to the list',async()=>{const h=eHarness({initial:initial([row('22','2026-08-03'),row('22','2026-08-05'),row('24','2026-08-05')]),view:'calendar'});try{
- const cal=h.get('eCalendar'),days=()=>h.all(cal,e=>e.tagName==='BUTTON'&&e.getAttribute('data-date')),day=(d,i=0)=>days().filter(b=>b.getAttribute('data-date')===d)[i];
- assert.equal(cal.hidden,false);assert.equal(h.get('records').hidden,true);assert.equal(h.get('viewCalendar').getAttribute('aria-pressed'),'true');
- assert.match(text(h,cal),/2026年8月/);assert.equal(h.all(cal,e=>e.tagName==='SECTION').length,3);
- const d3=day('2026-08-03',1);assert.match(d3.getAttribute('aria-label'),/22時〆 ±0 100/);await d3.dispatch('click');
- assert.match(text(h,h.get('eCalendar')),/2026\/08\/03の記録（1件）/);assert.ok(h.all(h.get('eCalendar'),e=>e.tagName==='ARTICLE').length===1);
- const gap=day('2026-08-04',1);assert.match(gap.getAttribute('aria-label'),/未記録/);
- await h.click('viewList');assert.equal(h.get('eCalendar').hidden,true);assert.equal(h.get('records').hidden,false);assert.equal(h.memory.get('pococha-e-records-view-v1'),'list');
-}finally{h.close();}});

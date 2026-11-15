@@ -425,7 +425,8 @@ test('Saved card preferences from before the calendar switch open in the calenda
 });
 test('E calendar loads E-band records with original K display precision and no storage mutations',()=>{
  const p=setup({view:'calendar'});p.input('rank','E');p.input('close','24');p.input('start','2026-10-01');p.input('end','2026-10-31');
- const day=calDay(p,'2026-10-05');assert.ok(day);day.dispatch('click');
+ const day=calDay(p,'2026-10-05');assert.ok(day);assert.deepEqual(walk(day,n=>/\bcal-val\b/.test(n.className||'')).map(n=>n.textContent),['235','1.6K','5.1K']);day.dispatch('click');
+ const add=walk(p.nodes.get('calendarResults'),n=>/\bcal-e-link\b/.test(n.className||''))[0];assert.ok(add);assert.equal(add.href,'./e-border.html');
  assert.deepEqual(walk(calDetail(p),n=>n.tagName==='DD').map(n=>n.textContent),['235','1.6K','5.1K']);assert.equal(p.writes.includes('pococha-e-display-v1'),false);calculatorUnchanged(p);
  p.input('start','2000-01-01');p.input('end','2000-01-31');assert.equal(calById(p,'calPrev').disabled,true);p.input('start','2099-12-01');p.input('end','2099-12-31');assert.equal(calById(p,'calNext').disabled,true);
 });

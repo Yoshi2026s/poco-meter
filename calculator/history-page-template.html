@@ -94,8 +94,9 @@
 .cal-blank{min-height:52px}
 .cal-detail{margin:12px 0 0}
 .cal-detail>h4{margin:0 0 6px;font-size:1rem}
+.cal-e-link{display:flex;align-items:center;justify-content:center;min-height:48px;margin:10px 0 0;padding:8px 12px;border:1px solid var(--accent);border-radius:10px;color:var(--accent);font-weight:700;text-decoration:none;text-align:center}
 .cal-note{margin:6px 0 0}
-</style></head><body><header><div class="nav"><a class="button" id="backCalculator" href="./">← メーター計算へ</a><button id="themeButton" type="button">明るい表示</button></div><h1>過去のボーダー表</h1><p class="sub">日付・ランク・締め時間で絞り込めます。</p><p class="sub" id="historyVersion">最終更新バージョン：__VERSION__</p></header><main>
+</style></head><body><header><div class="nav"><a class="button" id="backCalculator" href="./">← メーター計算へ</a><button id="themeButton" type="button">明るい表示</button></div><h1>過去のボーダー表</h1><p class="sub">日付・ランク・締め時間で絞り込めます。E帯（この端末の記録）もランクで「E」を選ぶと表示します。</p><p class="sub" id="historyVersion">最終更新バージョン：__VERSION__</p></header><main>
 <section class="panel" id="filterPanel" aria-labelledby="filterHeading"><h2 id="filterHeading" tabindex="-1">記録を探す</h2><form id="historyForm"><div class="filters">
 
 <div><label for="rank">ランク</label><select id="rank"><option value="">全ランク</option></select></div><div><label for="close">締め時間</label><select id="close"><option value="">すべて</option><option value="13">13時〆</option><option value="22">22時〆</option><option value="24">24時〆</option></select></div>
