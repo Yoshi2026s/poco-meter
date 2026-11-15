@@ -2074,8 +2074,6 @@ html.always-on-mode body #mini.main-screen #miniNowTime{font-size:clamp(18px,5.5
 :root body #mini.main-screen .main-card .ao-sns textarea{min-height:84px;resize:vertical}
 :root body #mini.main-screen .main-card .ao-sns-row{display:grid;gap:4px}
 :root body #mini.main-screen .main-card .ao-sns-btn{min-height:40px;padding:6px 12px!important;border-radius:8px;border:1px solid #0d3b66!important;background:#1763b5!important;color:#fff!important;font-size:14px!important;font-weight:800;box-shadow:none!important}
-:root body #mini.main-screen .main-card .ao-sns-btn.sub{background:#fff!important;color:#0d3b66!important;border-color:#7fa6d1!important}
-:root body #mini.main-screen .main-card .ao-sns-share{display:flex;align-items:center;min-height:32px;font-size:12px!important;font-weight:700;color:#0d3b66!important;text-decoration:underline}
 :root body #mini.main-screen .main-card .ao-sns-result{margin:0;font-size:13px!important;font-weight:700;color:#17283a!important}
 :root body #mini.main-screen .main-card .ao-sns-list{display:grid;gap:4px;margin:0;padding:0;list-style:none}
 :root body #mini.main-screen .main-card .ao-sns-list li{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:4px 6px;border-radius:8px;background:#fff;font-size:13px!important;color:#17283a!important}
@@ -2324,7 +2322,7 @@ html:root body #borderTargets .btns{grid-template-columns:repeat(3,minmax(0,1fr)
 <!-- phone-current:end -->
 <section id="itemsWindow" aria-labelledby="itemsWindowTitle"><div class="items-window-head"><h2 id="itemsWindowTitle">残りアイテムの目安</h2><div class="items-core"><label for="coreCountItems">現コア数</label><input id="coreCountItems" class="num" type="text" inputmode="numeric" enterkeyhint="done" autocomplete="off" placeholder="0" aria-label="現コア数（0〜1000人）" aria-describedby="coreCountItemsError inputStatus" value="0"></div></div><small id="coreCountItemsError" class="items-core-error" hidden></small><div id="itemsWindowRow"></div></section>
 <section class="main-card main-forecast-card" id="mainForecastCard" aria-labelledby="aoRankHead"><h2 class="main-card-head" id="aoRankHead" tabindex="-1">設定ランクの予想</h2><div class="ao-fvalue num" id="aoForecast"></div><div class="ao-frange num" id="aoRange"></div><div class="ao-trend" id="aoTrend"></div><p class="ao-accuracy" id="aoAccuracy"></p><p class="ao-accuracy ao-record" id="aoRecord"></p><div class="ao-history" id="aoHistoryBox" hidden><button type="button" class="ao-history-toggle" id="aoHistoryToggle" aria-expanded="false" aria-controls="aoHistory"><span class="ao-history-mark" aria-hidden="true">▸</span> <span id="aoHistorySummary">直近の答え合わせ</span></button><ul id="aoHistory" hidden></ul></div><ul class="ao-reasons" id="aoReasons"></ul><p class="ao-note" id="aoForecastNote"></p><details class="ao-calendar" id="hitCalendar"><summary>📅 的中率カレンダー（日ごとの答え合わせ）</summary><div class="ao-cal-body"><div class="ao-cal-nav"><button type="button" id="hitCalPrev" aria-label="前の月">◀</button><b id="hitCalMonth" aria-live="polite"></b><button type="button" id="hitCalNext" aria-label="次の月">▶</button></div><p class="ao-cal-sum" id="hitCalSummary"></p><div class="ao-cal-grid" id="hitCalGrid"></div><p class="ao-cal-detail" id="hitCalDetail" role="status" aria-live="polite"></p><p class="ao-note" id="hitCalNote">緑は±10%以内、橙は±10%超。その日より前のデータだけで作った予想と実際のボーダーの比較です（補正は月ごとに作り直し）。下線は毎日の自動記録の予想。●は設定ランクが対象の大型イベント、◆はイベラス（その日が最終日のイベント）がある日。日付をタップすると、その日のイベントも表示します（イベラスは橙、開催中は青の文字）。</p></div></details></section>
-<section class="main-card main-events-card" id="mainEventsCard" aria-labelledby="aoEventsHead"><h2 class="main-card-head ao-last-head" id="aoLastHead">本日のイベラス（最終日）</h2><ul class="ao-list ao-last" id="aoLast"></ul><p class="ao-note" id="aoLastNote"></p><h2 class="main-card-head" id="aoEventsHead">今日の開催イベント</h2><ul class="ao-list" id="aoEvents"></ul><h2 class="main-card-head ao-next-head" id="aoTomorrowHead" hidden>明日から</h2><ul class="ao-list" id="aoTomorrow"></ul><p class="ao-note" id="aoEventsNote"></p><details class="ao-calendar ao-sns" id="aoSns"><summary>公式X・インスタの告知を読み取る</summary><div class="ao-sns-body"><p class="ao-note">半日・時間限定のイベントは公式X（@pococha_jp）やインスタだけで告知されることがあります。X・インスタは規約で自動収集が禁止のため自動では取りに行きません。投稿文をコピーしてここに貼ると、期間・時間帯・対象ランクを読み取り、この端末の「今日の開催イベント」と的中率カレンダーに出します（本文は保存しません）。</p><label class="ao-sns-label" for="aoSnsText">投稿文</label><textarea id="aoSnsText" rows="4" placeholder="例：本日21時〜24時 夜の部ランキング開催！対象：S1〜S6"></textarea><div class="ao-sns-row"><label class="ao-sns-label" for="aoSnsDate">投稿日</label><input type="date" id="aoSnsDate"><label class="ao-sns-label" for="aoSnsUrl">投稿のURL（任意）</label><input type="url" id="aoSnsUrl" inputmode="url" placeholder="https://x.com/pococha_jp/status/…"></div><button type="button" class="ao-sns-btn" id="aoSnsRead">読み取って追加</button><p class="ao-sns-result" id="aoSnsResult" role="status" aria-live="polite"></p><ul class="ao-sns-list" id="aoSnsList"></ul><div class="ao-sns-row"><button type="button" class="ao-sns-btn sub" id="aoSnsCopy">共有用の行をコピー</button><a class="ao-sns-share" id="aoSnsShare" href="https://github.com/Yoshi2026s/poco-meter/edit/%28root%29/data/sns-events.txt" target="_blank" rel="noopener noreferrer">全員の画面に出す（管理者：GitHubに行を追加）</a></div></div></details></section>
+<section class="main-card main-events-card" id="mainEventsCard" aria-labelledby="aoEventsHead"><h2 class="main-card-head ao-last-head" id="aoLastHead">本日のイベラス（最終日）</h2><ul class="ao-list ao-last" id="aoLast"></ul><p class="ao-note" id="aoLastNote"></p><h2 class="main-card-head" id="aoEventsHead">今日の開催イベント</h2><ul class="ao-list" id="aoEvents"></ul><h2 class="main-card-head ao-next-head" id="aoTomorrowHead" hidden>明日から</h2><ul class="ao-list" id="aoTomorrow"></ul><p class="ao-note" id="aoEventsNote"></p><details class="ao-calendar ao-sns" id="aoSns"><summary>公式X・インスタの告知を読み取る</summary><div class="ao-sns-body"><p class="ao-note">半日・時間限定のイベントは公式X（@pococha_jp）やインスタだけで告知されることがあります。X・インスタは規約で自動収集が禁止のため自動では取りに行きません。投稿文をコピーしてここに貼ると、期間・時間帯・対象ランクを読み取り、この端末の「今日の開催イベント」と的中率カレンダーに出します（本文は保存しません）。</p><label class="ao-sns-label" for="aoSnsText">投稿文</label><textarea id="aoSnsText" rows="4" placeholder="例：本日21時〜24時 夜の部ランキング開催！対象：S1〜S6"></textarea><div class="ao-sns-row"><label class="ao-sns-label" for="aoSnsDate">投稿日</label><input type="date" id="aoSnsDate"><label class="ao-sns-label" for="aoSnsUrl">投稿のURL（任意）</label><input type="url" id="aoSnsUrl" inputmode="url" placeholder="https://x.com/pococha_jp/status/…"></div><button type="button" class="ao-sns-btn" id="aoSnsRead">読み取って追加</button><p class="ao-sns-result" id="aoSnsResult" role="status" aria-live="polite"></p><ul class="ao-sns-list" id="aoSnsList"></ul></div></details></section>
 <section class="main-tools" id="mainTools" aria-label="目標の条件・コピー・換算"><p class="hint goal-context" id="appliedContext" tabindex="0" aria-label="目標設定時の条件"></p><p id="manualTargetMsg" class="toast" role="status"></p>
     <div class="meter-tools"><button type="button" id="copyRemaining">残りポイントをコピー</button><button type="button" id="alwaysOnOpen" aria-pressed="false">常時表示モード</button></div><textarea id="summaryText" readonly hidden aria-label="手動コピー用の現在の残り"></textarea>
     
@@ -2374,7 +2372,7 @@ html:root body #borderTargets .btns{grid-template-columns:repeat(3,minmax(0,1fr)
     <div class="builder-controls">
       <div hidden><label for="targetMethod">目標の算出方法</label><select id="targetMethod"><option value="mean">平均値</option><option value="median">中央値</option><option value="p75" selected>上位25％の境界値</option><option value="max">期間内の最大値</option><option value="min">期間内の最小値</option></select></div>
       <div hidden><label for="bufferPct">上乗せ率（％）</label><input id="bufferPct" type="text" inputmode="decimal" value="0" autocomplete="off"></div>
-      <div><label for="roundUnit">目標を切り上げる単位</label><select id="roundUnit"><option value="1">1ポイント</option><option value="100">100ポイント</option><option value="1000">1,000ポイント</option><option value="10000">10,000ポイント</option></select></div>
+      <div><label for="roundUnit">目標を切り上げる単位</label><select id="roundUnit"><option value="1">1 pt</option><option value="100">100 pt</option><option value="1000">1,000 pt</option><option value="10000">10,000 pt</option></select></div>
     </div>
     <div class="buffer-quick" aria-label="上乗せ率を選ぶ"><button data-buffer="0">上乗せなし</button><button data-buffer="5">＋5％</button><button data-buffer="10">＋10％</button><button data-buffer="20">＋20％</button></div>
     
@@ -2390,7 +2388,7 @@ html:root body #borderTargets .btns{grid-template-columns:repeat(3,minmax(0,1fr)
         <div><label for="defaultMethod">算出方法</label><select id="defaultMethod"></select></div>
         <div><label for="defaultBuffer">上乗せ率（％）</label><input id="defaultBuffer" type="text" inputmode="decimal" autocomplete="off"></div>
         <div><label for="defaultRound">切り上げ単位</label><select id="defaultRound"></select></div>
-        <div><label for="defaultClose">締め時間</label><select id="defaultClose"><option value="13:00">13時締め</option><option value="22:00">22時締め</option><option value="00:00">24時締め</option><option value="custom">その他</option></select><input id="defaultDeadline" type="time" aria-label="その他の締め時間" hidden></div>
+        <div><label for="defaultClose">締め時間</label><select id="defaultClose"><option value="13:00">13時締め</option><option value="22:00">22時締め</option><option value="00:00">24時締め</option><option value="custom">手入力</option></select><input id="defaultDeadline" type="time" aria-label="その他の締め時間" hidden></div>
         <div><label for="defaultCore">現コア数（人）</label><input id="defaultCore" type="text" inputmode="numeric" autocomplete="off" placeholder="0"></div>
         <div id="defaultManualField" hidden><label for="defaultTarget">手入力時の目標値</label><input id="defaultTarget" type="text" inputmode="decimal" autocomplete="off" placeholder="例：500K"></div>
         <div class="goal-defaults-date"><label for="defaultDate">集計最終日</label><input id="defaultDate" type="date"><small>直近30日・空欄は自動で昨日</small></div>
@@ -2440,17 +2438,16 @@ html:root body #borderTargets .btns{grid-template-columns:repeat(3,minmax(0,1fr)
       </div>
   </section>
 
-  <section class="card collapsed" data-collapse-key="✏️ メーター入力">
-    <h2>⚙️ 時刻設定・ポイント調整</h2>
+  <section class="card collapsed" id="customDeadlineCard" data-collapse-key="✏️ メーター入力" hidden>
+    <h2>⏰ 締め時刻（手入力）</h2>
     <div class="section-body" id="sectionBody-2" hidden>
-    <input id="current" type="hidden"><div class="delta-controls"><label for="adjustAmount">現在値を加減算</label><input id="adjustAmount" type="text" inputmode="decimal" autocomplete="off" value="1K" aria-label="加減算するポイント"><button type="button" id="subtractAmount">引く</button><button type="button" id="addAmount">足す</button></div>
-    <div class="fields" style="margin-top:14px">
-      <div><label for="deadline">締切時刻</label><input id="deadline" type="time" value="22:00"></div>
-      <div><label for="endTime">配信終了予定（任意）</label><input id="endTime" type="time"></div>
+    <input id="current" type="hidden">
+    <div class="fields">
+      <div><label for="deadline">締め時刻</label><input id="deadline" type="time" value="22:00"></div>
     </div>
+    <p class="hint">締め時間で「手入力」を選んだときだけ表示します。</p>
     <select id="coreCount" hidden aria-hidden="true" tabindex="-1"></select><div id="coreBonus" hidden></div>
 
-<p id="adjustStatus" class="toast" role="status"></p>
 </div>
   </section>
 
@@ -2536,7 +2533,7 @@ html:root body #borderTargets .btns{grid-template-columns:repeat(3,minmax(0,1fr)
         <p id="offlineStatus" class="hint" role="status" aria-live="polite" aria-atomic="true">オフライン準備を確認しています…</p>
         <button type="button" id="prepareOffline" aria-describedby="offlineStatus offlineHelp">オフライン準備を確認</button>
         
-        <p id="offlineHelp" class="hint">オンラインで「準備完了」を確認すると、通信なしでも保存済みのボーダーで計算できます。ホーム画面への追加は、iPhoneではSafariの共有メニュー、Androidではブラウザのメニューから行えます。追加したアイコンからも一度オンラインで開いてください。ブラウザのデータを消す前に、JSONバックアップを保存してください。</p>
+        <p id="offlineHelp" class="hint">オンラインで「準備完了」を確認すると、通信なしでも保存済みのボーダーで計算できます。ホーム画面への追加は、iPhoneではSafariの共有メニュー、Androidではブラウザーのメニューから行えます。追加したアイコンからも一度オンラインで開いてください。ブラウザーのデータを消す前に、JSONバックアップを保存してください。</p>
 
 <p id="offlineStorageStatus" class="hint" role="status"></p>
 </details>
@@ -2636,7 +2633,7 @@ html:root body #borderTargets .btns{grid-template-columns:repeat(3,minmax(0,1fr)
   </details>
 
 
-  <footer>無断転載・転用・再配布禁止<br>入力は端末内で処理し、このブラウザに保存します。
+  <footer>無断転載・転用・再配布禁止<br>入力は端末内で処理し、このブラウザーに保存します。
     <div class="footer-support">
       <details class="tool-disclaimer" id="toolDisclaimer"><summary id="toolDisclaimerSummary">免責事項</summary><div class="header-help-panel"><p id="toolDisclaimerText">本ツールは非公式です。計算結果は目安としてご利用ください。</p>
         <div class="ylogo-bar">
@@ -3091,7 +3088,7 @@ html:root body #borderTargets .btns{grid-template-columns:repeat(3,minmax(0,1fr)
     var endLbl=hhmm(en)==='00:00'?md(new Date(period.end+9*3600e3-60000))+' 24:00':md(en)+' '+hhmm(en);
     var title=description+' メーター期間：'+md(st)+' '+hhmm(st)+'〜'+endLbl;
     ['left','miniT'].forEach(function(id){var el=$(id);if(el.textContent!==text)el.textContent=text;el.setAttribute('aria-label',description);el.title=title;});
-    $('deadlineCountdown').classList.toggle('urgent',remainingMs<=3600000);$('leftLabel').textContent='締めまで';$('leftLabel').title=endLbl+'締切まで';
+    $('deadlineCountdown').classList.toggle('urgent',remainingMs<=3600000);$('leftLabel').textContent='締めまで';$('leftLabel').title=endLbl+'締めまで';
   }
   function ceilPace(amount,unitMs,remainingMs){
     if(amount<=0||remainingMs<=0||!Number.isFinite(remainingMs))return 0n;
@@ -3136,7 +3133,7 @@ html:root body #borderTargets .btns{grid-template-columns:repeat(3,minmax(0,1fr)
   if(!state.log24||typeof state.log24!=='object')state.log24={};
   if((state.seedVer13||0)<1){Object.keys(SEEDS13).forEach(function(d){if(!state.log13[d])state.log13[d]=SEEDS13[d];});Object.keys(SEEDS24).forEach(function(d){if(!state.log24[d])state.log24[d]=SEEDS24[d];});state.seedVer13=1;save();}
   function closeKey(){var d=state.deadline||'22:00';return d==='13:00'?'13':(d==='00:00'?'24':'22');}
-  function closeName(){return ['13:00','22:00','00:00'].indexOf(state.deadline)>=0?closeKey()+'時締め':'22時締め参考（締切 '+state.deadline+'）';}
+  function closeName(){return ['13:00','22:00','00:00'].indexOf(state.deadline)>=0?closeKey()+'時締め':'22時締め参考（締め '+state.deadline+'）';}
   var E_TARGET_SEEDS=[{"date":"2026-09-04","rank":"E1","close":"24","values":["244","1.8K","4.8K"],"source":"提供画像・目視確認","precision":"display"},{"date":"2026-09-08","rank":"E1","close":"24","values":["258","1.7K","4.7K"],"source":"提供画像・目視確認","precision":"display"},{"date":"2026-09-09","rank":"E1","close":"24","values":["272","1.9K","5.0K"],"source":"提供画像・目視確認","precision":"display"},{"date":"2026-09-13","rank":"E1","close":"24","values":["363","2.4K","7.2K"],"source":"提供画像・目視確認","precision":"display"},{"date":"2026-09-19","rank":"E1","close":"24","values":["251","2.0K","5.7K"],"source":"提供画像・目視確認","precision":"display"},{"date":"2026-09-22","rank":"E1","close":"24","values":["260","1.6K","4.5K"],"source":"提供画像・目視確認","precision":"display"},{"date":"2026-09-23","rank":"E1","close":"24","values":["237","1.4K","3.4K"],"source":"提供画像・目視確認","precision":"display"},{"date":"2026-09-24","rank":"E1","close":"24","values":["243","1.5K","3.9K"],"source":"提供画像・目視確認","precision":"display"},{"date":"2026-09-28","rank":"E1","close":"24","values":["245","1.6K","4.9K"],"source":"提供画像・目視確認","precision":"display"},{"date":"2026-10-05","rank":"E1","close":"24","values":["235","1.6K","5.1K"],"source":"提供画像・目視確認","precision":"display"}];
   var eTargetCache=null;
   function eTargetRecords(){
@@ -3402,7 +3399,7 @@ html:root body #borderTargets .btns{grid-template-columns:repeat(3,minmax(0,1fr)
     box.innerHTML='<svg viewBox="0 0 660 186" role="img" aria-label="'+state.rank+' '+BLABEL[analysisIndex()]+'の'+periodName()+'内'+stats.n+'日分の推移。空白は未登録日。'+(state.period==='all'?'横軸は登録日の順です。':'')+'"><title>ボーダーの記録推移</title><line x1="40" y1="150" x2="620" y2="150" stroke="#cbd5e1"/>'+guide+paths+bars+'<text x="40" y="176" fill="#53627b">'+stats.window.start.slice(5).replace('-','/')+'</text><text x="620" y="176" text-anchor="end" fill="#53627b">'+stats.window.end.slice(5).replace('-','/')+'</text><text x="40" y="20" fill="#53627b">記録 '+fmt(stats.min)+'〜'+fmt(stats.max)+' pt</text></svg>';
   }
   var BLABEL=['±0','+1','+2'];
-  (function(){var sel=$('rank');RANKS.forEach(function(k){var o=document.createElement('option');o.value=k;o.textContent=k;sel.appendChild(o);});
+  (function(){var sel=$('rank');RANKS.slice().reverse().forEach(function(k){var o=document.createElement('option');o.value=k;o.textContent=k;sel.appendChild(o);});
     if(RANKS.indexOf(state.rank)<0)state.rank='S2';sel.value=state.rank;
     sel.onchange=function(){state.rank=this.value;save();update();};})();
 
@@ -3864,13 +3861,11 @@ html:root body #borderTargets .btns{grid-template-columns:repeat(3,minmax(0,1fr)
     var endMs=period.end;
     renderDeadlineCountdown(nowMs,period);
 
-    var end=toMins(state.endTime);
-    var base=left,baseMs=endMs-nowMs,baseName='締切まで';
-    if(end!==null){var endAt=Date.UTC(now.y,now.m-1,now.d)+end*60000-9*3600e3;if(endAt<=nowMs)endAt+=864e5;var el=(endAt-nowMs)/60000;if(el<left){base=el;baseMs=endAt-nowMs;baseName='配信終了まで';}}
+    var base=left,baseMs=endMs-nowMs,baseName='締めまで';
     $('paceBase').textContent=baseName;
     if(over){
       $('paceTime').textContent='-';$('perHour').textContent='-';$('per10').textContent='-';
-      $('paceNote').textContent='本日の締切時刻を過ぎています。締切時刻を確認してください。';
+      $('paceNote').textContent='本日の締め時刻を過ぎています。締め時刻を確認してください。';
     }else{
       $('paceTime').textContent=countdownTime(baseMs);
       $('paceTime').setAttribute('aria-label',baseName+'、'+countdownDescription(baseMs));
@@ -3911,12 +3906,6 @@ html:root body #borderTargets .btns{grid-template-columns:repeat(3,minmax(0,1fr)
     $('registeredItemNeeds').hidden=state.items.length===0;
 
   }
-  function adjustCurrent(sign){
-    var el=$('adjustAmount'),n=readNumber(el.value);if(n===null||n<=0){flagInput(el,'加減算する値は1以上で入力してください。');return;}
-    flagInput(el,'');var before=parseNum(state.current),requested=before+sign*n;setCurrent(requested);var actual=parseNum(state.current)-before;
-    $('adjustStatus').textContent=(actual>0?'＋':actual<0?'−':'')+fmt(Math.abs(actual))+' ptを反映しました。'+(requested<0?'0 ptを下回るため、0 ptで止めました。':requested>MAX_VALUE?'入力上限に達したため、上限で止めました。':'');
-  }
-  $('addAmount').onclick=function(){adjustCurrent(1);};$('subtractAmount').onclick=function(){adjustCurrent(-1);};$('adjustAmount').addEventListener('keydown',function(e){if(e.key==='Enter'&&!isNumericComposing(this,e)){e.preventDefault();adjustCurrent(1);}});
   var copyOperations={};
   function copyTextForUser(text,areaId,statusId,success,failure,clearAfter,triggerId){
     var area=$(areaId),message=$(statusId),previous=copyOperations[statusId],operation={};
@@ -3945,7 +3934,7 @@ html:root body #borderTargets .btns{grid-template-columns:repeat(3,minmax(0,1fr)
     ['coreCountTop','coreCountItems'].forEach(function(id){var el=$(id);el.addEventListener('input',changeCore);el.addEventListener('change',changeCore);el.addEventListener('compositionstart',function(){numericComposing[this.id]=true;});el.addEventListener('compositionend',function(){delete numericComposing[this.id];changeCore.call(this);});el.addEventListener('keydown',function(e){if(e.key==='Enter'&&!isNumericComposing(this,e)){e.preventDefault();changeCore.call(this);if(this.getAttribute('aria-invalid')!=='true')this.blur();}});el.addEventListener('blur',function(){delete numericComposing[this.id];changeCore.call(this);if(this.getAttribute('aria-invalid')!=='true')this.value=state.coreCount;});});
     $('coreCount').addEventListener('change',function(){state.coreCount=this.value;['coreCountTop','coreCountItems'].forEach(function(id){$(id).value=state.coreCount;flagInput($(id),'');});save();update();});
   })();
-  $('deadline').value=state.deadline||'22:00';$('endTime').value=state.endTime||'';
+  $('deadline').value=state.deadline||'22:00';
   var inputErrors={};
   function flagInput(el,error){
     el.setCustomValidity(error||'');el.setAttribute('aria-invalid',String(!!error));el.setAttribute('aria-describedby',el.id==='target'?'manualTargetHelp inputStatus':el.id==='coreCountItems'?'coreCountItemsError inputStatus':el.id==='coreCountTop'?'coreBonusTop coreInputError inputStatus':el.id==='quickBufferPct'?'quickBufferError inputStatus':el.id==='currentMini'?'currentMiniError inputStatus':el.id==='targetMini'?'targetMiniError inputStatus':'inputStatus');
@@ -3953,7 +3942,7 @@ html:root body #borderTargets .btns{grid-template-columns:repeat(3,minmax(0,1fr)
     if(localError){localError.hidden=!error;localError.textContent=error?((el.id==='coreCountTop'||el.id==='coreCountItems')?'0〜1000の整数':el.id==='currentMini'?'入力を確認してください。直前の現在値で計算しています。':el.id==='targetMini'?'目標値は1以上の数値を入力してください。直前の目標値で計算しています。':'0〜50％・小数1桁まで'):'';}
     if(el.id==='quickBufferPct')syncMiniBufferValidation();
     if(error)inputErrors[el.id]=error;else delete inputErrors[el.id];
-    var names={target:'目標値',targetMini:'目標値',current:'現在値',currentTop:'現在値',currentMini:'現在値',coreCountTop:'現コア数',coreCountItems:'現コア数',deadline:'締め時刻',endTime:'配信終了時刻',bufferPct:'上乗せ率',quickBufferPct:'上乗せ率',asOfDate:'集計終了日',adjustAmount:'加減算値',itemName:'アイテム名',itemVal:'アイテム値'},messages=[];
+    var names={target:'目標値',targetMini:'目標値',current:'現在値',currentTop:'現在値',currentMini:'現在値',coreCountTop:'現コア数',coreCountItems:'現コア数',deadline:'締め時刻',bufferPct:'上乗せ率',quickBufferPct:'上乗せ率',asOfDate:'集計終了日',adjustAmount:'加減算値',itemName:'アイテム名',itemVal:'アイテム値'},messages=[];
     Object.keys(inputErrors).forEach(function(k){var message=(names[k]?names[k]+'：':'')+inputErrors[k];if(messages.indexOf(message)<0)messages.push(message);});
     var status=$('inputStatus');status.setAttribute('data-status',messages.length?'error':'');status.hidden=!messages.length;status.textContent=messages.join(' ');
   }
@@ -3994,8 +3983,8 @@ html:root body #borderTargets .btns{grid-template-columns:repeat(3,minmax(0,1fr)
     el.addEventListener('change',function(e){if(isNumericComposing(this,e))return;numericInput(this,key);});
     el.addEventListener('compositionend',function(){delete numericComposing[id];if(key==='current'&&currentEdit&&currentEdit.id===id)currentEdit.compositionPending=false;numericInput(this,key);if(key==='current'&&document.activeElement!==this)finishCurrentEdit(this);});
   });
-    ['deadline','endTime'].forEach(function(id){
-    $(id).addEventListener('input',function(){if(toMins(this.value)===null&&!(id==='endTime'&&this.value==='')){flagInput(this,'締切は00:00〜23:59の時刻を入力してください。');return;}flagInput(this,'');if(id==='deadline')prepareCutoffTarget(this.value);state[id]=this.value;save();update();});
+    ['deadline'].forEach(function(id){
+    $(id).addEventListener('input',function(){if(toMins(this.value)===null){flagInput(this,'締め時刻は00:00〜23:59の時刻を入力してください。');return;}flagInput(this,'');if(id==='deadline')prepareCutoffTarget(this.value);state[id]=this.value;save();update();});
   });
   ['currentTop','currentMini'].forEach(function(id){$(id).value=$('current').value;flagInput($(id),'');});
   var currentUndo=null,currentEdit=null;
@@ -4069,7 +4058,7 @@ html:root body #borderTargets .btns{grid-template-columns:repeat(3,minmax(0,1fr)
   });});
   $('editDate').addEventListener('change',function(){loadEditor();});$('loadDay').onclick=function(){var ok=discardEditorDrafts([editorKey()]);loadEditor(true);setEditorMessage(ok?'保存済みの値を読み込みました。':'画面の下書きは取り消しましたが、端末の下書きを更新できません。再起動時は内容を確認してください。',ok?'success':'error');};$('saveDay').onclick=editorSave;
   $('deleteDay').onclick=function(){var d=$('editDate').value,msg=$('editorMsg');if(!validDate(d)||!LOG()[d]||!LOG()[d][state.rank]){setEditorMessage('この日の対象ランクの記録はありません。','warning');return;}if(this.dataset.armed!==editorKey()){this.dataset.armed=editorKey();this.textContent='もう一度押すと削除';return;}delete LOG()[d][state.rank];if(!Object.keys(LOG()[d]).length)delete LOG()[d];if(state.provenance[closeKey()]&&state.provenance[closeKey()][d])delete state.provenance[closeKey()][d][state.rank];statsCache={};dataRevision++;var draftsSaved=true;if(save()){delete editorDrafts[editorKey()];draftsSaved=saveEditorDrafts();}loadEditor(true);msg.className=storageFailed||!draftsSaved?'toast err':'toast';msg.textContent=(storageFailed?'画面から削除しましたが、端末の保存データを更新できません。':'対象ランクの記録を削除しました。')+(!draftsSaved?' 下書きを端末から消せません。再起動時は内容を確認してください。':'')+(state.pick!==''?'自動目標も再計算します。':'手入力の目標で残りを更新します。');update();};
-  function syncAllInputs(){pendingCloseCustom=false;syncTargetInputs(true);['target','current'].forEach(function(k){$(k).value=state[k]===''?'':fmt(parseNum(state[k]));flagInput($(k),'');});['currentTop','currentMini'].forEach(function(id){$(id).value=$('current').value;flagInput($(id),'');});['deadline','endTime','targetMethod','bufferPct','roundUnit','asOfDate','analysisBorder'].forEach(function(k){$(k).value=String(state[k]);flagInput($(k),'');});$('quickBufferPct').value=String(state.bufferPct);flagInput($('quickBufferPct'),'');['coreCount','coreCountTop','coreCountItems'].forEach(function(k){$(k).value=String(state.coreCount||0);flagInput($(k),'');});$('rank').value=state.rank;syncPick();syncClose();}
+  function syncAllInputs(){pendingCloseCustom=false;syncTargetInputs(true);['target','current'].forEach(function(k){$(k).value=state[k]===''?'':fmt(parseNum(state[k]));flagInput($(k),'');});['currentTop','currentMini'].forEach(function(id){$(id).value=$('current').value;flagInput($(id),'');});['deadline','targetMethod','bufferPct','roundUnit','asOfDate','analysisBorder'].forEach(function(k){$(k).value=String(state[k]);flagInput($(k),'');});$('quickBufferPct').value=String(state.bufferPct);flagInput($('quickBufferPct'),'');['coreCount','coreCountTop','coreCountItems'].forEach(function(k){$(k).value=String(state.coreCount||0);flagInput($(k),'');});$('rank').value=state.rank;syncPick();syncClose();}
   function recalcCandidate(){statsCache={};save();update();}
   $('targetMethod').onchange=function(){if(!Object.prototype.hasOwnProperty.call(METHOD_LABELS,this.value))return;state.targetMethod=this.value;recalcCandidate();};
   $('roundUnit').onchange=function(){var unit=Number(this.value);if([1,100,1000,10000].indexOf(unit)<0)return;state.roundUnit=unit;recalcCandidate();};
@@ -4137,7 +4126,7 @@ html:root body #borderTargets .btns{grid-template-columns:repeat(3,minmax(0,1fr)
 
   update();
   var pendingCloseCustom=false;
-  function syncClose(){var d=state.deadline||'22:00',el=$('closeSel');if(document.activeElement!==el)el.value=pendingCloseCustom?'custom':(['13:00','22:00','00:00'].indexOf(d)>=0)?d:'custom';var mini=$('miniClose');if(mini.options.length&&document.activeElement!==mini)mini.value=pendingCloseCustom?'custom':(['13:00','22:00','00:00'].indexOf(d)>=0?d:'custom');el.title='締め時刻：'+(d==='00:00'?'24:00':d)+(pendingCloseCustom?'（手入力で変更中）':'');el.setAttribute('aria-label',el.title);}
+  function syncClose(){var d=state.deadline||'22:00',el=$('closeSel');var customCard=$('customDeadlineCard');if(customCard)customCard.hidden=!(pendingCloseCustom||['13:00','22:00','00:00'].indexOf(d)<0);if(document.activeElement!==el)el.value=pendingCloseCustom?'custom':(['13:00','22:00','00:00'].indexOf(d)>=0)?d:'custom';var mini=$('miniClose');if(mini.options.length&&document.activeElement!==mini)mini.value=pendingCloseCustom?'custom':(['13:00','22:00','00:00'].indexOf(d)>=0?d:'custom');el.title='締め時刻：'+(d==='00:00'?'24:00':d)+(pendingCloseCustom?'（手入力で変更中）':'');el.setAttribute('aria-label',el.title);}
   $('closeSel').addEventListener('blur',function(){if(this.value!=='custom'&&this.value!==state.deadline)this.dispatchEvent(new Event('change',{bubbles:true}));syncClose();});
   function prepareCutoffTarget(value){
     if(value===state.deadline)return;
@@ -4356,9 +4345,9 @@ html:root body #borderTargets .btns{grid-template-columns:repeat(3,minmax(0,1fr)
   function renderOfflineStatus(){
     var box=$('offlineStatus'),button=$('prepareOffline');
     button.disabled=offlineBusy||!offlineSupported();button.setAttribute('aria-busy',String(offlineBusy));
-    if(!offlineSupported()){box.textContent='このブラウザではオフライン起動を準備できません。開いている画面での計算は使えます。';return;}
+    if(!offlineSupported()){box.textContent='このブラウザーではオフライン起動を準備できません。開いている画面での計算は使えます。';return;}
     if(offlineBusy){box.textContent='オフライン準備を確認しています…計算は続けられます。';return;}
-    if(offlineReady){box.textContent=navigator.onLine===false?'オフライン・準備完了。計算は使えます。ボーダーは前回値です。':'準備完了。この端末・ブラウザで通信なしでも開き直せます。';if(offlinePreparedAt)box.textContent+='（準備 '+offlinePreparedAt+'）';if(storageFailed)box.textContent+=' 入力を端末に保存できません。バックアップを控えてください。';if(offlineError)box.textContent+=' 最新版の準備は通信復帰後に確認してください。';return;}
+    if(offlineReady){box.textContent=navigator.onLine===false?'オフライン・準備完了。計算は使えます。ボーダーは前回値です。':'準備完了。この端末・ブラウザーで通信なしでも開き直せます。';if(offlinePreparedAt)box.textContent+='（準備 '+offlinePreparedAt+'）';if(storageFailed)box.textContent+=' 入力を端末に保存できません。バックアップを控えてください。';if(offlineError)box.textContent+=' 最新版の準備は通信復帰後に確認してください。';return;}
     box.textContent=navigator.onLine===false?'オフライン起動は未準備です。通信復帰後に準備を確認してください。':offlineError||'通信できる状態で、オフライン準備を確認してください。';
   }
   function boundedOfflinePromise(promise,ms){return new Promise(function(resolve,reject){var timer=setTimeout(function(){reject(new Error('timeout'));},ms);Promise.resolve(promise).then(function(value){clearTimeout(timer);resolve(value);},function(error){clearTimeout(timer);reject(error);});});}
@@ -5113,7 +5102,6 @@ return {snsEvent:snsEvent,snsLines:snsLines,snsLineEvent:snsLineEvent,snsDayItem
     var ul=$('aoSnsList');if(!ul)return;ul.textContent='';var lines=snsSaved();
     lines.forEach(function(l,i){var li=document.createElement('li'),t=document.createElement('span'),b=document.createElement('button');t.textContent=snsLineText(l);b.type='button';b.textContent='削除';b.setAttribute('aria-label',t.textContent+' を削除');
       b.addEventListener('click',function(){var cur=snsSaved(),k=cur.indexOf(l);if(k>=0)cur.splice(k,1);snsStore(cur);snsAfterChange('削除しました。');});li.appendChild(t);li.appendChild(b);ul.appendChild(li);});
-    if($('aoSnsCopy'))$('aoSnsCopy').disabled=!lines.length;
   }
   function snsAfterChange(msg){aoSet('aoSnsResult',msg);alwaysOnEventsKey='';hitCalKey='';snsRenderList();renderAlwaysOn();renderHitCalendar();}
   function snsRead(){
@@ -5128,10 +5116,6 @@ return {snsEvent:snsEvent,snsLines:snsLines,snsLineEvent:snsLineEvent,snsDayItem
   if($('aoSns')){
     $('aoSns').addEventListener('toggle',function(){if(this.open){if(!$('aoSnsDate').value)$('aoSnsDate').value=snsTodayISO();snsRenderList();}});
     $('aoSnsRead').addEventListener('click',snsRead);
-    $('aoSnsCopy').addEventListener('click',function(){var text=snsSaved().join(String.fromCharCode(10));if(!text){aoSet('aoSnsResult','コピーする行がありません。');return;}
-      var done=function(){aoSet('aoSnsResult','共有用の行をコピーしました。「全員の画面に出す」から data/sns-events.txt の末尾に貼って保存すると、数分で全員の画面に出ます。');};
-      var fail=function(){$('aoSnsText').value=text;$('aoSnsText').focus();$('aoSnsText').select();aoSet('aoSnsResult','自動でコピーできませんでした。投稿文の欄に出した行を選んでコピーしてください。');};
-      try{if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text).then(done,fail);else fail();}catch(e){fail();}});
   }
   if($('alwaysOnOpen')&&$('alwaysOnClose')){
     $('alwaysOnOpen').addEventListener('click',function(){if(alwaysOnIsOpen)closeAlwaysOn();else openAlwaysOn();});
