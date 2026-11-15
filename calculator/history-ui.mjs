@@ -1,7 +1,7 @@
 const $=id=>document.getElementById(id),MAIN_KEY='pococha-meter-calc-v1',PREF_KEY='pococha-meter-history-v1',THEME_KEY='pococha-meter-history-theme-v1';
 const filterIDs=['query','rank','close','start','end','units','order','origin','view','pageSize'];
 const cardCopyNodes=new Map(),pendingCardCopies=new Map(),copiedCardTexts=new Set();
-let localReadFailed=false,calSelected='',calPinned='',calUser=false,calRankFocus=null,eCalendarRows=[],eCalendarReadFailed=false;
+let localReadFailed=false,calViewMonth='',calRangeChosen=false,calSelected='',calPinned='',calUser=false,calRankFocus=null,calCloseFocus=null,eCalendarRows=[],eCalendarReadFailed=false;
 let page=1,liveRows=[],seedRows=normalizeHistoryRows(SEED_HISTORY),localRows=[],index=createHistoryIndex(seedRows),allMatches=[],inputTimer=0,composing=false,manualCardCopy=null,latestCardCopyRequest=0,searchCopyRequest=0,searchCopyPending=false,lastFilterSignature='',publicRequest=null,cardCopyEpoch=0,lastCardCopyScope='',displayMonth='',renderedPageSize=20;
 for(const rank of HISTORY_RANKS){const option=document.createElement('option');option.value=rank;option.textContent=rank;$('rank').appendChild(option);}
 function filters(){return Object.fromEntries(filterIDs.map(id=>[id,$(id).value]));}
@@ -12,16 +12,16 @@ function rebuild(){localRead();try{eCalendarRows=eState(localStorage.getItem(E_K
 function loadPreferences(){let value,restored=false;displayMonth='';try{value=JSON.parse(localStorage.getItem(PREF_KEY)||'null');}catch{}
  const hash=new URLSearchParams(location.hash.slice(1)),fromHash=[...hash].length>0;if(fromHash)value=Object.fromEntries(hash);
  if(isObject(value)){for(const id of filterIDs){const v=value[id];if(typeof v==='string'&&v.length<=100){if(['query','start','end'].includes(id)||[...$(id).options].some(o=>o.value===v)){$(id).value=v;restored=true;}}}}
- if(!fromHash&&isObject(value)&&value.viewVersion!=='2'&&value.view!=='table')$('view').value='calendar';
+ if(!fromHash&&isObject(value)&&value.viewVersion!=='3'&&value.view!=='table')$('view').value='calendar';
  if(!restored){let s;try{s=JSON.parse(localStorage.getItem(MAIN_KEY)||'null');}catch{}
   $('rank').value=HISTORY_RANKS.includes(s?.rank)?s.rank:'S2';const c=s?.deadline==='00:00'?'24':typeof s?.deadline==='string'?s.deadline.slice(0,2):'';$('close').value=HISTORY_CLOSES.includes(c)?c:'22';}
  let theme='dark';try{theme=localStorage.getItem(THEME_KEY)||JSON.parse(localStorage.getItem('pococha-meter-display-v1')||'null')?.theme||'dark';}catch{}document.body.classList.toggle('light',theme==='light');syncTheme();return restored;
 }
 function syncTheme(){$('themeButton').textContent=document.body.classList.contains('light')?'暗い表示':'明るい表示';}
-function savePreferences(){let message='この端末に検索条件を保存しました。';try{localStorage.setItem(PREF_KEY,JSON.stringify({...filters(),viewVersion:'2'}));}catch{message='検索条件を保存できません。検索は利用できます。';}$('preferenceStatus').textContent=(localReadFailed||eCalendarReadFailed?'端末の記録を読み直せません。読み込み済みの記録と保存資料を表示しています。端末の記録は変更していません。 ':'')+message;}
+function savePreferences(){let message='この端末に検索条件を保存しました。';try{localStorage.setItem(PREF_KEY,JSON.stringify({...filters(),viewVersion:'3'}));}catch{message='検索条件を保存できません。検索は利用できます。';}$('preferenceStatus').textContent=(localReadFailed||eCalendarReadFailed?'端末の記録を読み直せません。読み込み済みの記録と保存資料を表示しています。端末の記録は変更していません。 ':'')+message;}
 function browseMonth(month){const range=historyMonthRange(month);if(!range)return;displayMonth=range.month;renderCalendar(filters());renderRecordNavigation(filters());if(filters().view==='calendar')renderCalendarView(filters());}
-function setRange(range){if(!range)return;composing=false;clearTimeout(inputTimer);displayMonth=range.end.slice(0,7);$('start').value=range.start;$('end').value=range.end;$('query').value='';render(true);}
-function latestMonth(){const date=latestHistoryDate(index,filters());if(date)setRange(historyMonthRange(date.slice(0,7)));else render(true);}
+function setRange(range,auto=false){if(!range)return;if(!auto){calRangeChosen=true;calViewMonth='';}composing=false;clearTimeout(inputTimer);displayMonth=range.end.slice(0,7);$('start').value=range.start;$('end').value=range.end;$('query').value='';render(true);}
+function latestMonth(auto=false){const date=latestHistoryDate(index,filters());if(date)setRange(historyMonthRange(date.slice(0,7)),auto);else render(true);}
 function node(tag,text,className){const el=document.createElement(tag);if(text!==undefined)el.textContent=text;if(className)el.className=className;return el;}
 function calendarMonth(){const f=filters(),latest=latestHistoryDate(index,f);return displayMonth||(validHistoryDate(f.end)?f.end.slice(0,7):'')||(validHistoryDate(f.start)?f.start.slice(0,7):'')||latest?.slice(0,7)||new Date(Date.now()+9*60*60*1000).toISOString().slice(0,7);}
 function renderCalendar(f){
@@ -70,7 +70,7 @@ function render(reset=false){if(composing)return {rows:allMatches,error:''};if(r
  $('scope').replaceChildren();const chips=[['rank',f.rank||'全ランク',!!f.rank],['close',f.close?f.close+'時〆':'全締め時間',!!f.close],['period',(f.start||'最初の記録')+'〜'+(f.end||'最新の記録'),!!(f.start||f.end)],['query',f.query?'検索：'+f.query:'',!!f.query],['origin',f.origin==='personal'?'端末の記録':f.origin==='published'?'掲載・取得記録':'',!!f.origin]];for(const [key,text,removable] of chips){if(!text)continue;const chip=node(removable?'button':'span',text+(removable?' ×':''),'filter-chip');if(removable){chip.type='button';chip.setAttribute('aria-label',text+'の条件を解除');chip.addEventListener('click',()=>{for(const id of key==='period'?['start','end']:[key])$(id).value='';if(key==='period')displayMonth='';render(true);moveTo('resultHeading');});}$('scope').appendChild(chip);}
  const days=new Set(allMatches.map(row=>row.date+'|'+row.close));$('resultCount').textContent=result.error?'条件を修正してください。':allMatches.length.toLocaleString('ja-JP')+'件（'+days.size.toLocaleString('ja-JP')+'日・締め時間の記録）';
  const manualBefore=manualCardCopy,manualFocus=manualBefore&&document.activeElement===manualBefore.textarea,selectionStart=manualBefore?.textarea.selectionStart,selectionEnd=manualBefore?.textarea.selectionEnd;
- $('emptyState').hidden=!!result.error||allMatches.length!==0;const calView=f.view==='calendar';$('calendarResults').hidden=!calView;$('results').hidden=f.view!=='cards';$('tableResults').hidden=f.view!=='table';cardCopyNodes.clear();$('results').replaceChildren();$('tableResults').replaceChildren();
+ $('emptyState').hidden=!!result.error||allMatches.length!==0;const calView=f.view==='calendar';document.body.classList.toggle('cal-mode',calView);$('showCalendar').setAttribute('aria-pressed',String(calView));$('showList').setAttribute('aria-pressed',String(!calView));$('calendarResults').hidden=!calView;$('results').hidden=f.view!=='cards';$('tableResults').hidden=f.view!=='table';cardCopyNodes.clear();$('results').replaceChildren();$('tableResults').replaceChildren();
  if(f.view==='table'&&slice.rows.length){const table=node('table'),caption=node('caption','検索条件に合うボーダー記録（'+(f.units==='K'?'K':'pt')+'）');table.appendChild(caption);const head=node('thead'),tr=node('tr');for(const text of ['日付','ランク','締め','±0','+1','+2','記録・出典']){const th=node('th',text);th.scope='col';tr.appendChild(th);}head.appendChild(tr);table.appendChild(head);const body=node('tbody');for(const row of slice.rows){const tr=node('tr');for(const [i,text] of [row.date.replaceAll('-','/'),row.rank,row.close+'時',...row.values.map((v,i)=>historyRowNumber(row,i,f.units))].entries()){const td=node('td',text);if(i>=3){td.title=row.displayValues?'画面表示値（概数）':row.values[i-3].toLocaleString('ja-JP')+' pt';td.setAttribute('aria-label',row.displayValues?row.displayValues[i-3]+'（画面表示値・概数）':row.values[i-3]+'ポイント');}tr.appendChild(td);}const td=node('td');td.appendChild(sourceNode(row));tr.appendChild(td);body.appendChild(tr);}table.appendChild(body);$('tableResults').appendChild(table);}
  else if(f.view==='cards')for(const row of slice.rows)$('results').appendChild(card(row));
  if(calView){cardCopyNodes.clear();renderCalendarView(f);}
@@ -95,16 +95,17 @@ function syncSearchCopy(){const signature=JSON.stringify(filters());if(signature
 function moveTo(id){document.activeElement?.blur?.();$(id).focus({preventScroll:true});$(id).scrollIntoView({block:'start',behavior:'auto'});}
 $('historyForm').addEventListener('submit',event=>{event.preventDefault();if(composing||event.isComposing)return;clearTimeout(inputTimer);const result=render(true);if(result.error){$('advanced').open=true;moveTo('start');}else moveTo('resultHeading');});
 $('clearQuery').addEventListener('click',()=>{$('query').value='';clearTimeout(inputTimer);composing=false;render(true);$('query').focus();});
-$('editConditions').addEventListener('click',()=>moveTo('filterHeading'));$('showResults').addEventListener('click',()=>moveTo('resultHeading'));
+$('editConditions').addEventListener('click',()=>moveTo('filterHeading'));
+$('showCalendar').addEventListener('click',()=>{$('view').value='calendar';render();window.scrollTo?.(0,0);});$('showList').addEventListener('click',()=>{if($('view').value==='calendar')$('view').value='cards';render();moveTo('filterHeading');});$('showResults').addEventListener('click',()=>moveTo('resultHeading'));
 $('pageJumpForm').addEventListener('submit',event=>{event.preventDefault();const requested=Number($('pageJump').value);if(!Number.isInteger(requested)||requested<1){$('pageJump').value=String(page);$('pageJump').focus();return;}page=requested;render();moveTo('resultHeading');});
-for(const id of filterIDs)$(id).addEventListener('change',()=>{if(['units','view'].includes(id)){render();return;}if(id==='pageSize'){const first=(page-1)*renderedPageSize,size=Number($('pageSize').value)||20;page=Math.floor(first/size)+1;render();return;}if(['start','end'].includes(id))displayMonth='';render(true);});
+for(const id of filterIDs)$(id).addEventListener('change',()=>{if(['units','view'].includes(id)){render();return;}if(id==='pageSize'){const first=(page-1)*renderedPageSize,size=Number($('pageSize').value)||20;page=Math.floor(first/size)+1;render();return;}if(['start','end'].includes(id)){displayMonth='';calRangeChosen=true;calViewMonth='';}render(true);});
 $('query').addEventListener('compositionstart',()=>{composing=true;clearTimeout(inputTimer);});$('query').addEventListener('compositionend',()=>{composing=false;render(true);});$('query').addEventListener('input',()=>{if(composing)return;clearTimeout(inputTimer);inputTimer=setTimeout(()=>render(true),180);});
 $('month').addEventListener('change',()=>browseMonth($('month').value));for(const [id,delta] of [['prevMonth',-1],['nextMonth',1]])$(id).addEventListener('click',()=>{const range=historyMonthRange(calendarMonth(),delta);if(range)browseMonth(range.month);});
 for(const [id,direction] of [['prevRecord',-1],['nextRecord',1],['latestRecord',0],['emptyLatest',0]])$(id).addEventListener('click',()=>selectRecordDay(direction));
 $('emptyEdit').addEventListener('click',()=>{$('advanced').open=true;moveTo('query');});
 $('monthAll').addEventListener('click',()=>{setRange(historyMonthRange(calendarMonth()));moveTo('resultHeading');});
 for(const [id,days] of [['recent7',7],['recent30',30]])$(id).addEventListener('click',()=>{setRange(recentHistoryRange(index,filters(),days));moveTo('resultHeading');});$('latestMonth').addEventListener('click',()=>{latestMonth();moveTo('resultHeading');});
-function clearFilters(){composing=false;clearTimeout(inputTimer);displayMonth='';for(const id of ['query','rank','close','start','end','origin'])$(id).value='';$('month').value='';render(true);}for(const id of ['clearFilters','emptyClear'])$(id).addEventListener('click',clearFilters);
+function clearFilters(){composing=false;clearTimeout(inputTimer);displayMonth='';calRangeChosen=false;calViewMonth='';for(const id of ['query','rank','close','start','end','origin'])$(id).value='';$('month').value='';render(true);}for(const id of ['clearFilters','emptyClear'])$(id).addEventListener('click',clearFilters);
 for(const [id,delta] of [['prevPage',-1],['nextPage',1],['prevPageTop',-1],['nextPageTop',1]])$(id).addEventListener('click',()=>{page+=delta;render();moveTo('resultHeading');});
 $('themeButton').addEventListener('click',()=>{document.body.classList.toggle('light');syncTheme();try{localStorage.setItem(THEME_KEY,document.body.classList.contains('light')?'light':'dark');}catch{$('preferenceStatus').textContent='表示の明るさを保存できません。現在の表示は利用できます。';}});
 $('copySearch').addEventListener('click',async()=>{
@@ -117,7 +118,7 @@ $('copySearch').addEventListener('click',async()=>{
 $('closeCopySearch').addEventListener('click',()=>{searchCopyRequest++;searchCopyPending=false;$('copySearch').disabled=false;$('copySearch').setAttribute('aria-busy','false');$('copyFallback').hidden=$('closeCopySearch').hidden=true;$('copySearchStatus').textContent='';$('advanced').open=true;$('copySearch').focus({preventScroll:true});});
 window.addEventListener('storage',event=>{if(event.key===MAIN_KEY||event.key===E_KEY||event.key===null){rebuild();render();}});
 window.addEventListener('hashchange',()=>{loadPreferences();render(true);});
-rebuild();const restoredPreferences=loadPreferences();if(!restoredPreferences)latestMonth();else render();
+rebuild();const restoredPreferences=loadPreferences();if(!restoredPreferences)latestMonth(true);else render();
 function showNetworkIdle(message){$('networkStatus').textContent=message;$('retryPublic').disabled=false;$('retryPublic').textContent='公開データを再確認';$('retryPublic').setAttribute('aria-busy','false');}
 function stopPublic(message){const request=publicRequest;if(request){publicRequest=null;request.controller.abort();request.cancel();}showNetworkIdle(message);}
 async function refreshPublic(){
@@ -143,27 +144,29 @@ window.addEventListener('pageshow',event=>{if(!event.persisted)return;rebuild();
 
 function calShort(row,i=0){if(row.displayValues)return String(row.displayValues[i]);const n=Number(row.values[i]);if(!Number.isFinite(n))return '';if(n<1000)return String(n);if(n<1e6)return Math.round(n/1000)+'K';return (n/1e6).toFixed(n<1e7?2:1)+'M';}
 function renderCalendarView(f){
- const box=$('calendarResults');box.replaceChildren();const model=historyMeterCalendar(index,f,calendarMonth());
+ const box=$('calendarResults');box.replaceChildren();const latest=latestHistoryDate(index,{...f,start:'',end:'',query:''}),chosen=calRangeChosen&&validHistoryDate(f.end)?f.end:calRangeChosen&&validHistoryDate(f.start)?f.start:'';const model=historyMeterCalendar(index,f,calViewMonth||chosen.slice(0,7)||latest?.slice(0,7)||calendarMonth());
  if(!model){box.appendChild(node('p','月・ランク・締め時間を確認してください。','sub'));return;}
  const dates=new Set();for(const group of model.ranks)for(const cell of group.cells)if(cell&&cell.records.some(r=>r.row))dates.add(cell.date);
  if(f.start&&f.start===f.end&&dates.has(f.start)&&calPinned!==f.start){calSelected=f.start;calPinned=f.start;}else if(!calUser||!dates.has(calSelected))calSelected=[...dates].sort().at(-1)||'';
  const nav=node('div',undefined,'cal-nav'),prev=node('button','‹ 前月'),next=node('button','翌月 ›'),label=node('h3',Number(model.month.slice(0,4))+'年'+Number(model.month.slice(5,7))+'月');
  prev.type=next.type='button';prev.id='calPrev';next.id='calNext';prev.setAttribute('aria-label','前の月');next.setAttribute('aria-label','次の月');label.id='calLabel';
  prev.disabled=!historyMonthRange(model.month,-1);next.disabled=!historyMonthRange(model.month,1);
- for(const [b,d] of [[prev,-1],[next,1]])b.addEventListener('click',()=>{const range=historyMonthRange(model.month,d);if(!range)return;displayMonth=range.month;calSelected='';calUser=false;renderCalendarView(filters());renderCalendar(filters());$(d<0?'calPrev':'calNext')?.focus({preventScroll:true});});
- nav.appendChild(prev);nav.appendChild(label);nav.appendChild(next);box.appendChild(nav);const legend=node('p',undefined,'cal-legend');for(const [k,t] of [[0,'±0'],[1,'+1'],[2,'+2']])legend.appendChild(node('span',t,'cal-val v'+k));legend.appendChild(node('span',model.closes.length>1?'（'+model.closes.join('・')+'時〆の順）':'（上から）','sub'));box.appendChild(legend);
+ for(const [b,d] of [[prev,-1],[next,1]])b.addEventListener('click',()=>{const range=historyMonthRange(model.month,d);if(!range)return;calViewMonth=range.month;calSelected='';calUser=false;renderCalendarView(filters());$(d<0?'calPrev':'calNext')?.focus({preventScroll:true});});
+ nav.appendChild(prev);nav.appendChild(label);nav.appendChild(next);box.appendChild(nav);
  // ランク帯の切り替え：横に並べたボタン（S6〜E、全ランク）。押すとそのランクで表示し直す（月はそのまま）
  const rankBar=node('div',undefined,'cal-ranks');rankBar.setAttribute('role','group');rankBar.setAttribute('aria-label','カレンダーのランクを切り替え');
- const step=node('div',undefined,'cal-rank-step'),ranks=HISTORY_RANKS,cur=ranks.indexOf(f.rank);
+ const ranks=HISTORY_RANKS;
  const pickRank=rank=>{$('rank').value=rank;calRankFocus=rank;render(true);};
- const up=node('button',cur>0?'‹ '+ranks[cur-1]:'‹ 上','cal-step'),down=node('button',cur>=0&&cur<ranks.length-1?ranks[cur+1]+' ›':'下 ›','cal-step');up.type=down.type='button';
- up.disabled=cur<=0;down.disabled=cur<0||cur>=ranks.length-1;up.setAttribute('aria-label','ひとつ上のランク'+(cur>0?'（'+ranks[cur-1]+'）':''));down.setAttribute('aria-label','ひとつ下のランク'+(cur>=0&&cur<ranks.length-1?'（'+ranks[cur+1]+'）':''));
- up.addEventListener('click',()=>{if(cur>0)pickRank(ranks[cur-1]);});down.addEventListener('click',()=>{if(cur>=0&&cur<ranks.length-1)pickRank(ranks[cur+1]);});
- step.appendChild(up);step.appendChild(node('strong',f.rank||'全ランク','cal-rank-now'));step.appendChild(down);box.appendChild(step);
  let currentChip=null;for(const rank of [...ranks,'']){const chip=node('button',rank||'全ランク','cal-rank-chip');chip.type='button';chip.setAttribute('data-rank',rank);chip.setAttribute('aria-pressed',String(rank===f.rank));chip.addEventListener('click',()=>pickRank(rank));rankBar.appendChild(chip);if(rank===f.rank)currentChip=chip;}
  box.appendChild(rankBar);
+ // 締め時間の切り替え（13・22・24時・すべて）
+ const closeBar=node('div',undefined,'cal-closes');closeBar.setAttribute('role','group');closeBar.setAttribute('aria-label','締め時間を切り替え');
+ for(const [value,text] of [['13','13時〆'],['22','22時〆'],['24','24時〆'],['','すべて']]){const b=node('button',text,'cal-close-chip');b.type='button';b.setAttribute('data-close',value);b.setAttribute('aria-pressed',String(value===f.close));b.addEventListener('click',()=>{$('close').value=value;calCloseFocus=value;render(true);});closeBar.appendChild(b);}
+ box.appendChild(closeBar);
+ if(calCloseFocus!==null){const t=calCloseFocus;calCloseFocus=null;[...closeBar.children].find(c=>c.getAttribute('data-close')===t)?.focus?.({preventScroll:true});}
  if(currentChip&&typeof requestAnimationFrame==='function')requestAnimationFrame(()=>{rankBar.scrollLeft=currentChip.offsetLeft-rankBar.clientWidth/2+currentChip.offsetWidth/2;});
- if(calRankFocus!==null){const target=calRankFocus===f.rank?(currentChip||up):null;calRankFocus=null;target?.focus?.({preventScroll:true});}
+ if(calRankFocus!==null){const target=calRankFocus===f.rank?currentChip:null;calRankFocus=null;target?.focus?.({preventScroll:true});}
+const legend=node('p',undefined,'cal-legend');for(const [k,t] of [[0,'±0'],[1,'+1'],[2,'+2']])legend.appendChild(node('span',t,'cal-val v'+k));legend.appendChild(node('span',model.closes.length>1?'（'+model.closes.join('・')+'時〆の順）':'（上から）','sub'));box.appendChild(legend);
  const today=new Date(Date.now()+9*36e5).toISOString().slice(0,10),groups=model.ranks.filter(g=>g.count||model.ranks.length===1);
  if(!groups.length)box.appendChild(node('p','この月は条件に合う記録がありません。前月・翌月を確認してください。','sub cal-note'));
  for(const group of groups){
@@ -190,5 +193,5 @@ function renderCalendarView(f){
  else detail.appendChild(node('p','記録のある日を押すと、±0・+1・+2を表示します。','sub'));
  if(f.rank==='E'){const add=node('a','📝 E帯の記録を追加・編集（画像取り込み・手入力）','cal-e-link');add.href='./e-border.html';detail.appendChild(add);}
  box.appendChild(detail);
- box.appendChild(node('p',(model.closes.length>1?'締め時間をすべて表示中：各日の数字は上から'+model.closes.join('・')+'時〆の順に、それぞれ±0・+1・+2。':'各日の数字は上から±0・+1・+2。')+'数字は概数（K＝千、M＝百万）。E帯は、この端末で記録した画面表示値（E帯のボーダー記録で追加）です。カレンダーは期間・キーワードの条件を使わず、ランク・締め時間・記録の種類で絞り込みます。','sub cal-note'));
+ box.appendChild(node('p','数字は概数（K＝千・M＝百万）。E帯はこの端末で記録した画面表示値です。期間・キーワードで探すときは「一覧・検索」へ。','sub cal-note'));
 }
