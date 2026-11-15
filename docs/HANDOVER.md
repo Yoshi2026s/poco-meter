@@ -127,7 +127,7 @@ git switch -c codex/example-task "origin/(root)"
 - v2026.11.12.3（予想の答え合わせ・パネルでの現メーター変更・本日のイベラス・的中率表示）は標準チェック・vite系10本に合格、Playwrightは record-display 合格・hud-items と phone-layout は既知の失敗のみ。[PR #51](https://github.com/Yoshi2026s/poco-meter/pull/51) で統合・公開済み（`f80a260`）。公開URLで版表示・予想データの accuracy と lasts・375×812でのパネル（予想・的中率・イベラス・横はみ出し無し）を確認。実機・WebKitは未確認。
 
 - v2026.11.12.1（常時表示パネル）は標準チェック・vite系10本に合格。Playwright画面系は record-display 合格、hud-items（HUD target）と phone-layout（320×568）は変更前と同じ既知の失敗。[PR #48](https://github.com/Yoshi2026s/poco-meter/pull/48) で統合・公開済み（`8c8b29b`）。公開URLで版表示・`data/meter-forecast.json`（200）・375×812でのパネル表示（予想・イベント・横はみ出し無し）を確認。実機・WebKit・Wake Lockの実効は未確認。初めて開いた端末でボーダー読込中に予想欄が「記録0日分」と出る点は v2026.11.12.2 で「読込中…」表示に修正。
-- Windowsでは `scripts/test-extra.sh` の NODE_PATH 区切り（`:`）が効かず acorn・playwright が見つからない。個別実行時は `;` 区切りで指定し、Chromiumは `POCOCHA_CHROMIUM` で ms-playwright の chromium-1248 を指定した。
+- Windowsでは `scripts/test-extra.sh` の NODE_PATH 区切り（`:`）が効かず acorn・playwright が見つからない。個別実行時は `;` 区切りで指定し、Chromiumは `POCOCHA_CHROMIUM` で ms-playwright の chromium-1248 を指定した。この端末では node・gh が PATH に無く、Node 24 は `~/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin`（playwright も同じ場所の `node_modules`）にある。
 
 - v2026.11.11.5（Yoshi1012タグを免責事項の右隣へ移動・サイズ統一）は標準チェックと `npm run test:extra` のvite系10本に合格。Playwright画面系3本は未実行。Chromiumの360・700px幅で配置と免責事項の開閉を確認。[PR #45](https://github.com/Yoshi2026s/poco-meter/pull/45) で統合・公開済み（`34e83a1`）。公開URLで360px幅の版表示・免責事項と同じ行・同寸（166×44px）・横はみ出し無しを確認。WebKit・実機は未確認。
 - v2026.11.11.4（ボーダー選択リストから手入力を完全削除・既定値側の手入力を復旧）は標準チェックと `npm run test:extra` のvite系10本に合格（`mobile-usability-10000` は選択肢数の期待値を41に更新）。Playwright画面系3本は未実行。[PR #43](https://github.com/Yoshi2026s/poco-meter/pull/43) で統合・公開済み（`9e2ecd8`）。公開先の360px幅で版表示と、3つのリストが±0・+1・+2のみ・既定値側に手入力があることを確認した。iOS Safari・実機は未確認。
@@ -135,9 +135,12 @@ git switch -c codex/example-task "origin/(root)"
 - v2026.11.11.2（タイトル欄を最上部へ移動）は標準チェックと `npm run test:extra` のvite系10本に合格。Playwright画面系3本は未実行。Chromiumの375・700px幅と812×375の横持ちで配置と使い方・表示設定の開閉を確認。[PR #39](https://github.com/Yoshi2026s/poco-meter/pull/39) で統合・公開済み（`29710a1`）。公開先のスマホ幅で版表示とタイトル欄が最上部にあることを確認した。WebKit・実機は未確認。
 - v2026.11.11.1（カード枠の装飾）は標準チェックと `npm run test:extra` のvite系10本に合格。Playwright画面系3本はこの端末にPlaywrightが無く未実行。ローカルの公開物をChromiumの360・375・700px幅で4画面目視（暗い・明るい表示）。[PR #37](https://github.com/Yoshi2026s/poco-meter/pull/37) で統合・公開済み（`1778872`）。公開先で版表示（版を出す3画面）と4画面の枠のCSS反映と、メーター画面のスマホ幅表示を確認した。WebKit・実機は未確認。
 - v2026.11.10.4（初回表示・サブ画面の見出し情報・404）は標準チェックと関連回帰テストに合格し、ローカルで組み立てた公開物をChromiumのスマホ幅で確認した。`npm run test:extra` はvite系10本に合格、Playwright画面系3本はこの端末にPlaywrightが無く未実行。[PR #35](https://github.com/Yoshi2026s/poco-meter/pull/35) で統合・公開済み（`cf6a7af`）。公開先ではページを取得して、版・タイトル・アイコン・404ページ・文言の反映を確認した。WebKit・実機と、公開先でのブラウザー操作（「読込中…」の見え方）は未確認。
-- 旧テスト `offline-ui-50.mjs`（U49）・`offline-sw-5000.mjs`・`offline-ui-5000.mjs`・`offline-reliability-1000.mjs` は標準チェックの対象外で、既定ブランチ `8ae64dc` でも同じ項目が失敗する。
 - 物理端末のSafariとOSキーボードは未確認。
-- 旧 `e-border-100-rounds.mjs` はEランクを無効とする期待値で失敗し、変更前の既定ブランチでも再現した。現行仕様を確認する `e-rank-unified.mjs` は合格。 [PR #33](https://github.com/Yoshi2026s/poco-meter/pull/33)
+- 標準外の旧テスト（2026/11/16 全件実行、`0968ad7`）：`tests/*.mjs` のうち標準チェック・画面系以外の77本中51本は合格。失敗26本はすべて取込直後 `8913782` でも失敗しており、現行コードの不具合ではない（落ちる項目が増えた7本も、仕様変更・廃止した欄・取得ファイルが1本増えたことによるずれと確認）。
+  - 旧Sites・Worker前提（Pages版では使わない）：`admin-worker`・`contact-*`（images・tracking・worker）・`cloudflare-pages-migration`・`security-hardening`・`security-management`・`image-metadata-security`・`debug-current-10000`。
+  - 古い仕様の期待値：`e-border-100-rounds`（E1〜E3。現行は `e-rank-unified` が合格）・`strengthen-50`・`mobile-debug-50`（廃止した `adjustAmount` 等）・`retired-external-app-features`・`fixed-panel-focus`・`save-menu`・`saved-record-months`・`pococha-clock-ui`・`border-client-precision`・`border-reliability-regressions`（旧API前提、予想データの取得分だけ呼び出し回数が多い）・`history-debug-ten-rounds`（内部の `security-hardening` のみ失敗）。
+  - オフライン系 `offline-ui-50`・`offline-ui-5000`・`offline-sw-5000`・`offline-reliability-1000` も同様。`meter-validation-ten-rounds` は5分を超えるため未完了。`history-mobile-audit` は引数が必要。
+  - 古いテストを直すときは1本ずつ仕様を確かめて期待値を更新する（実行すると `docs/` に結果JSONを書くものがあるので、終わったら元に戻す）。
 
 ## 主なユーザー決定（覆さない）
 - 使うのは「ボーダー自動更新」と「計算画面」。Pages版ではアクセス統計送信・管理ページリンク・Pocochaサーバー時刻を外す（時刻は端末時刻と明示）。
