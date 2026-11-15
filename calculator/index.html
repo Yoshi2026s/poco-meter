@@ -2256,6 +2256,22 @@ html:root body #borderTargets .btns{grid-template-columns:repeat(3,minmax(0,1fr)
   html:root body #borderTargets .btns{grid-template-columns:repeat(2,minmax(0,1fr))!important}
   html:root body #borderTargets .btns>button:last-child:nth-child(odd){grid-column:1/-1}
 }
+
+/* 2026-11-15 過去のボーダー表への入口をスマホ縦持ちでは上部（残りアイテムの目安の下）に目立たせて置く。下の同じリンクはスマホでは隠す。
+   PC・横持ちは従来どおり下部のリンクのみ（画面配置を変えない） */
+html:root body #mainHistoryLink{display:none}
+@media (max-width:559px){
+  html:root body #mini.main-screen>#mainHistoryLink{display:flex!important;align-items:center;gap:10px;min-height:52px;padding:8px 12px!important;margin-top:6px!important;border:1px solid #0d47a1;border-radius:12px;background:linear-gradient(135deg,#1565c0,#0d47a1);color:#fff!important;text-decoration:none;box-shadow:0 3px 0 #082f6b}
+  html:root body #mainHistoryLink :is(.mhl-icon,.mhl-arrow,.mhl-text,.mhl-text b,.mhl-text small){color:#fff!important;-webkit-text-fill-color:#fff}
+  html:root body #mainHistoryLink .mhl-icon{font-size:1.4rem;flex:0 0 auto}
+  html:root body #mainHistoryLink .mhl-text{display:flex;flex-direction:column;flex:1 1 auto;min-width:0;line-height:1.25}
+  html:root body #mainHistoryLink .mhl-text b{font-size:16px!important}
+  html:root body #mainHistoryLink .mhl-text small{font-size:12px!important;opacity:.92}
+  html:root body #mainHistoryLink .mhl-arrow{font-size:1.6rem;flex:0 0 auto;line-height:1}
+  html:root body #mainHistoryLink:focus-visible{outline:3px solid #ffd54f;outline-offset:2px}
+  html:root body #historyPortal{display:none}
+}
+html.always-on-mode body #mini.main-screen>#mainHistoryLink{display:none!important}
 </style>
 </head>
 <body>
@@ -2321,6 +2337,7 @@ html:root body #borderTargets .btns{grid-template-columns:repeat(3,minmax(0,1fr)
 <small id="miniBufferError" hidden role="status" aria-live="polite"></small>
 <!-- phone-current:end -->
 <section id="itemsWindow" aria-labelledby="itemsWindowTitle"><div class="items-window-head"><h2 id="itemsWindowTitle">残りアイテムの目安</h2><div class="items-core"><label for="coreCountItems">現コア数</label><input id="coreCountItems" class="num" type="text" inputmode="numeric" enterkeyhint="done" autocomplete="off" placeholder="0" aria-label="現コア数（0〜1000人）" aria-describedby="coreCountItemsError inputStatus" value="0"></div></div><small id="coreCountItemsError" class="items-core-error" hidden></small><div id="itemsWindowRow"></div></section>
+<a class="main-history-link" id="mainHistoryLink" href="/border-history"><span class="mhl-icon" aria-hidden="true">📋</span><span class="mhl-text"><b>過去のボーダー表</b><small>カレンダーで日ごとの±0・+1・+2</small></span><span class="mhl-arrow" aria-hidden="true">›</span></a>
 <section class="main-card main-forecast-card" id="mainForecastCard" aria-labelledby="aoRankHead"><h2 class="main-card-head" id="aoRankHead" tabindex="-1">設定ランクの予想</h2><div class="ao-fvalue num" id="aoForecast"></div><div class="ao-frange num" id="aoRange"></div><div class="ao-trend" id="aoTrend"></div><p class="ao-accuracy" id="aoAccuracy"></p><p class="ao-accuracy ao-record" id="aoRecord"></p><div class="ao-history" id="aoHistoryBox" hidden><button type="button" class="ao-history-toggle" id="aoHistoryToggle" aria-expanded="false" aria-controls="aoHistory"><span class="ao-history-mark" aria-hidden="true">▸</span> <span id="aoHistorySummary">直近の答え合わせ</span></button><ul id="aoHistory" hidden></ul></div><ul class="ao-reasons" id="aoReasons"></ul><p class="ao-note" id="aoForecastNote"></p><details class="ao-calendar" id="hitCalendar"><summary>📅 的中率カレンダー（日ごとの答え合わせ）</summary><div class="ao-cal-body"><div class="ao-cal-nav"><button type="button" id="hitCalPrev" aria-label="前の月">◀</button><b id="hitCalMonth" aria-live="polite"></b><button type="button" id="hitCalNext" aria-label="次の月">▶</button></div><p class="ao-cal-sum" id="hitCalSummary"></p><div class="ao-cal-grid" id="hitCalGrid"></div><p class="ao-cal-detail" id="hitCalDetail" role="status" aria-live="polite"></p><p class="ao-note" id="hitCalNote">緑は±10%以内、橙は±10%超。その日より前のデータだけで作った予想と実際のボーダーの比較です（補正は月ごとに作り直し）。下線は毎日の自動記録の予想。●は設定ランクが対象の大型イベント、◆はイベラス（その日が最終日のイベント）がある日。日付をタップすると、その日のイベントも表示します（イベラスは橙、開催中は青の文字）。</p></div></details></section>
 <section class="main-card main-events-card" id="mainEventsCard" aria-labelledby="aoEventsHead"><h2 class="main-card-head ao-last-head" id="aoLastHead">本日のイベラス（最終日）</h2><ul class="ao-list ao-last" id="aoLast"></ul><p class="ao-note" id="aoLastNote"></p><h2 class="main-card-head" id="aoEventsHead">今日の開催イベント</h2><ul class="ao-list" id="aoEvents"></ul><h2 class="main-card-head ao-next-head" id="aoTomorrowHead" hidden>明日から</h2><ul class="ao-list" id="aoTomorrow"></ul><p class="ao-note" id="aoEventsNote"></p><details class="ao-calendar ao-sns" id="aoSns"><summary>公式X・インスタの告知を読み取る</summary><div class="ao-sns-body"><p class="ao-note">半日・時間限定のイベントは公式X（@pococha_jp）やインスタだけで告知されることがあります。X・インスタは規約で自動収集が禁止のため自動では取りに行きません。投稿文をコピーしてここに貼ると、期間・時間帯・対象ランクを読み取り、この端末の「今日の開催イベント」と的中率カレンダーに出します（本文は保存しません）。</p><label class="ao-sns-label" for="aoSnsText">投稿文</label><textarea id="aoSnsText" rows="4" placeholder="例：本日21時〜24時 夜の部ランキング開催！対象：S1〜S6"></textarea><div class="ao-sns-row"><label class="ao-sns-label" for="aoSnsDate">投稿日</label><input type="date" id="aoSnsDate"><label class="ao-sns-label" for="aoSnsUrl">投稿のURL（任意）</label><input type="url" id="aoSnsUrl" inputmode="url" placeholder="https://x.com/pococha_jp/status/…"></div><button type="button" class="ao-sns-btn" id="aoSnsRead">読み取って追加</button><p class="ao-sns-result" id="aoSnsResult" role="status" aria-live="polite"></p><ul class="ao-sns-list" id="aoSnsList"></ul></div></details></section>
 <section class="main-tools" id="mainTools" aria-label="目標の条件・コピー・換算"><p class="hint goal-context" id="appliedContext" tabindex="0" aria-label="目標設定時の条件"></p><p id="manualTargetMsg" class="toast" role="status"></p>
@@ -2558,7 +2575,7 @@ html:root body #borderTargets .btns{grid-template-columns:repeat(3,minmax(0,1fr)
   <p class="hint" id="borderSyncStatus" role="status" style="font-size:.68rem;margin:5px 2px 8px;line-height:1.5">ボーダー確認中…</p>
   
   <div class="history-portal"><a href="https://poco-meter.freefreelife2000.chatgpt.site/e-border.html" class="manual-link" id="eBorderPortalLink"><span aria-hidden="true">📝</span><span class="history-portal-text"><span class="history-portal-title">E帯の記録を追加</span><span class="hint">画像取り込み・手入力・編集（表示は過去のボーダー表）</span></span><span class="history-portal-arrow" aria-hidden="true">›</span></a></div>
-  <div class="history-portal"><a href="/border-history" class="manual-link" id="historyPortalLink"><span aria-hidden="true">📋</span><span class="history-portal-text"><span class="history-portal-title">過去のボーダー表</span><span class="hint">カレンダー・ランク切り替え（E帯も表示）</span></span><span class="history-portal-arrow" aria-hidden="true">›</span></a></div>
+  <div class="history-portal" id="historyPortal"><a href="/border-history" class="manual-link" id="historyPortalLink"><span aria-hidden="true">📋</span><span class="history-portal-text"><span class="history-portal-title">過去のボーダー表</span><span class="hint">カレンダー・ランク切り替え（E帯も表示）</span></span><span class="history-portal-arrow" aria-hidden="true">›</span></a></div>
   
   <div class="period-notice-actions" id="periodNoticeActions" hidden><button type="button" id="reviewPeriodCurrent">現在値を確認・入力</button><button type="button" id="resetPeriodCurrent">0にリセット</button></div>
 
