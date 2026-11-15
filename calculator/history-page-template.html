@@ -74,7 +74,14 @@
 .cal-day:disabled{cursor:default;opacity:.55;background:transparent}
 .cal-day .cal-num{font-size:12px;font-weight:700;line-height:1.2}
 .cal-day .cal-val{font-size:11px;font-weight:700;line-height:1.25;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:clip;font-variant-numeric:tabular-nums}
-.cal-day .cal-val.multi{font-size:10px;line-height:1.2;letter-spacing:-.02em}
+.cal-set{display:flex;flex-direction:column;gap:0}
+.cal-set.multi{border-top:1px solid var(--line);padding-top:1px;margin-top:1px}
+.cal-set.none{font-size:10px;color:var(--sub)}
+.cal-day .cal-val{font-size:10px;line-height:1.2;letter-spacing:-.03em}
+.cal-val.v0{color:var(--accent)}.cal-val.v1{color:var(--text)}.cal-val.v2{color:var(--sub)}
+.cal-legend{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center;margin:0 0 6px;font-size:12px;font-weight:700}
+.cal-legend .cal-val{font-size:12px}
+.cal-set:not(.multi) .cal-val{font-size:11px}
 .cal-day[aria-pressed="true"]{outline:3px solid var(--accent);outline-offset:-1px}
 .cal-day.today .cal-num{text-decoration:underline}
 .cal-blank{min-height:52px}

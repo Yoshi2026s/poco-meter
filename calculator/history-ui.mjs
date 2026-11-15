@@ -141,7 +141,7 @@ if('serviceWorker' in navigator&&window.isSecureContext)navigator.serviceWorker.
 // A restored page can miss storage events while it is frozen in the back-forward cache.
 window.addEventListener('pageshow',event=>{if(!event.persisted)return;rebuild();render();refreshPublic();});
 
-function calShort(row){if(row.displayValues)return String(row.displayValues[0]);const n=Number(row.values[0]);if(!Number.isFinite(n))return '';if(n<1000)return String(n);if(n<1e6)return Math.round(n/1000)+'K';return (n/1e6).toFixed(n<1e7?2:1)+'M';}
+function calShort(row,i=0){if(row.displayValues)return String(row.displayValues[i]);const n=Number(row.values[i]);if(!Number.isFinite(n))return '';if(n<1000)return String(n);if(n<1e6)return Math.round(n/1000)+'K';return (n/1e6).toFixed(n<1e7?2:1)+'M';}
 function renderCalendarView(f){
  const box=$('calendarResults');box.replaceChildren();const model=historyMeterCalendar(index,f,calendarMonth());
  if(!model){box.appendChild(node('p','月・ランク・締め時間を確認してください。','sub'));return;}
@@ -151,7 +151,7 @@ function renderCalendarView(f){
  prev.type=next.type='button';prev.id='calPrev';next.id='calNext';prev.setAttribute('aria-label','前の月');next.setAttribute('aria-label','次の月');label.id='calLabel';
  prev.disabled=!historyMonthRange(model.month,-1);next.disabled=!historyMonthRange(model.month,1);
  for(const [b,d] of [[prev,-1],[next,1]])b.addEventListener('click',()=>{const range=historyMonthRange(model.month,d);if(!range)return;displayMonth=range.month;calSelected='';calUser=false;renderCalendarView(filters());renderCalendar(filters());$(d<0?'calPrev':'calNext')?.focus({preventScroll:true});});
- nav.appendChild(prev);nav.appendChild(label);nav.appendChild(next);box.appendChild(nav);
+ nav.appendChild(prev);nav.appendChild(label);nav.appendChild(next);box.appendChild(nav);const legend=node('p',undefined,'cal-legend');for(const [k,t] of [[0,'±0'],[1,'+1'],[2,'+2']])legend.appendChild(node('span',t,'cal-val v'+k));legend.appendChild(node('span',model.closes.length>1?'（'+model.closes.join('・')+'時〆の順）':'（上から）','sub'));box.appendChild(legend);
  const today=new Date(Date.now()+9*36e5).toISOString().slice(0,10),groups=model.ranks.filter(g=>g.count||model.ranks.length===1);
  if(!groups.length)box.appendChild(node('p','この月は条件に合う記録がありません。前月・翌月を確認してください。','sub cal-note'));
  for(const group of groups){
@@ -163,9 +163,10 @@ function renderCalendarView(f){
    if(!cell){const blank=node('span',undefined,'cal-blank');blank.setAttribute('aria-hidden','true');grid.appendChild(blank);continue;}
    const recs=cell.records.filter(r=>r.row),b=node('button',undefined,'cal-day'+(cell.date===today?' today':''));b.type='button';b.setAttribute('data-calendar-day',cell.date);
    b.appendChild(node('span',String(Number(cell.date.slice(8))),'cal-num'));
-   if(model.closes.length>1){if(recs.length)for(const close of model.closes){const r=recs.find(x=>x.close===close);b.appendChild(node('span',r?calShort(r.row):'－','cal-val multi'));}}else for(const r of recs.slice(0,1))b.appendChild(node('span',calShort(r.row),'cal-val'));
+   const triple=(r,cls)=>{const g=node('span',undefined,'cal-set'+cls);for(let k=0;k<3;k++)g.appendChild(node('span',calShort(r.row,k),'cal-val v'+k));return g;};
+   if(model.closes.length>1){if(recs.length)for(const close of model.closes){const r=recs.find(x=>x.close===close);b.appendChild(r?triple(r,' multi'):node('span','－','cal-set multi none'));}}else for(const r of recs.slice(0,1))b.appendChild(triple(r,''));
    b.disabled=!recs.length;b.setAttribute('aria-pressed',String(cell.date===calSelected));
-   b.setAttribute('aria-label',cell.date+' '+group.rank+' '+(recs.length?recs.map(r=>r.close+'時〆 ±0 '+historyRowNumber(r.row,0,$('units').value)).join('、'):'記録なし'));
+   b.setAttribute('aria-label',cell.date+' '+group.rank+' '+(recs.length?recs.map(r=>r.close+'時〆 ±0 '+historyRowNumber(r.row,0,$('units').value)+'・+1 '+historyRowNumber(r.row,1,$('units').value)+'・+2 '+historyRowNumber(r.row,2,$('units').value)).join('、'):'記録なし'));
    b.addEventListener('click',()=>{calSelected=cell.date;calUser=true;renderCalendarView(filters());$('calDetail')?.scrollIntoView({block:'nearest',behavior:'auto'});box.querySelector?.('[data-calendar-day="'+cell.date+'"]')?.focus({preventScroll:true});});
    grid.appendChild(b);
   }
@@ -176,5 +177,5 @@ function renderCalendarView(f){
   detail.appendChild(node('h4',calSelected.replaceAll('-','/')+'の記録（'+rows.length+'件）'));for(const row of rows)detail.appendChild(card(row));}
  else detail.appendChild(node('p','記録のある日を押すと、±0・+1・+2を表示します。','sub'));
  box.appendChild(detail);
- box.appendChild(node('p',(model.closes.length>1?'締め時間をすべて表示中：各日の数字は上から'+model.closes.join('・')+'時〆。':'')+'各日の数字は±0の概数（K＝千、M＝百万）。E帯は端末に保存した画面表示値です。カレンダーは期間・キーワードの条件を使わず、ランク・締め時間・記録の種類で絞り込みます。','sub cal-note'));
+ box.appendChild(node('p',(model.closes.length>1?'締め時間をすべて表示中：各日の数字は上から'+model.closes.join('・')+'時〆の順に、それぞれ±0・+1・+2。':'各日の数字は上から±0・+1・+2。')+'数字は概数（K＝千、M＝百万）。E帯は端末に保存した画面表示値です。カレンダーは期間・キーワードの条件を使わず、ランク・締め時間・記録の種類で絞り込みます。','sub cal-note'));
 }
