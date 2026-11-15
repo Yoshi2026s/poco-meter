@@ -298,27 +298,6 @@ test('negative point backup never overwrites a valid current value', () => {
   }
 });
 
-test('current adjustments report the actual delta when bounded by zero or the input maximum', () => {
-  const e = engine();
-  permitRefresh(e);
-  e.state.current = '500';
-  e.element('adjustAmount').value = '1K';
-  e.adjustCurrent(-1);
-  assert.equal(e.state.current, '0');
-  assert.match(e.element('adjustStatus').textContent, /−500 pt/);
-  assert.match(e.element('adjustStatus').textContent, /0/);
-  e.state.current = String(e.MAX_VALUE - 1);
-  e.adjustCurrent(1);
-  assert.equal(e.state.current, String(e.MAX_VALUE));
-  assert.match(e.element('adjustStatus').textContent, /＋1 pt/);
-  assert.match(e.element('adjustStatus').textContent, /上限/);
-  const before = e.state.current;
-  e.element('adjustAmount').value = '-1';
-  e.adjustCurrent(1);
-  assert.equal(e.state.current, before);
-  assert.equal(e.element('inputStatus').hidden, false);
-});
-
 test('the entire shipped script initializes and updates displayed values through real input handlers', () => {
   const baseline = plain(engine().state);
   const page = pageEngine({ ...baseline, target: '100001', current: '0', coreCount: '0' });

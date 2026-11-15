@@ -250,4 +250,4 @@ window.addEventListener('focus',()=>refreshCalendar(true));
 function calendarTick(){if(document.visibilityState!=='hidden')refreshCalendar();setTimeout(calendarTick,60000);}
 setTimeout(calendarTick,60000);refreshCalendar(true);
 
-$('eraseAllE').onclick=()=>{if(busy||saving)return status('処理が終わってから操作してください。',true);if(!confirm('このブラウザのE帯を全削除します。13・22・24時の記録、初期記録、下書き、ごみ箱、復旧用コピーを空にします。D帯〜S帯は残します。削除しますか？'))return;try{eEraseAll(localStorage);location.reload();}catch(e){status('削除できません：'+e.message,true);}};
+$('eraseAllE').onclick=()=>{if(busy||saving)return status('処理が終わってから操作してください。',true);if(!confirm('このブラウザーのE帯を全削除します。13・22・24時の記録、初期記録、下書き、ごみ箱、復旧用コピーを空にします。D帯〜S帯は残します。削除しますか？'))return;try{eEraseAll(localStorage);location.reload();}catch(e){status('削除できません：'+e.message,true);}};
