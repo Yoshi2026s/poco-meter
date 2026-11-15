@@ -188,6 +188,7 @@ function renderCalendarView(f){
  if(calSelected){const rows=[];for(const group of model.ranks)for(const cell of group.cells)if(cell&&cell.date===calSelected)for(const r of cell.records)if(r.row)rows.push(r.row);
   detail.appendChild(node('h4',calSelected.replaceAll('-','/')+'の記録（'+rows.length+'件）'));for(const row of rows)detail.appendChild(card(row));}
  else detail.appendChild(node('p','記録のある日を押すと、±0・+1・+2を表示します。','sub'));
+ if(f.rank==='E'){const add=node('a','📝 E帯の記録を追加・編集（画像取り込み・手入力）','cal-e-link');add.href='./e-border.html';detail.appendChild(add);}
  box.appendChild(detail);
- box.appendChild(node('p',(model.closes.length>1?'締め時間をすべて表示中：各日の数字は上から'+model.closes.join('・')+'時〆の順に、それぞれ±0・+1・+2。':'各日の数字は上から±0・+1・+2。')+'数字は概数（K＝千、M＝百万）。E帯は端末に保存した画面表示値です。カレンダーは期間・キーワードの条件を使わず、ランク・締め時間・記録の種類で絞り込みます。','sub cal-note'));
+ box.appendChild(node('p',(model.closes.length>1?'締め時間をすべて表示中：各日の数字は上から'+model.closes.join('・')+'時〆の順に、それぞれ±0・+1・+2。':'各日の数字は上から±0・+1・+2。')+'数字は概数（K＝千、M＝百万）。E帯は、この端末で記録した画面表示値（E帯のボーダー記録で追加）です。カレンダーは期間・キーワードの条件を使わず、ランク・締め時間・記録の種類で絞り込みます。','sub cal-note'));
 }

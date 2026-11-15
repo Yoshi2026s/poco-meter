@@ -43,46 +43,13 @@ function render(){
   for(const r of rows.slice(0,visible))group.append(recordBox(r));
   $('records').append(group);
  }
- $('more').hidden=closes.every(c=>list.filter(r=>r.close===c).length<=visible);renderCalendar(list,closes);renderTrash();
+ $('more').hidden=closes.every(c=>list.filter(r=>r.close===c).length<=visible);renderTrash();
 }
 function recordBox(r){
   const box=node('article',undefined,'record');box.append(node('strong',r.date+' · '+eRankLabel(r.rank)+' · '+r.close+'時締め'));
   const values=node('div',undefined,'values');r.values.forEach((v,i)=>{const col=node('span',['±0','＋1','＋2'][i]);col.append(node('b',v));values.append(col);});box.append(values,node('div',r.source+'／画面表示値'+(r.values.some(v=>eValue(v).approx)?'（K・Mは概数）':''),'small'));
   const actions=node('div',undefined,'actions');actions.append(button('編集',()=>{if(busy||saving)return status('処理完了後に編集してください。',true);if(drafts.some(d=>d.original&&eKey(d.original)===eKey(r)))return status('この記録はすでに編集候補にあります。',true);addDraft({...r,source:'端末で確認した画面表示値'},null,{original:r});}),button('コピー',event=>copyText(recordText([r]),event.currentTarget)),button('削除',async()=>{if(busy||saving)return status('処理完了後に削除してください。',true);if(!confirm(r.date+' '+eRankLabel(r.rank)+' '+r.close+'時の記録をごみ箱へ移しますか？'))return;try{const warning=await persist(eRemove(app,eKey(r)));render();status('ごみ箱へ移しました。ごみ箱から取り消せます。'+warning);}catch(e){status('削除できません：'+e.message,true);}},'danger'));box.append(actions);return box;
 }
-const E_VIEW_KEY='pococha-e-records-view-v1';let eView='calendar',eCalMonth='',eCalSelected='';
-try{if(localStorage.getItem(E_VIEW_KEY)==='list')eView='list';}catch{}
-function eMonthShift(month,delta){const y=+month.slice(0,4),m=+month.slice(5,7)-1+delta,d=new Date(Date.UTC(y,m,1));return d.toISOString().slice(0,7);}
-function renderCalendar(list,closes){
- const cal=$('eCalendar'),isCal=eView==='calendar';$('viewCalendar').setAttribute('aria-pressed',String(isCal));$('viewList').setAttribute('aria-pressed',String(!isCal));
- cal.hidden=!isCal;$('records').hidden=isCal;if(isCal)$('more').hidden=true;cal.replaceChildren();if(!isCal)return;
- const today=new Date(Date.now()+9*36e5).toISOString().slice(0,10),month=$('filterMonth').value||eCalMonth||list.map(r=>r.date).sort().at(-1)?.slice(0,7)||today.slice(0,7);eCalMonth=month;
- const inMonth=list.filter(r=>r.date.slice(0,7)===month),dates=new Set(inMonth.map(r=>r.date));if(!dates.has(eCalSelected))eCalSelected=[...dates].sort().at(-1)||'';
- const nav=node('div',undefined,'cal-nav'),label=node('strong',Number(month.slice(0,4))+'年'+Number(month.slice(5,7))+'月');
- const go=delta=>{const next=eMonthShift(month,delta);eCalMonth=next;eCalSelected='';if($('filterMonth').value){$('filterMonth').value=next;saveFilters();}render();};
- const prev=button('‹ 前月',()=>go(-1)),next=button('翌月 ›',()=>go(1));prev.setAttribute('aria-label','前の月');next.setAttribute('aria-label','次の月');nav.append(prev,label,next);cal.append(nav);
- const first=new Date(month+'-01T00:00:00Z'),days=new Date(Date.UTC(first.getUTCFullYear(),first.getUTCMonth()+1,0)).getUTCDate(),lead=first.getUTCDay();
- for(const close of closes){
-  const rows=inMonth.filter(r=>r.close===close),group=node('section',undefined,'cal-group');group.setAttribute('data-close',close);group.append(node('h3',close+'時〆 · '+rows.length+'件'));
-  const week=node('div',undefined,'cal-week');week.setAttribute('aria-hidden','true');for(const w of ['日','月','火','水','木','金','土'])week.append(node('span',w));group.append(week);
-  const grid=node('div',undefined,'cal-grid');for(let i=0;i<lead;i++){const blank=node('span',undefined,'cal-blank');blank.setAttribute('aria-hidden','true');grid.append(blank);}
-  for(let d=1;d<=days;d++){
-   const date=month+'-'+String(d).padStart(2,'0'),rec=rows.find(r=>r.date===date),past=date<today,b=node('button',undefined,'cal-day'+(!rec&&past?' missing':''));b.type='button';b.setAttribute('data-date',date);
-   b.append(node('span',String(d),'cal-num'));if(rec)b.append(node('span',rec.values[0],'cal-val'));
-   b.setAttribute('aria-pressed',String(!!rec&&date===eCalSelected));b.setAttribute('aria-label',date+' '+close+'時〆 '+(rec?'±0 '+rec.values[0]:past?'未記録（押すと入力）':'記録なし'));
-   if(rec)b.addEventListener('click',()=>{eCalSelected=date;render();});
-   else if(past)b.addEventListener('click',()=>{if(busy||saving)return status('処理完了後に入力してください。',true);const item=addDraft({date,rank:'E',close,values:['','','']});item?.box.scrollIntoView({block:'start'});});
-   else b.disabled=true;
-   grid.append(b);
-  }
-  group.append(grid);cal.append(group);
- }
- const detail=node('div',undefined,'cal-detail');detail.setAttribute('aria-live','polite');
- if(eCalSelected){const rows=inMonth.filter(r=>r.date===eCalSelected);detail.append(node('h3',eCalSelected.replaceAll('-','/')+'の記録（'+rows.length+'件）'));for(const r of rows)detail.append(recordBox(r));}
- else detail.append(node('p','この月は条件に合う記録がありません。前月・翌月を確認するか、点線の日（未記録）を押して入力してください。','small'));
- cal.append(detail,node('p','各日の数字は±0（画面表示値）。点線の日は未記録で、押すと入力欄を開きます。','small'));
-}
-function setEView(view){eView=view;try{localStorage.setItem(E_VIEW_KEY,view);}catch{}render();}
 function renderTrash(){
  $('trashCount').textContent='('+app.trash.length+'件)';$('trash').replaceChildren();if(!$('trashPanel').open)return;
  if(!app.trash.length)$('trash').append(node('p','ごみ箱は空です。','small'));
@@ -157,7 +124,7 @@ $('reload').onclick=reload;
 window.addEventListener('storage',e=>{if(e.key===E_DRAFT_KEY||e.key===null){$('draftStatus').textContent='別の画面で下書きが変更・削除されました。この画面の下書きをファイル保存してから、画面を開き直してください。';}if(e.key!==E_KEY&&e.key!==null)return;if(!drafts.length&&!busy&&!saving)reload();else status('別の画面で記録が変わりました。候補は残しています。「最新の保存内容を読み込む」で再確認してください。',true);});
 for(const id of ['trackRank','trackClose'])$(id).addEventListener('change',()=>{savePrefs();render();});
 for(const id of ['filterRank','filterClose','filterMonth','filterStart','filterEnd','filterOrder','filterApprox'])$(id).addEventListener('change',()=>{visible=30;saveFilters();render();});
-$('more').onclick=()=>{visible+=30;render();};$('viewCalendar').onclick=()=>setEView('calendar');$('viewList').onclick=()=>setEView('list');$('trashPanel').addEventListener('toggle',renderTrash);
+$('more').onclick=()=>{visible+=30;render();};$('trashPanel').addEventListener('toggle',renderTrash);
 for(const days of [7,30])$('recent'+days).onclick=()=>{$('filterMonth').value='';$('filterEnd').value=eYesterday();$('filterStart').value=eShift(eYesterday(),1-days);visible=30;saveFilters();render();};
 $('resetFilters').onclick=()=>{for(const id of ['filterRank','filterClose','filterMonth','filterStart','filterEnd'])$(id).value='';$('filterOrder').value='new';$('filterApprox').checked=false;visible=30;saveFilters();render();};
 function recordText(rows){return ['対象日\tランク\t締め\t±0\t＋1\t＋2\t精度',...rows.map(r=>[r.date,eRankLabel(r.rank),r.close,...r.values,r.values.some(v=>eValue(v).approx)?'画面表示値（K/Mは概数）':'画面表示値'].join('\t'))].join('\n');}
