@@ -8,7 +8,9 @@ const template=read('calculator/history-page-template.html'),core=read('calculat
 assert.ok(version,'The source page must carry its release version');
 const html=template.replace('__VERSION__',version).replace('__CORE__',core.replace(/\bexport /g,'')+'\n'+['calculator/e-border-core.mjs','calculator/e-border-store.mjs'].map(p=>read(p).replace(/^import .*;\n/gm,'').replace(/\bexport /g,'')).join('\n')).replace('__DATA__',JSON.stringify(seed).replaceAll('<','\\u003c')).replace('__UI__',ui.replace('__BORDER_API__','/api/borders').replace('__API_CREDENTIALS__','same-origin'));
 const script=html.match(/<script type="module">([\s\S]*?)<\/script>/)[1];
-function setup({preferences,hash='',theme,clipboard,online=false,fetcher,calculatorState,eStateRaw}={}){const handlers={},nodes=new Map(),timers=new Map(),writes=[],copied=[],requests=[];let serial=0,clock=0;
+// 2026-11-15: the page now opens in the calendar view. Most tests exercise the card list, so they switch to it after
+// start-up (as a viewer would with the 表示形式 selector); calendar tests pass view:'calendar'.
+function setup({preferences,hash='',theme,clipboard,online=false,fetcher,calculatorState,eStateRaw,view='cards'}={}){const handlers={},nodes=new Map(),timers=new Map(),writes=[],copied=[],requests=[];let serial=0,clock=0;
  const cls=()=>{const set=new Set();return {toggle(k,v){if(v??!set.has(k))set.add(k);else set.delete(k);},contains:k=>set.has(k)};};let active;
  function node(tag='div',id=''){const attrs=new Map(),events={};return {tagName:tag.toUpperCase(),id,value:'',textContent:'',hidden:false,disabled:false,open:false,children:[],classList:cls(),style:{},get options(){return this.children.filter(c=>c.tagName==='OPTION');},appendChild(child){child.parentElement=this;this.children.push(child);return child;},replaceChildren(...items){this.children=[];for(const item of items)this.appendChild(item);},setAttribute(k,v){attrs.set(k,String(v));},removeAttribute(k){attrs.delete(k);},getAttribute:k=>attrs.get(k),addEventListener(k,fn){(events[k]??=[]).push(fn);},dispatch(type,extra={}){for(const fn of events[type]||[])fn({type,target:this,currentTarget:this,preventDefault(){},...extra});},focus(){active=this;},blur(){if(active===this)active=undefined;this.blurred=true;},select(){this.selected=true;},setSelectionRange(start,end){this.selectionStart=start;this.selectionEnd=end;},scrollIntoView(){this.scrolled=true;}};}
  for(const m of html.matchAll(/<([a-z][a-z0-9-]*)[^>]*id="([^"]+)"[^>]*>/g)){const n=node(m[1],m[2]);for(const flag of ['hidden','disabled','open'])n[flag]=new RegExp('\\s'+flag+'(?:\\s|=|>)').test(m[0]);for(const a of m[0].matchAll(/([\w-]+)="([^"]*)"/g)){n.setAttribute(a[1],a[2]);if(a[1]==='value')n.value=a[2];}nodes.set(m[2],n);}
@@ -20,7 +22,7 @@ function setup({preferences,hash='',theme,clipboard,online=false,fetcher,calcula
  const clipboardAPI=clipboard===false?undefined:clipboard??{async writeText(text){copied.push(text);}};
  const ctx=vm.createContext({document,URL,URLSearchParams,TextDecoder,location:{href:'https://example.test/border-history',hash},navigator:{onLine:online,clipboard:clipboardAPI},window:{isSecureContext:false,addEventListener(k,fn){(handlers[k]??=[]).push(fn);}},localStorage:{getItem:k=>stored.get(k)??null,setItem(k,v){writes.push(k);stored.set(k,v);}},fetch(url,options={}){const request={url,...options};requests.push(request);return fetcher?fetcher(url,options,requests):Promise.reject(Error('No test fetcher configured'));},setTimeout(fn,ms=0){const id=++serial;timers.set(id,{fn,due:clock+Math.max(0,Number(ms)||0)});return id;},clearTimeout:id=>timers.delete(id),AbortController,console});
  const advance=ms=>{const end=clock+ms;for(let count=0;count<1000;count++){const next=[...timers].filter(([,timer])=>timer.due<=end).sort((a,b)=>a[1].due-b[1].due||a[0]-b[0])[0];if(!next)break;const [id,timer]=next;clock=timer.due;timers.delete(id);timer.fn();}clock=end;};
- vm.runInContext(script,ctx,{timeout:5000});return {nodes,stored,raw,key,writes,copied,requests,get active(){return active;},input(id,value,type='change'){nodes.get(id).value=value;nodes.get(id).dispatch(type);},click:id=>nodes.get(id).dispatch('click'),toggle(id,open){nodes.get(id).open=open;nodes.get(id).dispatch('toggle');},emitWindow(type,event={}){if(type==='online')ctx.navigator.onLine=true;if(type==='offline')ctx.navigator.onLine=false;for(const fn of handlers[type]||[])fn({type,...event});},advance,flush(){advance(180);},async settle(){for(let i=0;i<16;i++)await Promise.resolve();},ctx};
+ vm.runInContext(script,ctx,{timeout:5000});{const v=nodes.get('view');if(view!=='calendar'&&v.value==='calendar'){v.value=view;v.dispatch('change');}}return {nodes,stored,raw,key,writes,copied,requests,get active(){return active;},input(id,value,type='change'){nodes.get(id).value=value;nodes.get(id).dispatch(type);},click:id=>nodes.get(id).dispatch('click'),toggle(id,open){nodes.get(id).open=open;nodes.get(id).dispatch('toggle');},emitWindow(type,event={}){if(type==='online')ctx.navigator.onLine=true;if(type==='offline')ctx.navigator.onLine=false;for(const fn of handlers[type]||[])fn({type,...event});},advance,flush(){advance(180);},async settle(){for(let i=0;i<16;i++)await Promise.resolve();},ctx};
 }
 test('Source-composed page initializes saved preferences, renders at most 20 cards and never writes calculator values',()=>{
  const p=setup();assert.equal(p.nodes.get('rank').value,'S2');assert.equal(p.nodes.get('close').value,'22');assert.ok(p.nodes.get('results').children.length<=20);assert.match(p.nodes.get('networkStatus').textContent,/オフライン/);assert.equal(p.stored.get(p.key),p.raw);assert.ok(!p.writes.includes(p.key));
@@ -393,20 +395,31 @@ test('Storage read and preference write failures are both visible',()=>{
  assert.match(p.nodes.get('preferenceStatus').textContent,/端末の記録を読み直せません/);assert.match(p.nodes.get('preferenceStatus').textContent,/検索条件を保存できません/);
 });
 
-test('Monthly meter calendar renders exact daily triples, rank and cutoff controls without calculator writes',()=>{
- const p=setup();p.toggle('meterCalendarPanel',true);assert.equal(p.nodes.get('meterCalendarRank').value,'S2');assert.equal(p.nodes.get('meterCalendarClose').value,'22');
- p.input('meterCalendarMonth','2026-10');assert.equal(p.nodes.get('meterCalendarResults').children.length,1);
- const section=p.nodes.get('meterCalendarResults').children[0],grid=section.children[1].children[0],day=grid.children.find(n=>n.getAttribute('aria-label')==='2026-10-03 S2');
- assert.ok(day);assert.deepEqual(day.children[1].children[1].children.filter(n=>n.tagName==='DD').map(n=>n.textContent),['1','2','3']);
- p.input('units','K');const kday=p.nodes.get('meterCalendarResults').children[0].children[1].children[0].children.find(n=>n.getAttribute('aria-label')==='2026-10-03 S2');assert.equal(kday.children[1].children[1].children[1].textContent,'0K');
- p.input('meterCalendarClose','');const all=p.nodes.get('meterCalendarResults').children[0].children[1].children[0].children.find(n=>n.getAttribute('aria-label')==='2026-10-03 S2');assert.equal(all.children.length,4);
- p.click('meterCalendarPrev');assert.equal(p.nodes.get('meterCalendarMonth').value,'2026-09');p.click('meterCalendarNext');assert.equal(p.nodes.get('meterCalendarMonth').value,'2026-10');calculatorUnchanged(p);
+const walk=(n,f,out=[])=>{if(f(n))out.push(n);for(const c of n.children||[])walk(c,f,out);return out;};
+const calDay=(p,date)=>walk(p.nodes.get('calendarResults'),n=>n.getAttribute?.('data-calendar-day')===date)[0];
+const calDetail=p=>walk(p.nodes.get('calendarResults'),n=>n.id==='calDetail')[0];
+const calById=(p,id)=>walk(p.nodes.get('calendarResults'),n=>n.id===id)[0];
+test('Calendar view opens by default and shows each day, the tapped day exact triples, units, cutoffs and months without calculator writes',()=>{
+ const p=setup({view:'calendar'});assert.equal(p.nodes.get('view').value,'calendar');assert.equal(p.nodes.get('calendarResults').hidden,false);assert.equal(p.nodes.get('results').hidden,true);assert.equal(p.nodes.get('tableResults').hidden,true);
+ p.input('start','2026-10-01');p.input('end','2026-10-31');assert.equal(calById(p,'calLabel').textContent,'2026年10月');
+ const day=calDay(p,'2026-10-03');assert.ok(day);assert.equal(day.disabled,false);assert.match(day.getAttribute('aria-label'),/22時〆 ±0 1/);day.dispatch('click');
+ assert.equal(calDay(p,'2026-10-03').getAttribute('aria-pressed'),'true');assert.deepEqual(walk(calDetail(p),n=>n.tagName==='DD').map(n=>n.textContent),['1','2','3']);
+ p.input('units','K');assert.deepEqual(walk(calDetail(p),n=>n.tagName==='DD').map(n=>n.textContent),['0K','0K','0K']);
+ p.input('close','');assert.match(calDay(p,'2026-10-03').getAttribute('aria-label'),/22時〆/);
+ calById(p,'calPrev').dispatch('click');assert.equal(calById(p,'calLabel').textContent,'2026年9月');calById(p,'calNext').dispatch('click');assert.equal(calById(p,'calLabel').textContent,'2026年10月');
+ p.input('view','cards');assert.equal(p.nodes.get('calendarResults').hidden,true);assert.equal(p.nodes.get('results').hidden,false);calculatorUnchanged(p);
+});
+test('Saved card preferences from before the calendar switch open in the calendar once, while table and link choices are kept',()=>{
+ assert.equal(setup({preferences:{rank:'S2',view:'cards'},view:'calendar'}).nodes.get('view').value,'calendar');
+ assert.equal(setup({preferences:{rank:'S2',view:'cards',viewVersion:'2'},view:'calendar'}).nodes.get('view').value,'cards');
+ assert.equal(setup({preferences:{rank:'S2',view:'table'},view:'calendar'}).nodes.get('view').value,'table');
+ assert.equal(setup({hash:'#rank=S2&view=cards',view:'calendar'}).nodes.get('view').value,'cards');
 });
 test('E calendar loads E-band records with original K display precision and no storage mutations',()=>{
- const p=setup();p.toggle('meterCalendarPanel',true);p.input('meterCalendarRank','E');p.input('meterCalendarClose','24');p.input('meterCalendarMonth','2026-10');
- const grid=p.nodes.get('meterCalendarResults').children[0].children[1].children[0],day=grid.children.find(n=>n.getAttribute('aria-label')==='2026-10-05 E');
- assert.deepEqual(day.children[1].children[1].children.filter(n=>n.tagName==='DD').map(n=>n.textContent),['235','1.6K','5.1K']);assert.equal(p.writes.includes('pococha-e-display-v1'),false);calculatorUnchanged(p);
- p.input('meterCalendarMonth','2000-01');assert.equal(p.nodes.get('meterCalendarPrev').disabled,true);p.input('meterCalendarMonth','2099-12');assert.equal(p.nodes.get('meterCalendarNext').disabled,true);
+ const p=setup({view:'calendar'});p.input('rank','E');p.input('close','24');p.input('start','2026-10-01');p.input('end','2026-10-31');
+ const day=calDay(p,'2026-10-05');assert.ok(day);day.dispatch('click');
+ assert.deepEqual(walk(calDetail(p),n=>n.tagName==='DD').map(n=>n.textContent),['235','1.6K','5.1K']);assert.equal(p.writes.includes('pococha-e-display-v1'),false);calculatorUnchanged(p);
+ p.input('start','2000-01-01');p.input('end','2000-01-31');assert.equal(calById(p,'calPrev').disabled,true);p.input('start','2099-12-01');p.input('end','2099-12-31');assert.equal(calById(p,'calNext').disabled,true);
 });
 const e22raw=values=>JSON.stringify({schema:'pococha-e-display-v1',records:values?[{date:'2026-10-17',rank:'E',close:'22',values,source:'端末で確認した画面表示値',precision:'display'}]:[],hiddenSeeds:[]});
 const e22prefs={rank:'E',close:'22',origin:'personal',view:'cards',start:'',end:'',order:'new',units:'pt',pageSize:'20'};
