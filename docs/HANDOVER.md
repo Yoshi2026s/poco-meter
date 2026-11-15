@@ -91,6 +91,7 @@ git switch -c codex/example-task "origin/(root)"
 
 ## 未確認・既知のテスト差
 
+- v2026.11.15.5（過去のボーダー表のカレンダーでランク帯の切り替え）は標準チェック・画面系13本・history-page-ui に合格。Chromiumのエミュレーションのみで、Safari・iPhone実機は未確認。
 - v2026.11.15.4（過去のボーダー表のカレンダーに±0・+1・+2を表示）は標準チェック・画面系13本・history-page-ui に合格。Chromiumのエミュレーションのみで、Safari・iPhone実機は未確認。
 - v2026.11.15.3（過去のボーダー表・E帯のカレンダー表示）は標準チェック・画面系13本・history-page-ui・E帯のテストに合格。tests/e-border-100-rounds.mjs と tests/history-mobile-audit.mjs は変更前の (root) でも不合格（標準チェック・CIの対象外）で、今回は未対応。テストの準備部分（history-page-ui の setup、e-border-harness）は従来の一覧・カード表示を既定にし、カレンダーは view オプションで確認する。Chromiumのエミュレーションのみで、Safari・iPhone実機は未確認。
 - v2026.11.15.2（時刻設定・ポイント調整と告知の管理者向け操作の削除、表記の統一）は標準チェック・画面系13本に合格。Chromiumのエミュレーションのみで、Safari・iPhone実機は未確認。

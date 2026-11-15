@@ -82,6 +82,13 @@
 .cal-legend{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center;margin:0 0 6px;font-size:12px;font-weight:700}
 .cal-legend .cal-val{font-size:12px}
 .cal-set:not(.multi) .cal-val{font-size:11px}
+/* ランク帯の切り替え：上下のボタンと、横にスクロールできるランクのボタン */
+.cal-rank-step{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin:4px 0 6px}
+.cal-rank-step .cal-step{min-height:44px;font-weight:700}
+.cal-rank-now{min-width:4.5em;text-align:center;font-size:1.15rem}
+.cal-ranks{display:flex;gap:6px;overflow-x:auto;padding:2px 2px 8px;margin:0 0 8px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+.cal-rank-chip{flex:0 0 auto;min-width:48px;min-height:44px;padding:4px 10px;border:1px solid var(--line);border-radius:999px;background:var(--panel);color:var(--text);font:inherit;font-weight:700;scroll-snap-align:center}
+.cal-rank-chip[aria-pressed="true"]{background:var(--accent);color:var(--bg);border-color:var(--accent)}
 .cal-day[aria-pressed="true"]{outline:3px solid var(--accent);outline-offset:-1px}
 .cal-day.today .cal-num{text-decoration:underline}
 .cal-blank{min-height:52px}

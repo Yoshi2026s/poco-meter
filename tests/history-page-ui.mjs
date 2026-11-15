@@ -409,6 +409,14 @@ test('Calendar view opens by default and shows each day, the tapped day exact tr
  calById(p,'calPrev').dispatch('click');assert.equal(calById(p,'calLabel').textContent,'2026年9月');calById(p,'calNext').dispatch('click');assert.equal(calById(p,'calLabel').textContent,'2026年10月');
  p.input('view','cards');assert.equal(p.nodes.get('calendarResults').hidden,true);assert.equal(p.nodes.get('results').hidden,false);calculatorUnchanged(p);
 });
+test('Calendar rank bar switches the rank in place, steps up and down, and keeps the shown month',()=>{
+ const p=setup({view:'calendar'});p.input('start','2026-10-01');p.input('end','2026-10-31');
+ const chip=r=>walk(p.nodes.get('calendarResults'),n=>n.getAttribute?.('data-rank')===r)[0],steps=()=>walk(p.nodes.get('calendarResults'),n=>/\bcal-step\b/.test(n.className||''));
+ assert.equal(chip('S2').getAttribute('aria-pressed'),'true');assert.equal(walk(p.nodes.get('calendarResults'),n=>n.getAttribute?.('data-rank')!==null&&n.getAttribute?.('data-rank')!==undefined).length,20);
+ chip('S6').dispatch('click');assert.equal(p.nodes.get('rank').value,'S6');assert.equal(chip('S6').getAttribute('aria-pressed'),'true');assert.equal(calById(p,'calLabel').textContent,'2026年10月');assert.equal(steps()[0].disabled,true);
+ steps()[1].dispatch('click');assert.equal(p.nodes.get('rank').value,'S5');steps()[0].dispatch('click');assert.equal(p.nodes.get('rank').value,'S6');
+ chip('E').dispatch('click');assert.equal(p.nodes.get('rank').value,'E');assert.equal(steps()[1].disabled,true);chip('').dispatch('click');assert.equal(p.nodes.get('rank').value,'');calculatorUnchanged(p);
+});
 test('Saved card preferences from before the calendar switch open in the calendar once, while table and link choices are kept',()=>{
  assert.equal(setup({preferences:{rank:'S2',view:'cards'},view:'calendar'}).nodes.get('view').value,'calendar');
  assert.equal(setup({preferences:{rank:'S2',view:'cards',viewVersion:'2'},view:'calendar'}).nodes.get('view').value,'cards');

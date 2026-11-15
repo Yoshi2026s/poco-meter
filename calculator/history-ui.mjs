@@ -1,7 +1,7 @@
 const $=id=>document.getElementById(id),MAIN_KEY='pococha-meter-calc-v1',PREF_KEY='pococha-meter-history-v1',THEME_KEY='pococha-meter-history-theme-v1';
 const filterIDs=['query','rank','close','start','end','units','order','origin','view','pageSize'];
 const cardCopyNodes=new Map(),pendingCardCopies=new Map(),copiedCardTexts=new Set();
-let localReadFailed=false,calSelected='',calPinned='',calUser=false,eCalendarRows=[],eCalendarReadFailed=false;
+let localReadFailed=false,calSelected='',calPinned='',calUser=false,calRankFocus=null,eCalendarRows=[],eCalendarReadFailed=false;
 let page=1,liveRows=[],seedRows=normalizeHistoryRows(SEED_HISTORY),localRows=[],index=createHistoryIndex(seedRows),allMatches=[],inputTimer=0,composing=false,manualCardCopy=null,latestCardCopyRequest=0,searchCopyRequest=0,searchCopyPending=false,lastFilterSignature='',publicRequest=null,cardCopyEpoch=0,lastCardCopyScope='',displayMonth='',renderedPageSize=20;
 for(const rank of HISTORY_RANKS){const option=document.createElement('option');option.value=rank;option.textContent=rank;$('rank').appendChild(option);}
 function filters(){return Object.fromEntries(filterIDs.map(id=>[id,$(id).value]));}
@@ -152,6 +152,18 @@ function renderCalendarView(f){
  prev.disabled=!historyMonthRange(model.month,-1);next.disabled=!historyMonthRange(model.month,1);
  for(const [b,d] of [[prev,-1],[next,1]])b.addEventListener('click',()=>{const range=historyMonthRange(model.month,d);if(!range)return;displayMonth=range.month;calSelected='';calUser=false;renderCalendarView(filters());renderCalendar(filters());$(d<0?'calPrev':'calNext')?.focus({preventScroll:true});});
  nav.appendChild(prev);nav.appendChild(label);nav.appendChild(next);box.appendChild(nav);const legend=node('p',undefined,'cal-legend');for(const [k,t] of [[0,'±0'],[1,'+1'],[2,'+2']])legend.appendChild(node('span',t,'cal-val v'+k));legend.appendChild(node('span',model.closes.length>1?'（'+model.closes.join('・')+'時〆の順）':'（上から）','sub'));box.appendChild(legend);
+ // ランク帯の切り替え：横に並べたボタン（S6〜E、全ランク）。押すとそのランクで表示し直す（月はそのまま）
+ const rankBar=node('div',undefined,'cal-ranks');rankBar.setAttribute('role','group');rankBar.setAttribute('aria-label','カレンダーのランクを切り替え');
+ const step=node('div',undefined,'cal-rank-step'),ranks=HISTORY_RANKS,cur=ranks.indexOf(f.rank);
+ const pickRank=rank=>{$('rank').value=rank;calRankFocus=rank;render(true);};
+ const up=node('button',cur>0?'‹ '+ranks[cur-1]:'‹ 上','cal-step'),down=node('button',cur>=0&&cur<ranks.length-1?ranks[cur+1]+' ›':'下 ›','cal-step');up.type=down.type='button';
+ up.disabled=cur<=0;down.disabled=cur<0||cur>=ranks.length-1;up.setAttribute('aria-label','ひとつ上のランク'+(cur>0?'（'+ranks[cur-1]+'）':''));down.setAttribute('aria-label','ひとつ下のランク'+(cur>=0&&cur<ranks.length-1?'（'+ranks[cur+1]+'）':''));
+ up.addEventListener('click',()=>{if(cur>0)pickRank(ranks[cur-1]);});down.addEventListener('click',()=>{if(cur>=0&&cur<ranks.length-1)pickRank(ranks[cur+1]);});
+ step.appendChild(up);step.appendChild(node('strong',f.rank||'全ランク','cal-rank-now'));step.appendChild(down);box.appendChild(step);
+ let currentChip=null;for(const rank of [...ranks,'']){const chip=node('button',rank||'全ランク','cal-rank-chip');chip.type='button';chip.setAttribute('data-rank',rank);chip.setAttribute('aria-pressed',String(rank===f.rank));chip.addEventListener('click',()=>pickRank(rank));rankBar.appendChild(chip);if(rank===f.rank)currentChip=chip;}
+ box.appendChild(rankBar);
+ if(currentChip&&typeof requestAnimationFrame==='function')requestAnimationFrame(()=>{rankBar.scrollLeft=currentChip.offsetLeft-rankBar.clientWidth/2+currentChip.offsetWidth/2;});
+ if(calRankFocus!==null){const target=calRankFocus===f.rank?(currentChip||up):null;calRankFocus=null;target?.focus?.({preventScroll:true});}
  const today=new Date(Date.now()+9*36e5).toISOString().slice(0,10),groups=model.ranks.filter(g=>g.count||model.ranks.length===1);
  if(!groups.length)box.appendChild(node('p','この月は条件に合う記録がありません。前月・翌月を確認してください。','sub cal-note'));
  for(const group of groups){
