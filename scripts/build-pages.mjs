@@ -14,7 +14,7 @@ import {forecastBundle, calendarEventDays} from '../automation/build-meter-facto
 const ROOT = fileURLToPath(new URL('../', import.meta.url));
 // Tool version shown on the page. Change only when the tool itself changes
 // (data updates do not change it).
-export const PAGES_VERSION = {version: 'v2026.11.15.3', updatedAt: '2026-11-15T13:14:00+09:00', label: '2026/11/15 13:14:00'};
+export const PAGES_VERSION = {version: 'v2026.11.15.5', updatedAt: '2026-11-15T13:40:00+09:00', label: '2026/11/15 13:40:00'};
 const SITES_ORIGIN = 'https://poco-meter.freefreelife2000.chatgpt.site';
 const COLLECTOR_ORIGIN = 'https://pococha-comment-access.freefreelife2000.chatgpt.site';
 const BORDER_FETCH = "fetch('/api/borders',{cache:'no-cache',credentials:'same-origin',signal:controller.signal})";
