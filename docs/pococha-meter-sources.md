@@ -1,5 +1,10 @@
 # Pocochaメーター出典・照合記録
 
+## 2026-11-17（日本時間）
+
+- 11/16集計分は、ONE CARATから取得できた本文では未確認。13時の表示は11/14、22時・24時は11/15。直後の11/16分は公開待ちとして次回再照合する。https://one-carat.com/campus/archives/90414 ・ https://one-carat.com/campus/archives/90413 ・ https://one-carat.com/campus/archives/90412
+- 既定ブランチのボーダーファイルは前回照合と同じSHA（1237cbdd42bf65106200c702f9a27c3c4c9ae56a）。前回の未反映分も引き続き未反映。数値の一致・不一致は未判定。
+
 ## 2026-11-16（日本時間）
 
 対象は集計日2026-11-14〜15。既定ブランチの data/borders.json をコミット cc1efec091c6c7576dbfb08548e49297a1cb87e9 時点で照合。データは既存Actionsが更新する。
