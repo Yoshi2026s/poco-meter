@@ -12,9 +12,10 @@ import {validateData} from '../automation/update-borders-json.mjs';
 import {forecastBundle, calendarEventDays} from '../automation/build-meter-factors.mjs';
 
 const ROOT = fileURLToPath(new URL('../', import.meta.url));
+const EVENT_DAYS_AHEAD = 60; // イベントカレンダーで先の予定として載せる日数
 // Tool version shown on the page. Change only when the tool itself changes
 // (data updates do not change it).
-export const PAGES_VERSION = {version: 'v2026.11.15.8', updatedAt: '2026-11-15T16:06:00+09:00', label: '2026/11/15 16:06:00'};
+export const PAGES_VERSION = {version: 'v2026.11.16.1', updatedAt: '2026-11-16T12:43:00+09:00', label: '2026/11/16 12:43:00'};
 const SITES_ORIGIN = 'https://poco-meter.freefreelife2000.chatgpt.site';
 const COLLECTOR_ORIGIN = 'https://pococha-comment-access.freefreelife2000.chatgpt.site';
 const BORDER_FETCH = "fetch('/api/borders',{cache:'no-cache',credentials:'same-origin',signal:controller.signal})";
@@ -172,9 +173,9 @@ export async function buildPages({root = ROOT, out = resolve(ROOT, '_site')} = {
     const [factors, events] = await Promise.all([read('data/meter-factors.json'), read('data/events.json')]);
     const backtest = await read('data/forecast-backtest.json').then(JSON.parse, () => null);
     const log = await read('data/forecast-log.json').then(JSON.parse, () => null);
-    // 的中率カレンダー用：記録のある最初の日から今日までの各日の開催中イベントとイベラス（開いたときだけ読み込む）
+    // 的中率カレンダー・過去のボーダー表のイベントカレンダー用：記録のある最初の日から60日先までの各日の開催中イベントとイベラス（開いたときだけ読み込む）
     const firstDate = JSON.parse(borders).records.reduce((m, r) => (r.date < m ? r.date : m), '9999');
-    eventDaysJson = JSON.stringify(calendarEventDays(JSON.parse(events), firstDate, new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10)));
+    eventDaysJson = JSON.stringify(calendarEventDays(JSON.parse(events), firstDate, new Date(Date.now() + 9 * 3600e3 + EVENT_DAYS_AHEAD * 864e5).toISOString().slice(0, 10)));
     forecast = JSON.stringify(forecastBundle(JSON.parse(factors), JSON.parse(events), new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10), {backtest, log}));
   } catch (error) { if (error.code !== 'ENOENT') throw error; }
   // 日ごとの答え合わせ（的中率カレンダー用）：締め時間ごとのファイル。無ければ配らない。

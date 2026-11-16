@@ -43,6 +43,6 @@
 ## テストの選び方
 - 計算：`tests/calculation-engine.mjs`、締め時間別：`tests/cutoff-reference-target.mjs`
 - 公開物・ボーダー：`tests/pages-borders.mjs`、表画像：`tests/table-channel.mjs`
-- 過去ボーダー画面：`tests/history-page-ui.mjs`・`tests/history-independent.mjs`
+- 過去ボーダー画面：`tests/history-page-ui.mjs`・`tests/history-independent.mjs`、イベントカレンダー：`tests/history-event-calendar.mjs`
 - E帯：`tests/e-*.mjs`、オフライン：`tests/offline-*.mjs`
 - 画面の見た目・スマホ幅：`npm run test:extra`
