@@ -71,7 +71,7 @@ GitHub Pages 公開版（https://yoshi2026s.github.io/poco-meter/）の4画面�
 3. ツール本体の変更なので `npm run version:bump`。テンプレートや `.mjs` を変えて生成物に影響する場合は `npm run pages:prepare` して生成物もコミット。
 4. `npm test` → `npm run check`（Node 22以上）。`npm run test:extra` も実行（約8分）。
 5. 一時的に `GOATCOUNTER_CODE='test-code'` でビルドし、`_site/` をローカル配信して、ブラウザーの開発者ツールで CSP 違反が出ないこと・4画面が従来どおり動くこと（スマホ縦 375px・横持ち）を確認する。確認後は空に戻す（オーナーのコードが届いていればその値）。`_site/` はコミットしない。
-6. `docs/CHANGELOG.md` の先頭に1行（日付・版・内容・検証）。`docs/HANDOVER.md` の「構成」に「訪問者統計：GoatCounter（`GOATCOUNTER_CODE` が空なら無効）」を書き換えで追加。`docs/REQUESTS.md` は変えない。
+6. `docs/CHANGELOG.md` の先頭に1行（日付・版・内容・検証）。`docs/HANDOVER.md` の「構成」に「訪問者統計：GoatCounter（`GOATCOUNTER_CODE` が空なら無効）」を書き換えで追加。`docs/REQUESTS.md` は変えない。この指示書の先頭（見出しの下）に「状態：実装済み（PR番号・版）」を1行書き足す。
 7. PR は `(root)` 宛て、本文は `.github/pull_request_template.md` の見出しに沿う。実行していないテスト・未確認の項目は「未確認・残作業」に書く（実施していないものを完了扱いにしない）。
 
 ## 完了条件
