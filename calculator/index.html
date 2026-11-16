@@ -4880,7 +4880,7 @@ function snsDayItems(ev, date) {
 return {snsEvent:snsEvent,snsLines:snsLines,snsLineEvent:snsLineEvent,snsDayItems:snsDayItems,rankText:rankText};
 })();
   /* event-parse:end */
-  /* event-calendar:begin（calculator/event-calendar.mjs から npm run pages:prepare で生成。ここは手で書き換えない） */
+    /* event-calendar:begin（calculator/event-calendar.mjs から npm run pages:prepare で生成。ここは手で書き換えない） */
   var PocoEventCalendar=(function(){
 'use strict';
 // Pocochaイベントカレンダー（メーター画面の「過去のボーダー表」リンクの下）。
@@ -4909,9 +4909,9 @@ function eventMonthCells(month) {
   while (cells.length % 7) cells.push(null);
   return {...range, cells};
 }
-function eventCalendarURL(v) {
+function eventCalendarURL(v, candidate = false) {
   if (typeof v !== 'string') return '';
-  try { const u = new URL(v); return u.protocol === 'https:' && !u.username && !u.password && (u.hostname === 'pococha.com' || u.hostname.endsWith('.pococha.com')) ? u.href : ''; } catch { return ''; }
+  try { const u = new URL(v); return u.protocol === 'https:' && !u.username && !u.password && (candidate ? u.hostname === 'yotei.ember-w.com' : u.hostname === 'pococha.com' || u.hostname.endsWith('.pococha.com')) ? u.href : ''; } catch { return ''; }
 }
 function eventCalendarName(x) {
   const clean = s => String(s || '').replace(/\p{Extended_Pictographic}|️|‍/gu, '').replace(/[＼／]/g, ' ').replace(/\s+/g, ' ').trim();
@@ -4930,21 +4930,21 @@ function eventCalendarMonth(data, month, rank = '') {
   const calendar = eventMonthCells(month);
   if (!calendar || !validEventDays(data) || rank && !EVENT_CALENDAR_RANKS.includes(rank)) return null;
   const time = v => typeof v === 'string' && /^\d{1,2}:\d{2}$/.test(v) ? v : '';
-  const pick = (i, last) => {
+  const pick = (i, last, candidate = false) => {
     const x = Number.isInteger(i) ? data.list[i] : null;
     if (!isObj(x) || typeof x.title !== 'string') return null;
     const ranks = Array.isArray(x.ranks) ? EVENT_CALENDAR_RANKS.filter(r => x.ranks.includes(r)) : []; // 上位ランクから順に
     if (rank && ranks.length && !ranks.includes(rank)) return null;
     const start = validDate(x.start) ? x.start : '', end = validDate(x.end) ? x.end : start;
-    return {name: eventCalendarName(x), type: Object.prototype.hasOwnProperty.call(EVENT_TYPE_LABELS, x.type) ? x.type : '', last, ranks, target: !!rank && ranks.includes(rank),
-      start, end, startTime: time(x.startTime), endTime: time(x.endTime), url: eventCalendarURL(x.url)};
+    return {name: eventCalendarName(x), type: Object.prototype.hasOwnProperty.call(EVENT_TYPE_LABELS, x.type) ? x.type : '', last, candidate, ranks, rankRange: candidate && typeof x.rankRange === 'string' ? x.rankRange : '', target: !!rank && ranks.includes(rank),
+      start, end, startTime: time(x.startTime), endTime: time(x.endTime), url: eventCalendarURL(x.url, candidate)};
   };
-  const order = (a, b) => (a.last === b.last ? 0 : a.last ? -1 : 1) || (EVENT_TYPE_ORDER[a.type] ?? 9) - (EVENT_TYPE_ORDER[b.type] ?? 9) || (b.target ? 1 : 0) - (a.target ? 1 : 0);
+  const order = (a, b) => Number(a.candidate) - Number(b.candidate) || (a.last === b.last ? 0 : a.last ? -1 : 1) || (EVENT_TYPE_ORDER[a.type] ?? 9) - (EVENT_TYPE_ORDER[b.type] ?? 9) || (b.target ? 1 : 0) - (a.target ? 1 : 0);
   let count = 0;
   const cells = calendar.cells.map(date => {
     if (!date) return null;
     const day = isObj(data.days[date]) ? data.days[date] : {}, ids = k => Array.isArray(day[k]) ? day[k] : [], seen = new Set();
-    const items = [...ids('l').map(i => pick(i, true)), ...ids('e').map(i => pick(i, false))]
+    const items = [...ids('l').map(i => pick(i, true)), ...ids('e').map(i => pick(i, false)), ...ids('c').map(i => pick(i, false, true))]
       .filter(x => x && !seen.has(x.name + '|' + x.start) && seen.add(x.name + '|' + x.start)).sort(order);
     count += items.length;
     return {date, items, big: items.some(x => x.type === 'big'), lasts: items.filter(x => x.last).length};
@@ -5012,7 +5012,7 @@ function createEventCalendar(box, {load, today = () => new Date(Date.now() + 9 *
       if (cell.big) b.appendChild(el('span', '大型', 'evc-tag big'));
       if (cell.lasts) b.appendChild(el('span', 'ラス' + (cell.lasts > 1 ? cell.lasts : ''), 'evc-tag last'));
       b.disabled = !cell.items.length; b.setAttribute('aria-pressed', String(cell.date === selected));
-      b.setAttribute('aria-label', cell.date + ' ' + (cell.items.length ? cell.items.map(x => (x.last ? '最終日 ' : '') + x.name).join('、') : 'イベント情報なし'));
+      b.setAttribute('aria-label', cell.date + ' ' + (cell.items.length ? cell.items.map(x => (x.candidate ? '公式未確認 ' : x.last ? '最終日 ' : '') + x.name).join('、') : 'イベント情報なし'));
       b.addEventListener('click', () => { selected = cell.date; render(); find('evcDetail')?.scrollIntoView?.({block: 'nearest', behavior: 'auto'}); box.querySelector?.('[data-event-day="' + cell.date + '"]')?.focus?.({preventScroll: true}); });
       grid.appendChild(b);
     }
@@ -5024,13 +5024,14 @@ function createEventCalendar(box, {load, today = () => new Date(Date.now() + 9 *
       const list = el('ul', undefined, 'evc-list');
       for (const x of cell.items) {
         const li = el('li', undefined, 'evc-item' + (x.last ? ' last' : '') + (x.type === 'big' ? ' big' : '')), head = el('div', undefined, 'evc-head');
+        if (x.candidate) head.appendChild(el('span', '公式未確認', 'evc-tag'));
         if (x.last) head.appendChild(el('span', '最終日', 'evc-tag last'));
         if (x.type === 'big') head.appendChild(el('span', '大型', 'evc-tag big'));
         head.appendChild(el('strong', x.name)); li.appendChild(head);
-        const ranks = x.ranks.length ? '対象 ' + (x.ranks.length > 6 ? x.ranks[0] + '〜' + x.ranks[x.ranks.length - 1] : x.ranks.join('・')) : '対象ランクの記載なし';
+        const ranks = x.rankRange ? '掲載ランク ' + x.rankRange : x.ranks.length ? '対象 ' + (x.ranks.length > 6 ? x.ranks[0] + '〜' + x.ranks[x.ranks.length - 1] : x.ranks.join('・')) : '対象ランクの記載なし';
         const span = eventSpan(x, cell.date);
-        li.appendChild(el('p', [EVENT_TYPE_LABELS[x.type] || '', span ? '期間 ' + span : '', ranks].filter(Boolean).join(' ／ '), 'evc-meta'));
-        if (x.url) { const a = el('a', '公式の告知を開く ↗', 'evc-link'); a.href = x.url; a.target = '_blank'; a.rel = 'noopener noreferrer'; li.appendChild(a); }
+        li.appendChild(el('p', [x.candidate ? '第三者カレンダー掲載' : EVENT_TYPE_LABELS[x.type] || '', span ? '期間 ' + span : '', ranks].filter(Boolean).join(' ／ '), 'evc-meta'));
+        if (x.url) { const a = el('a', x.candidate ? '掲載元を開く ↗' : '公式の告知を開く ↗', 'evc-link'); a.href = x.url; a.target = '_blank'; a.rel = 'noopener noreferrer'; li.appendChild(a); }
         list.appendChild(li);
       }
       detail.appendChild(list);
@@ -5039,7 +5040,7 @@ function createEventCalendar(box, {load, today = () => new Date(Date.now() + 9 *
         : 'この月はイベント情報の範囲外です（' + model.from.replaceAll('-', '/') + '〜' + model.to.replaceAll('-', '/') + '）。', 'evc-note'));
     }
     box.appendChild(detail);
-    box.appendChild(el('p', '公式note・公式サイトの告知から期間を確認できたイベントを表示します（1日につき開催中は最大8件＋最終日のもの）。内容・条件は必ず公式の告知で確認してください。', 'evc-note'));
+    box.appendChild(el('p', '公式の告知から期間を確認できたイベントと、公式未確認の候補を表示します（1日につき開催中は最大8件＋最終日のもの）。内容・条件は必ず公式の告知で確認してください。', 'evc-note'));
   }
   return {open, render};
 }

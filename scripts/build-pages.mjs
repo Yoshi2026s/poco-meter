@@ -16,7 +16,7 @@ const ROOT = fileURLToPath(new URL('../', import.meta.url));
 const EVENT_DAYS_AHEAD = 60; // イベントカレンダーで先の予定として載せる日数
 // Tool version shown on the page. Change only when the tool itself changes
 // (data updates do not change it).
-export const PAGES_VERSION = {version: 'v2026.11.17.1', updatedAt: '2026-11-17T00:51:00+09:00', label: '2026/11/17 00:51:00'};
+export const PAGES_VERSION = {version: 'v2026.11.17.2', updatedAt: '2026-11-17T01:01:00+09:00', label: '2026/11/17 01:01:00'};
 // GoatCounter のサイトコード。空なら計測タグを入れない。
 export const GOATCOUNTER_CODE = 'poco-meter';
 // Official stable script and SRI: https://www.goatcounter.com/help/countjs-versions
@@ -228,7 +228,8 @@ export async function buildPages({root = ROOT, out = resolve(ROOT, '_site'), goa
     const log = await read('data/forecast-log.json').then(JSON.parse, () => null);
     // 的中率カレンダー・過去のボーダー表のイベントカレンダー用：記録のある最初の日から60日先までの各日の開催中イベントとイベラス（開いたときだけ読み込む）
     const firstDate = JSON.parse(borders).records.reduce((m, r) => (r.date < m ? r.date : m), '9999');
-    eventDaysJson = JSON.stringify(calendarEventDays(JSON.parse(events), firstDate, new Date(Date.now() + 9 * 3600e3 + EVENT_DAYS_AHEAD * 864e5).toISOString().slice(0, 10)));
+    const candidates = await read('data/calendar-event-candidates.json').then(JSON.parse, error => { if (error.code === 'ENOENT') return []; throw error; });
+    eventDaysJson = JSON.stringify(calendarEventDays(JSON.parse(events), firstDate, new Date(Date.now() + 9 * 3600e3 + EVENT_DAYS_AHEAD * 864e5).toISOString().slice(0, 10), candidates));
     forecast = JSON.stringify(forecastBundle(JSON.parse(factors), JSON.parse(events), new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10), {backtest, log}));
   } catch (error) { if (error.code !== 'ENOENT') throw error; }
   // 日ごとの答え合わせ（的中率カレンダー用）：締め時間ごとのファイル。無ければ配らない。

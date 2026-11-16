@@ -4,6 +4,7 @@
 import {readFile, writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {findRanks} from '../calculator/event-parse.mjs';
 import {tidyLabel, titleNameOf} from './collect-events.mjs';
 
 const arg = (name, def) => { const a = process.argv.find(x => x.startsWith(`--${name}=`)); return a ? a.slice(name.length + 3) : def; };
@@ -242,18 +243,32 @@ const pickAcc = s => s && {within10: s.within10, within20: s.within20, medianAbs
 
 // 的中率カレンダー用：fromISO〜toISO の各日の「開催中のイベント」と「イベラス（その日が最終日）」。
 // 予想データと同じ選び方（forecastBundle の days）を使い、同じイベントは一覧（list）に1回だけ持って番号で参照する。
-export function calendarEventDays(events, fromISO, toISO) {
+export function calendarEventDays(events, fromISO, toISO, candidates = []) {
   const span = Math.round((Date.parse(toISO) - Date.parse(fromISO)) / DAY);
   const days = forecastBundle({weekday: {}}, events, toISO, {before: span, after: 0}).days;
   const list = [], at = new Map(), out = {};
   const ref = x => {
     const key = `${x.url}|${x.label || ''}|${x.start}|${x.end || ''}`;
-    if (!at.has(key)) { at.set(key, list.length); list.push({title: x.title, label: x.label, type: x.type, ranks: x.ranks, start: x.start, end: x.end, ...(x.startTime ? {startTime: x.startTime} : {}), ...(x.endTime ? {endTime: x.endTime} : {}), url: x.url}); }
+    if (!at.has(key)) { at.set(key, list.length); list.push({title: x.title, label: x.label, type: x.type, ranks: x.ranks, start: x.start, end: x.end, ...(x.startTime ? {startTime: x.startTime} : {}), ...(x.endTime ? {endTime: x.endTime} : {}), url: x.url, ...(x.rankRange ? {rankRange: x.rankRange} : {})}); }
     return at.get(key);
   };
   for (const [d, day] of Object.entries(days)) {
     const e = (day.events || []).filter(x => !x.ends).map(ref), l = (day.lasts || []).map(ref);
     if (e.length || l.length) out[d] = {...(e.length ? {e} : {}), ...(l.length ? {l} : {})};
+  }
+  const normalizeName = name => String(name || '').normalize('NFKC').replace(/[^\p{L}\p{N}]/gu, '').toLowerCase();
+  for (const {name, date, startTime, endTime, rankRange, url} of candidates) {
+    if (!days[date]) continue;
+    const nameKey = normalizeName(name);
+    if ((events?.events || []).some(event => event.confidence !== 'none' && event.periods?.some(period =>
+      period.start === date && (period.end || date) === date && [period.label, event.title].some(title => {
+        const key = normalizeName(title);
+        return key && (key === nameKey || (key.length >= 5 && nameKey.length >= 5 && (key.includes(nameKey) || nameKey.includes(key))));
+      })))) continue;
+    const day = out[date] ||= {};
+    const candidateId = ref({title: name, label: name, type: 'event', ranks: findRanks(rankRange), rankRange, start: date, end: date, startTime, endTime, url});
+    const ids = day.c ||= [];
+    if (!ids.includes(candidateId)) ids.push(candidateId);
   }
   return {schema: 'poco-meter-event-days-v1', from: fromISO, to: toISO, list, days: out};
 }
