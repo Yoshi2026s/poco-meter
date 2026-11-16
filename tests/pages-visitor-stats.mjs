@@ -10,7 +10,7 @@ import {buildPages, exportCalculator, exportHistory, exportEBorder, exportMethod
 import {scriptSources} from '../lib/browser-security.mjs';
 
 const pages = ['index.html', 'border-history.html', 'e-border.html', 'calculation-methods.html'];
-const notice = 'アクセス数の集計に GoatCounter を使用しています（Cookie は使わず、個人を特定する情報は保存しません）。';
+const notice = 'アクセス数の集計に GoatCounter を使用しています（Cookie は使わず、個人を特定する情報は保存しません）。日別の重複を避けるため、集計用の日付だけをこのブラウザーに保存します。';
 const origin = 'https://test-code.goatcounter.com';
 const helperName = 'goatcounter-site-visit.js';
 const helper = await readFile(new URL('../scripts/' + helperName, import.meta.url), 'utf8');
@@ -84,59 +84,171 @@ test('empty code adds no analytics; enabled builds add only the four page tags a
   } finally { await rm(dir, {recursive: true, force: true}); }
 });
 
-function runtime({loaded = true, visible = true, prerender = false, missingTag = false, failure = false} = {}) {
-  const calls = [], scriptEvents = new EventTarget(), events = new EventTarget();
-  const tracker = Object.assign(scriptEvents, {dataset: {}});
-  const document = Object.assign(events, {
-    visibilityState: visible ? 'visible' : 'hidden', prerendering: prerender,
-    querySelector: () => missingTag ? null : tracker,
+const dailyKey = 'poco-meter-daily-visit-v1';
+function browserState() {
+  return {now: Date.parse('2026-11-16T15:01:00Z'), storage: new Map(), calls: [], tail: Promise.resolve()};
+}
+function runtime(options = {}, shared = browserState()) {
+  const settings = {loaded: true, visible: true, queued: true, ...options};
+  const tracker = Object.assign(new EventTarget(), {dataset: {}});
+  const document = Object.assign(new EventTarget(), {
+    visibilityState: settings.visible ? 'visible' : 'hidden', prerendering: !!settings.prerender,
+    querySelector: () => settings.missingTag ? null : tracker,
   });
-  const counter = {count: data => {
-    if (failure) throw new Error('blocked or offline');
-    calls.push(structuredClone(data));
-  }};
-  const window = {goatcounter: loaded ? counter : undefined};
-  const context = vm.createContext({document, window});
+  const counter = {
+    filter: () => settings.filtered || false,
+    url: data => {
+      if (settings.failure) throw new Error('counter unavailable');
+      return 'https://test-code.goatcounter.com/count?' + new URLSearchParams({p: data.path, t: data.title, e: data.event});
+    },
+  };
+  const window = Object.assign(new EventTarget(), {goatcounter: settings.loaded ? counter : undefined});
+  const navigator = {
+    onLine: !settings.offline,
+    locks: settings.noLocks ? undefined : {request: (name, fn) => {
+      assert.equal(name, dailyKey);
+      const task = shared.tail.then(() => {
+        if (settings.lockFailure) throw new Error('locks unavailable');
+        return fn();
+      });
+      shared.tail = task.catch(() => {});
+      return task;
+    }},
+    sendBeacon: settings.noBeacon ? undefined : url => {
+      if (settings.beaconThrows) throw new Error('queue rejected');
+      if (settings.queued) shared.calls.push(new URL(url));
+      return settings.queued;
+    },
+  };
+  const storage = {
+    getItem: key => { if (settings.readFailure) throw new Error('storage denied'); return shared.storage.get(key) ?? null; },
+    setItem: (key, value) => {
+      if (settings.writeFailure) throw new Error('storage full');
+      if (!settings.silentWriteFailure) shared.storage.set(key, value);
+    },
+    removeItem: key => shared.storage.delete(key),
+  };
+  class Clock extends Date {
+    constructor(...args) { super(...(args.length ? args : [shared.now])); }
+    static now() { return shared.now; }
+  }
+  const timers = new Map(); let serial = 0;
+  const context = vm.createContext({document, window, navigator, localStorage: storage, URL, Date: Clock,
+    setTimeout: (fn, delay) => { timers.set(++serial, {fn, delay}); return serial; },
+    clearTimeout: id => timers.delete(id),
+  });
   const run = () => vm.runInContext(helper, context);
   const load = () => { window.goatcounter = counter; tracker.dispatchEvent(new Event('load')); };
   const show = () => { document.visibilityState = 'visible'; document.dispatchEvent(new Event('visibilitychange')); };
-  return {calls, document, run, load, show};
+  const settle = async () => { await shared.tail; await Promise.resolve(); };
+  const fireTimer = () => { const [id, timer] = [...timers][0]; timers.delete(id); timer.fn(); };
+  return {shared, settings, timers, document, window, navigator, run, load, show, settle, fireTimer};
 }
 
-test('all pages use one session-aware event without changing the normal page tracking', () => {
+test('four pages and reloads send only one daily event; normal page tracking stays unchanged', async () => {
+  const shared = browserState();
+  shared.storage.set('pococha-meter-calc-v1', 'existing user data');
   for (const name of pages) {
-    const rt = runtime();
-    rt.run(); rt.run(); rt.load(); rt.show();
-    assert.deepEqual(rt.calls, [{path: 'site-visitor', title: 'サイト全体の訪問者数（約8時間単位）', event: true}], name);
+    const rt = runtime({}, shared);
+    rt.run(); rt.run(); rt.load(); rt.show(); await rt.settle();
+    assert.equal(shared.calls.length, 1, name);
     const html = exporters[name](sources[name], 'test-code');
     assert.doesNotMatch(html.match(/<script\b[^>]*data-goatcounter[^>]*>/)[0], /no_onload|no_session|allow_local/);
   }
-  assert.doesNotMatch(helper, /localStorage|sessionStorage|document\.cookie|sendBeacon|fetch\(/);
+  assert.deepEqual(Object.fromEntries(shared.calls[0].searchParams), {
+    p: 'site-visitor-daily', t: 'サイト全体の訪問者数（1日・日本時間）', e: 'true', ns: 'true',
+  });
+  assert.deepEqual([...shared.storage], [['pococha-meter-calc-v1', 'existing user data'], [dailyKey, '2026-11-17']]);
+  assert.doesNotMatch(helper, /document\.cookie|randomUUID|sessionStorage/);
 });
 
-test('delayed CDN, hidden tabs and prerender wait until ready and visible, then count once', () => {
-  for (const loaded of [false, true]) {
-    const rt = runtime({loaded, visible: false});
-    rt.run();
-    assert.equal(rt.calls.length, 0);
-    rt.show();
-    assert.equal(rt.calls.length, loaded ? 1 : 0);
-    rt.load(); rt.show(); rt.load();
-    assert.equal(rt.calls.length, 1);
+test('concurrent tabs and a return after more than eight hours still count once that day', async () => {
+  const shared = browserState();
+  const tabs = Array.from({length: 32}, () => runtime({}, shared));
+  tabs.forEach(rt => rt.run()); await tabs[31].settle();
+  assert.equal(shared.calls.length, 1);
+  shared.now += 23 * 3600000;
+  const reopened = runtime({}, shared);
+  reopened.run(); await reopened.settle();
+  assert.equal(shared.calls.length, 1);
+  assert.equal(shared.storage.get(dailyKey), '2026-11-17');
+});
+
+test('Japanese midnight counts a new day even within eight hours and on an already-open page', async () => {
+  const rt = runtime();
+  rt.shared.now = Date.parse('2026-11-17T14:59:59.950Z');
+  rt.run(); await rt.settle();
+  assert.equal(rt.shared.storage.get(dailyKey), '2026-11-17');
+  assert.equal([...rt.timers.values()][0].delay, 100);
+  rt.shared.now += 200;
+  rt.fireTimer(); await rt.settle();
+  assert.equal(rt.shared.storage.get(dailyKey), '2026-11-18');
+  assert.equal(rt.shared.calls.length, 2);
+  assert.ok(rt.shared.calls.every(url => url.searchParams.get('ns') === 'true'));
+  rt.show(); await rt.settle();
+  assert.equal(rt.shared.calls.length, 2);
+  assert.equal(rt.timers.size, 1);
+  // A backward clock correction must not re-count the previous day.
+  rt.shared.now -= 3600000; rt.show(); await rt.settle();
+  assert.equal(rt.shared.calls.length, 2);
+});
+
+test('CDN order, hidden tabs and prerender wait for readiness and visibility', async () => {
+  for (const loadFirst of [false, true]) {
+    const rt = runtime({loaded: false, visible: false});
+    rt.run(); await rt.settle();
+    assert.equal(rt.timers.size, 0, 'no CDN polling');
+    if (loadFirst) rt.load(); else rt.show();
+    await rt.settle(); assert.equal(rt.shared.calls.length, 0);
+    if (loadFirst) rt.show(); else rt.load();
+    await rt.settle(); assert.equal(rt.shared.calls.length, 1);
   }
   const rt = runtime({prerender: true});
-  rt.run(); rt.show();
-  assert.equal(rt.calls.length, 0);
+  rt.run(); rt.show(); await rt.settle();
+  assert.equal(rt.shared.calls.length, 0);
   rt.document.prerendering = false;
-  rt.document.dispatchEvent(new Event('prerenderingchange'));
-  assert.equal(rt.calls.length, 1);
+  rt.document.dispatchEvent(new Event('prerenderingchange')); await rt.settle();
+  assert.equal(rt.shared.calls.length, 1);
 });
 
-test('unavailable CDN, disabled analytics and count failures do not break the page', () => {
-  for (const options of [{loaded: false}, {missingTag: true}, {failure: true}]) {
-    const rt = runtime(options);
-    assert.doesNotThrow(() => { rt.run(); rt.show(); });
-    assert.equal(rt.calls.length, 0);
+test('hidden midnight, offline recovery and back-forward cache count only when visible and online', async () => {
+  const rt = runtime({offline: true});
+  rt.run(); await rt.settle();
+  assert.equal(rt.shared.storage.has(dailyKey), false);
+  rt.navigator.onLine = true; rt.window.dispatchEvent(new Event('online')); await rt.settle();
+  assert.equal(rt.shared.calls.length, 1);
+  rt.document.visibilityState = 'hidden'; rt.shared.now += 86400000;
+  rt.fireTimer(); await rt.settle();
+  assert.equal(rt.shared.calls.length, 1);
+  rt.show(); await rt.settle(); assert.equal(rt.shared.calls.length, 2);
+  rt.window.dispatchEvent(new Event('pagehide')); assert.equal(rt.timers.size, 0);
+  rt.shared.now += 86400000;
+  rt.window.dispatchEvent(new Event('pageshow')); await rt.settle();
+  assert.equal(rt.shared.calls.length, 3);
+});
+
+test('self exclusion, unavailable APIs and storage failures do not send or claim a daily visit', async () => {
+  for (const settings of [{loaded: false}, {missingTag: true}, {failure: true}, {filtered: 'disabled with #toggle-goatcounter'},
+    {filtered: 'localhost'}, {filtered: 'frame'}, {noLocks: true}, {lockFailure: true}, {noBeacon: true},
+    {readFailure: true}, {writeFailure: true}, {silentWriteFailure: true}]) {
+    const rt = runtime(settings);
+    assert.doesNotThrow(() => { rt.run(); rt.show(); }); await rt.settle();
+    assert.equal(rt.shared.calls.length, 0, JSON.stringify(settings));
+    assert.equal(rt.shared.storage.has(dailyKey), false, JSON.stringify(settings));
+  }
+});
+
+test('a refused or throwing queue restores the prior marker and allows recovery', async () => {
+  for (const previous of [null, '2026-11-16']) for (const failure of [{queued: false}, {beaconThrows: true}]) {
+    const rt = runtime(failure);
+    if (previous) rt.shared.storage.set(dailyKey, previous);
+    rt.run(); await rt.settle();
+    assert.equal(rt.shared.storage.get(dailyKey) ?? null, previous);
+    assert.equal(rt.shared.calls.length, 0);
+    rt.settings.queued = true; rt.settings.beaconThrows = false;
+    rt.window.dispatchEvent(new Event('focus')); await rt.settle();
+    assert.equal(rt.shared.calls.length, 1);
+    assert.equal(rt.shared.storage.get(dailyKey), '2026-11-17');
   }
 });
 
