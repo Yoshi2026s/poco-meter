@@ -16,7 +16,7 @@ const ROOT = fileURLToPath(new URL('../', import.meta.url));
 const EVENT_DAYS_AHEAD = 60; // イベントカレンダーで先の予定として載せる日数
 // Tool version shown on the page. Change only when the tool itself changes
 // (data updates do not change it).
-export const PAGES_VERSION = {version: 'v2026.11.17.2', updatedAt: '2026-11-17T01:01:00+09:00', label: '2026/11/17 01:01:00'};
+export const PAGES_VERSION = {version: 'v2026.11.17.3', updatedAt: '2026-11-17T01:10:00+09:00', label: '2026/11/17 01:10:00'};
 // GoatCounter のサイトコード。空なら計測タグを入れない。
 export const GOATCOUNTER_CODE = 'poco-meter';
 // Official stable script and SRI: https://www.goatcounter.com/help/countjs-versions
@@ -25,7 +25,7 @@ const GOATCOUNTER_INTEGRITY = 'sha384-atnOLvQb9t+jTSipvd75X2yginT4PjVbqDdlJAmxMm
 const SITE_VISIT_FILE = 'goatcounter-site-visit.js';
 const SITE_VISIT_SCRIPT = await readFile(new URL('./' + SITE_VISIT_FILE, import.meta.url), 'utf8');
 const SITE_VISIT_INTEGRITY = 'sha384-' + createHash('sha384').update(SITE_VISIT_SCRIPT).digest('base64');
-const GOATCOUNTER_NOTICE = 'アクセス数の集計に GoatCounter を使用しています（Cookie は使わず、個人を特定する情報は保存しません）。';
+const GOATCOUNTER_NOTICE = 'アクセス数の集計に GoatCounter を使用しています（Cookie は使わず、個人を特定する情報は保存しません）。日別の重複を避けるため、集計用の日付だけをこのブラウザーに保存します。';
 const SITES_ORIGIN = 'https://poco-meter.freefreelife2000.chatgpt.site';
 const COLLECTOR_ORIGIN = 'https://pococha-comment-access.freefreelife2000.chatgpt.site';
 const BORDER_FETCH = "fetch('/api/borders',{cache:'no-cache',credentials:'same-origin',signal:controller.signal})";
