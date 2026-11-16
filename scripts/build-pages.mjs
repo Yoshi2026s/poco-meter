@@ -5,6 +5,7 @@
 import {readFile, writeFile, mkdir, rm} from 'node:fs/promises';
 import {resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {createHash} from 'node:crypto';
 import {manifest, iconData} from '../calculator/offline-assets.mjs';
 import {exportWorker} from './prepare-github-meter.mjs';
 import {sealCalculatorHTML, scriptSources} from '../lib/browser-security.mjs';
@@ -15,12 +16,15 @@ const ROOT = fileURLToPath(new URL('../', import.meta.url));
 const EVENT_DAYS_AHEAD = 60; // イベントカレンダーで先の予定として載せる日数
 // Tool version shown on the page. Change only when the tool itself changes
 // (data updates do not change it).
-export const PAGES_VERSION = {version: 'v2026.11.16.3', updatedAt: '2026-11-16T23:33:00+09:00', label: '2026/11/16 23:33:00'};
+export const PAGES_VERSION = {version: 'v2026.11.17.1', updatedAt: '2026-11-17T00:51:00+09:00', label: '2026/11/17 00:51:00'};
 // GoatCounter のサイトコード。空なら計測タグを入れない。
 export const GOATCOUNTER_CODE = 'poco-meter';
 // Official stable script and SRI: https://www.goatcounter.com/help/countjs-versions
 const GOATCOUNTER_SCRIPT = 'https://gc.zgo.at/count.v5.js';
 const GOATCOUNTER_INTEGRITY = 'sha384-atnOLvQb9t+jTSipvd75X2yginT4PjVbqDdlJAmxMm+wYElFmeR6EmLP5bYeoRVQ';
+const SITE_VISIT_FILE = 'goatcounter-site-visit.js';
+const SITE_VISIT_SCRIPT = await readFile(new URL('./' + SITE_VISIT_FILE, import.meta.url), 'utf8');
+const SITE_VISIT_INTEGRITY = 'sha384-' + createHash('sha384').update(SITE_VISIT_SCRIPT).digest('base64');
 const GOATCOUNTER_NOTICE = 'アクセス数の集計に GoatCounter を使用しています（Cookie は使わず、個人を特定する情報は保存しません）。';
 const SITES_ORIGIN = 'https://poco-meter.freefreelife2000.chatgpt.site';
 const COLLECTOR_ORIGIN = 'https://pococha-comment-access.freefreelife2000.chatgpt.site';
@@ -133,11 +137,12 @@ function withVisitorStats(html, name, code) {
   if (policies.length) {
     const [tag, policy] = policies[0];
     let expanded = policy;
-    for (const [directive, allowed] of [['script-src', 'https://gc.zgo.at'], ['connect-src', origin], ['img-src', origin]]) {
+    for (const [directive, allowed] of [['script-src', "'self' https://gc.zgo.at"], ['connect-src', origin], ['img-src', origin]]) {
       const matches = [...expanded.matchAll(new RegExp(`(?:^|;)(\\s*${directive}\\s+[^;]+)`, 'g'))];
       if (matches.length !== 1) throw new Error('Pages build: expected one ' + directive + ' in ' + name);
       const value = matches[0][1];
-      expanded = replaceOnce(expanded, value, value.trimEnd() + ' ' + allowed + value.slice(value.trimEnd().length));
+      const additions = allowed.split(' ').filter(item => !value.trim().split(/\s+/).includes(item));
+      expanded = replaceOnce(expanded, value, value.trimEnd() + ' ' + additions.join(' ') + value.slice(value.trimEnd().length));
     }
     html = replaceOnce(html, tag, tag.replace(policy, expanded));
   }
@@ -147,7 +152,8 @@ function withVisitorStats(html, name, code) {
     html = replaceOnce(html, notices[0][0], notices[0][0].replace('</p>', GOATCOUNTER_NOTICE + '</p>'));
   }
   const tag = `<script data-goatcounter="${origin}/count" async src="${GOATCOUNTER_SCRIPT}" crossorigin="anonymous" integrity="${GOATCOUNTER_INTEGRITY}"></script>`;
-  return replaceOnce(html, '</body>', tag + '\n</body>');
+  const siteVisit = `<script defer src="./${SITE_VISIT_FILE}" integrity="${SITE_VISIT_INTEGRITY}"></script>`;
+  return replaceOnce(html, '</body>', tag + '\n' + siteVisit + '\n</body>');
 }
 function assertClean(html, name) {
   for (const banned of ['freefreelife2000', 'pococha-comment', "fetch('/api/", 'pococha-public-access-tracker']) {
@@ -235,6 +241,7 @@ export async function buildPages({root = ROOT, out = resolve(ROOT, '_site'), goa
   pagesManifest.id = pagesManifest.start_url = pagesManifest.scope = './';
   pagesManifest.icons.forEach(icon => { icon.src = './' + icon.src.replace(/^\//, ''); });
   const files = {
+    ...(goatcounter ? {[SITE_VISIT_FILE]: SITE_VISIT_SCRIPT} : {}),
     'index.html': exportCalculator(calculator, PAGES_VERSION, {goatcounter}),
     'calculation-methods.html': exportMethods(methods, {goatcounter}),
     // A new tool version gets a new cache name, so installed copies refresh icons and pages.
