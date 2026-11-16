@@ -15,7 +15,7 @@ const ROOT = fileURLToPath(new URL('../', import.meta.url));
 const EVENT_DAYS_AHEAD = 60; // イベントカレンダーで先の予定として載せる日数
 // Tool version shown on the page. Change only when the tool itself changes
 // (data updates do not change it).
-export const PAGES_VERSION = {version: 'v2026.11.16.1', updatedAt: '2026-11-16T12:43:00+09:00', label: '2026/11/16 12:43:00'};
+export const PAGES_VERSION = {version: 'v2026.11.16.2', updatedAt: '2026-11-16T14:07:00+09:00', label: '2026/11/16 14:07:00'};
 const SITES_ORIGIN = 'https://poco-meter.freefreelife2000.chatgpt.site';
 const COLLECTOR_ORIGIN = 'https://pococha-comment-access.freefreelife2000.chatgpt.site';
 const BORDER_FETCH = "fetch('/api/borders',{cache:'no-cache',credentials:'same-origin',signal:controller.signal})";

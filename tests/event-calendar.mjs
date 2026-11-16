@@ -1,8 +1,8 @@
-// 過去のボーダー表の「Pocochaイベントカレンダー」：data/event-days.json から月ごとの表を作る部分と、公開物・画面の組み込み。
+// メーター画面の「Pocochaイベントカレンダー」：data/event-days.json から月ごとの表を作る部分と、画面への組み込み。
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {eventCalendarMonth, eventCalendarName, eventCalendarURL, validEventDays} from '../calculator/history-core.mjs';
+import {eventCalendarMonth, eventCalendarName, eventCalendarURL, validEventDays} from '../calculator/event-calendar.mjs';
 import {calendarEventDays} from '../automation/build-meter-factors.mjs';
 
 const events = {events: [
@@ -51,12 +51,27 @@ test('段階名だけのラベルは記事タイトルの名前を前に付け�
   assert.equal(eventCalendarName({title: '冬祭り開催', label: '冬祭り 開催期間'}), '冬祭り');
 });
 
-test('過去のボーダー表に折りたたみで組み込まれ、公開時は60日先まで作る', () => {
-  const html = fs.readFileSync(new URL('../calculator/border-history.html', import.meta.url), 'utf8');
-  assert.match(html, /<details class="panel" id="eventCalendarPanel">/);
-  assert.ok(html.indexOf('id="eventCalendarPanel"') > html.indexOf('id="calendarResults"'), 'ボーダーのカレンダーより下');
-  assert.ok(html.indexOf('id="eventCalendarPanel"') < html.indexOf('<footer'));
-  assert.match(html, /fetch\('\.\/data\/event-days\.json'/);
+test('メーター画面の「過去のボーダー表」リンクの直後に折りたたみで置き、過去のボーダー表には置かない', () => {
+  const html = fs.readFileSync(new URL('../calculator/index.html', import.meta.url), 'utf8');
+  const link = html.indexOf('id="mainHistoryLink"'), linkEnd = html.indexOf('</a>', link) + 4;
+  assert.ok(link > 0);
+  assert.equal(html.indexOf('<details class="event-cal-panel" id="eventCalendarPanel">'), linkEnd, 'スマホ縦の入口ボタンのすぐ下');
+  assert.ok(html.includes("anchor=narrow?$('mainHistoryLink'):$('historyPortal')"), 'PC・横持ちは下部のリンクの下へ移す');
+  assert.ok(html.includes('html.always-on-mode body #eventCalendarPanel{display:none!important}'), '常時表示モードでは隠す');
+  assert.ok(html.includes("fetch('./data/event-days.json'"));
+  const history = fs.readFileSync(new URL('../calculator/border-history.html', import.meta.url), 'utf8');
+  assert.doesNotMatch(history, /eventCalendarPanel/);
   const build = fs.readFileSync(new URL('../scripts/build-pages.mjs', import.meta.url), 'utf8');
   assert.match(build, /EVENT_DAYS_AHEAD = 60/);
+});
+
+test('書き写した部品が元ファイルと一致し、画面のスクリプトから使える', async () => {
+  const {eventCalendarBlock, BEGIN, END} = await import('../scripts/prepare-event-calendar.mjs');
+  const html = fs.readFileSync(new URL('../calculator/index.html', import.meta.url), 'utf8');
+  const src = fs.readFileSync(new URL('../calculator/event-calendar.mjs', import.meta.url), 'utf8');
+  const block = html.slice(html.indexOf(BEGIN), html.indexOf(END) + END.length);
+  assert.equal(block, eventCalendarBlock(src));
+  const PocoEventCalendar = new Function(block.replace(BEGIN, '').replace(END, '') + '; return PocoEventCalendar;')();
+  assert.equal(typeof PocoEventCalendar.createEventCalendar, 'function');
+  assert.equal(PocoEventCalendar.eventCalendarMonth(data, '2026-01', '').count, 7);
 });

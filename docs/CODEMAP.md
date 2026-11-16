@@ -41,8 +41,9 @@
 `pococha-meter-calc-v1`（本体）・`pococha-meter-display-v1`・`pococha-meter-hud-v1`・`pococha-meter-items-window-v1`・`pococha-e-display-v1`・`pococha-e-drafts-v1`・`pococha-meter-history-v1`・`pococha-meter-history-theme-v1`・`pococha-site-time-v1`（ほか常時表示パネルの予想データの写し `pococha-meter-forecast-v1`）
 
 ## テストの選び方
+- メーター画面のイベントカレンダー：`tests/event-calendar.mjs`（部品は `calculator/event-calendar.mjs`、index.html へは `npm run pages:prepare` で書き写す）
 - 計算：`tests/calculation-engine.mjs`、締め時間別：`tests/cutoff-reference-target.mjs`
 - 公開物・ボーダー：`tests/pages-borders.mjs`、表画像：`tests/table-channel.mjs`
-- 過去ボーダー画面：`tests/history-page-ui.mjs`・`tests/history-independent.mjs`、イベントカレンダー：`tests/history-event-calendar.mjs`
+- 過去ボーダー画面：`tests/history-page-ui.mjs`・`tests/history-independent.mjs`
 - E帯：`tests/e-*.mjs`、オフライン：`tests/offline-*.mjs`
 - 画面の見た目・スマホ幅：`npm run test:extra`
