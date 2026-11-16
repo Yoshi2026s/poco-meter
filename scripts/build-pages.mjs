@@ -15,7 +15,13 @@ const ROOT = fileURLToPath(new URL('../', import.meta.url));
 const EVENT_DAYS_AHEAD = 60; // イベントカレンダーで先の予定として載せる日数
 // Tool version shown on the page. Change only when the tool itself changes
 // (data updates do not change it).
-export const PAGES_VERSION = {version: 'v2026.11.16.2', updatedAt: '2026-11-16T14:07:00+09:00', label: '2026/11/16 14:07:00'};
+export const PAGES_VERSION = {version: 'v2026.11.16.3', updatedAt: '2026-11-16T23:33:00+09:00', label: '2026/11/16 23:33:00'};
+// GoatCounter のサイトコード。空なら計測タグを入れない。
+export const GOATCOUNTER_CODE = 'poco-meter';
+// Official stable script and SRI: https://www.goatcounter.com/help/countjs-versions
+const GOATCOUNTER_SCRIPT = 'https://gc.zgo.at/count.v5.js';
+const GOATCOUNTER_INTEGRITY = 'sha384-atnOLvQb9t+jTSipvd75X2yginT4PjVbqDdlJAmxMm+wYElFmeR6EmLP5bYeoRVQ';
+const GOATCOUNTER_NOTICE = 'アクセス数の集計に GoatCounter を使用しています（Cookie は使わず、個人を特定する情報は保存しません）。';
 const SITES_ORIGIN = 'https://poco-meter.freefreelife2000.chatgpt.site';
 const COLLECTOR_ORIGIN = 'https://pococha-comment-access.freefreelife2000.chatgpt.site';
 const BORDER_FETCH = "fetch('/api/borders',{cache:'no-cache',credentials:'same-origin',signal:controller.signal})";
@@ -109,6 +115,40 @@ function removeOnce(source, pattern, label) {
   if (matches.length !== 1) throw new Error('Pages build: expected one ' + label + ', found ' + matches.length);
   return source.replace(pattern, '');
 }
+function validateGoatcounter(code) {
+  if (typeof code !== 'string' || (code !== '' && !/^[a-z0-9-]{2,50}$/.test(code))) {
+    throw new Error('Pages build: invalid GoatCounter site code');
+  }
+}
+// Apply after sealing inline scripts: sealing would otherwise remove the CDN origin.
+function withVisitorStats(html, name, code) {
+  validateGoatcounter(code);
+  if (!code) return html;
+  if (/goatcounter|gc\.zgo\.at/i.test(html)) throw new Error('Pages build: ' + name + ' already contains GoatCounter');
+  const origin = `https://${code}.goatcounter.com`;
+  const policies = [...html.matchAll(/<meta\b[^>]*http-equiv="Content-Security-Policy"[^>]*content="([^"]+)"[^>]*>/gi)];
+  if (policies.length > 1 || (!policies.length && name !== 'calculation-methods.html')) {
+    throw new Error('Pages build: expected one CSP in ' + name);
+  }
+  if (policies.length) {
+    const [tag, policy] = policies[0];
+    let expanded = policy;
+    for (const [directive, allowed] of [['script-src', 'https://gc.zgo.at'], ['connect-src', origin], ['img-src', origin]]) {
+      const matches = [...expanded.matchAll(new RegExp(`(?:^|;)(\\s*${directive}\\s+[^;]+)`, 'g'))];
+      if (matches.length !== 1) throw new Error('Pages build: expected one ' + directive + ' in ' + name);
+      const value = matches[0][1];
+      expanded = replaceOnce(expanded, value, value.trimEnd() + ' ' + allowed + value.slice(value.trimEnd().length));
+    }
+    html = replaceOnce(html, tag, tag.replace(policy, expanded));
+  }
+  if (name === 'index.html') {
+    const notices = [...html.matchAll(/<p id="toolDisclaimerText">[^<]*<\/p>/g)];
+    if (notices.length !== 1) throw new Error('Pages build: expected one calculator disclaimer');
+    html = replaceOnce(html, notices[0][0], notices[0][0].replace('</p>', GOATCOUNTER_NOTICE + '</p>'));
+  }
+  const tag = `<script data-goatcounter="${origin}/count" async src="${GOATCOUNTER_SCRIPT}" crossorigin="anonymous" integrity="${GOATCOUNTER_INTEGRITY}"></script>`;
+  return replaceOnce(html, '</body>', tag + '\n</body>');
+}
 function assertClean(html, name) {
   for (const banned of ['freefreelife2000', 'pococha-comment', "fetch('/api/", 'pococha-public-access-tracker']) {
     if (html.includes(banned)) throw new Error('Pages build: ' + name + ' still contains ' + banned);
@@ -120,7 +160,7 @@ function assertClean(html, name) {
   return html;
 }
 
-export function exportCalculator(source, version = PAGES_VERSION) {
+export function exportCalculator(source, version = PAGES_VERSION, {goatcounter = GOATCOUNTER_CODE} = {}) {
   let html = replaceOnce(source, '<!-- sites-host-context -->', '<!-- GitHub Pages publication -->');
   html = removeOnce(html, /\s*<script id="pococha-public-access-tracker">[\s\S]*?<\/script>/, 'access tracker');
   html = removeOnce(html, /\s*<!-- Pococha1012 security management: start -->[\s\S]*?<!-- Pococha1012 security management: end -->/, 'admin link');
@@ -142,7 +182,7 @@ export function exportCalculator(source, version = PAGES_VERSION) {
   html = replaceOnce(html, '<time class="num" datetime="2026-10-23T23:54:26+09:00">2026/10/23 23:54:26</time>',
     `<time class="num" datetime="${version.updatedAt}">${version.label}</time>`);
   html = replaceOnce(html, '最終更新バージョン：v2026.10.23.3', '最終更新バージョン：' + version.version);
-  return assertClean(sealCalculatorHTML(sharePreview(html)), 'index.html');
+  return assertClean(withVisitorStats(sealCalculatorHTML(sharePreview(html)), 'index.html', goatcounter), 'index.html');
 }
 
 const SOURCE_VERSION = 'v2026.10.23.3';
@@ -151,16 +191,23 @@ function stampVersion(html, name, version) {
   return html.replaceAll(SOURCE_VERSION, version.version);
 }
 
-export function exportHistory(source, version = PAGES_VERSION) {
+export function exportHistory(source, version = PAGES_VERSION, {goatcounter = GOATCOUNTER_CODE} = {}) {
   const html = withPageHead(stampVersion(replaceOnce(source, BORDER_FETCH, BORDER_FETCH_PAGES), 'border-history.html', version), 'border-history.html');
-  return assertClean(sealCalculatorHTML(html), 'border-history.html');
+  return assertClean(withVisitorStats(sealCalculatorHTML(html), 'border-history.html', goatcounter), 'border-history.html');
 }
 
-export function exportEBorder(source, version = PAGES_VERSION) {
-  return assertClean(sealCalculatorHTML(withPageHead(stampVersion(source, 'e-border.html', version), 'e-border.html')), 'e-border.html');
+export function exportEBorder(source, version = PAGES_VERSION, {goatcounter = GOATCOUNTER_CODE} = {}) {
+  const html = sealCalculatorHTML(withPageHead(stampVersion(source, 'e-border.html', version), 'e-border.html'));
+  return assertClean(withVisitorStats(html, 'e-border.html', goatcounter), 'e-border.html');
 }
 
-export async function buildPages({root = ROOT, out = resolve(ROOT, '_site')} = {}) {
+export function exportMethods(source, {goatcounter = GOATCOUNTER_CODE} = {}) {
+  if ((source.match(/href="\/"/g) || []).length !== 2) throw new Error('Pages build: expected two help return links');
+  return withVisitorStats(withPageHead(source.replaceAll('href="/"', 'href="./"'), 'calculation-methods.html'), 'calculation-methods.html', goatcounter);
+}
+
+export async function buildPages({root = ROOT, out = resolve(ROOT, '_site'), goatcounter = GOATCOUNTER_CODE} = {}) {
+  validateGoatcounter(goatcounter);
   const read = path => readFile(resolve(root, path), 'utf8');
   const [calculator, methods, worker, history, eBorder, borders] = await Promise.all([
     read('calculator/index.html'), read('calculator/calculation-methods.html'), read('calculator/sw.js'),
@@ -184,20 +231,19 @@ export async function buildPages({root = ROOT, out = resolve(ROOT, '_site')} = {
     const body = await read(`data/forecast-history-${close}.json`).catch(error => { if (error.code === 'ENOENT') return null; throw error; });
     if (body) hitHistory[`data/forecast-history-${close}.json`] = body;
   }
-  if ((methods.match(/href="\/"/g) || []).length !== 2) throw new Error('Pages build: expected two help return links');
   const pagesManifest = structuredClone(manifest);
   pagesManifest.id = pagesManifest.start_url = pagesManifest.scope = './';
   pagesManifest.icons.forEach(icon => { icon.src = './' + icon.src.replace(/^\//, ''); });
   const files = {
-    'index.html': exportCalculator(calculator),
-    'calculation-methods.html': withPageHead(methods.replaceAll('href="/"', 'href="./"'), 'calculation-methods.html'),
+    'index.html': exportCalculator(calculator, PAGES_VERSION, {goatcounter}),
+    'calculation-methods.html': exportMethods(methods, {goatcounter}),
     // A new tool version gets a new cache name, so installed copies refresh icons and pages.
     'meter-sw.js': replaceOnce(
       replaceOnce(exportWorker(worker), 'const FRESH_LAUNCH = false;', 'const FRESH_LAUNCH = true;'),
       "-github';", `-github-${PAGES_VERSION.version}';`),
     'meter.webmanifest': JSON.stringify(pagesManifest, null, 2) + '\n',
-    'border-history.html': exportHistory(history),
-    'e-border.html': exportEBorder(eBorder),
+    'border-history.html': exportHistory(history, PAGES_VERSION, {goatcounter}),
+    'e-border.html': exportEBorder(eBorder, PAGES_VERSION, {goatcounter}),
     'data/borders.json': borders,
     ...(forecast ? {'data/meter-forecast.json': forecast} : {}),
     // 日ごとの答え合わせ（的中率カレンダー用。メニューを開いたときだけ読み込む）
