@@ -1,6 +1,6 @@
 # ポコメーター番長 Codex・Claude Code 共同開発引継ぎ
 
-更新日：2026/11/11（日本時間）
+更新日：2026/11/16（日本時間）
 
 Code は Claude Code を指す。共通ルールは [AGENTS.md](../AGENTS.md) を参照する。Claude Code は [CLAUDE.md](../CLAUDE.md) から同じルールを読む。
 この文書は作業の受け渡しと現状に使う。変更の経緯は [CHANGELOG.md](CHANGELOG.md) と各PRに残す。
@@ -49,7 +49,8 @@ git switch -c codex/example-task "origin/(root)"
 - 公開：GitHub Pages https://yoshi2026s.github.io/poco-meter/ （既定ブランチ `(root)` への push で自動公開）
 - ボーダー：`data/borders.json`。GitHub Actions が毎日 05:00・17:00 JST に ONE CARAT から取得（記事本文＋月別表画像の2系統）。同じジョブでPococha公式noteのイベント新着も収集する。
 - 旧Sites・署名キー・旧ChatGPTタスクは使わない。旧Sitesには新URLへの移転案内を掲示済み。
-- ツール版：`scripts/build-pages.mjs` の `PAGES_VERSION`（v2026.11.16.2）。
+- ツール版：`scripts/build-pages.mjs` の `PAGES_VERSION`（v2026.11.16.3）。
+- 訪問者統計：GoatCounter（`scripts/build-pages.mjs` の `GOATCOUNTER_CODE` が空なら無効、現在は `poco-meter`）。公開4画面だけを集計し、[管理画面](https://poco-meter.goatcounter.com/)はオーナーのログインで見る。固定版 count.v5.js と公式SRIを使用。編集元HTML・404・保存形式・SWの他オリジン通信処理には計測を追加しない。
 - メーター画面の並び：最上部にタイトル欄（使い方・目標値の算出方法・表示設定・再読み込み・アプリ更新）、その下にメーター、補助メニュー、E帯・過去ボーダーの入口。タイトル欄は `#titleTop`（`.title-top`）に入り、幅はメーターと同じ。 タイトル欄は2段（1段目：タイトルと更新日時・版、2段目：4ボタン）で、スマホでは約106px。
 - 目標のボーダー選択（メーターのボーダー欄・詳細側の `quickBorder`・`pickBorder`）は ±0・+1・+2 のみで「手入力」の選択肢は無い。目標値を直接入力した時も欄は直前のボーダー（`state.analysisBorder`、無ければ±0）を表示し、フォーカスが外れただけでは自動計算に戻さない。別のボーダーを選ぶか「既定値」で自動計算に戻る。既定値設定の `defaultBorder` だけは「手入力」を残す（JSで追加）。
 - メーター画面のYoshi1012タグ（`.tool-creator-logo`）はフッターの `.footer-support` 内、「免責事項」の右隣（2列グリッドの右）で、免責事項ボタンと同じ幅・高さ44px。免責事項を開くと本文の下に回る。

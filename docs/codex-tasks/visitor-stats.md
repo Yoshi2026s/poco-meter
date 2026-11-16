@@ -1,5 +1,7 @@
 # Codex 指示書：訪問者統計（GoatCounter）を公開版に追加する
 
+状態：実装済み（PR #119・v2026.11.16.3）
+
 （Codex への依頼文：「docs/codex-tasks/visitor-stats.md の指示書に従って実装して」。リポジトリ Yoshi2026s/poco-meter、既定ブランチ `(root)`）
 
 ## 目的
