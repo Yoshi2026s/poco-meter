@@ -177,4 +177,44 @@ assert.equal(titleNameOf('「ヒーロー戦隊」アイテム登場!'), 'ヒー
   assert.equal(injectEventParse(page, source), page, 'index.html の読み取り部品が古い（npm run pages:prepare）');
   assert.ok(eventParseBlock(source).includes('var PocoEventParse=(function(){'));
 }
+// ChatGPTの定期タスクの照合記録（docs/pococha-event-sources.md）→ data/task-events.txt → イベント
+{
+  const {extractTaskEvents, parsePeriod, TASK_SOURCE_ID} = await import('../automation/extract-task-events.mjs');
+  const md = [
+    '# Pocochaイベント出典・照合記録', '',
+    '## 2026-12-28（日本時間）',
+    '- 年越しイベント：12/31 12:00〜1/2 23:59:59。対象はS1〜S6。https://report.pococha.com/n/nabc',
+    '- 新年リーグは1/1 0:00〜23:59。https://sedai.pococha.com/',
+    '- 第三者の告知だけのもの：12/30 12:00〜23:59。https://example.com/x',
+    '- 中止になった企画：12/29 12:00〜23:59。https://www.pococha.com/ja/news/a',
+    '- 期間の書かれていない告知。https://www.pococha.com/ja/news/b',
+    '- 既にある世代ウォーズ：11/13〜11/17。https://report.pococha.com/n/nzz',
+    '### 第三者カレンダーで確認した候補',
+    '- 候補のイベント：12/30 12:00〜23:59。https://event.pococha.com/ja-jp/festivals/x',
+    '## 2026-12-27（日本時間）',
+    '- 年越しイベント：12/31 12:00〜1/2 23:59。https://report.pococha.com/n/nabc',
+  ].join('\n');
+  const existing = [
+    {sourceId: 'pococha-official-note-manual', url: 'https://report.pococha.com/n/n1#7', title: '世代ウォーズ', periods: [{start: '2026-11-13', end: '2026-11-17', label: '世代ウォーズ'}]},
+    {sourceId: TASK_SOURCE_ID, url: 'old', title: '新年リーグ', periods: [{start: '2027-01-01', end: '2027-01-01', label: '新年リーグ'}]},
+  ];
+  const {lines, skipped} = extractTaskEvents(md, existing);
+  assert.equal(lines.length, 2, '公式URLつきで期間を読める行だけ（第三者・候補・中止・期間なし・既にある行は入れない。同じ事実は1行）');
+  assert.match(lines[0], /^確認日 2026-12-28｜年越しイベント｜開催期間：2026年12月31日 12:00〜2027年1月2日 23:59｜対象：S1〜S6｜https:\/\/report\.pococha\.com\/n\/nabc#task-[0-9a-f]{10}$/, '年をまたぐ・秒を落とす・最新の確認日');
+  assert.match(lines[1], /^確認日 2026-12-28｜新年リーグ｜開催期間：2027年1月1日 00:00〜2027年1月1日 23:59｜https:\/\/sedai\.pococha\.com\/#task-/, '終わりが時刻だけなら同じ日。年は確認日に一番近い年');
+  assert.deepEqual(skipped.map(s => s.reason).sort(), ['Pococha公式のURLなし', '期間を読めない', '既にあり（https://report.pococha.com/n/n1#7）', '未確認・中止などの記載あり'].sort());
+  assert.equal(parsePeriod('エントリ 11/26〜', '2026-11-16'), null, '終わりの無い期間は読まない');
+  assert.deepEqual(extractTaskEvents('', []).lines, []);
+  // 取り込み：collect-events の取得元として読め、同じ記事の自動収集の記録を上書きしない
+  const task = SOURCES.find(x => x.id === TASK_SOURCE_ID);
+  assert.ok(task && task.pasted === 'data/task-events.txt' && task.kind === 'official', '取得元：ChatGPT定期タスクの確認記録');
+  const byId = new Map([['https://report.pococha.com/n/nabc', {sourceId: 'pococha-official-note', url: 'https://report.pococha.com/n/nabc'}]]);
+  assert.equal(readPasted(task, byId, lines.join('\n')), 2);
+  assert.equal(byId.size, 3);
+  const ev = [...byId.values()].find(e => e.title === '年越しイベント');
+  assert.deepEqual([ev.confirmedAt, ev.periods[0].start, ev.periods[0].end, ev.periods[0].startTime, ev.ranks.length], ['2026-12-28', '2026-12-31', '2027-01-02', '12:00', 6]);
+  // リポジトリの data/task-events.txt はすべて読める
+  const fileLines = readFileSync(new URL('../data/task-events.txt', import.meta.url), 'utf8');
+  assert.equal(readPasted(task, new Map(), fileLines), fileLines.split('\n').filter(x => /^確認日/.test(x)).length, 'data/task-events.txt の行はすべて読める');
+}
 console.log('meter-sources ok');

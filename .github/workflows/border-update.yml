@@ -4,7 +4,7 @@ name: ボーダー自動更新
 #  1. 記事本文の「前日ランクボーダー」（主）
 #  2. 月別の表画像（3日以上前の欠けた日だけを補う。既知の日と全一致した画像だけを使う）
 # 毎日 05:00 と 17:00（日本時間）。GitHub の定期実行は混雑で数分〜数十分遅れることがある。
-# data/sns-events.txt（公式X・インスタの告知の貼り付け）・data/event-page-events.txt（公式イベントページの確認結果）・data/official-note-events.txt（公式noteの確認結果）を変えたときは、取得元へはアクセスせず、その行だけを読んでイベント情報を作り直す。
+# data/sns-events.txt（公式X・インスタの告知の貼り付け）・data/event-page-events.txt（公式イベントページの確認結果）・data/official-note-events.txt（公式noteの確認結果）・docs/pococha-event-sources.md（ChatGPT定期タスクの照合記録）を変えたときは、取得元へはアクセスせず、その行だけを読んでイベント情報を作り直す。
 on:
   schedule:
     - cron: '0 20 * * *'   # 05:00 JST
@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
   push:
     branches: ['(root)']
-    paths: ['data/sns-events.txt', 'data/event-page-events.txt', 'data/official-note-events.txt']
+    paths: ['data/sns-events.txt', 'data/event-page-events.txt', 'data/official-note-events.txt', 'docs/pococha-event-sources.md']
 
 permissions:
   contents: write
@@ -41,11 +41,15 @@ jobs:
           echo "exit=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
       # メーター予想の情報源。公式noteのRSSから新しい記事だけを取り、事実（名前・期間・対象ランク・URL）を
       # data/events.json に追記する。失敗してもボーダーの保存は止めない。
+      # ChatGPTの定期タスクの照合記録（docs/pococha-event-sources.md）から、公式URLつきで期間を読める行だけを data/task-events.txt にする。
+      - name: ChatGPT定期タスクの確認記録からイベントの行を作る
+        continue-on-error: true
+        run: node automation/extract-task-events.mjs | tee task-events-report.json
       - name: イベント情報を収集（Pococha公式note・公式サイトのお知らせ、新着のみ。公式X・インスタは貼り付けの行だけ）
         id: events
         continue-on-error: true
         run: |
-          if [ "${{ github.event_name }}" = push ]; then only=--only=pococha-official-sns,pococha-official-event-page,pococha-official-note-manual; else only=; fi
+          if [ "${{ github.event_name }}" = push ]; then only=--only=pococha-official-sns,pococha-official-event-page,pococha-official-note-manual,pococha-official-task; else only=; fi
           node automation/collect-events.mjs --file=data/events.json $only | tee events-report.json
       - name: メーター予想の補正値を集計
         continue-on-error: true
@@ -66,7 +70,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/borders.json data/border-provenance.json 2>/dev/null || git add data/borders.json
-          git add data/events.json data/meter-factors.json data/forecast-backtest.json data/forecast-history-*.json data/forecast-log.json 2>/dev/null || true
+          git add data/events.json data/task-events.txt data/meter-factors.json data/forecast-backtest.json data/forecast-history-*.json data/forecast-log.json 2>/dev/null || true
           git commit -m "ボーダー自動更新 $(TZ=Asia/Tokyo date '+%Y-%m-%d %H:%M') JST"
           for attempt in 1 2 3; do
             git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:refs/heads/${GITHUB_REF_NAME}" && exit 0
@@ -78,6 +82,9 @@ jobs:
         run: |
           if [ -f update-report.json ]; then
             { echo '### ボーダー自動更新の結果'; echo '```json'; cat update-report.json; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [ -f task-events-report.json ]; then
+            { echo '### ChatGPT定期タスクの確認記録から作った行'; echo '```json'; cat task-events-report.json; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
           fi
           if [ -f events-report.json ]; then
             { echo '### イベント収集の結果'; echo '```json'; cat events-report.json; echo '```'; } >> "$GITHUB_STEP_SUMMARY"

@@ -41,6 +41,12 @@ export const SOURCES = [
     id: 'pococha-official-note-manual', kind: 'official', name: 'Pococha(ポコチャ)公式（note・手動の確認）', pasted: 'data/official-note-events.txt', home: 'https://report.pococha.com',
     checked: {date: '2026-11-14', robots: '/n/* を許可（自動収集と同じ記事。画像は記事に表示されるものを開いて見るだけで保存しない）', terms: 'note利用規約：クリエイターの承諾なく本文・画像を複製・公衆送信しない → 本文・画像は保存せず、名前・期間・対象ランクの事実とURLのみ記録'},
   },
+  {
+    // ChatGPTの定期タスクが公式ページを開いて確認し docs/pococha-event-sources.md に書いた照合記録のうち、
+    // Pococha公式URLつきで期間を読める行を automation/extract-task-events.mjs が data/task-events.txt にしたもの（毎回作り直す）。
+    id: 'pococha-official-task', kind: 'official', name: 'Pococha公式（ChatGPT定期タスクの確認記録）', pasted: 'data/task-events.txt', home: 'https://www.pococha.com',
+    checked: {date: '2026-11-17', robots: 'このツールからは取得元へアクセスしない（定期タスクの記録を読むだけ）', terms: '記録の本文は使わず、pococha.com のURLがあり期間を読める行の名前・期間・対象ランクの事実とURLのみ記録。第三者カレンダー・候補・未確認の行は使わない'},
+  },
 ];
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
