@@ -1,5 +1,6 @@
 # 変更履歴
 
+- 2026/11/17：定期タスクのイベント記録を取り込み書式に統一。既存の抽出処理で公式3行と保留欄の除外を確認。
 - 2026/11/17：ChatGPT定期タスクの照合記録（docs/pococha-event-sources.md）から、公式URLつきで期間を読める行を data/task-events.txt にし、ボーダー自動更新（定時と記録の更新時）でイベント情報・イベントカレンダーへ反映（automation/extract-task-events.mjs・取得元 pococha-official-task）。画面の変更なし。検証：npm run check。
 - 2026/11/16 v2026.11.16.3：公開4画面にGoatCounterの訪問者統計（poco-meter、固定版v5＋公式SRI）を追加。コード空なら出力不変、設定時だけCSPと免責事項を更新。検証：標準チェック・計測4テスト・保存復旧/SW62テスト、Chromiumで375px縦・667px横の4画面と常時表示の現在値復元（PR #119）。
 
