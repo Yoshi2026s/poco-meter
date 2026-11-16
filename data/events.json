@@ -1,7 +1,7 @@
 {
  "schema": "poco-events-v1",
  "note": "イベント名・期間・対象ランク・対象（audience）・URLなどの事実だけを記録。本文は保存しない。confidence: high=「開催期間」等の見出し付きの期間を検出 / low=見出しなしの期間 / none=期間を検出できず。使用期限・配信時間・応募や選考などの期間は除外（excluded に件数）。",
- "updatedAt": "2026-11-16T15:41:45.397Z",
+ "updatedAt": "2026-11-16T15:50:06.208Z",
  "sources": [
   {
    "id": "pococha-official-note",
@@ -332,9 +332,9 @@
    "confirmedAt": "2026-11-14"
   },
   {
-   "id": "#task-b10462a934",
-   "title": "3色対抗 世代ウォーズのオールスター決勝",
-   "url": "https://sedai-wars-2026.pococha.com/#task-b10462a934",
+   "id": "#task-7618bc3350",
+   "title": "3色対抗 世代ウォーズ オールスター決勝",
+   "url": "https://sedai-wars-2026.pococha.com/#task-7618bc3350",
    "sourceId": "pococha-official-task",
    "sourceKind": "official",
    "published": null,
@@ -348,7 +348,7 @@
      "end": "2026-11-17",
      "startTime": "10:00",
      "endTime": "23:59",
-     "label": "3色対抗 世代ウォーズのオールスター決勝",
+     "label": "3色対抗 世代ウォーズ オールスター決勝",
      "labeled": true,
      "ranks": []
     }
