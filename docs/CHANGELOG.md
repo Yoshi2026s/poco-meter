@@ -4,6 +4,7 @@
 
 新しいものを上に、1変更1行で書く（日付 JST・版・内容・検証）。詳細はPRとコミットに残す。
 
+- 2026/11/16：Codex向け指示書 docs/codex-tasks/visitor-stats.md を追加（GoatCounterによる訪問者統計。サイトコード未設定なら無効）。資料のみ。
 - 2026/11/16 v2026.11.16.2：Pocochaイベントカレンダーを過去のボーダー表からメーター画面へ移動（「過去のボーダー表」リンクのすぐ下の折りたたみ。スマホ縦は上部ボタンの下、PC・横持ちは下部リンクの下）。部品を calculator/event-calendar.mjs に分け pages:prepare で index.html へ書き写す。標準チェック（テスト event-calendar）・画面系13本に合格、Chromium 320・375・1100px幅で確認。
 - 2026/11/16 v2026.11.16.1：過去のボーダー表の検索結果の下に「📅 Pocochaイベントカレンダー」（開いたときだけ data/event-days.json を読み込み、各日の件数・大型・最終日、タップで名前・期間・対象ランク・公式リンク、対象ランクで絞り込み）。event-days.json を60日先まで作るよう変更。標準チェック（新テスト history-event-calendar を追加）・history系テスト・画面系13本に合格、Chromium 320・375px幅で確認。
 - 2026/11/16 資料のみ：イベント出典記録（docs/pococha-event-sources.md）から HAISHIN LAB の参照を削除（無断転載禁止のため不使用の方針どおり）。他の参照は「使わない」旨の記載のみと確認。
