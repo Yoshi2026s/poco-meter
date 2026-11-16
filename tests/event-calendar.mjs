@@ -75,3 +75,19 @@ test('書き写した部品が元ファイルと一致し、画面のスクリ�
   assert.equal(typeof PocoEventCalendar.createEventCalendar, 'function');
   assert.equal(PocoEventCalendar.eventCalendarMonth(data, '2026-01', '').count, 7);
 });
+
+test('第三者候補は日別カレンダーだけに追加し、同日の公式情報と重複させない', () => {
+  const url = 'https://yotei.ember-w.com/events/2026-11/';
+  const candidate = {name: 'デビューぽこトレ', date: '2026-01-03', startTime: '12:00', endTime: '23:59', rankRange: 'E1〜D3', url};
+  const repeatedOfficial = {...candidate, name: '新春ミッション'};
+  const result = calendarEventDays(events, '2026-01-01', '2026-02-10', [candidate, candidate, repeatedOfficial]);
+  assert.deepEqual(result.days['2026-01-03'].e, data.days['2026-01-03'].e);
+  assert.deepEqual(result.days['2026-01-03'].l, data.days['2026-01-03'].l);
+  const displayed = eventCalendarMonth(result, '2026-01').cells.find(c => c?.date === '2026-01-03').items;
+  const item = displayed.at(-1);
+  assert.deepEqual([item.name, item.candidate, item.last, item.startTime, item.endTime, item.rankRange, item.url],
+    ['デビューぽこトレ', true, false, '12:00', '23:59', 'E1〜D3', url]);
+  assert.equal(displayed.filter(x => x.candidate).length, 1);
+  assert.equal(eventCalendarURL(url), '');
+  assert.equal(eventCalendarURL('https://yotei.ember-w.com.evil.example/', true), '');
+});
