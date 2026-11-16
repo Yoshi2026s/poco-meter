@@ -30,6 +30,7 @@ jobs:
           node tests/items-core-input.mjs
           node tests/border-write-auth.mjs
           node tests/history-search.mjs
+          node tests/history-event-calendar.mjs
           node tests/meter-sources.mjs
           node tests/always-on-forecast.mjs
           node tests/forecast-log.mjs

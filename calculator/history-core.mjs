@@ -151,3 +151,33 @@ export function historyMeterCalendar(index,filters,month){
  const ranks=scope.rank?[scope.rank]:METER_CALENDAR_RANKS,closes=scope.close?[scope.close]:HISTORY_CLOSES,byKey=new Map();for(const row of rows){const key=row.rank+'|'+row.date+'|'+row.close;if(!byKey.has(key))byKey.set(key,[]);byKey.get(key).push(row);}
  return {...calendar,count:rows.length,closes,ranks:ranks.map(rank=>({rank,count:rows.filter(row=>row.rank===rank).length,cells:calendar.cells.map(date=>date?{date,records:closes.flatMap(close=>{const matches=byKey.get(rank+'|'+date+'|'+close)||[];return matches.length?matches.map(row=>({close,row,conflict:matches.length>1})):[{close,row:null}];})}:null)}))};
 }
+// Pocochaイベントカレンダー（公開時に作る data/event-days.json）。月の各日に、開催中と最終日（イベラス）のイベントを並べる。
+// rank を指定すると、そのランクが対象のものと対象ランク不明のものだけを残す（対象のものには target を付ける）。
+export const EVENT_CALENDAR_SCHEMA='poco-meter-event-days-v1';
+export const EVENT_TYPE_LABELS={big:'大型イベント',event:'イベント',collab:'コラボ・出演権',newcomer:'新規ライバー向け',mission:'ミッション',item:'アイテム',notice:'お知らせ'};
+const EVENT_TYPE_ORDER={big:0,event:1,collab:2,newcomer:3,mission:4,item:5,notice:6};
+export function eventCalendarURL(v){if(typeof v!=='string')return '';try{const u=new URL(v);return u.protocol==='https:'&&!u.username&&!u.password&&(u.hostname==='pococha.com'||u.hostname.endsWith('.pococha.com'))?u.href:'';}catch{return '';}}
+export function eventCalendarName(x){
+ const clean=s=>String(s||'').replace(/\p{Extended_Pictographic}|\uFE0F|\u200D/gu,'').replace(/[＼／]/g,' ').replace(/\s+/g,' ').trim();
+ const t=clean(x?.title),l=clean(String(x?.label||'').replace(/\s*(開催期間|イベント期間|開催日程|開催日時|キャンペーン期間)$/,''));
+ if(!l||l.length<2)return t.slice(0,60);
+ // 「決勝」「第2弾」など段階名だけのときは、記事タイトルの『』内（無ければ先頭20字）を前に付ける
+ if(/^(予選|準決勝|決勝|本戦|本選|準々決勝|第\d+(弾|回|ステージ|日程)|ステージ\d*|リーグ|前半|後半|DAY\d+)/.test(l)&&l.length<=12){const q=t.match(/[『「]([^』」]{2,30})[』」]/);return (q?q[1]:t.replace(/【[^】]*】/g,'').trim().slice(0,20))+' '+l;}
+ return l.slice(0,60);
+}
+export function validEventDays(d){return isObject(d)&&d.schema===EVENT_CALENDAR_SCHEMA&&Array.isArray(d.list)&&d.list.length<=50000&&isObject(d.days);}
+export function eventCalendarMonth(data,month,rank=''){
+ const calendar=historyCalendarMonth(month);if(!calendar||!validEventDays(data)||rank&&!HISTORY_RANKS.includes(rank))return null;
+ const time=v=>typeof v==='string'&&/^\d{1,2}:\d{2}$/.test(v)?v:'';
+ const pick=(i,last)=>{const x=Number.isInteger(i)?data.list[i]:null;if(!isObject(x)||typeof x.title!=='string')return null;
+  const ranks=Array.isArray(x.ranks)?HISTORY_RANKS.filter(r=>x.ranks.includes(r)):[];/* 上位ランクから順に */if(rank&&ranks.length&&!ranks.includes(rank))return null;
+  const start=validHistoryDate(x.start)?x.start:'',end=validHistoryDate(x.end)?x.end:start;
+  return {name:eventCalendarName(x),type:Object.hasOwn(EVENT_TYPE_LABELS,x.type)?x.type:'',last,ranks,target:!!rank&&ranks.includes(rank),start,end,startTime:time(x.startTime),endTime:time(x.endTime),url:eventCalendarURL(x.url)};};
+ const order=(a,b)=>(a.last===b.last?0:a.last?-1:1)||(EVENT_TYPE_ORDER[a.type]??9)-(EVENT_TYPE_ORDER[b.type]??9)||(b.target?1:0)-(a.target?1:0);
+ let count=0;
+ const cells=calendar.cells.map(date=>{if(!date)return null;const day=isObject(data.days[date])?data.days[date]:{},ids=k=>Array.isArray(day[k])?day[k]:[];
+  const seen=new Set(),items=[...ids('l').map(i=>pick(i,true)),...ids('e').map(i=>pick(i,false))].filter(x=>x&&!seen.has(x.name+'|'+x.start)&&seen.add(x.name+'|'+x.start)).sort(order);
+  count+=items.length;return {date,items,big:items.some(x=>x.type==='big'),lasts:items.filter(x=>x.last).length};});
+ const from=validHistoryDate(data.from)?data.from:'',to=validHistoryDate(data.to)?data.to:'';
+ return {...calendar,rank,cells,count,from,to,covered:!!from&&!!to&&calendar.end>=from&&calendar.start<=to};
+}
