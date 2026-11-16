@@ -1,7 +1,7 @@
 {
  "schema": "poco-events-v1",
  "note": "イベント名・期間・対象ランク・対象（audience）・URLなどの事実だけを記録。本文は保存しない。confidence: high=「開催期間」等の見出し付きの期間を検出 / low=見出しなしの期間 / none=期間を検出できず。使用期限・配信時間・応募や選考などの期間は除外（excluded に件数）。",
- "updatedAt": "2026-11-16T15:50:06.208Z",
+ "updatedAt": "2026-11-16T18:00:45.684Z",
  "sources": [
   {
    "id": "pococha-official-note",
@@ -361,6 +361,44 @@
    "confirmedAt": "2026-11-17"
   },
   {
+   "id": "nd28045100771",
+   "title": "ライバーさんと一緒に昇格戦へ！ステージ制度の応援ガイド",
+   "url": "https://report.pococha.com/n/nd28045100771",
+   "sourceId": "pococha-official-note",
+   "sourceKind": "official",
+   "published": "2026-11-16T21:16:15.000+09:00",
+   "modified": "2026-11-16T21:20:17.000+09:00",
+   "type": "notice",
+   "start": null,
+   "end": null,
+   "periods": [],
+   "ranks": [],
+   "confidence": "none",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-16T18:00:35.637Z"
+  },
+  {
+   "id": "nf7d13f42a013",
+   "title": "【新機能】これから配信を始めるライバーさんに「ステージ制度」が始まります",
+   "url": "https://report.pococha.com/n/nf7d13f42a013",
+   "sourceId": "pococha-official-note",
+   "sourceKind": "official",
+   "published": "2026-11-16T21:10:53.000+09:00",
+   "modified": "2026-11-16T21:19:08.000+09:00",
+   "type": "notice",
+   "start": null,
+   "end": null,
+   "periods": [],
+   "ranks": [],
+   "confidence": "none",
+   "audience": [
+    "リスナー"
+   ],
+   "excluded": 0,
+   "fetchedAt": "2026-11-16T18:00:37.485Z"
+  },
+  {
    "id": "n0f40d159ce34",
    "title": "Pococha10周年＆ポコガチャ2周年記念！きせかえアイテム人気投票！🙋‍♀️🙋‍♂️🗳️",
    "url": "https://report.pococha.com/n/n0f40d159ce34",
@@ -404,7 +442,7 @@
    "sourceId": "pococha-official-note",
    "sourceKind": "official",
    "published": "2026-11-10T21:38:52.000+09:00",
-   "modified": "2026-11-14T00:32:31.000+09:00",
+   "modified": "2026-11-16T14:36:43.000+09:00",
    "type": "big",
    "start": "2026-11-13",
    "end": null,
@@ -423,7 +461,7 @@
    "confidence": "high",
    "audience": [],
    "excluded": 0,
-   "fetchedAt": "2026-11-14T00:41:19.722Z"
+   "fetchedAt": "2026-11-16T18:00:41.390Z"
   },
   {
    "id": "n803868883e7d#7",
@@ -1636,7 +1674,7 @@
    "sourceId": "pococha-official-note",
    "sourceKind": "official",
    "published": "2026-09-30T12:00:00.000+09:00",
-   "modified": "2026-11-12T19:07:48.000+09:00",
+   "modified": "2026-11-16T19:04:12.000+09:00",
    "type": "big",
    "start": null,
    "end": null,
@@ -1701,7 +1739,7 @@
    "confidence": "high",
    "audience": [],
    "excluded": 0,
-   "fetchedAt": "2026-11-12T16:38:09.532Z"
+   "fetchedAt": "2026-11-16T18:00:39.471Z"
   },
   {
    "id": "pococha_rookies_202609_2nd_1_001_223880",
