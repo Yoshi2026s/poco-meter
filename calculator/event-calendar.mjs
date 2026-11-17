@@ -39,6 +39,19 @@ export function eventCalendarName(x) {
   }
   return l.slice(0, 60);
 }
+// イベントの並び順：開催期間が短いもの → date（表示する日）から最終日（イベラス）までが近いもの、の順に上へ。
+// 期間・残りは分で比べる（時刻が無ければ開始 0:00・終了 24:00 とみなす）。日付が読めないものは後ろに回す。
+export function eventSoonOrder(date) {
+  const day = v => validDate(v) ? Date.parse(v + 'T00:00:00Z') / 864e5 : NaN;
+  const min = (v, d) => { const m = typeof v === 'string' && v.match(/^(\d{1,2}):(\d{2})$/); return m ? Number(m[1]) * 60 + Number(m[2]) : d; };
+  const key = x => {
+    const s = day(x && x.start), e = validDate(x && x.end) ? day(x.end) : s, end = min(x && x.endTime, 1440);
+    const len = (e - s) * 1440 + end - min(x && x.startTime, 0), left = (e - day(date)) * 1440 + end;
+    return [Number.isFinite(len) ? len : Infinity, Number.isFinite(left) ? left : Infinity];
+  };
+  const cmp = (p, q) => p === q ? 0 : p < q ? -1 : 1;
+  return (a, b) => { const ka = key(a), kb = key(b); return cmp(ka[0], kb[0]) || cmp(ka[1], kb[1]); };
+}
 export function validEventDays(d) { return isObj(d) && d.schema === EVENT_CALENDAR_SCHEMA && Array.isArray(d.list) && d.list.length <= 50000 && isObj(d.days); }
 // rank を指定すると、そのランクが対象のものと対象ランク不明のものだけを残す（対象のものには target を付ける）。
 export function eventCalendarMonth(data, month, rank = '') {
@@ -54,13 +67,14 @@ export function eventCalendarMonth(data, month, rank = '') {
     return {name: eventCalendarName(x), type: Object.prototype.hasOwnProperty.call(EVENT_TYPE_LABELS, x.type) ? x.type : '', last, candidate, ranks, rankRange: candidate && typeof x.rankRange === 'string' ? x.rankRange : '', target: !!rank && ranks.includes(rank),
       start, end, startTime: time(x.startTime), endTime: time(x.endTime), url: eventCalendarURL(x.url, candidate)};
   };
-  const order = (a, b) => Number(a.candidate) - Number(b.candidate) || (a.last === b.last ? 0 : a.last ? -1 : 1) || (EVENT_TYPE_ORDER[a.type] ?? 9) - (EVENT_TYPE_ORDER[b.type] ?? 9) || (b.target ? 1 : 0) - (a.target ? 1 : 0);
+  // 公式確認済み → 候補、最終日 → 開催中に分け、その中は期間が短くイベラスが近い順（同じなら種類・対象ランク）
+  const order = date => { const soon = eventSoonOrder(date); return (a, b) => Number(a.candidate) - Number(b.candidate) || (a.last === b.last ? 0 : a.last ? -1 : 1) || soon(a, b) || (EVENT_TYPE_ORDER[a.type] ?? 9) - (EVENT_TYPE_ORDER[b.type] ?? 9) || (b.target ? 1 : 0) - (a.target ? 1 : 0); };
   let count = 0;
   const cells = calendar.cells.map(date => {
     if (!date) return null;
     const day = isObj(data.days[date]) ? data.days[date] : {}, ids = k => Array.isArray(day[k]) ? day[k] : [], seen = new Set();
     const items = [...ids('l').map(i => pick(i, true)), ...ids('e').map(i => pick(i, false)), ...ids('c').map(i => pick(i, false, true))]
-      .filter(x => x && !seen.has(x.name + '|' + x.start) && seen.add(x.name + '|' + x.start)).sort(order);
+      .filter(x => x && !seen.has(x.name + '|' + x.start) && seen.add(x.name + '|' + x.start)).sort(order(date));
     count += items.length;
     return {date, items, big: items.some(x => x.type === 'big'), lasts: items.filter(x => x.last).length};
   });
