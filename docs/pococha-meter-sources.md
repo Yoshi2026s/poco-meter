@@ -1,5 +1,11 @@
 # Pocochaメーター出典・照合記録
 
+## 2026-11-18（日本時間）
+
+- 公開本文で11/15の13時、11/16の22時・24時を確認。各D1〜S6の18ランク×±0・+1・+2の54値、計162値。既定ブランチでは3区分とも行なし。数値不一致ではなく保存待ち。24時は集計日11/16に対応。https://one-carat.com/campus/archives/90414 ・ https://one-carat.com/campus/archives/90413 ・ https://one-carat.com/campus/archives/90412
+- 11/16の13時と11/17の13時・22時は対象日の公開本文を確認できず、既定ブランチも行なし。11/17の24時は11/18 00:00に締め、照合時点は公開待ち。E帯・ボイス別の数値は未確認。
+- 11/17の17時枠の定時実行は履歴に確認できず、19:04開始の成功記録はイベント資料のpushによる生成処理。ボーダー更新待ち。https://github.com/Yoshi2026s/poco-meter/actions/runs/44061480324
+
 ## 2026-11-17（日本時間）
 
 - 11/16集計分は、ONE CARATから取得できた本文では未確認。13時の表示は11/14、22時・24時は11/15。直後の11/16分は公開待ちとして次回再照合する。https://one-carat.com/campus/archives/90414 ・ https://one-carat.com/campus/archives/90413 ・ https://one-carat.com/campus/archives/90412
