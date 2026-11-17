@@ -203,7 +203,7 @@ assert.equal(e.aoTimeSpan({start: '2026-11-14', end: '2026-11-14', startTime: '2
   const half = {list: [{title: '夜の部ランキング', label: '夜の部ランキング', type: 'event', ranks: ['S2'], start: '2026-01-06', end: '2026-01-06', startTime: '21:00', endTime: '24:00', url: 'h'}], days: {'2026-01-06': {e: [], l: [0]}}};
   assert.equal(plain(e.hitDayEvents(half, '2026-01-06', 'S2')).lasts.length, 1, '同じ名前・同じ開始日は二重に出さない');
   const mixed = {list: [{title: '長期', label: '長期', type: 'big', ranks: [], start: '2025-12-20', end: '2026-01-07', url: 'h1'}, {title: '短期', label: '短期', type: 'item', ranks: [], start: '2026-01-05', end: '2026-01-08', url: 'h2'}, {title: '3日', label: '3日', type: 'event', ranks: [], start: '2026-01-05', end: '2026-01-07', url: 'h3'}], days: {'2026-01-06': {e: [0, 1, 2], l: []}}};
-  assert.deepEqual(plain(e.hitDayEvents(mixed, '2026-01-06', 'S2')).running.map(x => x.name), ['3日', '短期', '長期'], '開催期間が短く、イベラスが近い順');
+  assert.deepEqual(plain(e.hitDayEvents(mixed, '2026-01-06', 'S2')).running.map(x => x.name), ['3日', '長期', '短期'], 'イベラスが近い順（同じなら期間が短い順）');
   const items = plain(e.snsDay('2026-01-06'));
   assert.equal(items.length, 1); assert.equal(items[0].sns, true); assert.equal(items[0].ends, true);
   assert.match(e.aoEventKind(items[0]), /公式X\/インスタ/);
