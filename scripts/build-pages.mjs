@@ -16,7 +16,7 @@ const ROOT = fileURLToPath(new URL('../', import.meta.url));
 const EVENT_DAYS_AHEAD = 60; // イベントカレンダーで先の予定として載せる日数
 // Tool version shown on the page. Change only when the tool itself changes
 // (data updates do not change it).
-export const PAGES_VERSION = {version: 'v2026.11.17.11', updatedAt: '2026-11-17T20:57:00+09:00', label: '2026/11/17 20:57:00'};
+export const PAGES_VERSION = {version: 'v2026.11.17.12', updatedAt: '2026-11-17T21:20:00+09:00', label: '2026/11/17 21:20:00'};
 // GoatCounter のサイトコード。空なら計測タグを入れない。
 export const GOATCOUNTER_CODE = 'poco-meter';
 // Official stable script and SRI: https://www.goatcounter.com/help/countjs-versions
