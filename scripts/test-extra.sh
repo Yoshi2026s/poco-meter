@@ -14,7 +14,10 @@ if [[ ! -d "$tools/node_modules/vite" || ! -d "$tools/node_modules/@fontsource/n
   npm install --prefix "$tools" --no-save --no-audit --no-fund \
     acorn@8.15.0 vite@8.0.16 @fontsource/noto-sans-jp@5.2.9 >/dev/null || exit 1
 fi
-export NODE_PATH="$tools/node_modules${NODE_PATH:+:$NODE_PATH}"
+# NODE_PATH の区切りは Node に合わせる（Windows は ; と C:… の形。: でつなぐと Git Bash で依存が見つからなくなる）
+sep=$(node -p 'require("path").delimiter')
+if [[ $sep == ";" ]] && command -v cygpath >/dev/null 2>&1; then tools_native=$(cygpath -w "$tools"); else tools_native=$tools; fi
+export NODE_PATH="$tools_native/node_modules${NODE_PATH:+$sep$NODE_PATH}"
 mkdir -p "$out"
 failed=0
 # 出力は合否だけ。失敗したテストはログ末尾を表示する（全文は $out/logs/）。
@@ -29,6 +32,8 @@ done
 if node -e "require.resolve('playwright')" 2>/dev/null; then
   run node tests/hud-items-browser.cjs
   run node tests/record-display-browser.cjs
+  # 比較の基準（before.html）は毎回 git HEAD から作り直す（前回の実行で残った古い基準と比べて誤って不合格にならないように）
+  rm -f "$out/before.html"
   run node tests/phone-layout-browser.cjs "$out"
 else
   echo "NG: playwright が見つかりません（NODE_PATH に playwright を含む node_modules を指定）"; failed=1

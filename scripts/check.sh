@@ -11,7 +11,10 @@ mkdir -p "$log"
 if [[ ! -d "$tools/node_modules/acorn" ]]; then
   npm install --prefix "$tools" --no-save --no-audit --no-fund acorn@8.15.0 >/dev/null 2>&1 || { echo "NG: acorn を準備できません"; exit 1; }
 fi
-export NODE_PATH="$tools/node_modules${NODE_PATH:+:$NODE_PATH}"
+# NODE_PATH の区切りは Node に合わせる（Windows は ; と C:… の形。: でつなぐと Git Bash で依存が見つからなくなる）
+sep=$(node -p 'require("path").delimiter')
+if [[ $sep == ";" ]] && command -v cygpath >/dev/null 2>&1; then tools_native=$(cygpath -w "$tools"); else tools_native=$tools; fi
+export NODE_PATH="$tools_native/node_modules${NODE_PATH:+$sep$NODE_PATH}"
 failed=0
 run() {
   local name="$1"; shift
