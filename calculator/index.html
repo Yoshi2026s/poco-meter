@@ -1501,6 +1501,8 @@ header.card>.header-main>#toolUpdatedDate>time{font-size:.75rem;white-space:norm
 :root #displaySettings .display-settings-panel{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2100;width:min(560px,calc(100vw - 24px));max-width:none;max-height:85vh;max-height:85dvh;padding:16px;border-radius:16px;box-sizing:border-box;box-shadow:0 12px 60px #0008!important}
 :root #displaySettings .display-settings-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 :root #displaySettings .display-settings-grid>div{display:flex;flex-direction:column;align-items:stretch;gap:5px;padding:10px;border:1px solid var(--line);border-radius:10px}
+/* おすすめ配色は名前が長い（例：デフォルト設定（太文字））ので1行の全幅にし、先に選べるよう先頭に置く */
+:root #displaySettings .display-settings-grid>.display-preset-row{grid-column:1/-1;order:-1}
 :root #displaySettings .display-settings-grid label{font-size:.875rem!important;line-height:1.5}
 :root #displaySettings .display-settings-grid select{font-size:16px!important;min-height:44px}
 :root #displaySettings .menu-close-actions{top:-16px;padding:8px 0;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:8px}
@@ -2345,7 +2347,7 @@ html.always-on-mode body #eventCalendarPanel{display:none!important}
             <div><label for="listColor">リスト内の色</label><select id="listColor"><option value="white">白</option><option value="black">黒</option><option value="gray">グレー</option><option value="blue">ブルー</option><option value="green">グリーン</option><option value="purple">パープル</option><option value="pink">ピンク</option><option value="red">レッド</option><option value="orange">オレンジ</option><option value="gold">ゴールド</option></select></div>
             <div><label for="numberColor">数字の色</label><select id="numberColor"><option value="black">モノクロ</option><option value="gray">グレー</option><option value="blue">ブルー</option><option value="green">グリーン</option><option value="purple">パープル</option><option value="pink">ピンク</option><option value="red">レッド</option><option value="orange">オレンジ</option><option value="gold">ゴールド</option><option value="cyan">シアン</option></select></div>
             <div><label for="textWeight">全体の文字の太さ</label><select id="textWeight"><option value="ultra">極太文字</option><option value="bold">太文字</option><option value="standard">普通</option><option value="thin">細文字</option></select></div>
-            <div><label for="displayPreset">おすすめ配色</label><select id="displayPreset"><option value="">自分で設定</option><option value="default">デフォルト設定（太文字）</option><option value="clear">見やすい標準</option><option value="blue">爽やかブルー</option><option value="blueNight">夜用ブルー</option><option value="pink">やさしいピンク</option><option value="green">落ち着くグリーン</option><option value="purple">夜用パープル</option><option value="mono">くっきりモノクロ</option></select></div>
+            <div class="display-preset-row"><label for="displayPreset">おすすめ配色</label><select id="displayPreset"><option value="">自分で設定</option><option value="default">デフォルト設定（太文字）</option><option value="clear">見やすい標準</option><option value="blue">爽やかブルー</option><option value="blueNight">夜用ブルー</option><option value="pink">やさしいピンク</option><option value="green">落ち着くグリーン</option><option value="purple">夜用パープル</option><option value="mono">くっきりモノクロ</option></select></div>
           </div>
           <p class="hint">ページ全体とメーターの背景は別々に設定できます。変更はすぐに反映され、このブラウザーに保存されます。</p>
           <p id="backgroundHelp" class="hint" hidden>全体を黒背景にすると、主画面の文字や入力欄も暗い表示になります。</p>
