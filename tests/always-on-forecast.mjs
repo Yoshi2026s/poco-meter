@@ -221,7 +221,9 @@ assert.equal(e.aoSpan('2026-01-01', '2026-11-11'), '1/1〜11/11');
 
 // 画面：常時表示パネルは通常表示に統合した。予想・イベントのカードは通常表示（#mini）の中にあり、別画面のパネルは無い。
 for (const id of ['mainForecastCard', 'mainEventsCard', 'aoForecast', 'aoAccuracy', 'aoRecord', 'aoLast', 'aoEvents', 'aoTomorrow']) assert.ok(html.includes(`id="${id}"`), id);
-assert.ok(html.includes('<h2 class="main-card-head ao-last-head" id="aoLastHead">本日のイベラス（最終日）</h2>'));
+assert.ok(html.includes('<h2 class="main-card-head ao-last-head" id="aoLastHead">本日<span id="aoLastDate"></span>のイベラス（最終日）</h2>'));
+// 見出しの「本日」には今日の月日と曜日を添える（例：本日 11/18（水）のイベラス）
+assert.ok(html.includes("$('aoLastDate').textContent=' '+aoMD(today)+'（'+AO_WEEKDAYS[new Date(today+'T00:00:00Z').getUTCDay()]+'）';"));
 assert.ok(!html.includes('id="alwaysOn"') && !html.includes('id="aoCurrentInput"'), '別画面のパネルと二重の現メーター欄は無い');
 assert.ok(html.indexOf('id="mini"') < html.indexOf('id="mainForecastCard"') && html.indexOf('id="mainForecastCard"') < html.indexOf('id="mainTools"'), '予想カードは残りアイテムの目安の下・ツールの上');
 // 常時表示モード：ボタンで切り替え、上部の帯に終了ボタン。初期表示では帯は隠れている。
