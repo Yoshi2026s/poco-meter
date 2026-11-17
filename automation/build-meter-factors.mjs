@@ -187,6 +187,8 @@ export function buildFactors(borders, events) {
 export const FORECAST_TAGS = ['payday10-actual', 'payday10-next', 'payday20-actual', 'payday20-next', 'payday25-actual', 'payday25-next',
   'month-start', 'month-end', 'month-late', 'holiday', 'year-end', 'golden-week', 'obon', 'christmas', 'valentine'];
 const TYPE_ORDER = {big: 0, event: 1, collab: 2, newcomer: 3, mission: 4, item: 5, notice: 6};
+// 1日に持つ開催中イベントの上限（最終日のものは別）
+export const EVENTS_PER_DAY = 12;
 export function forecastBundle(factors, events, todayISO, {before = 3, after = 45, backtest = null, log = null} = {}) {
   const usable = s => s && s.status !== 'insufficient' && Number.isFinite(s.pct);
   const pick = obj => Object.fromEntries(Object.entries(obj || {}).filter(([, s]) => usable(s)).map(([k, s]) => [k, {pct: s.pct, ...(s.label ? {label: s.label} : {}), days: s.days}]));
@@ -211,13 +213,16 @@ export function forecastBundle(factors, events, todayISO, {before = 3, after = 4
           ...(e.audience?.length ? {audience: e.audience} : {}), ...(e.sourceId === 'pococha-official-sns' ? {sns: true} : {})});
       }
     }
-    // 同じ記事の重複と、別の記事に載った同じイベント（名前と期間が同じ）を除き、大型→通常イベント→その他の順に最大8件。
+    // 同じ記事の重複と、別の記事に載った同じイベント（名前と期間が同じ）を除き、大型→通常イベント→その他の順に並べる。
+    // 最終日のものは件数に数えず（別に lasts でも持つ）、それ以外の開催中は最大 EVENTS_PER_DAY 件（最終日が多い日に開催中のものが押し出されないように）。
     const seen = new Set();
     const nameKey = x => `${String(x.label || x.title).replace(/\s*(開催期間|イベント期間|開催日程|キャンペーン期間)$/, '').replace(/[\s「」『』【】！!]/g, '')}|${x.start}|${x.end}`;
     const once = x => { const k1 = x.url, k2 = nameKey(x); if (seen.has(k1) || seen.has(k2)) return false; seen.add(k1); seen.add(k2); return true; };
+    let running = 0;
     const uniq = list.sort((a, b) => (a.phase === 'last' ? 0 : 1) - (b.phase === 'last' ? 0 : 1))
       .filter(once) // 1記事1件（最終日の期間を優先）
-      .sort((a, b) => (TYPE_ORDER[a.type] ?? 9) - (TYPE_ORDER[b.type] ?? 9) || (b.ranks.length ? 1 : 0) - (a.ranks.length ? 1 : 0)).slice(0, 8);
+      .sort((a, b) => (TYPE_ORDER[a.type] ?? 9) - (TYPE_ORDER[b.type] ?? 9) || (b.ranks.length ? 1 : 0) - (a.ranks.length ? 1 : 0))
+      .filter(x => x.ends || running++ < EVENTS_PER_DAY);
     // 本日のイベラス（この日が最終日のもの。1日だけの開催も含む）は件数を絞りすぎないよう別に持つ。
     seen.clear();
     const lasts = list.filter(x => x.ends).filter(once)

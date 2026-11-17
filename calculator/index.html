@@ -4968,11 +4968,11 @@ function eventCalendarMonth(data, month, rank = '') {
   const from = validDate(data.from) ? data.from : '', to = validDate(data.to) ? data.to : '';
   return {...calendar, rank, cells, count, from, to, covered: !!from && !!to && calendar.end >= from && calendar.start <= to};
 }
-// 期間の表示。表示中の日と年が違う日付だけ年を付ける（例：11/11〜2027/02/22）
+// 期間の表示。表示中の日と年が違う日付だけ年を付ける（例：11/11〜2027/2/22。メイン画面と同じく月日は0を付けない）
 function eventSpan(x, ref = '') {
-  const md = d => (d.slice(0, 4) !== String(ref).slice(0, 4) ? d.slice(0, 4) + '/' : '') + d.slice(5).replace('-', '/');
+  const md = d => (d.slice(0, 4) !== String(ref).slice(0, 4) ? d.slice(0, 4) + '/' : '') + Number(d.slice(5, 7)) + '/' + Number(d.slice(8, 10));
   const s = x.start ? md(x.start) : '', e = x.end && x.end !== x.start ? md(x.end) : '';
-  return s + (x.startTime ? ' ' + x.startTime : '') + (e || x.endTime ? '〜' + (e ? e + ' ' : '') + (x.endTime || '') : '');
+  return s + (x.startTime ? ' ' + x.startTime : '') + (e || x.endTime ? '〜' + (e ? e + (x.endTime ? ' ' : '') : '') + (x.endTime || '') : '');
 }
 
 // 画面：box（中身を描き直す要素）に月の表を出す。load は data/event-days.json を返す Promise。開いたときに open() を呼ぶ。
@@ -5043,7 +5043,8 @@ function createEventCalendar(box, {load, today = () => new Date(Date.now() + 9 *
         if (x.last) head.appendChild(el('span', '最終日', 'evc-tag last'));
         if (x.type === 'big') head.appendChild(el('span', '大型', 'evc-tag big'));
         head.appendChild(el('strong', x.name)); li.appendChild(head);
-        const ranks = x.rankRange ? '掲載ランク ' + x.rankRange : x.ranks.length ? '対象 ' + (x.ranks.length > 6 ? x.ranks[0] + '〜' + x.ranks[x.ranks.length - 1] : x.ranks.join('・')) : '対象ランクの記載なし';
+        // 対象ランクは下位→上位（D1〜S6）で出す（掲載ランクの書き方とそろえる）
+        const ranks = x.rankRange ? '掲載ランク ' + x.rankRange : x.ranks.length ? '対象 ' + (x.ranks.length > 6 ? x.ranks[x.ranks.length - 1] + '〜' + x.ranks[0] : x.ranks.slice().reverse().join('・')) : '対象ランクの記載なし';
         const span = eventSpan(x, cell.date);
         li.appendChild(el('p', [EVENT_TYPE_LABELS[x.type] || '', span ? '期間 ' + span : '', ranks].filter(Boolean).join(' ／ '), 'evc-meta'));
         if (x.url) { const a = el('a', isOfficialURL(x.url) ? '公式の告知を開く ↗' : '掲載元を開く ↗', 'evc-link'); a.href = x.url; a.target = '_blank'; a.rel = 'noopener noreferrer'; li.appendChild(a); }
@@ -5055,7 +5056,7 @@ function createEventCalendar(box, {load, today = () => new Date(Date.now() + 9 *
         : 'この月はイベント情報の範囲外です（' + model.from.replaceAll('-', '/') + '〜' + model.to.replaceAll('-', '/') + '）。', 'evc-note'));
     }
     box.appendChild(detail);
-    box.appendChild(el('p', '公式の告知や第三者のイベントカレンダーなどで期間を確認できたイベントを表示します（1日につき開催中は最大8件＋最終日のもの）。内容・条件はアプリ内の告知で確認してください。', 'evc-note'));
+    box.appendChild(el('p', '公式の告知や第三者のイベントカレンダーなどで期間を確認できたイベントを表示します（1日につき開催中は最大12件＋最終日のもの）。内容・条件はアプリ内の告知で確認してください。', 'evc-note'));
   }
   return {open, render};
 }
