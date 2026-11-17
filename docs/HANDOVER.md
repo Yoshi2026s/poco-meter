@@ -49,11 +49,12 @@ git switch -c codex/example-task "origin/(root)"
 - 公開：GitHub Pages https://yoshi2026s.github.io/poco-meter/ （既定ブランチ `(root)` への push で自動公開）
 - ボーダー：`data/borders.json`。GitHub Actions が毎日 05:00・17:00 JST に ONE CARAT から取得（記事本文＋月別表画像の2系統）。同じジョブでPococha公式noteのイベント新着も収集する。
 - 旧Sites・署名キー・旧ChatGPTタスクは使わない。旧Sitesには新URLへの移転案内を掲示済み。
-- ツール版：`scripts/build-pages.mjs` の `PAGES_VERSION`（v2026.11.17.10）。
+- ツール版：`scripts/build-pages.mjs` の `PAGES_VERSION`（v2026.11.17.11）。
 - 訪問者統計：GoatCounter（`GOATCOUNTER_CODE` が空なら無効、現在 `poco-meter`）。公開4画面のページ別集計に加え、共通イベント `site-visitor-daily`（「サイト全体の訪問者数（1日・日本時間）」）で同じブラウザーを日本時間0時〜翌0時の1日1件にまとめる。[管理画面](https://poco-meter.goatcounter.com/)の同名行を読む。「合計」はイベントを除外したページ訪問数。`scripts/goatcounter-site-visit.js` が Web Locks で複数タブを直列化し、`poco-meter-daily-visit-v1` に最後の送信受付日だけを保存。日別イベントだけは公式 `ns=true` で8時間判定を使わず、翌日0時直後も数える。Cookie・独自IDなし。別端末/別ブラウザー/保存データ削除後は別件になり得る。固定版 count.v5.js＋公式SRI・ヘルパーSRI・自アクセス除外を維持。以前の8時間集計 `site-visitor` は過去データとして残し、日別と合算しない。見方・送信失敗時の扱い・対応条件は [訪問者統計](codex-tasks/visitor-stats.md) を参照。
 - メーター画面の並び：最上部にタイトル欄（使い方・目標値の算出方法・表示設定・再読み込み・アプリ更新）、その下にメーター、補助メニュー、E帯・過去ボーダーの入口。タイトル欄は `#titleTop`（`.title-top`）に入り、幅はメーターと同じ。 タイトル欄は2段（1段目：タイトルと更新日時・版、2段目：4ボタン）で、スマホでは約106px。
 - 表示設定パネル（v2026.11.17.9）：「おすすめ配色」は名前が長く、2列表示（361px以上）で「デフォルト設定（太文字）」などが途中で切れていたため、全幅で先頭に置く（`.display-preset-row`、CSSの order と grid-column。DOMの順は変えていない）。標準チェック・test:extra 13本に合格。[PR #139](https://github.com/Yoshi2026s/poco-meter/pull/139) で統合・公開済み（`3bbffc7`）。公開URLで版 v2026.11.17.9 を確認。物理端末は未確認。
 - 的中率カレンダーの見出し（v2026.11.17.10）：スマホ幅で「答え合わ／せ）」と語の途中で折り返していたため、`.ao-calendar>summary` に `word-break:keep-all`（括弧の前で折り返す。収まらないときだけ `overflow-wrap:anywhere`）。[PR #141](https://github.com/Yoshi2026s/poco-meter/pull/141) で統合・公開済み（`202474b`）。
+- メイン画面のイベント欄のリンク（v2026.11.17.11）：文字の高さ（約18px）しかなくスマホで押しにくかったため、`a::after` の見えない当たり判定で上下約7pxずつ広げた（見た目・配置は変えない。項目の間に説明の行があるため隣のリンクとは重ならない）。イベントカレンダーのリンク・ボタンは元から44px以上。
 - 目標のボーダー選択（メーターのボーダー欄・詳細側の `quickBorder`・`pickBorder`）は ±0・+1・+2 のみで「手入力」の選択肢は無い。目標値を直接入力した時も欄は直前のボーダー（`state.analysisBorder`、無ければ±0）を表示し、フォーカスが外れただけでは自動計算に戻さない。別のボーダーを選ぶか「既定値」で自動計算に戻る。既定値設定の `defaultBorder` だけは「手入力」を残す（JSで追加）。
 - メーター画面のYoshi1012タグ（`.tool-creator-logo`）はフッターの `.footer-support` 内、「免責事項」の右隣（2列グリッドの右）で、免責事項ボタンと同じ幅・高さ44px。免責事項を開くと本文の下に回る。
 - 枠の装飾：4画面のカード枠は青いネオン系の縁取り（二重リング・淡い発光・左の色帯）。色は各ページの `--frame-line`・`--frame-ring`・`--frame-drop`（明るい表示は別値）で調整する。装飾のみで文字色は変えない。
