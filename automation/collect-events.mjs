@@ -45,7 +45,7 @@ export const SOURCES = [
     // ChatGPTの定期タスクが公式ページを開いて確認し docs/pococha-event-sources.md に書いた照合記録のうち、
     // Pococha公式URLつきで期間を読める行を automation/extract-task-events.mjs が data/task-events.txt にしたもの（毎回作り直す）。
     id: 'pococha-official-task', kind: 'official', name: 'Pococha公式（ChatGPT定期タスクの確認記録）', pasted: 'data/task-events.txt', home: 'https://www.pococha.com',
-    checked: {date: '2026-11-17', robots: 'このツールからは取得元へアクセスしない（定期タスクの記録を読むだけ）', terms: '記録の本文は使わず、pococha.com のURLがあり期間を読める行の名前・期間・対象ランクの事実とURLのみ記録。第三者カレンダー・候補・未確認の行は使わない'},
+    checked: {date: '2026-11-17', robots: 'このツールからは取得元へアクセスしない（定期タスクの記録を読むだけ）', terms: '記録の本文は使わず、期間を読める行の名前・期間・対象ランクの事実とURLのみ記録。公式未確認（第三者カレンダー・候補・未確認）の行も正式イベントとして使う（2026-11-17 ユーザー決定）。中止・延期の行と HAISHIN LAB は使わない'},
   },
 ];
 

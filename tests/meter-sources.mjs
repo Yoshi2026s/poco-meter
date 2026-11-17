@@ -186,11 +186,14 @@ assert.equal(titleNameOf('「ヒーロー戦隊」アイテム登場!'), 'ヒー
     '- 年越しイベント：12/31 12:00〜1/2 23:59:59。対象はS1〜S6。https://report.pococha.com/n/nabc',
     '- 新年リーグは1/1 0:00〜23:59。https://sedai.pococha.com/',
     '- 第三者の告知だけのもの：12/30 12:00〜23:59。https://example.com/x',
+    '- 公式詳細は未確認の景品：12/30 12:00〜23:59。E1〜D3の掲載あり。',
     '- 中止になった企画：12/29 12:00〜23:59。https://www.pococha.com/ja/news/a',
     '- 期間の書かれていない告知。https://www.pococha.com/ja/news/b',
     '- 既にある世代ウォーズ：11/13〜11/17。https://report.pococha.com/n/nzz',
     '### 第三者カレンダーで確認した候補',
-    '- 候補のイベント：12/30 12:00〜23:59。https://event.pococha.com/ja-jp/festivals/x',
+    '- 候補のイベント：12/29〜12/30、12:00開始・最終日23:59終了、B1〜S6の掲載。https://yotei.ember-w.com/events/2026-12/',
+    '### 参考・結果',
+    '- 参考の結果：12/30 12:00〜23:59。https://www.pococha.com/ja/news/c',
     '## 2026-12-27（日本時間）',
     '- 年越しイベント：12/31 12:00〜1/2 23:59。https://report.pococha.com/n/nabc',
   ].join('\n');
@@ -199,18 +202,25 @@ assert.equal(titleNameOf('「ヒーロー戦隊」アイテム登場!'), 'ヒー
     {sourceId: TASK_SOURCE_ID, url: 'old', title: '新年リーグ', periods: [{start: '2027-01-01', end: '2027-01-01', label: '新年リーグ'}]},
   ];
   const {lines, skipped} = extractTaskEvents(md, existing);
-  assert.equal(lines.length, 2, '公式URLつきで期間を読める行だけ（第三者・候補・中止・期間なし・既にある行は入れない。同じ事実は1行）');
-  assert.match(lines[0], /^確認日 2026-12-28｜年越しイベント｜開催期間：2026年12月31日 12:00〜2027年1月2日 23:59｜対象：S1〜S6｜https:\/\/report\.pococha\.com\/n\/nabc#task-[0-9a-f]{10}$/, '年をまたぐ・秒を落とす・最新の確認日');
-  assert.match(lines[1], /^確認日 2026-12-28｜新年リーグ｜開催期間：2027年1月1日 00:00〜2027年1月1日 23:59｜https:\/\/sedai\.pococha\.com\/#task-/, '終わりが時刻だけなら同じ日。年は確認日に一番近い年');
-  assert.deepEqual(skipped.map(s => s.reason).sort(), ['Pococha公式のURLなし', '期間を読めない', '既にあり（https://report.pococha.com/n/n1#7）', '未確認・中止などの記載あり'].sort());
+  assert.equal(lines.length, 5, '期間を読める行は公式未確認（第三者・候補・未確認）も入れる（中止・期間なし・既にある行・参考の欄は入れない。同じ事実は1行）');
+  const byName = n => lines.find(l => l.includes('｜' + n + '｜'));
+  assert.match(byName('第三者の告知だけのもの'), /｜https:\/\/example\.com\/x#task-/, '公式URLが無ければ掲載元のURL');
+  assert.match(byName('公式詳細は未確認の景品'), /｜対象：E1〜D3｜https:\/\/github\.com\/Yoshi2026s\/poco-meter\/blob\/HEAD\/docs\/pococha-event-sources\.md#task-/, 'URLの無い行は照合記録へのリンク・「〜の掲載」から対象ランク');
+  assert.match(byName('候補のイベント'), /開催期間：2026年12月29日〜2026年12月30日｜対象：B1〜S6｜https:\/\/yotei\.ember-w\.com\/events\/2026-12\/#task-/, '第三者カレンダーの候補の欄も読む');
+  assert.ok(!lines.some(l => l.includes('参考の結果')), '参考の欄は読まない');
+  assert.equal(extractTaskEvents('## 2026-12-28\n- 掲載：12/30 12:00〜23:59。https://haishin-lab.jp/x', []).lines[0].includes('haishin'), false, 'HAISHIN LAB は掲載元に使わない');
+  assert.match(byName('年越しイベント'), /^確認日 2026-12-28｜年越しイベント｜開催期間：2026年12月31日 12:00〜2027年1月2日 23:59｜対象：S1〜S6｜https:\/\/report\.pococha\.com\/n\/nabc#task-[0-9a-f]{10}$/, '年をまたぐ・秒を落とす・最新の確認日');
+  assert.match(byName('新年リーグ'), /^確認日 2026-12-28｜新年リーグ｜開催期間：2027年1月1日 00:00〜2027年1月1日 23:59｜https:\/\/sedai\.pococha\.com\/#task-/, '終わりが時刻だけなら同じ日。年は確認日に一番近い年');
+  assert.deepEqual(skipped.map(s => s.reason).sort(), ['期間を読めない', '既にあり（https://report.pococha.com/n/n1#7）', '中止・延期などの記載あり'].sort());
   assert.equal(parsePeriod('エントリ 11/26〜', '2026-11-16'), null, '終わりの無い期間は読まない');
   assert.deepEqual(extractTaskEvents('', []).lines, []);
   // 取り込み：collect-events の取得元として読め、同じ記事の自動収集の記録を上書きしない
   const task = SOURCES.find(x => x.id === TASK_SOURCE_ID);
   assert.ok(task && task.pasted === 'data/task-events.txt' && task.kind === 'official', '取得元：ChatGPT定期タスクの確認記録');
   const byId = new Map([['https://report.pococha.com/n/nabc', {sourceId: 'pococha-official-note', url: 'https://report.pococha.com/n/nabc'}]]);
-  assert.equal(readPasted(task, byId, lines.join('\n')), 2);
-  assert.equal(byId.size, 3);
+  assert.equal(readPasted(task, byId, lines.join('\n')), 5);
+  assert.equal(byId.size, 6);
+  assert.equal([...byId.values()].find(e => e.title === '候補のイベント').sourceKind, 'official', '公式未確認も正式イベントとして扱う');
   const ev = [...byId.values()].find(e => e.title === '年越しイベント');
   assert.deepEqual([ev.confirmedAt, ev.periods[0].start, ev.periods[0].end, ev.periods[0].startTime, ev.ranks.length], ['2026-12-28', '2026-12-31', '2027-01-02', '12:00', 6]);
   // リポジトリの data/task-events.txt はすべて読める
