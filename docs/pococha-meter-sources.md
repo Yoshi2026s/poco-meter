@@ -5,6 +5,10 @@
 - 11/16集計分は、ONE CARATから取得できた本文では未確認。13時の表示は11/14、22時・24時は11/15。直後の11/16分は公開待ちとして次回再照合する。https://one-carat.com/campus/archives/90414 ・ https://one-carat.com/campus/archives/90413 ・ https://one-carat.com/campus/archives/90412
 - 既定ブランチのボーダーファイルは前回照合と同じSHA（1237cbdd42bf65106200c702f9a27c3c4c9ae56a）。前回の未反映分も引き続き未反映。数値の一致・不一致は未判定。
 
+
+- 11/17 12時台の再照合。既定ブランチの11:47更新で、11/14の13時（D1〜S6・18ランク×3指標）および11/15の22時・24時（各18ランク×3指標）が保存済みに変わった。11/15の13時および11/16の13時・22時・24時は行なし。11/17の3区分は締め前。記録は既存処理による更新。https://github.com/Yoshi2026s/poco-meter/commit/b3355fad2440797fb8c30c73c08a0f9d4cd63013 ・ https://github.com/Yoshi2026s/poco-meter/actions/runs/44005487662
+- ONE CARAT公開本文の表示対象は13時が11/14、22時・24時が11/15。11/16は取得本文に掲載なし。24時は出典表の集計日11/15に紐付けた。E帯・ボイス別表は確認範囲外。独立資料による値の一致・不一致は未判定。https://one-carat.com/campus/archives/90414 ・ https://one-carat.com/campus/archives/90413 ・ https://one-carat.com/campus/archives/90412
+
 ## 2026-11-16（日本時間）
 
 対象は集計日2026-11-14〜15。既定ブランチの data/borders.json をコミット cc1efec091c6c7576dbfb08548e49297a1cb87e9 時点で照合。データは既存Actionsが更新する。
