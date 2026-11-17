@@ -1,7 +1,7 @@
 {
  "schema": "poco-events-v1",
  "note": "イベント名・期間・対象ランク・対象（audience）・URLなどの事実だけを記録。本文は保存しない。confidence: high=「開催期間」等の見出し付きの期間を検出 / low=見出しなしの期間 / none=期間を検出できず。使用期限・配信時間・応募や選考などの期間は除外（excluded に件数）。",
- "updatedAt": "2026-11-17T03:07:18.102Z",
+ "updatedAt": "2026-11-17T10:05:07.913Z",
  "sources": [
   {
    "id": "pococha-official-note",
@@ -66,7 +66,7 @@
    "checked": {
     "date": "2026-11-17",
     "robots": "このツールからは取得元へアクセスしない（定期タスクの記録を読むだけ）",
-    "terms": "記録の本文は使わず、pococha.com のURLがあり期間を読める行の名前・期間・対象ランクの事実とURLのみ記録。第三者カレンダー・候補・未確認の行は使わない"
+    "terms": "記録の本文は使わず、期間を読める行の名前・期間・対象ランクの事実とURLのみ記録。公式未確認（第三者カレンダー・候補・未確認）の行も正式イベントとして使う（2026-11-17 ユーザー決定）。中止・延期の行と HAISHIN LAB は使わない"
    }
   }
  ],
@@ -411,6 +411,35 @@
    "confirmedAt": "2026-11-14"
   },
   {
+   "id": "pococha-event-sources.md#task-7ce0cb2dd8",
+   "title": "POCOTOMOパンクッション",
+   "url": "https://github.com/Yoshi2026s/poco-meter/blob/HEAD/docs/pococha-event-sources.md#task-7ce0cb2dd8",
+   "sourceId": "pococha-official-task",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "notice",
+   "start": "2026-11-18",
+   "end": "2026-11-18",
+   "periods": [
+    {
+     "start": "2026-11-18",
+     "end": "2026-11-18",
+     "startTime": "12:00",
+     "endTime": "23:59",
+     "label": "POCOTOMOパンクッション",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-16"
+  },
+  {
    "id": "n267fac9a3a1c#1",
    "title": "アルコ＆ピースのトークバラエティ出演権",
    "url": "https://report.pococha.com/n/n267fac9a3a1c#1",
@@ -469,6 +498,77 @@
    "confirmedAt": "2026-11-17"
   },
   {
+   "id": "pococha-event-sources.md#task-4d3a35103d",
+   "title": "バイカラーマグカップ クリスマスVer.",
+   "url": "https://github.com/Yoshi2026s/poco-meter/blob/HEAD/docs/pococha-event-sources.md#task-4d3a35103d",
+   "sourceId": "pococha-official-task",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "notice",
+   "start": "2026-11-17",
+   "end": "2026-11-17",
+   "periods": [
+    {
+     "start": "2026-11-17",
+     "end": "2026-11-17",
+     "startTime": "12:00",
+     "endTime": "23:59",
+     "label": "バイカラーマグカップ クリスマスVer.",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-16"
+  },
+  {
+   "id": "#task-40aac02914",
+   "title": "新潟駅広告",
+   "url": "https://yotei.ember-w.com/events/2026-11/#task-40aac02914",
+   "sourceId": "pococha-official-task",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "notice",
+   "start": "2026-11-17",
+   "end": "2026-11-23",
+   "periods": [
+    {
+     "start": "2026-11-17",
+     "end": "2026-11-23",
+     "startTime": null,
+     "endTime": null,
+     "label": "新潟駅広告",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [
+    "B1",
+    "B2",
+    "B3",
+    "A1",
+    "A2",
+    "A3",
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6"
+   ],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-17"
+  },
+  {
    "id": "nd28045100771",
    "title": "ライバーさんと一緒に昇格戦へ！ステージ制度の応援ガイド",
    "url": "https://report.pococha.com/n/nd28045100771",
@@ -505,6 +605,87 @@
    ],
    "excluded": 0,
    "fetchedAt": "2026-11-16T18:00:37.485Z"
+  },
+  {
+   "id": "pococha-event-sources.md#task-c250176da7",
+   "title": "デビューぽこトレ",
+   "url": "https://github.com/Yoshi2026s/poco-meter/blob/HEAD/docs/pococha-event-sources.md#task-c250176da7",
+   "sourceId": "pococha-official-task",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "newcomer",
+   "start": "2026-11-16",
+   "end": "2026-11-16",
+   "periods": [
+    {
+     "start": "2026-11-16",
+     "end": "2026-11-16",
+     "startTime": "12:00",
+     "endTime": "23:59",
+     "label": "デビューぽこトレ",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [
+    "D1",
+    "D2",
+    "D3"
+   ],
+   "confidence": "high",
+   "audience": [
+    "新規ライバー"
+   ],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-16"
+  },
+  {
+   "id": "pococha-event-sources.md#task-e34e95646f",
+   "title": "ポコリンミニ ヌヌ",
+   "url": "https://github.com/Yoshi2026s/poco-meter/blob/HEAD/docs/pococha-event-sources.md#task-e34e95646f",
+   "sourceId": "pococha-official-task",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "notice",
+   "start": "2026-11-16",
+   "end": "2026-11-16",
+   "periods": [
+    {
+     "start": "2026-11-16",
+     "end": "2026-11-16",
+     "startTime": "12:00",
+     "endTime": "23:59",
+     "label": "ポコリンミニ ヌヌ",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [
+    "D3",
+    "C1",
+    "C2",
+    "C3",
+    "B1",
+    "B2",
+    "B3",
+    "A1",
+    "A2",
+    "A3",
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6"
+   ],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-16"
   },
   {
    "id": "n0f40d159ce34",
