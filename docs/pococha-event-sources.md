@@ -11,6 +11,21 @@
 
 - 3色対抗 世代ウォーズ オールスター決勝：11/17 10:00〜23:59。出場は予選の同世代・同組上位10名、計300名。世代ウォーズ本体の開催回の内訳。https://sedai-wars-2026.pococha.com/
 
+
+- POCO LAND 2026 20Stars C・D・Voice C/D：12/11 12:00〜12/15 23:59。対象はD1〜C3、Voice C・D。エントリは12/3 16:00〜12/10 01:59:59。D・VoiceはCelebration Party出場対象外。https://report.pococha.com/n/nbf2c1188a729
+- POCO LAND 2026 20Stars A・B・Voice B以上：12/12 12:00〜12/16 23:59。対象はB1〜A3、Voice B1〜S6。エントリは12/4 16:00〜12/11 01:59:59。VoiceはCelebration Party出場対象外。https://report.pococha.com/n/nbf2c1188a729
+- POCO LAND 2026 20Stars S：12/13 12:00〜12/17 23:59。対象はS1〜S6（S1〜S3とS4〜S6で区分）。エントリは12/5 16:00〜12/12 01:59:59。https://report.pococha.com/n/nbf2c1188a729
+
+### 第三者カレンダーで確認した候補
+
+- 新潟駅広告：11/17〜11/23、12:00開始・最終日23:59終了、B1〜S6の掲載。https://yotei.ember-w.com/events/2026-11/
+- Kimono MUSE 創刊号 専属モデル出演権 #1 決勝：11/18〜11/22、18:00開始・最終日20:59終了、E1〜S6の掲載。https://yotei.ember-w.com/events/2026-11/
+
+### 参考・結果
+
+- ギルドカップ2026：11/16発表の株式会社321のリリースでは、同事務所がTOP10・DRAFT10の両ステージ1位、総合優勝。https://mantan-web.jp/prtimes/article/20261116prt00m200000892a.html
+- 既存掲載のきせかえアイテム人気投票は11/23まで、アプリ内お知らせのフォームで1人1票。2027年1/29〜1/30のきせかえミッション予告も同記事で確認。https://report.pococha.com/n/n0f40d159ce34
+
 ## 2026-11-16（日本時間）
 
 ### 公式本文で確認
