@@ -2,8 +2,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {eventCalendarMonth, eventCalendarName, eventCalendarURL, eventSoonOrder, validEventDays} from '../calculator/event-calendar.mjs';
-import {calendarEventDays} from '../automation/build-meter-factors.mjs';
+import {eventCalendarMonth, eventCalendarName, eventCalendarURL, eventSoonOrder, eventSpan, validEventDays} from '../calculator/event-calendar.mjs';
+import {calendarEventDays, forecastBundle, EVENTS_PER_DAY} from '../automation/build-meter-factors.mjs';
 
 const events = {events: [
   {title: '【大型】冬祭り開催', url: 'https://report.pococha.com/n/a', type: 'big', confidence: 'high', ranks: ['S1', 'S2'], periods: [{start: '2026-01-02', end: '2026-01-04', label: '冬祭り', ranks: ['S1', 'S2'], startTime: '12:00', endTime: '23:59'}]},
@@ -108,4 +108,23 @@ test('第三者候補は正式イベントと同じに並べ（公式未確認�
   assert.equal(eventCalendarURL('https://github.com/Yoshi2026s/poco-meter/blob/HEAD/docs/pococha-event-sources.md#task-1'), 'https://github.com/Yoshi2026s/poco-meter/blob/HEAD/docs/pococha-event-sources.md#task-1');
   assert.equal(eventCalendarURL('https://example.com/x'), '');
   assert.equal(eventCalendarURL('https://yotei.ember-w.com.evil.example/'), '');
+});
+
+test('1日の開催中は最大 EVENTS_PER_DAY 件。最終日のものは数えず、開催中を押し出さない', () => {
+  const ev = (n, start, end, type = 'event') => ({title: n, url: 'https://report.pococha.com/n/' + encodeURIComponent(n), type, confidence: 'high', ranks: [], periods: [{start, end, label: n, ranks: []}]});
+  const many = {events: [
+    ...Array.from({length: 6}, (_, i) => ev('最終日' + i, '2026-04-01', '2026-04-05', 'big')),
+    ...Array.from({length: EVENTS_PER_DAY + 3}, (_, i) => ev('開催中' + i, '2026-04-01', '2026-04-20', i < 2 ? 'big' : 'notice'))]};
+  const day = forecastBundle({weekday: {}}, many, '2026-04-05', {before: 0, after: 0}).days['2026-04-05'];
+  assert.equal(day.events.filter(x => x.ends).length, 6, '最終日のものはすべて残す');
+  assert.equal(day.events.filter(x => !x.ends).length, EVENTS_PER_DAY, '開催中は上限まで（最終日の件数に押し出されない）');
+  assert.ok(day.events.filter(x => !x.ends).slice(0, 2).every(x => x.type === 'big'), '大型を優先して残す');
+  assert.equal(day.lasts.length, 6);
+});
+
+test('期間の表示は月日に0を付けず、年が違う日付だけ年を付ける（メイン画面とそろえる）', () => {
+  assert.equal(eventSpan({start: '2026-09-09', end: '2026-11-30'}, '2026-11-17'), '9/9〜11/30');
+  assert.equal(eventSpan({start: '2026-11-11', end: '2027-02-22'}, '2026-11-17'), '11/11〜2027/2/22');
+  assert.equal(eventSpan({start: '2026-11-13', end: '2026-11-17', endTime: '23:59'}, '2026-11-17'), '11/13〜11/17 23:59');
+  assert.equal(eventSpan({start: '2026-11-17', end: '2026-11-17', startTime: '12:00', endTime: '23:59'}, '2026-11-17'), '11/17 12:00〜23:59');
 });
