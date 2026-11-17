@@ -2031,6 +2031,9 @@ footer .footer-support>details[open]~.tool-creator-logo{grid-row:auto;grid-colum
 :root body #mini.main-screen .main-card .ao-list li.ao-big{border-left-color:#b7791f}
 :root body #mini.main-screen .main-card .ao-last li{border-left-color:#c2410c}
 :root body #mini.main-screen .main-card .ao-list li a{font-weight:700;text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;color:#0d3b66!important}
+/* イベント名のリンクは文字の高さ（約18px）しかなくスマホで押しにくいので、見た目と配置を変えずに上下へ押せる範囲を広げる（項目の間は6px＋説明の行があるため隣のリンクとは重ならない） */
+:root body #mini.main-screen .main-card .ao-list li a{position:relative}
+:root body #mini.main-screen .main-card .ao-list li a::after{content:"";position:absolute;inset:-7px -4px}
 :root body #mini.main-screen .main-card .ao-list li small{display:block;font-size:13px!important;color:#445466!important}
 :root body #mini.main-screen .main-card .ao-last li small b{color:#9a3412!important}
 :root body #mini.main-screen .main-card .ao-badge{display:inline-block;margin-left:6px;padding:0 6px;border-radius:6px;background:#1763b5!important;color:#fff!important;font-size:12px!important;font-weight:700;vertical-align:baseline}
