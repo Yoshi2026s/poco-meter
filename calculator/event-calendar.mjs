@@ -24,9 +24,11 @@ export function eventMonthCells(month) {
   while (cells.length % 7) cells.push(null);
   return {...range, cells};
 }
-export function eventCalendarURL(v, candidate = false) {
+// リンクは Pococha公式・掲載元の第三者カレンダー（yotei.ember-w.com）・照合記録（このリポジトリ）だけ出す
+export const isOfficialURL = v => { try { const h = new URL(v).hostname; return h === 'pococha.com' || h.endsWith('.pococha.com'); } catch { return false; } };
+export function eventCalendarURL(v) {
   if (typeof v !== 'string') return '';
-  try { const u = new URL(v); return u.protocol === 'https:' && !u.username && !u.password && (candidate ? u.hostname === 'yotei.ember-w.com' : u.hostname === 'pococha.com' || u.hostname.endsWith('.pococha.com')) ? u.href : ''; } catch { return ''; }
+  try { const u = new URL(v); return u.protocol === 'https:' && !u.username && !u.password && (isOfficialURL(v) || u.hostname === 'yotei.ember-w.com' || u.hostname === 'github.com' && u.pathname.startsWith('/Yoshi2026s/poco-meter/')) ? u.href : ''; } catch { return ''; }
 }
 export function eventCalendarName(x) {
   const clean = s => String(s || '').replace(/\p{Extended_Pictographic}|️|‍/gu, '').replace(/[＼／]/g, ' ').replace(/\s+/g, ' ').trim();
@@ -65,15 +67,15 @@ export function eventCalendarMonth(data, month, rank = '') {
     if (rank && ranks.length && !ranks.includes(rank)) return null;
     const start = validDate(x.start) ? x.start : '', end = validDate(x.end) ? x.end : start;
     return {name: eventCalendarName(x), type: Object.prototype.hasOwnProperty.call(EVENT_TYPE_LABELS, x.type) ? x.type : '', last, candidate, ranks, rankRange: candidate && typeof x.rankRange === 'string' ? x.rankRange : '', target: !!rank && ranks.includes(rank),
-      start, end, startTime: time(x.startTime), endTime: time(x.endTime), url: eventCalendarURL(x.url, candidate)};
+      start, end, startTime: time(x.startTime), endTime: time(x.endTime), url: eventCalendarURL(x.url)};
   };
-  // 公式確認済み → 候補、最終日 → 開催中に分け、その中はイベラスが近く期間が短い順（同じなら種類・対象ランク）
-  const order = date => { const soon = eventSoonOrder(date); return (a, b) => Number(a.candidate) - Number(b.candidate) || (a.last === b.last ? 0 : a.last ? -1 : 1) || soon(a, b) || (EVENT_TYPE_ORDER[a.type] ?? 9) - (EVENT_TYPE_ORDER[b.type] ?? 9) || (b.target ? 1 : 0) - (a.target ? 1 : 0); };
+  // 最終日 → 開催中に分け、その中はイベラスが近く期間が短い順（同じなら種類・対象ランク）。公式未確認の候補（c）も正式イベントと同じに並べる
+  const order = date => { const soon = eventSoonOrder(date); return (a, b) => (a.last === b.last ? 0 : a.last ? -1 : 1) || soon(a, b) || (EVENT_TYPE_ORDER[a.type] ?? 9) - (EVENT_TYPE_ORDER[b.type] ?? 9) || (b.target ? 1 : 0) - (a.target ? 1 : 0); };
   let count = 0;
   const cells = calendar.cells.map(date => {
     if (!date) return null;
     const day = isObj(data.days[date]) ? data.days[date] : {}, ids = k => Array.isArray(day[k]) ? day[k] : [], seen = new Set();
-    const items = [...ids('l').map(i => pick(i, true)), ...ids('e').map(i => pick(i, false)), ...ids('c').map(i => pick(i, false, true))]
+    const items = [...ids('l').map(i => pick(i, true)), ...ids('e').map(i => pick(i, false)), ...ids('c').map(i => { const x = pick(i, false, true); if (x) x.last = (x.end || x.start) === date; return x; })] // 候補もその日が最終日ならイベラス
       .filter(x => x && !seen.has(x.name + '|' + x.start) && seen.add(x.name + '|' + x.start)).sort(order(date));
     count += items.length;
     return {date, items, big: items.some(x => x.type === 'big'), lasts: items.filter(x => x.last).length};
@@ -141,7 +143,7 @@ export function createEventCalendar(box, {load, today = () => new Date(Date.now(
       if (cell.big) b.appendChild(el('span', '大型', 'evc-tag big'));
       if (cell.lasts) b.appendChild(el('span', 'ラス' + (cell.lasts > 1 ? cell.lasts : ''), 'evc-tag last'));
       b.disabled = !cell.items.length; b.setAttribute('aria-pressed', String(cell.date === selected));
-      b.setAttribute('aria-label', cell.date + ' ' + (cell.items.length ? cell.items.map(x => (x.candidate ? '公式未確認 ' : x.last ? '最終日 ' : '') + x.name).join('、') : 'イベント情報なし'));
+      b.setAttribute('aria-label', cell.date + ' ' + (cell.items.length ? cell.items.map(x => (x.last ? '最終日 ' : '') + x.name).join('、') : 'イベント情報なし'));
       b.addEventListener('click', () => { selected = cell.date; render(); find('evcDetail')?.scrollIntoView?.({block: 'nearest', behavior: 'auto'}); box.querySelector?.('[data-event-day="' + cell.date + '"]')?.focus?.({preventScroll: true}); });
       grid.appendChild(b);
     }
@@ -153,14 +155,13 @@ export function createEventCalendar(box, {load, today = () => new Date(Date.now(
       const list = el('ul', undefined, 'evc-list');
       for (const x of cell.items) {
         const li = el('li', undefined, 'evc-item' + (x.last ? ' last' : '') + (x.type === 'big' ? ' big' : '')), head = el('div', undefined, 'evc-head');
-        if (x.candidate) head.appendChild(el('span', '公式未確認', 'evc-tag'));
         if (x.last) head.appendChild(el('span', '最終日', 'evc-tag last'));
         if (x.type === 'big') head.appendChild(el('span', '大型', 'evc-tag big'));
         head.appendChild(el('strong', x.name)); li.appendChild(head);
         const ranks = x.rankRange ? '掲載ランク ' + x.rankRange : x.ranks.length ? '対象 ' + (x.ranks.length > 6 ? x.ranks[0] + '〜' + x.ranks[x.ranks.length - 1] : x.ranks.join('・')) : '対象ランクの記載なし';
         const span = eventSpan(x, cell.date);
-        li.appendChild(el('p', [x.candidate ? '第三者カレンダー掲載' : EVENT_TYPE_LABELS[x.type] || '', span ? '期間 ' + span : '', ranks].filter(Boolean).join(' ／ '), 'evc-meta'));
-        if (x.url) { const a = el('a', x.candidate ? '掲載元を開く ↗' : '公式の告知を開く ↗', 'evc-link'); a.href = x.url; a.target = '_blank'; a.rel = 'noopener noreferrer'; li.appendChild(a); }
+        li.appendChild(el('p', [EVENT_TYPE_LABELS[x.type] || '', span ? '期間 ' + span : '', ranks].filter(Boolean).join(' ／ '), 'evc-meta'));
+        if (x.url) { const a = el('a', isOfficialURL(x.url) ? '公式の告知を開く ↗' : '掲載元を開く ↗', 'evc-link'); a.href = x.url; a.target = '_blank'; a.rel = 'noopener noreferrer'; li.appendChild(a); }
         list.appendChild(li);
       }
       detail.appendChild(list);
@@ -169,7 +170,7 @@ export function createEventCalendar(box, {load, today = () => new Date(Date.now(
         : 'この月はイベント情報の範囲外です（' + model.from.replaceAll('-', '/') + '〜' + model.to.replaceAll('-', '/') + '）。', 'evc-note'));
     }
     box.appendChild(detail);
-    box.appendChild(el('p', '公式の告知から期間を確認できたイベントと、公式未確認の候補を表示します（1日につき開催中は最大8件＋最終日のもの）。内容・条件は必ず公式の告知で確認してください。', 'evc-note'));
+    box.appendChild(el('p', '公式の告知や第三者のイベントカレンダーなどで期間を確認できたイベントを表示します（1日につき開催中は最大8件＋最終日のもの）。内容・条件はアプリ内の告知で確認してください。', 'evc-note'));
   }
   return {open, render};
 }

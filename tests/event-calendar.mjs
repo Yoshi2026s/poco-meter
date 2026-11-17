@@ -92,7 +92,7 @@ test('書き写した部品が元ファイルと一致し、画面のスクリ�
   assert.equal(PocoEventCalendar.eventCalendarMonth(data, '2026-01', '').count, 7);
 });
 
-test('第三者候補は日別カレンダーだけに追加し、同日の公式情報と重複させない', () => {
+test('第三者候補は正式イベントと同じに並べ（公式未確認の印なし）、同日の公式情報と重複させない', () => {
   const url = 'https://yotei.ember-w.com/events/2026-11/';
   const candidate = {name: 'デビューぽこトレ', date: '2026-01-03', startTime: '12:00', endTime: '23:59', rankRange: 'E1〜D3', url};
   const repeatedOfficial = {...candidate, name: '新春ミッション'};
@@ -100,10 +100,12 @@ test('第三者候補は日別カレンダーだけに追加し、同日の公�
   assert.deepEqual(result.days['2026-01-03'].e, data.days['2026-01-03'].e);
   assert.deepEqual(result.days['2026-01-03'].l, data.days['2026-01-03'].l);
   const displayed = eventCalendarMonth(result, '2026-01').cells.find(c => c?.date === '2026-01-03').items;
-  const item = displayed.at(-1);
-  assert.deepEqual([item.name, item.candidate, item.last, item.startTime, item.endTime, item.rankRange, item.url],
-    ['デビューぽこトレ', true, false, '12:00', '23:59', 'E1〜D3', url]);
+  const item = displayed.find(x => x.name === 'デビューぽこトレ');
+  assert.deepEqual([item.last, item.startTime, item.endTime, item.rankRange, item.url], [true, '12:00', '23:59', 'E1〜D3', url], '1日だけの候補はその日が最終日（イベラス）');
   assert.equal(displayed.filter(x => x.candidate).length, 1);
-  assert.equal(eventCalendarURL(url), '');
-  assert.equal(eventCalendarURL('https://yotei.ember-w.com.evil.example/', true), '');
+  assert.equal(displayed.indexOf(item), 0, '候補を後ろに回さず、イベラスが近い順に並べる（23:59終了なので時刻なしの最終日より上）');
+  assert.equal(eventCalendarURL(url), url);
+  assert.equal(eventCalendarURL('https://github.com/Yoshi2026s/poco-meter/blob/HEAD/docs/pococha-event-sources.md#task-1'), 'https://github.com/Yoshi2026s/poco-meter/blob/HEAD/docs/pococha-event-sources.md#task-1');
+  assert.equal(eventCalendarURL('https://example.com/x'), '');
+  assert.equal(eventCalendarURL('https://yotei.ember-w.com.evil.example/'), '');
 });

@@ -1,8 +1,13 @@
 # ChatGPTの定期タスクの照合記録（docs/pococha-event-sources.md）から自動で作る行。手で編集しない（次の実行で作り直される）。
-# 作り方：automation/extract-task-events.mjs が「公式本文で確認」などの欄にある、Pococha公式URL（pococha.com）つきで期間を読める行だけを取り出す。
-#   第三者カレンダー・候補・未確認の行、他の取得元に同じ開催日・同じ名前のイベントがある行は入れない。
-# 形：確認日 YYYY-MM-DD｜イベント名｜開催期間：…〜…｜対象：…｜公式のURL#task-識別子
+# 作り方：automation/extract-task-events.mjs が日付の節（「参考」の欄を除く）にある、期間を読める行を取り出す。公式未確認（第三者カレンダー・候補・未確認）の行も正式イベントとして入れる。
+#   中止・延期の行、他の取得元に同じ開催日・同じ名前のイベントがある行は入れない。
+# 形：確認日 YYYY-MM-DD｜イベント名｜開催期間：…〜…｜対象：…｜掲載元のURL#task-識別子（Pococha公式URL優先。URLが無い行はこの記録）
+確認日 2026-11-16｜デビューぽこトレ｜開催期間：2026年11月16日 12:00〜2026年11月16日 23:59｜対象：E1〜D3｜https://github.com/Yoshi2026s/poco-meter/blob/HEAD/docs/pococha-event-sources.md#task-c250176da7
+確認日 2026-11-16｜ポコリンミニ ヌヌ｜開催期間：2026年11月16日 12:00〜2026年11月16日 23:59｜対象：D3〜S6｜https://github.com/Yoshi2026s/poco-meter/blob/HEAD/docs/pococha-event-sources.md#task-e34e95646f
 確認日 2026-11-17｜3色対抗 世代ウォーズ オールスター決勝｜開催期間：2026年11月17日 10:00〜2026年11月17日 23:59｜https://sedai-wars-2026.pococha.com/#task-7618bc3350
+確認日 2026-11-16｜バイカラーマグカップ クリスマスVer.｜開催期間：2026年11月17日 12:00〜2026年11月17日 23:59｜https://github.com/Yoshi2026s/poco-meter/blob/HEAD/docs/pococha-event-sources.md#task-4d3a35103d
+確認日 2026-11-17｜新潟駅広告｜開催期間：2026年11月17日〜2026年11月23日｜対象：B1〜S6｜https://yotei.ember-w.com/events/2026-11/#task-40aac02914
+確認日 2026-11-16｜POCOTOMOパンクッション｜開催期間：2026年11月18日 12:00〜2026年11月18日 23:59｜https://github.com/Yoshi2026s/poco-meter/blob/HEAD/docs/pococha-event-sources.md#task-7ce0cb2dd8
 確認日 2026-11-16｜POCO LAND 2026 ぽこチャレ｜開催期間：2026年11月26日 12:00〜2026年12月2日 23:59｜https://report.pococha.com/n/nbf2c1188a729#task-00b5dcdffd
 確認日 2026-11-17｜POCO LAND 2026 20Stars C・D・Voice C/D｜開催期間：2026年12月11日 12:00〜2026年12月15日 23:59｜対象：D1〜C3｜https://report.pococha.com/n/nbf2c1188a729#task-4ce30f13c2
 確認日 2026-11-17｜POCO LAND 2026 20Stars A・B・Voice B以上｜開催期間：2026年12月12日 12:00〜2026年12月16日 23:59｜対象：B1〜A3｜https://report.pococha.com/n/nbf2c1188a729#task-f7f6dc20a6
