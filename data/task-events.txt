@@ -4,3 +4,6 @@
 # 形：確認日 YYYY-MM-DD｜イベント名｜開催期間：…〜…｜対象：…｜公式のURL#task-識別子
 確認日 2026-11-17｜3色対抗 世代ウォーズ オールスター決勝｜開催期間：2026年11月17日 10:00〜2026年11月17日 23:59｜https://sedai-wars-2026.pococha.com/#task-7618bc3350
 確認日 2026-11-16｜POCO LAND 2026 ぽこチャレ｜開催期間：2026年11月26日 12:00〜2026年12月2日 23:59｜https://report.pococha.com/n/nbf2c1188a729#task-00b5dcdffd
+確認日 2026-11-17｜POCO LAND 2026 20Stars C・D・Voice C/D｜開催期間：2026年12月11日 12:00〜2026年12月15日 23:59｜対象：D1〜C3｜https://report.pococha.com/n/nbf2c1188a729#task-4ce30f13c2
+確認日 2026-11-17｜POCO LAND 2026 20Stars A・B・Voice B以上｜開催期間：2026年12月12日 12:00〜2026年12月16日 23:59｜対象：B1〜A3｜https://report.pococha.com/n/nbf2c1188a729#task-f7f6dc20a6
+確認日 2026-11-17｜POCO LAND 2026 20Stars S｜開催期間：2026年12月13日 12:00〜2026年12月17日 23:59｜対象：S1〜S6｜https://report.pococha.com/n/nbf2c1188a729#task-e5d2ee5500
