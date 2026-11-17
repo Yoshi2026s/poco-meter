@@ -2,7 +2,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {eventCalendarMonth, eventCalendarName, eventCalendarURL, validEventDays} from '../calculator/event-calendar.mjs';
+import {eventCalendarMonth, eventCalendarName, eventCalendarURL, eventSoonOrder, validEventDays} from '../calculator/event-calendar.mjs';
 import {calendarEventDays} from '../automation/build-meter-factors.mjs';
 
 const events = {events: [
@@ -24,6 +24,22 @@ test('月の表：開催中と最終日を日ごとに並べ、最終日・大�
   assert.equal(day('2026-01-04').items[0].endTime, '23:59');
   assert.equal(m.count, 3 + 1 + 3, '期間を検出できなかった記事は載せない（冬祭り3日・ミッション1日・Aランク応援3日）');
   assert.equal(m.covered, true);
+});
+
+test('並び順：開催期間が短いもの、次にイベラス（最終日）が近いものほど上', () => {
+  const list = [
+    {name: '長期・明後日まで', start: '2026-01-01', end: '2026-01-12'},
+    {name: '1週間・明日まで', start: '2026-01-04', end: '2026-01-11'},
+    {name: '1週間・5日後まで', start: '2026-01-08', end: '2026-01-15'},
+    {name: '日付なし'},
+    {name: '1日・半日', start: '2026-01-10', end: '2026-01-10', startTime: '12:00', endTime: '23:59'},
+    {name: '1日', start: '2026-01-10'}];
+  assert.deepEqual(list.slice().sort(eventSoonOrder('2026-01-10')).map(x => x.name), ['1日・半日', '1日', '1週間・明日まで', '1週間・5日後まで', '長期・明後日まで', '日付なし']);
+  const longer = {events: [
+    {title: '長期', url: 'https://report.pococha.com/n/l', type: 'big', confidence: 'high', ranks: [], periods: [{start: '2026-03-01', end: '2026-03-20', label: '長期', ranks: []}]},
+    {title: '短期', url: 'https://report.pococha.com/n/s', type: 'mission', confidence: 'high', ranks: [], periods: [{start: '2026-03-05', end: '2026-03-07', label: '短期', ranks: []}]}]};
+  const m = eventCalendarMonth(calendarEventDays(longer, '2026-03-01', '2026-03-31'), '2026-03', '');
+  assert.deepEqual(m.cells.find(c => c && c.date === '2026-03-06').items.map(x => x.name), ['短期', '長期'], '種類（大型）より期間の短さを優先');
 });
 
 test('ランクを選ぶと、そのランクが対象のものと対象ランク不明のものだけ残す', () => {

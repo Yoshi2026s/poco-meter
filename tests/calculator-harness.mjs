@@ -21,7 +21,7 @@ const constants = new Set(['automaticDataMissing', 'E_TARGET_SEEDS', 'eTargetCac
   'fmtRemainingK', 'DOGCAT', 'PANDA', 'HANABI', 'BASHA', 'CORE_TIERS',
   'METHOD_LABELS', 'BLABEL', 'offlineReadToken', 'offlineReader', 'offlineReadContext',
   'clockSample', 'clockBusy', 'clockAttemptMono', 'clockState',
-  'PocoEventParse', 'SNS_KEY', 'SNS_SCHEMA', 'snsCache', 'snsVersion']);
+  'PocoEventParse', 'PocoEventCalendar', 'SNS_KEY', 'SNS_SCHEMA', 'snsCache', 'snsVersion']);
 const definitions = statements.flatMap(node => {
   if (node.type === 'FunctionDeclaration') return [script.slice(node.start, node.end)];
   if (node.type !== 'VariableDeclaration') return [];

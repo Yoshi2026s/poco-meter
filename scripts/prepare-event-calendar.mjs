@@ -7,7 +7,7 @@ import {resolve} from 'node:path';
 const root = new URL('../', import.meta.url);
 export const BEGIN = '/* event-calendar:begin（calculator/event-calendar.mjs から npm run pages:prepare で生成。ここは手で書き換えない） */';
 export const END = '/* event-calendar:end */';
-const NAMES = ['createEventCalendar', 'eventCalendarMonth', 'validEventDays'];
+const NAMES = ['createEventCalendar', 'eventCalendarMonth', 'eventSoonOrder', 'validEventDays'];
 
 export function eventCalendarBlock(source) {
   const code = source.replace(/^export (const|function|async function|let) /gm, '$1 ');
