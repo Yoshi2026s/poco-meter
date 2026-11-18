@@ -9,6 +9,8 @@
 - 11/18 11:09更新後の再照合。11/15・13時、11/16・22時、11/16・24時は各D1〜S6の18ランク×3指標で54値、計162値が保存済み。各行の出典URLと全値が02:26の取り込み時点と一致し、対象の欠損は0値。公開本文は13時が11/16、22時・24時が11/17へ更新されており、旧集計日の本文からの再比較は未実施。https://github.com/Yoshi2026s/poco-meter/commit/f82c826530a1142a895e3622e203881f5fca6d2a ・ https://github.com/Yoshi2026s/poco-meter/commit/53c83126eb83debbfc9510a7ce27c9136d0aeea8
 - 前回の追加欠損では11/16・13時、11/17・22時／24時も保存済み。11/17・13時の行は引き続きなし。
 
+- 11/18昼の公開本文との同日・同締め照合では、11/16・13時および11/17・22時／24時がそれぞれD1〜S6×3指標の54値全一致（計162値）。11/17・13時は取得本文が11/16分で当該日を確認できず、既定ブランチにも行なし。11/18分は3区分とも締め前。比較対象の保存コミット：https://github.com/Yoshi2026s/poco-meter/commit/53c83126eb83debbfc9510a7ce27c9136d0aeea8 。出典：https://one-carat.com/campus/archives/90414 ・ https://one-carat.com/campus/archives/90413 ・ https://one-carat.com/campus/archives/90412
+
 ## 2026-11-17（日本時間）
 
 - 11/16集計分は、ONE CARATから取得できた本文では未確認。13時の表示は11/14、22時・24時は11/15。直後の11/16分は公開待ちとして次回再照合する。https://one-carat.com/campus/archives/90414 ・ https://one-carat.com/campus/archives/90413 ・ https://one-carat.com/campus/archives/90412
