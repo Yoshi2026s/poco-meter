@@ -23,6 +23,11 @@
 - POCOTOMOパンクッションとKimono MUSE #1決勝は11/18開始と第三者カレンダーに掲載。対象開催回の公式詳細、締切、プライズ条件は未確認。https://yotei.ember-w.com/events/2026-11/
 - 既定ブランチでは候補欄も公開カレンダーに取り込まれるため、この節の再照合結果は参考欄に記録した。
 
+### 参考・既存イベントの公式条件
+
+- POCO LAND 2026 ぽこチャレ：11/19 16:00頃からの受付に先立ちFAQを照合。20Stars参加にぽこチャレは必須ではなく、全ミッションクリア時は20Stars参加時のステージに応じて加点。ノーマルとハードは同時エントリ不可。https://report.pococha.com/n/n1b6f3ddadd91
+- 20Stars・20Stars Voiceの総合ランキングには大将戦・軍団戦・ルーキー戦・ベテラン戦・団結戦・騎士戦の6部門がある。クラシックとモダン共通。部門結果の持ち越しはCelebration Party対象時のみ。https://report.pococha.com/n/ne9db6a61a79d ・ https://report.pococha.com/n/n1b6f3ddadd91
+
 ## 2026-11-17（日本時間）
 
 ### 公式本文で確認

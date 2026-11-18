@@ -11,6 +11,8 @@
 
 - 11/18昼の公開本文との同日・同締め照合では、11/16・13時および11/17・22時／24時がそれぞれD1〜S6×3指標の54値全一致（計162値）。11/17・13時は取得本文が11/16分で当該日を確認できず、既定ブランチにも行なし。11/18分は3区分とも締め前。比較対象の保存コミット：https://github.com/Yoshi2026s/poco-meter/commit/53c83126eb83debbfc9510a7ce27c9136d0aeea8 。出典：https://one-carat.com/campus/archives/90414 ・ https://one-carat.com/campus/archives/90413 ・ https://one-carat.com/campus/archives/90412
 
+- 11/18深夜の再確認。取得本文は13時が11/16、22時・24時が11/17。11/17・13時、11/18・13時／22時は対象日の本文未確認で既定ブランチにも行なし。11/18・24時は照合開始時点では締め前（11/19 00:00締め）。夕方分の定時取得は確認時点の履歴で見つからず、更新待ち。12:04の成功はイベント資料更新に伴うpushで起動した処理。https://github.com/Yoshi2026s/poco-meter/actions/runs/44227801253 ・ https://one-carat.com/campus/archives/90414 ・ https://one-carat.com/campus/archives/90413 ・ https://one-carat.com/campus/archives/90412
+
 ## 2026-11-17（日本時間）
 
 - 11/16集計分は、ONE CARATから取得できた本文では未確認。13時の表示は11/14、22時・24時は11/15。直後の11/16分は公開待ちとして次回再照合する。https://one-carat.com/campus/archives/90414 ・ https://one-carat.com/campus/archives/90413 ・ https://one-carat.com/campus/archives/90412
