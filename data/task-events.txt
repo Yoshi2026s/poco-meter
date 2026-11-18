@@ -10,5 +10,8 @@
 確認日 2026-11-16｜POCOTOMOパンクッション｜開催期間：2026年11月18日 12:00〜2026年11月18日 23:59｜https://github.com/Yoshi2026s/poco-meter/blob/HEAD/docs/pococha-event-sources.md#task-7ce0cb2dd8
 確認日 2026-11-16｜POCO LAND 2026 ぽこチャレ｜開催期間：2026年11月26日 12:00〜2026年12月2日 23:59｜https://report.pococha.com/n/nbf2c1188a729#task-00b5dcdffd
 確認日 2026-11-17｜POCO LAND 2026 20Stars C・D・Voice C/D｜開催期間：2026年12月11日 12:00〜2026年12月15日 23:59｜対象：D1〜C3｜https://report.pococha.com/n/nbf2c1188a729#task-4ce30f13c2
+確認日 2026-11-18｜POCO LAND 2026 Generations 12月11日開始区分｜開催期間：2026年12月11日 12:00〜2026年12月15日 23:59｜https://report.pococha.com/n/nbf2c1188a729#task-e607269d47
 確認日 2026-11-17｜POCO LAND 2026 20Stars A・B・Voice B以上｜開催期間：2026年12月12日 12:00〜2026年12月16日 23:59｜対象：B1〜A3｜https://report.pococha.com/n/nbf2c1188a729#task-f7f6dc20a6
+確認日 2026-11-18｜POCO LAND 2026 Generations 12月12日開始区分｜開催期間：2026年12月12日 12:00〜2026年12月16日 23:59｜https://report.pococha.com/n/nbf2c1188a729#task-a0144eeee7
 確認日 2026-11-17｜POCO LAND 2026 20Stars S｜開催期間：2026年12月13日 12:00〜2026年12月17日 23:59｜対象：S1〜S6｜https://report.pococha.com/n/nbf2c1188a729#task-e5d2ee5500
+確認日 2026-11-18｜POCO LAND 2026 Generations 12月13日開始区分｜開催期間：2026年12月13日 12:00〜2026年12月17日 23:59｜https://report.pococha.com/n/nbf2c1188a729#task-d6b224ae60

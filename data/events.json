@@ -1,7 +1,7 @@
 {
  "schema": "poco-events-v1",
  "note": "イベント名・期間・対象ランク・対象（audience）・URLなどの事実だけを記録。本文は保存しない。confidence: high=「開催期間」等の見出し付きの期間を検出 / low=見出しなしの期間 / none=期間を検出できず。使用期限・配信時間・応募や選考などの期間は除外（excluded に件数）。",
- "updatedAt": "2026-11-17T10:05:07.913Z",
+ "updatedAt": "2026-11-18T03:04:44.054Z",
  "sources": [
   {
    "id": "pococha-official-note",
@@ -252,6 +252,35 @@
    "confirmedAt": "2026-11-17"
   },
   {
+   "id": "nbf2c1188a729#task-d6b224ae60",
+   "title": "POCO LAND 2026 Generations 12月13日開始区分",
+   "url": "https://report.pococha.com/n/nbf2c1188a729#task-d6b224ae60",
+   "sourceId": "pococha-official-task",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "big",
+   "start": "2026-12-13",
+   "end": "2026-12-17",
+   "periods": [
+    {
+     "start": "2026-12-13",
+     "end": "2026-12-17",
+     "startTime": "12:00",
+     "endTime": "23:59",
+     "label": "POCO LAND 2026 Generations 12月13日開始区分",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-18"
+  },
+  {
    "id": "nbf2c1188a729#task-f7f6dc20a6",
    "title": "POCO LAND 2026 20Stars A・B・Voice B以上",
    "url": "https://report.pococha.com/n/nbf2c1188a729#task-f7f6dc20a6",
@@ -288,6 +317,35 @@
    "confirmedAt": "2026-11-17"
   },
   {
+   "id": "nbf2c1188a729#task-a0144eeee7",
+   "title": "POCO LAND 2026 Generations 12月12日開始区分",
+   "url": "https://report.pococha.com/n/nbf2c1188a729#task-a0144eeee7",
+   "sourceId": "pococha-official-task",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "big",
+   "start": "2026-12-12",
+   "end": "2026-12-16",
+   "periods": [
+    {
+     "start": "2026-12-12",
+     "end": "2026-12-16",
+     "startTime": "12:00",
+     "endTime": "23:59",
+     "label": "POCO LAND 2026 Generations 12月12日開始区分",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-18"
+  },
+  {
    "id": "nbf2c1188a729#task-4ce30f13c2",
    "title": "POCO LAND 2026 20Stars C・D・Voice C/D",
    "url": "https://report.pococha.com/n/nbf2c1188a729#task-4ce30f13c2",
@@ -322,6 +380,35 @@
    "excluded": 0,
    "fetchedAt": null,
    "confirmedAt": "2026-11-17"
+  },
+  {
+   "id": "nbf2c1188a729#task-e607269d47",
+   "title": "POCO LAND 2026 Generations 12月11日開始区分",
+   "url": "https://report.pococha.com/n/nbf2c1188a729#task-e607269d47",
+   "sourceId": "pococha-official-task",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "big",
+   "start": "2026-12-11",
+   "end": "2026-12-15",
+   "periods": [
+    {
+     "start": "2026-12-11",
+     "end": "2026-12-15",
+     "startTime": "12:00",
+     "endTime": "23:59",
+     "label": "POCO LAND 2026 Generations 12月11日開始区分",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-18"
   },
   {
    "id": "n803868883e7d#10",
