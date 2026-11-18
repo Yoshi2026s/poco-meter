@@ -1,7 +1,7 @@
 {
  "schema": "poco-events-v1",
  "note": "イベント名・期間・対象ランク・対象（audience）・URLなどの事実だけを記録。本文は保存しない。confidence: high=「開催期間」等の見出し付きの期間を検出 / low=見出しなしの期間 / none=期間を検出できず。使用期限・配信時間・応募や選考などの期間は除外（excluded に件数）。",
- "updatedAt": "2026-11-18T03:04:44.054Z",
+ "updatedAt": "2026-11-18T16:59:25.426Z",
  "sources": [
   {
    "id": "pococha-official-note",
@@ -469,6 +469,50 @@
    "confirmedAt": "2026-11-16"
   },
   {
+   "id": "n642997ac8aa1",
+   "title": "今年もみんなで芋掘ろう🍠おいも大収穫祭2026！",
+   "url": "https://report.pococha.com/n/n642997ac8aa1",
+   "sourceId": "pococha-official-note",
+   "sourceKind": "official",
+   "published": "2026-11-18T16:30:00.000+09:00",
+   "modified": "2026-11-18T16:30:03.000+09:00",
+   "type": "notice",
+   "start": "2026-11-25",
+   "end": "2026-11-28",
+   "periods": [
+    {
+     "start": "2026-11-25",
+     "end": "2026-11-28",
+     "startTime": "12:00",
+     "endTime": "23:59",
+     "label": "今年もみんなで芋掘ろうおいも大収穫祭2026！",
+     "labeled": false,
+     "ranks": []
+    }
+   ],
+   "ranks": [
+    "C1",
+    "C2",
+    "C3",
+    "B1",
+    "B2",
+    "B3",
+    "A1",
+    "A2",
+    "A3",
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6"
+   ],
+   "confidence": "low",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": "2026-11-18T16:59:14.948Z"
+  },
+  {
    "id": "n803868883e7d#9",
    "title": "さつまいもミッション",
    "url": "https://report.pococha.com/n/n803868883e7d#9",
@@ -674,13 +718,13 @@
    "fetchedAt": "2026-11-16T18:00:35.637Z"
   },
   {
-   "id": "nf7d13f42a013",
-   "title": "【新機能】これから配信を始めるライバーさんに「ステージ制度」が始まります",
-   "url": "https://report.pococha.com/n/nf7d13f42a013",
+   "id": "nb1ac04b04670",
+   "title": "【重要】2026年11月17日以降にはじめて配信した・これから配信するみなさんへ：最初の5配信日だけ、制度を選べます",
+   "url": "https://report.pococha.com/n/nb1ac04b04670",
    "sourceId": "pococha-official-note",
    "sourceKind": "official",
-   "published": "2026-11-16T21:10:53.000+09:00",
-   "modified": "2026-11-16T21:19:08.000+09:00",
+   "published": "2026-11-16T21:12:51.000+09:00",
+   "modified": "2026-11-18T16:07:47.000+09:00",
    "type": "notice",
    "start": null,
    "end": null,
@@ -691,7 +735,27 @@
     "リスナー"
    ],
    "excluded": 0,
-   "fetchedAt": "2026-11-16T18:00:37.485Z"
+   "fetchedAt": "2026-11-18T16:59:16.857Z"
+  },
+  {
+   "id": "nf7d13f42a013",
+   "title": "【新機能】これから配信を始めるライバーさんに「ステージ制度」が始まります",
+   "url": "https://report.pococha.com/n/nf7d13f42a013",
+   "sourceId": "pococha-official-note",
+   "sourceKind": "official",
+   "published": "2026-11-16T21:10:53.000+09:00",
+   "modified": "2026-11-18T16:06:19.000+09:00",
+   "type": "notice",
+   "start": null,
+   "end": null,
+   "periods": [],
+   "ranks": [],
+   "confidence": "none",
+   "audience": [
+    "リスナー"
+   ],
+   "excluded": 0,
+   "fetchedAt": "2026-11-18T16:59:20.864Z"
   },
   {
    "id": "pococha-event-sources.md#task-c250176da7",
@@ -2334,12 +2398,12 @@
   },
   {
    "id": "n599d3a27d832",
-   "title": "【重要】ロイヤルチャージをご利用の方：決済システムが変わります（2026年11月〜）※一部ご利用画面に変更あり",
+   "title": "（2027年に延期となりました）【重要】ロイヤルチャージをご利用の方：決済システムが変わります（2026年11月〜）※一部ご利用画面に変更あり",
    "url": "https://report.pococha.com/n/n599d3a27d832",
    "sourceId": "pococha-official-note",
    "sourceKind": "official",
    "published": "2026-09-18T18:00:00.000+09:00",
-   "modified": "2026-09-18T18:01:07.000+09:00",
+   "modified": "2026-11-18T13:39:17.000+09:00",
    "type": "notice",
    "start": null,
    "end": null,
@@ -2348,7 +2412,7 @@
    "confidence": "none",
    "audience": [],
    "excluded": 0,
-   "fetchedAt": "2026-11-12T08:16:04.790Z"
+   "fetchedAt": "2026-11-18T16:59:18.866Z"
   },
   {
    "id": "n558628be7989",
