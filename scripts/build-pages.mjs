@@ -16,7 +16,7 @@ const ROOT = fileURLToPath(new URL('../', import.meta.url));
 const EVENT_DAYS_AHEAD = 60; // イベントカレンダーで先の予定として載せる日数
 // Tool version shown on the page. Change only when the tool itself changes
 // (data updates do not change it).
-export const PAGES_VERSION = {version: 'v2026.11.19.6', updatedAt: '2026-11-19T21:14:00+09:00', label: '2026/11/19 21:14:00'};
+export const PAGES_VERSION = {version: 'v2026.11.20.1', updatedAt: '2026-11-20T02:08:00+09:00', label: '2026/11/20 02:08:00'};
 // GoatCounter のサイトコード。空なら計測タグを入れない。
 export const GOATCOUNTER_CODE = 'poco-meter';
 // Official stable script and SRI: https://www.goatcounter.com/help/countjs-versions
@@ -24,6 +24,8 @@ const GOATCOUNTER_SCRIPT = 'https://gc.zgo.at/count.v5.js';
 const GOATCOUNTER_INTEGRITY = 'sha384-atnOLvQb9t+jTSipvd75X2yginT4PjVbqDdlJAmxMm+wYElFmeR6EmLP5bYeoRVQ';
 const SITE_VISIT_FILE = 'goatcounter-site-visit.js';
 const SITE_VISIT_SCRIPT = await readFile(new URL('./' + SITE_VISIT_FILE, import.meta.url), 'utf8');
+// E帯の画像読取（tesseract.js）は外部CDNを使わず、同梱したファイルをそのまま配信する（calculator/ocr/NOTICE.md）。
+export const OCR_FILES = ['tesseract.min.js', 'worker.min.js', 'tesseract-core-lstm.wasm.js', 'tesseract-core-simd-lstm.wasm.js', 'jpn.traineddata.gz'];
 const SITE_VISIT_INTEGRITY = 'sha384-' + createHash('sha384').update(SITE_VISIT_SCRIPT).digest('base64');
 const GOATCOUNTER_NOTICE = 'アクセス数の集計に GoatCounter を使用しています（Cookie は使わず、個人を特定する情報は保存しません）。日別の重複を避けるため、集計用の日付だけをこのブラウザーに保存します。';
 const BORDER_FETCH = "fetch('/api/borders',{cache:'no-cache',credentials:'same-origin',signal:controller.signal})";
@@ -257,9 +259,11 @@ export async function buildPages({root = ROOT, out = resolve(ROOT, '_site'), goa
     '404.html': notFoundPage(),
     '.nojekyll': '',
   };
+  for (const name of OCR_FILES) files['ocr/' + name] = await readFile(resolve(root, 'calculator/ocr', name));
   for (const size of ['180', '192', '512']) files[`meter-icon-${size}.png`] = Buffer.from(iconData[size], 'base64');
   await rm(out, {recursive: true, force: true});
   await mkdir(resolve(out, 'data'), {recursive: true});
+  await mkdir(resolve(out, 'ocr'), {recursive: true});
   await Promise.all(Object.entries(files).map(([name, content]) => writeFile(resolve(out, name), content)));
   return {out, files: Object.keys(files).sort(), version: PAGES_VERSION.version};
 }

@@ -1,4 +1,4 @@
-// 公開版の E帯ページで画像読み取り（OCR）に必要な script-src が残ること、
+// 公開版の E帯ページで画像読み取り（OCR）に必要な script-src（同じサイトの同梱ファイル）が残ること、
 // メーター画面（index.html）の script-src が広がらないことを確かめる。
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -15,14 +15,14 @@ const scriptSrc = html => {
   return matches[0][1].trim().split(/\s+/);
 };
 
-test('公開版の e-border.html は OCR 用の送信元を残し、index.html は広がらない', async () => {
+test('公開版の e-border.html は OCR 用に self を許し外部を許さず、index.html は広がらない', async () => {
   const out = await mkdtemp(join(tmpdir(), 'poco-e-border-csp-'));
   try {
     await buildPages({out});
     const eBorder = await readFile(join(out, 'e-border.html'), 'utf8');
     const eSources = scriptSrc(eBorder);
-    assert.ok(eSources.includes('https://cdn.jsdelivr.net'), 'e-border: cdn.jsdelivr.net');
-    assert.ok(eSources.includes("'wasm-unsafe-eval'"), "e-border: 'wasm-unsafe-eval'");
+    assert.ok(eSources.includes("'self'"), "e-border: 'self'");
+    assert.ok(!eSources.some(item => /jsdelivr|projectnaptha/.test(item)), 'e-border: 外部の配信元を含まない');
     assert.ok(!eSources.includes("'unsafe-inline'"), "e-border: 'unsafe-inline' は付けない");
     for (const hash of scriptSources(eBorder).split(' ').filter(Boolean)) assert.ok(eSources.includes(hash), 'e-border hash');
 

@@ -180,10 +180,12 @@ $('recover').onclick=async()=>{if(busy||saving)return;try{const raw=localStorage
 function networkStatus(){$('networkState').textContent=navigator.onLine===false?'現在オフラインです。手入力・保存・バックアップは利用できます。初回の画像読取には通信が必要です。':'画像の読取用データ取得には通信を使用します。';}
 window.addEventListener('online',networkStatus);window.addEventListener('offline',networkStatus);networkStatus();
 function terminateWorker(w){try{Promise.resolve(w.terminate()).catch(()=>{});}catch{}}
+// 読取用のファイルは同じサイトの ./ocr/ に同梱（calculator/ocr/NOTICE.md）。worker 内で使う corePath・langPath は絶対URLにする。
+function ocrURL(path){const base=globalThis.location?.href;return base?new URL(path,base).href:path;}
 async function loadOCR(signal){
  if(window.Tesseract)return;
  let script;
- try{await eTimed(new Promise((resolve,reject)=>{script=document.createElement('script');script.src='https://cdn.jsdelivr.net/npm/tesseract.js@6.0.1/dist/tesseract.min.js';script.crossOrigin='anonymous';script.integrity='sha384-r1ru3tcf6FhnCFR4B7pIFG+BhFF9LlFtz/P1y4pblWn3AGs9y3lBx5SKLNf4+rED';script.onload=resolve;script.onerror=()=>reject(Error('読取用プログラムを取得できません。通信を確認するか手入力を使ってください。'));document.head.append(script);}),45000,signal);}catch(e){script?.remove();throw e;}
+ try{await eTimed(new Promise((resolve,reject)=>{script=document.createElement('script');script.src='./ocr/tesseract.min.js';script.crossOrigin='anonymous';script.integrity='sha384-r1ru3tcf6FhnCFR4B7pIFG+BhFF9LlFtz/P1y4pblWn3AGs9y3lBx5SKLNf4+rED';script.onload=resolve;script.onerror=()=>reject(Error('読取用プログラムを取得できません。通信を確認するか手入力を使ってください。'));document.head.append(script);}),45000,signal);}catch(e){script?.remove();throw e;}
 }
 async function openImage(file,signal){
  const url=URL.createObjectURL(file),im=new Image();
@@ -212,7 +214,7 @@ $('images').onchange=async e=>{
  try{
   status('読取の準備中です。初回は言語データを取得します。中止して手入力へ切り替えることもできます。');
   await loadOCR(signal);check();
-  const creating=Tesseract.createWorker('jpn',1,{workerPath:'https://cdn.jsdelivr.net/npm/tesseract.js@6.0.1/dist/worker.min.js',corePath:'https://cdn.jsdelivr.net/npm/tesseract.js-core@6.0.0',langPath:'https://tessdata.projectnaptha.com/4.0.0_best',cacheMethod:'write'});
+  const creating=Tesseract.createWorker('jpn',1,{workerPath:ocrURL('./ocr/worker.min.js'),workerBlobURL:false,corePath:ocrURL('./ocr'),langPath:ocrURL('./ocr'),cacheMethod:'write'});
   creating.then(w=>{if(signal.aborted||id!==runId)terminateWorker(w);},()=>{});
   localWorker=await eTimed(creating,120000,signal,'読取の準備が長いため中止しました。通信を確認するか手入力を利用してください。');worker=localWorker;check();
   for(let i=0;i<files.length;i++){
