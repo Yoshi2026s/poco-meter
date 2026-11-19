@@ -5159,12 +5159,25 @@ return {createEventCalendar:createEventCalendar,eventCalendarMonth:eventCalendar
   // 同じ日の時刻つき開催の時間帯（例：12:00〜23:59（半日）、0:00〜23:59（1日））。それ以外は空。
   function aoTimeSpan(e){if(!e||!e.start||(e.end&&e.end!==e.start)||!e.startTime||!e.endTime)return '';var m=function(t){var p=String(t).split(':');return +p[0]*60+ +p[1];},d=m(e.endTime)-m(e.startTime);return e.startTime+'〜'+e.endTime+(d>0&&d<=6*60?'（'+Math.floor(d/60)+'時間'+(d%60?d%60+'分':'')+'）':d>6*60&&d<=13*60?'（半日）':d>=23*60?'（1日）':'');}
   function aoMD(d){return d?Number(d.slice(5,7))+'/'+Number(d.slice(8,10)):'';}
+  // イベントのリンク先：イベントカレンダー（calculator/event-calendar.mjs の eventCalendarURL）と同じ検証。
+  // https で、pococha.com（とそのサブドメイン）・yotei.ember-w.com・このリポジトリ（github.com/Yoshi2026s/poco-meter/）だけ。
+  // 貼り付けた公式X・インスタの告知（sns）だけは https の x.com・twitter.com・instagram.com も通す。不合格なら ''（リンクにしない）。
+  // PocoEventCalendar は生成ブロックで eventCalendarURL を公開していないため、ここに同じ条件を書く（tests/event-link-url.mjs で一致を確認）。
+  function aoEventURL(e){
+    var v=e&&e.url;if(typeof v!=='string')return '';
+    try{
+      var u=new URL(v),h=u.hostname;if(u.protocol!=='https:'||u.username||u.password)return '';
+      if(h==='pococha.com'||h.slice(-12)==='.pococha.com'||h==='yotei.ember-w.com'||h==='github.com'&&u.pathname.indexOf('/Yoshi2026s/poco-meter/')===0)return u.href;
+      return e.sns&&/^(?:(?:www\.|mobile\.)?(?:x|twitter)\.com|(?:www\.)?instagram\.com)$/.test(h)?u.href:'';
+    }catch(err){return '';}
+  }
   function aoEventItems(list,rank,lastView){
     var ul=typeof document.createDocumentFragment==="function"?document.createDocumentFragment():document.createElement("div");
     list.forEach(function(e){
-      var li=document.createElement('li'),a=document.createElement('a'),meta=document.createElement('small');
+      var href=aoEventURL(e),li=document.createElement('li'),a=document.createElement(href?'a':'span'),meta=document.createElement('small');
       if(e.type==='big')li.className='ao-big';
-      a.href=e.url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=aoEventName(e);li.appendChild(a);
+      // 検証に通らない URL（javascript: や許可外のホスト）はリンクにせず、名前だけ文字で出す
+      if(href){a.href=href;a.target='_blank';a.rel='noopener noreferrer';}a.textContent=aoEventName(e);li.appendChild(a);
       // 印（対象ランク・最終日）は名前の下の行の末尾に付ける（名前の後ろで1行だけ折り返さないように）
       var badges=[];
       if((e.ranks||[]).indexOf(rank)>=0){var b=document.createElement('span');b.className='ao-badge';b.textContent='対象ランク';badges.push(b);}
