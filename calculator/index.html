@@ -2107,7 +2107,7 @@ html.always-on-mode body #mini.main-screen #miniNowTime{font-size:clamp(18px,5.5
 :root body #mini.main-screen .main-card .ao-sns-list button{flex:none;min-width:44px;min-height:32px;padding:0 8px!important;border-radius:8px;border:1px solid #b42318!important;background:#fff!important;color:#b42318!important;font-size:13px!important;font-weight:800;box-shadow:none!important}
 :root body #mini.main-screen .main-card .ao-cal-pick{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:4px 0}
 :root body #mini.main-screen .main-card .ao-cal-pick label{display:grid;gap:2px;min-width:0;font-size:12px!important;font-weight:700;color:#17283a!important}
-:root body #mini.main-screen .main-card .ao-cal-pick select{width:100%;min-width:0;min-height:36px;padding:0 6px!important;border-radius:8px;border:1px solid #7fa6d1!important;background:#fff!important;color:#0d3b66!important;font-size:14px!important;font-weight:800}
+:root body #mini.main-screen .main-card .ao-cal-pick select{width:100%;min-width:0;min-height:36px;padding:0 6px!important;border-radius:8px;font-size:14px!important;font-weight:800}
 :root body #mini.main-screen .main-card .ao-cal-nav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:4px 0}
 :root body #mini.main-screen .main-card .ao-cal-nav b{font-size:15px!important;font-weight:800}
 :root body #mini.main-screen .main-card .ao-cal-nav button{min-width:44px;min-height:32px;padding:0 10px!important;border-radius:8px;border:1px solid #7fa6d1!important;background:#fff!important;color:#0d3b66!important;font-size:14px!important;font-weight:800;box-shadow:none!important}
@@ -3013,18 +3013,20 @@ html.always-on-mode body #eventCalendarPanel{display:none!important}
         if(match>=0){event.preventDefault();focusRow(match);}
       }
     });
+    // スマホ・タブレット（指で操作する画面）では端末標準の選択リストだけを使う。独自の選択リストも開くと、同じ項目を2回選ぶことになるため。
+    var touchPicker=function(){try{return !!(window.matchMedia&&window.matchMedia('(pointer:coarse)').matches);}catch(e){return false;}};
     document.querySelectorAll('select').forEach(function(select){
       if(select.hasAttribute('hidden')||select.getAttribute('aria-hidden')==='true'||select.multiple)return;
       // These compact controls use the browser's own list directly.
       if(select.id==='closeSel'||select.closest('#quickTargetControls')||select.closest('#miniGoalMenu')||select.closest('#dailyViewer'))return;
-      select.setAttribute('aria-haspopup','dialog');select.setAttribute('aria-controls','selectWindow');select.setAttribute('aria-expanded','false');
-      select.addEventListener('mousedown',function(event){if(event.button===0&&!select.disabled){event.preventDefault();open(select);}});
+      if(!touchPicker()){select.setAttribute('aria-haspopup','dialog');select.setAttribute('aria-controls','selectWindow');select.setAttribute('aria-expanded','false');}
+      select.addEventListener('mousedown',function(event){if(touchPicker())return;if(event.button===0&&!select.disabled){event.preventDefault();open(select);}});
       var touchStart=null;
       select.addEventListener('touchstart',function(event){var t=event.touches&&event.touches.length===1&&event.touches[0];touchStart=t?{x:t.clientX,y:t.clientY}:null;},{passive:true});
       select.addEventListener('touchcancel',function(){touchStart=null;},{passive:true});
-      select.addEventListener('touchend',function(event){var t=event.changedTouches&&event.changedTouches[0];if(t&&touchStart&&Math.abs(t.clientX-touchStart.x)<10&&Math.abs(t.clientY-touchStart.y)<10&&!select.disabled){event.preventDefault();open(select);}touchStart=null;},{passive:false});
-      select.addEventListener('click',function(event){if(!select.disabled){event.preventDefault();open(select);}});
-      select.addEventListener('keydown',function(event){if(['Enter',' ','ArrowDown','ArrowUp'].indexOf(event.key)>=0&&!event.ctrlKey&&!event.metaKey&&!select.disabled){event.preventDefault();open(select);}});
+      select.addEventListener('touchend',function(event){if(touchPicker()){touchStart=null;return;}var t=event.changedTouches&&event.changedTouches[0];if(t&&touchStart&&Math.abs(t.clientX-touchStart.x)<10&&Math.abs(t.clientY-touchStart.y)<10&&!select.disabled){event.preventDefault();open(select);}touchStart=null;},{passive:false});
+      select.addEventListener('click',function(event){if(touchPicker())return;if(!select.disabled){event.preventDefault();open(select);}});
+      select.addEventListener('keydown',function(event){if(touchPicker())return;if(['Enter',' ','ArrowDown','ArrowUp'].indexOf(event.key)>=0&&!event.ctrlKey&&!event.metaKey&&!select.disabled){event.preventDefault();open(select);}});
     });
   }
   var fmt=function(n){return Math.round(n).toLocaleString('ja-JP')};
