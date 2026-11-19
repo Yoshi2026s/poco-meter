@@ -150,6 +150,12 @@ function withVisitorStats(html, name, code) {
     const notices = [...html.matchAll(/<p id="toolDisclaimerText">[^<]*<\/p>/g)];
     if (notices.length !== 1) throw new Error('Pages build: expected one calculator disclaimer');
     html = replaceOnce(html, notices[0][0], notices[0][0].replace('</p>', GOATCOUNTER_NOTICE + '</p>'));
+  } else {
+    // Other pages: place the notice at the bottom, just above the creator logo.
+    const footers = [...html.matchAll(/<div class="tool-creator-footer"[^>]*>/g)];
+    if (footers.length !== 1) throw new Error('Pages build: expected one creator footer in ' + name);
+    html = replaceOnce(html, footers[0][0], footers[0][0] +
+      `<p class="goatcounter-notice" style="margin:0 0 10px;font-size:12px;line-height:1.6;opacity:.8">${GOATCOUNTER_NOTICE}</p>`);
   }
   const tag = `<script data-goatcounter="${origin}/count" async src="${GOATCOUNTER_SCRIPT}" crossorigin="anonymous" integrity="${GOATCOUNTER_INTEGRITY}"></script>`;
   const siteVisit = `<script defer src="./${SITE_VISIT_FILE}" integrity="${SITE_VISIT_INTEGRITY}"></script>`;
