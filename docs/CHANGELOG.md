@@ -1,5 +1,7 @@
 # 変更履歴
 
+- 2026/11/20 設定のみ：Actions の「SHA 固定必須」設定のもとで Pages 公開が止まった（upload-pages-artifact が中で upload-artifact をタグ指定で呼ぶため）。pages.yml を tar＋SHA 固定の actions/upload-artifact v4.6.2 に置き換え。
+
 - 2026/11/20 設定・資料のみ：GitHub の脆弱性の非公開報告・依存関係の脆弱性アラートを有効化、Actions を GitHub 製のみ・SHA 固定必須に、Wiki・プロジェクトを無効化（ユーザー承認）。SECURITY.md の連絡先を非公開報告の窓口に変更。
 
 - 2026/11/20 v2026.11.20.5：公開安全性の3回目点検（10人）の指摘を修正。ランク読取用の英語データの初回取得を300秒待ちに、イベント収集のリダイレクト上限を8段に、E帯の全削除に読取用データ（約30MB）の消し方を案内、GoatCounter の告知の保存説明を「この集計用には日付だけ」に、README・AGENTS・CODEMAP に OCR 同梱と大きいファイルの扱いを追記、公開物の安全検査に .md・.txt と旧アカウント名を追加、security-management・history-card-copy を標準チェック・CIに登録。検証：標準チェック。
