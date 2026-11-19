@@ -190,7 +190,7 @@ function runCase(domain, random, round, index, dataset) {
     case 8: {
       const row={...rowFixture(random,round,index%100),origin:random.pick([...ORIGINS,'unknown']),source:random.int(2)?'https://one-carat.com/campus/archives/'+random.next():'',checkedAt:random.int(2)?'2026-10-17T10:20:'+pad(random.int(60))+'+09:00':'',target:'private-target',current:'private-current'};
       Object.freeze(row.values);Object.freeze(row);const label=LABELS[row.origin]||'出典未確認',checked=row.checkedAt?'確認 '+row.checkedAt.replace('T',' ').slice(0,19):'確認日時なし';
-      const expected=['【過去のボーダー｜Pococha1012】',row.date.replaceAll('-','/')+' '+row.rank+' '+row.close+'時〆',...row.values.map((v,i)=>['±0','+1','+2'][i]+'：'+numberText(v,units)+(units==='K'?'':' pt')),'記録：'+label+' · '+checked,...(row.source?['出典：'+row.source]:[])].join('\n');
+      const expected=['【過去のボーダー｜ポコメーター番長】',row.date.replaceAll('-','/')+' '+row.rank+' '+row.close+'時〆',...row.values.map((v,i)=>['±0','+1','+2'][i]+'：'+numberText(v,units)+(units==='K'?'':' pt')),'記録：'+label+' · '+checked,...(row.source?['出典：'+row.source]:[])].join('\n');
       const actual=h.historyCardText(row,units);check(actual,expected,'copy matches exact row and units');check(actual.includes('private-'),false,'copy excludes unrelated settings');check(h.historyOriginLabel(row.origin),label,'honest origin label');break;
     }
     case 9: {

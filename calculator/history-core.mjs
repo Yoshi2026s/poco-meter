@@ -135,7 +135,7 @@ export function historyRowNumber(row,i,units='pt'){return row.displayValues?Stri
 export function historyOriginLabel(origin){return {archive:'掲載資料',verified:'掲載資料',remote:'取得記録',manual:'手入力',import:'CSV・貼り付け',backup:'バックアップ',saved:'端末保存',legacy:'旧版参考値','e-display':'E帯画像の画面表示値（概数）'}[origin]||'出典未確認';}
 export function historyCardText(row,units='pt'){
  const suffix=units==='K'?'':' pt',checked=row.checkedAt?'確認 '+row.checkedAt.replace('T',' ').slice(0,19):'確認日時なし';
- const lines=['【過去のボーダー｜Pococha1012】',row.date.replaceAll('-','/')+' '+row.rank+' '+row.close+'時〆'];
+ const lines=['【過去のボーダー｜ポコメーター番長】',row.date.replaceAll('-','/')+' '+row.rank+' '+row.close+'時〆'];
  row.values.forEach((value,i)=>lines.push(['±0','+1','+2'][i]+'：'+historyRowNumber(row,i,units)+(row.displayValues?'（画面表示値・概数）':suffix)));
  lines.push('記録：'+historyOriginLabel(row.origin)+' · '+checked);
  if(row.source)lines.push('出典：'+row.source);
