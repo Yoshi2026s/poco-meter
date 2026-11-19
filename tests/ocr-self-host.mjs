@@ -6,7 +6,7 @@ import {readFile, mkdtemp, rm} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
-import {buildPages, OCR_FILES} from '../scripts/build-pages.mjs';
+import {buildPages, OCR_FILES, OCR_NOTICE_FILES} from '../scripts/build-pages.mjs';
 
 const root = new URL('../', import.meta.url);
 const sha = buf => createHash('sha256').update(buf).digest('base64');
@@ -16,6 +16,7 @@ const PINNED = {
   'tesseract-core-lstm.wasm.js': 'd1o1328q4QDgJglEPmvVyvzQeYPdYXVFTKSkMqdzBoc=',
   'tesseract-core-simd-lstm.wasm.js': 'nXxD+yBtyfSEdSKLRr81+Ij6nmJZ2i5n1adcdwSfLcc=',
   'jpn.traineddata.gz': 'W3ZCFWiWzNs5rqg9tiON2FyPuhTg3ZKtfbKQmL8Ofd0=',
+  'eng.traineddata.gz': 'NB/3W0RDJIDPbKuWXD58I/rk3iQN+0n6lgTmAI+Vpwg=',
 };
 
 test('O01 同梱ファイルは固定したハッシュと一致し、NOTICE.md の表とも一致する', async () => {
@@ -42,10 +43,18 @@ test('O02 画面は同じサイトの ./ocr だけを使い、外部の配信元
   assert.match(ui, /function ocrURL\(path\)\{const base=globalThis\.location\?\.href;return base\?new URL\(path,base\)\.href:path;\}/);
 });
 
+test('O04 画面が読み込む言語データ（createWorker と reinitialize）はすべて同梱されている', async () => {
+  const ui = await readFile(new URL('calculator/e-border-ui.mjs', root), 'utf8');
+  const langs = new Set([...ui.matchAll(/createWorker\('([a-z_+]+)'/g), ...ui.matchAll(/reinitialize\('([a-z_+]+)'/g)].flatMap(m => m[1].split('+')));
+  assert.ok(langs.has('jpn') && langs.has('eng'), [...langs].join(','));
+  for (const lang of langs) assert.ok(OCR_FILES.includes(lang + '.traineddata.gz'), lang + '.traineddata.gz が同梱されていない');
+});
+
 test('O03 公開物の ocr/ は同梱ファイルとバイト単位で同じ', async () => {
   const out = await mkdtemp(join(tmpdir(), 'poco-ocr-'));
   try {
     const {files} = await buildPages({out});
+    for (const name of OCR_NOTICE_FILES) assert.ok(files.includes('ocr/' + name), 'license notice ' + name);
     for (const name of OCR_FILES) {
       assert.ok(files.includes('ocr/' + name), name);
       assert.equal(sha(await readFile(join(out, 'ocr', name))), PINNED[name], 'published ' + name);

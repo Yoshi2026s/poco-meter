@@ -212,7 +212,7 @@ $('images').onchange=async e=>{
  const job=async p=>{try{const value=await eTimed(p,45000,signal,'1つの読取処理が長いため中止しました。候補を確認するか少ない枚数で再試行してください。');check();return value;}catch(e){if(e.code==='ETIMEOUT'){controller.abort();if(localWorker)terminateWorker(localWorker);}throw e;}};
  const recognize=async image=>{const r=await job(localWorker.recognize(image));$('ocrProgress').value=++regions;return r;};
  try{
-  status('読取の準備中です。初回は読取用データ（約21MB）を取得するため、通信によっては数分かかります。中止して手入力へ切り替えることもできます。');
+  status('読取の準備中です。初回は読取用データ（約30MB）を取得するため、通信によっては数分かかります。中止して手入力へ切り替えることもできます。');
   await loadOCR(signal);check();
   const creating=Tesseract.createWorker('jpn',1,{workerPath:ocrURL('./ocr/worker.min.js'),workerBlobURL:false,corePath:ocrURL('./ocr'),langPath:ocrURL('./ocr'),cacheMethod:'write'});
   creating.then(w=>{if(signal.aborted||id!==runId)terminateWorker(w);},()=>{});
