@@ -1660,6 +1660,10 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 :root body #mini.main-screen #miniR.done{color:var(--success)!important}
 :root body #mini.main-screen #miniT{display:block;font-size:clamp(22px,6.6vw,32px)!important;line-height:1.15;font-weight:800;color:var(--red)!important;white-space:nowrap;font-variant-numeric:tabular-nums}
 :root body #mini.main-screen #miniClockAccuracy{grid-column:1/-1;grid-row:3;margin-top:6px;text-align:right;font-size:12px!important;line-height:1.4;color:var(--sub)!important;font-variant-numeric:tabular-nums}
+:root body #mini.main-screen #nextMove{grid-column:1/-1;margin:6px 0 0;padding:6px 8px;border-radius:8px;background:rgba(255,255,255,.08);font-size:14px!important;font-weight:700;line-height:1.45;color:var(--text,#e8f0ff)!important;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+:root body #mini.main-screen #nextMove[data-tone="warn"]{background:rgba(255,193,7,.16);color:var(--amber,#ffd27a)!important}
+:root body #mini.main-screen #nextMove[data-tone="urgent"]{background:rgba(255,80,80,.18);color:var(--red)!important}
+:root body #mini.main-screen #nextMove[data-tone="done"]{color:var(--success)!important}
 :root body #mini.main-screen #miniPeriodReview{min-height:48px;font-size:13px!important;margin-top:4px}
 :root body #mini.main-screen #miniNow{grid-column:1/-1!important;grid-row:2!important;display:flex!important;flex-wrap:wrap;align-items:baseline;justify-content:flex-end;gap:2px 8px;text-align:right;margin:2px 0 0;line-height:1.4}
 :root body #mini.main-screen #miniNowDate{font-size:12px!important;color:var(--success)!important;font-variant-numeric:tabular-nums;white-space:nowrap}
@@ -1798,6 +1802,15 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 :root body #mini.main-screen .mini-goal-menu{background:#e5f6e8!important}
 :root body #mini.main-screen .main-tools{background:var(--meter-section-tools,var(--paper))!important}
 
+/* 高さの低いスマホ・横持ちでは「今の一手」を本文だけの1行にして、残りアイテムの目安を最初の画面に残す（高さ700px以上は詳細も折り返して表示）。 */
+@media (max-width:559px) and (max-height:699px), (pointer:coarse) and (min-width:560px) and (max-height:500px){
+  html:root body #mini.main-screen #nextMove{padding:0 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  html:root body #mini.main-screen #nextMoveDetail{display:none}
+}
+/* 横持ちでさらに低い画面（高さ340px以下）は余白がないため「今の一手」を出さず、残り値とカウントダウンを優先する。 */
+@media (pointer:coarse) and (min-width:560px) and (max-height:340px){
+  html:root body #mini.main-screen #nextMove{display:none}
+}
 /* Keep the primary meter and its item estimate in the first phone viewport. */
 @media (max-width:559px), (pointer:coarse) and (min-width:560px) and (max-height:500px){
   :root body #mini.main-screen{gap:4px;margin-top:calc(env(safe-area-inset-top,0px) + 4px)!important;padding:4px!important}
@@ -1808,6 +1821,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
   :root body #mini.main-screen #miniT{grid-area:2 / 3 / auto / span 2}
   :root body #mini.main-screen #miniClockAccuracy{grid-area:3 / 3 / auto / span 2;align-self:center;margin:0}
   :root body #mini.main-screen #miniNow{grid-column:1/-1!important;grid-row:4!important;justify-content:flex-start;margin:0}
+  :root body #mini.main-screen #nextMove{grid-row:5;margin:2px 0 0;padding:2px 6px;border-radius:6px;font-size:12px!important;line-height:1.4}
   :root body #mini.main-screen .main-progress{grid-area:3 / 1 / auto / span 2;align-self:center;gap:4px}
   :root body #mini.main-screen #miniPct{min-width:0}
   :root body #mini.main-screen #miniPeriodReview{grid-area:5 / 1 / auto / -1;margin-top:0}
@@ -2377,6 +2391,7 @@ html.always-on-mode body #eventCalendarPanel{display:none!important}
 <div class="ao-mode-bar" id="aoModeBar" hidden><span id="aoWake" role="status"></span><button type="button" id="alwaysOnClose">常時表示を終了</button></div>
 <div class="main-hero"><div class="mini-remaining"><span id="miniL">目標まであと</span><b id="miniR" class="num">-</b></div><div class="mini-countdown"><span id="miniDeadlineLabel">締めまで</span><span class="mt" id="miniT">-</span><div class="main-progress" id="miniProgress" role="progressbar" aria-label="目標の達成率" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="main-progress-bar"><span id="miniFill"></span></div><span id="miniPct" class="num">0%</span></div><button type="button" id="miniPeriodReview" hidden>締め後の現在値を確認</button></div>
 <small class="clock-accuracy" id="miniClockAccuracy">標準時との差 未確認</small>
+<p class="next-move" id="nextMove" data-tone=""><span id="nextMoveMain">-</span><span id="nextMoveDetail"></span></p>
 <!-- phone-current:start -->
 <time id="miniNow" class="num" title="現在日時・日本時間（時刻同期を確認中）"><span id="miniNowDate"></span><span id="miniClockReading"><span id="miniTimeLabel">時刻を確認中</span> <b id="miniNowTime"></b></span>
 </time></div>
@@ -3150,12 +3165,14 @@ html.always-on-mode body #eventCalendarPanel{display:none!important}
   function hm(mins){if(mins>0&&mins<1)return Math.ceil(mins*60)+'秒';mins=Math.max(0,Math.floor(mins));var h=Math.floor(mins/60),m=mins%60;return h>0?h+'時間'+m+'分':m+'分';}
   function countdownTime(ms,fractional){var scale=fractional?10:1,ticks=Number.isFinite(ms)?Math.max(0,Math.ceil(ms/(1000/scale))):0,seconds=Math.floor(ticks/scale);return String(Math.floor(seconds/3600)).padStart(2,'0')+':'+String(Math.floor(seconds/60)%60).padStart(2,'0')+':'+String(seconds%60).padStart(2,'0')+(fractional?'.'+ticks%10:'');}
   function countdownDescription(ms,fractional){var parts=countdownTime(ms,fractional).split(':');return '残り'+Number(parts[0])+'時間'+Number(parts[1])+'分'+Number(parts[2])+'秒。'+clockBasis().description;}
+  // 締めの日時（0時締めは前日の「24:00」と表示）。
+  function periodEndLabel(period){var en=new Date(period.end+9*3600e3),pad=function(n){return String(n).padStart(2,'0');};if(en.getUTCHours()===0&&en.getUTCMinutes()===0){var prev=new Date(period.end+9*3600e3-60000);return (prev.getUTCMonth()+1)+'/'+prev.getUTCDate()+' 24:00';}return (en.getUTCMonth()+1)+'/'+en.getUTCDate()+' '+pad(en.getUTCHours())+':'+pad(en.getUTCMinutes());}
   function renderDeadlineCountdown(nowMs,period){
     if(nowMs===undefined)nowMs=currentTimeMs();if(!period)period=meterWindow(nowMs);
     var remainingMs=period.end-nowMs,text=countdownTime(remainingMs,true),description=countdownDescription(remainingMs,true);
     var st=new Date(period.start+9*3600e3),en=new Date(period.end+9*3600e3);
     var md=function(d){return (d.getUTCMonth()+1)+'/'+d.getUTCDate();},hhmm=function(d){return String(d.getUTCHours()).padStart(2,'0')+':'+String(d.getUTCMinutes()).padStart(2,'0');};
-    var endLbl=hhmm(en)==='00:00'?md(new Date(period.end+9*3600e3-60000))+' 24:00':md(en)+' '+hhmm(en);
+    var endLbl=periodEndLabel(period);
     var title=description+' メーター期間：'+md(st)+' '+hhmm(st)+'〜'+endLbl;
     ['left','miniT'].forEach(function(id){var el=$(id);if(el.textContent!==text)el.textContent=text;el.setAttribute('aria-label',description);el.title=title;});
     $('deadlineCountdown').classList.toggle('urgent',remainingMs<=3600000);$('leftLabel').textContent='締めまで';$('leftLabel').title=endLbl+'締めまで';
@@ -3279,9 +3296,10 @@ html.always-on-mode body #eventCalendarPanel{display:none!important}
     return changed;
   }
   // END LIVE BORDER MERGE
+  var borderPreviousDayMissing=false;
   function renderBorderSyncStatus(){
     var box=$('borderSyncStatus');if(!box)return;
-    if(state.rank==='E'){var data=eTargetRecords(),elog=analysisLog('E'),dates=Object.keys(elog).filter(function(d){return recordDay(d)&&validTriple(elog[d].E);}).sort();box.textContent='E帯 '+closeName()+'：保存記録の最新 '+(dates.at(-1)||'なし')+' ／ 画面表示値から算出する目安（K/Mは概数）'+(data.failed?' ／ E帯記録の読取失敗':'');box.title='E帯の保存・管理画面と同じ記録を参照。未記録の締め時間・日は補完しません。';return;}
+    if(state.rank==='E'){borderPreviousDayMissing=false;var data=eTargetRecords(),elog=analysisLog('E'),dates=Object.keys(elog).filter(function(d){return recordDay(d)&&validTriple(elog[d].E);}).sort();box.textContent='E帯 '+closeName()+'：保存記録の最新 '+(dates.at(-1)||'なし')+' ／ 画面表示値から算出する目安（K/Mは概数）'+(data.failed?' ／ E帯記録の読取失敗':'');box.title='E帯の保存・管理画面と同じ記録を参照。未記録の締め時間・日は補完しません。';return;}
     var referenceDay=todayMs(),elapsed=clockElapsed(),clockValid=elapsed!==null&&elapsed>=0&&elapsed<=300000;
     // A freshly received API date can expose a wrong device date. A valid
     // synchronized clock remains the preferred reference for day boundaries.
@@ -3289,7 +3307,7 @@ html.always-on-mode body #eventCalendarPanel{display:none!important}
     var referenceDate=new Date(referenceDay).toISOString().slice(0,10),yesterday=new Date(referenceDay-864e5).toISOString().slice(0,10);
     var dates=Object.keys(logFor(closeKey())).filter(function(d){var m=metaFor(closeKey(),d,state.rank);return validDate(d)&&d<referenceDate&&validTriple(logFor(closeKey())[d][state.rank])&&['verified','remote'].indexOf(m.origin)>=0;}).sort();
     var latest=dates.length?dates[dates.length-1]:'未取得';
-    var previousDayMissing=!dates.length||latest<yesterday;
+    var previousDayMissing=!dates.length||latest<yesterday;borderPreviousDayMissing=previousDayMissing;
     var checked=liveBorderInfo&&Number.isFinite(Date.parse(liveBorderInfo.last_attempt))?new Date(Date.parse(liveBorderInfo.last_attempt)+9*3600e3).toISOString().slice(0,16).replace('T',' '):'';
     var automatic=state.pick!==''&&state.pick!==undefined,stats=automatic?selectedStats(state.rank,+state.pick):null;
     var clockMismatch=liveBorderClockMismatch&&navigator.onLine!==false&&!liveBorderError;
@@ -3964,11 +3982,27 @@ html.always-on-mode body #eventCalendarPanel{display:none!important}
     var itemListSignature=JSON.stringify(state.items)+':'+tgt+':'+remain;if(listSignatures.items!==itemListSignature){listSignatures.items=itemListSignature;renderList($('items'),state.items,tgt?remain:null);}
     var stale=cur>0&&meterWindow(state.currentSavedAt).end!==period.end;
     $('periodNotice').hidden=!stale;$('periodNoticeActions').hidden=!stale;$('miniPeriodReview').hidden=!stale;$('periodNotice').textContent=stale?'締め時刻を過ぎ、新しいメーター期間になっています。現在値は前の入力を保持しています。Pocochaの現在値を確認して入力するか、0にリセットしてください。':'';
+    renderNextMove({tgt:tgt,remain:remain,done:done,period:period,nowMs:nowMs,stale:stale,borderLoading:borderLoading});
 
     if(inputErrors)['target','targetMini','current','currentTop','currentMini'].forEach(function(id){var el=$(id),n=readNumber(el.value);if(!isNumericComposing(el)&&el.getAttribute('aria-invalid')==='true'&&n!==null&&(!isTargetInput(el)||(el.value.trim()!==''&&n>0)))flagInput(el,'');});
     refreshManualGoal();renderConvenience();refreshSaveMenu();
   }
 
+  // 「今の一手」1行：判定できない理由 ＞ 締め直前 ＞ 必要ペース の順に1つだけ出し、ボーダーの鮮度に問題があれば添える。
+  function nextMoveText(o){
+    var left=Math.max(0,(o.period.end-o.nowMs)/60000),endLbl=periodEndLabel(o.period),closing='（'+endLbl+'締め・残り'+hm(left)+'）';
+    if(o.stale)return {tone:'warn',text:'締め後です：現在値を入れ直して',detail:'（Pocochaの現在値を確認。次は'+endLbl+'締め）'};
+    if(!o.tgt){if(o.borderLoading)return {tone:'',text:'ボーダーを読み込み中…'};if(automaticDataMissing)return {tone:'warn',text:'ボーダー未取得：目標値を手入力して',detail:'（取得できるまで判定できません）'};return {tone:'',text:'目標値を入れると必要ペースを表示',detail:closing};}
+    var automatic=state.pick!==''&&state.pick!==undefined&&state.rank!=='E';
+    var fresh=navigator.onLine===false?'オフライン':automatic&&liveBorderError?'ボーダー取得失敗':automatic&&borderPreviousDayMissing?'前日ボーダー未取得':'';
+    var freshDetail=navigator.onLine===false?' 保存済みボーダーで計算':automatic&&liveBorderError?' 前回値で計算':'';
+    var suffix=fresh?' ／ '+fresh:'';
+    if(o.done)return {tone:'done',text:'目標達成！'+suffix,detail:closing+freshDetail};
+    if(left<=30)return {tone:'urgent',text:'締め'+hm(left)+'前・あと '+fmtRemainingK(o.remain)+suffix,detail:'（'+endLbl+'締め）'+freshDetail};
+    return {tone:fresh?'warn':'',text:'あと '+fmtRemainingK(o.remain)+' → 1時間 '+fmtPaceK(ceilPace(o.remain,3600000,o.period.end-o.nowMs))+' ペース'+suffix,detail:closing+freshDetail};
+  }
+  // 横持ちの低い画面では詳細（締め日時・残り時間。上のカウントダウンと同じ情報）を省いて1行に収める。
+  function renderNextMove(o){var el=$('nextMove');if(!el)return;var next=nextMoveText(o),main=$('nextMoveMain'),detail=$('nextMoveDetail'),d=next.detail||'';if(main.textContent!==next.text)main.textContent=next.text;if(detail.textContent!==d)detail.textContent=d;var label=next.text+d;if(el.getAttribute('aria-label')!==label)el.setAttribute('aria-label',label);if(el.dataset.tone!==next.tone)el.dataset.tone=next.tone;}
   function renderConvenience(){
     var label=$('currentSavedTime'),time=jstNow(state.currentSavedAt),now=jstNow();label.textContent='入力 '+(time.y!==now.y?time.y+'/'+time.m+'/'+time.d+' ':time.m!==now.m||time.d!==now.d?time.m+'/'+time.d+' ':'')+String(Math.floor(time.mins/60)).padStart(2,'0')+':'+String(Math.floor(time.mins%60)).padStart(2,'0');label.title=new Date(state.currentSavedAt).toLocaleString('ja-JP',{timeZone:'Asia/Tokyo'});
     $('liveMeter').classList.toggle('goal-done',parseNum(state.target)>0&&parseNum(state.current)>=parseNum(state.target));
