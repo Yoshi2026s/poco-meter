@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-tNsN0owpNWRhZPaxZh9SaWCYXpl7jlTaDhzgrkZM/j0='; style-src 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="pococha-help" content="calculation-methods-v1">
 <title>目標値の算出方法｜ポコメーター番長</title>
 <script>
@@ -74,6 +76,6 @@ main{width:min(860px,100%);margin:auto;padding:20px 16px 32px}header{display:fle
 <section><h2>集計する記録の範囲</h2><ul><li>選択中の締め時間・ランク・±0／+1／+2に対応する、有効な保存済み記録だけを使います。</li><li>未登録日を0で埋めません。たとえば30日の期間に27日分しかなければ、その27日分で計算します。</li><li>集計は昨日までです。条件に合う記録がない場合、自動目標は未設定になります。</li><li>直近30日は集計最終日を含む30暦日。最終日が空欄なら、日本時間の昨日までです。</li><li>当月は月初〜昨日、先月は前月の全日、3か月は当月を含む3暦月〜昨日、全期間は昨日以前の有効な記録が対象です。</li><li>旧版参考値は直近30日の計算では除外し、他の期間では含めます。</li></ul><p class="muted">「手入力」では、入力した値を目標に使います。過去のボーダーは目安です。</p></section>
 <a class="return-link" href="/">← メーター計算へ</a>
 </main>
-<div class="tool-creator-footer" style="display:block;clear:both;width:100%;max-width:1200px;box-sizing:border-box;margin:24px auto 0;padding:12px 16px 20px;text-align:left;flex-basis:100%"><span class="tool-creator-logo" aria-label="制作者 Yoshi1012" style="display:inline-block;max-width:100%;box-sizing:border-box;padding:8px 18px 9px;border:1px solid #1676bc;border-left:3px solid #36c5ff;border-radius:3px;background:linear-gradient(115deg,#02050b 0%,#0b1d31 55%,#03070e 100%);color:#66d5ff;font-family:Arial,Helvetica,sans-serif;font-size:18px;font-weight:900;font-style:italic;letter-spacing:.08em;line-height:1.3;text-shadow:0 0 8px #008cce;box-shadow:inset 0 1px 0 #24618a,0 3px 12px #001c3c55">Yoshi1012</span></div>
+<div class="tool-creator-footer" style="display:block;clear:both;width:100%;max-width:1200px;box-sizing:border-box;margin:24px auto 0;padding:12px 16px 20px;text-align:left;flex-basis:100%"><p class="tool-disclaimer" style="margin:0 0 6px;color:var(--muted);font-size:.82rem;line-height:1.6">本ツールは個人が作成した非公式ツールで、Pococha および運営会社とは関係ありません。数値は目安で、正確性や目標達成を保証しません。</p><p class="tool-source" style="margin:0 0 10px;color:var(--muted);font-size:.82rem;line-height:1.6">ボーダーの数値は <a href="https://one-carat.com/campus/" target="_blank" rel="noopener noreferrer" style="color:var(--accent)">ONE CARAT（ライバーキャンパス）</a>の掲載記事をもとにしています。</p><span class="tool-creator-logo" aria-label="制作者 Yoshi1012" style="display:inline-block;max-width:100%;box-sizing:border-box;padding:8px 18px 9px;border:1px solid #1676bc;border-left:3px solid #36c5ff;border-radius:3px;background:linear-gradient(115deg,#02050b 0%,#0b1d31 55%,#03070e 100%);color:#66d5ff;font-family:Arial,Helvetica,sans-serif;font-size:18px;font-weight:900;font-style:italic;letter-spacing:.08em;line-height:1.3;text-shadow:0 0 8px #008cce;box-shadow:inset 0 1px 0 #24618a,0 3px 12px #001c3c55">Yoshi1012</span></div>
 </body>
 </html>
