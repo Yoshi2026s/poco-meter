@@ -3,7 +3,7 @@
 <head>
 <!-- sites-host-context -->
 <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Gn8glmeckhq1Pybhp1j0Un7Ngs7PY8WDnDuIku8xECE=' 'sha256-7txai+c73qaS6FurdZpabafV3v2suKrahLQone24mj0='; style-src 'unsafe-inline'; img-src 'self' data: blob:; font-src 'none'; connect-src 'self'; object-src 'none'; frame-src 'none'; worker-src 'self'; media-src 'none'; manifest-src 'self'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Gn8glmeckhq1Pybhp1j0Un7Ngs7PY8WDnDuIku8xECE=' 'sha256-YHw1tCHufplYGUX3oKPttjyMJC0tBwP4YofWVaN+/YI='; style-src 'unsafe-inline'; img-src 'self' data: blob:; font-src 'none'; connect-src 'self'; object-src 'none'; frame-src 'none'; worker-src 'self'; media-src 'none'; manifest-src 'self'; base-uri 'none'; form-action 'none'">
 <meta name="pococha-app" content="meter-offline-v1">
 <!-- offline-head:start -->
 <link rel="manifest" href="/meter.webmanifest">
@@ -2722,7 +2722,7 @@ html.always-on-mode body #eventCalendarPanel{display:none!important}
 
   <footer>無断転載・転用・再配布禁止<br>入力は端末内で処理し、このブラウザーに保存します。
     <div class="footer-support">
-      <details class="tool-disclaimer" id="toolDisclaimer"><summary id="toolDisclaimerSummary">免責事項</summary><div class="header-help-panel"><p id="toolDisclaimerText">本ツールは個人が作成した非公式ツールで、Pococha および運営会社とは関係ありません。ボーダー・予想は ONE CARAT（ライバーキャンパス）の掲載値と過去の記録から計算した目安で、正確性や目標達成を保証しません。本ツールの利用で生じた損害について制作者は責任を負いません。入力した値や記録はこの端末のブラウザーにだけ保存され、制作者や外部へは送信されません。</p>
+      <details class="tool-disclaimer" id="toolDisclaimer"><summary id="toolDisclaimerSummary">免責事項</summary><div class="header-help-panel"><p id="toolDisclaimerText">本ツールは個人が作成した非公式ツールで、Pococha および運営会社とは関係ありません。ボーダーは ONE CARAT（ライバーキャンパス）の掲載値、予想はその掲載値と過去の記録から計算した目安で、正確性や目標達成を保証しません。本ツールの利用で生じた損害について制作者は責任を負いません。入力した値や記録はこの端末のブラウザーにだけ保存され、制作者や外部へは送信されません。</p>
         <div class="ylogo-bar">
     </div>
       </div></details>
@@ -4986,7 +4986,7 @@ function eventMonthCells(month) {
 const isOfficialURL = v => { try { const h = new URL(v).hostname; return h === 'pococha.com' || h.endsWith('.pococha.com'); } catch { return false; } };
 function eventCalendarURL(v) {
   if (typeof v !== 'string') return '';
-  try { const u = new URL(v); return u.protocol === 'https:' && !u.username && !u.password && (isOfficialURL(v) || u.hostname === 'yotei.ember-w.com' || u.hostname === 'github.com' && u.pathname.startsWith('/Yoshi2026s/poco-meter/')) ? u.href : ''; } catch { return ''; }
+  try { const u = new URL(v); return u.protocol === 'https:' && !u.username && !u.password && !u.port && (isOfficialURL(v) || u.hostname === 'yotei.ember-w.com' || u.hostname === 'github.com' && u.pathname.startsWith('/Yoshi2026s/poco-meter/')) ? u.href : ''; } catch { return ''; }
 }
 function eventCalendarName(x) {
   const clean = s => String(s || '').replace(/\p{Extended_Pictographic}|️|‍/gu, '').replace(/[＼／]/g, ' ').replace(/\s+/g, ' ').trim();
@@ -5162,7 +5162,7 @@ return {createEventCalendar:createEventCalendar,eventCalendarMonth:eventCalendar
   function aoEventURL(e){
     var v=e&&e.url;if(typeof v!=='string')return '';
     try{
-      var u=new URL(v),h=u.hostname;if(u.protocol!=='https:'||u.username||u.password)return '';
+      var u=new URL(v),h=u.hostname;if(u.protocol!=='https:'||u.username||u.password||u.port)return '';
       if(h==='pococha.com'||h.slice(-12)==='.pococha.com'||h==='yotei.ember-w.com'||h==='github.com'&&u.pathname.indexOf('/Yoshi2026s/poco-meter/')===0)return u.href;
       return e.sns&&/^(?:(?:www\.|mobile\.)?(?:x|twitter)\.com|(?:www\.)?instagram\.com)$/.test(h)?u.href:'';
     }catch(err){return '';}

@@ -28,7 +28,7 @@ export function eventMonthCells(month) {
 export const isOfficialURL = v => { try { const h = new URL(v).hostname; return h === 'pococha.com' || h.endsWith('.pococha.com'); } catch { return false; } };
 export function eventCalendarURL(v) {
   if (typeof v !== 'string') return '';
-  try { const u = new URL(v); return u.protocol === 'https:' && !u.username && !u.password && (isOfficialURL(v) || u.hostname === 'yotei.ember-w.com' || u.hostname === 'github.com' && u.pathname.startsWith('/Yoshi2026s/poco-meter/')) ? u.href : ''; } catch { return ''; }
+  try { const u = new URL(v); return u.protocol === 'https:' && !u.username && !u.password && !u.port && (isOfficialURL(v) || u.hostname === 'yotei.ember-w.com' || u.hostname === 'github.com' && u.pathname.startsWith('/Yoshi2026s/poco-meter/')) ? u.href : ''; } catch { return ''; }
 }
 export function eventCalendarName(x) {
   const clean = s => String(s || '').replace(/\p{Extended_Pictographic}|️|‍/gu, '').replace(/[＼／]/g, ' ').replace(/\s+/g, ' ').trim();

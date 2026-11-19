@@ -64,12 +64,22 @@ export function fetchableUrl(url) {
   return u;
 }
 
+// report.pococha.com（note の独自ドメイン）は、記事を開くと note.com/cd/sessions?redirect_to=<元の記事> を経由して戻ることがある。
+// この経由先だけは、リダイレクトの途中（hop>0）で、戻り先が許可ホストのときに限って通す。そこで本文を返されたら取得しない。
+export function noteSessionHop(url) {
+  let u;
+  try { u = new URL(url); } catch { return null; }
+  if (u.protocol !== 'https:' || u.hostname !== 'note.com' || u.pathname !== '/cd/sessions' || u.username || u.password || (u.port && u.port !== '443')) return null;
+  return fetchableUrl(u.searchParams.get('redirect_to') || '') ? u : null;
+}
+
 export async function get(url, {binary = false} = {}) {
   const jar = get.jar || (get.jar = new Map());
   let target = url;
   for (let hop = 0; hop < 5; hop++) {
     // 取得前（リダイレクト先も含めて毎回）に https・許可ホストかを確かめる。
-    if (!fetchableUrl(target)) throw new Error(`許可外の取得先のため取得しません ${target}`);
+    const viaNote = hop > 0 && !fetchableUrl(target) && !!noteSessionHop(target);
+    if (!fetchableUrl(target) && !viaNote) throw new Error(`許可外の取得先のため取得しません ${target}`);
     const host = new URL(target).host;
     const cookies = jar.get(host) || new Map(); // 名前ごとに上書き（積み上げるとヘッダーが肥大して 431 になる）
     const res = await fetch(target, {redirect: 'manual', headers: {'user-agent': UA, 'accept-language': 'ja', ...(cookies.size ? {cookie: [...cookies].map(([k, v]) => `${k}=${v}`).join('; ')} : {})}});
@@ -78,6 +88,7 @@ export async function get(url, {binary = false} = {}) {
     if (res.status === 403 || res.status === 429) throw new Blocked(`${res.status} ${target}`);
     if (res.status >= 300 && res.status < 400 && res.headers.get('location')) { target = new URL(res.headers.get('location'), target).href; continue; }
     if (!res.ok) throw new Error(`${res.status} ${target}`);
+    if (viaNote) throw new Error(`経由先から本文が返ったため取得しません ${target}`);
     return binary ? Buffer.from(await res.arrayBuffer()) : await res.text();
   }
   throw new Error(`リダイレクトが多すぎます ${url}`);

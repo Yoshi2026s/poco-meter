@@ -19,7 +19,8 @@ for (const [name, exporter] of Object.entries(exporters)) {
     const tracked = exporter(source, 'test-code');
     const plain = exporter(source, '');
     assert.equal(count(tracked, notice), 1, name + ' notice once');
-    assert.equal(count(tracked, 'GoatCounter'), 1, name + ' visible GoatCounter mention once');
+    // index は免責事項の中の説明と、最下段の短い告知（常に表示）の2か所。
+    assert.equal(count(tracked, 'GoatCounter'), name === 'index.html' ? 2 : 1, name + ' visible GoatCounter mentions');
     assert.equal(count(plain, notice), 0, name + ' no notice without analytics');
     if (name === 'index.html') {
       assert.match(tracked, /<p id="toolDisclaimerText">[^<]*GoatCounter[^<]*<\/p>/);

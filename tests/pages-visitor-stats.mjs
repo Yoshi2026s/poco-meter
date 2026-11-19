@@ -6,7 +6,7 @@ import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import vm from 'node:vm';
 import {createHash} from 'node:crypto';
-import {buildPages, exportCalculator, exportHistory, exportEBorder, exportMethods, GOATCOUNTER_CODE} from '../scripts/build-pages.mjs';
+import {buildPages, exportCalculator, exportHistory, exportEBorder, exportMethods, GOATCOUNTER_CODE, GOATCOUNTER_FOOTER} from '../scripts/build-pages.mjs';
 import {scriptSources} from '../lib/browser-security.mjs';
 
 const pages = ['index.html', 'border-history.html', 'e-border.html', 'calculation-methods.html'];
@@ -78,7 +78,8 @@ test('empty code adds no analytics; enabled builds add only the four page tags a
       if (name === 'index.html') assert.match(tracked, /<p id="toolDisclaimerText">[^<]*GoatCounter[^<]*<\/p>/);
       // Full output comparison also protects referrer metadata, storage and URL/hash handling.
       let restored = tracked.replace(tag + '\n' + helperTag + '\n', '');
-      restored = name === 'index.html' ? restored.replace(notice, '') : restored.replace(/<p class="goatcounter-notice"[^>]*>[^<]*<\/p>/, '');
+      restored = name === 'index.html' ? restored.replace(notice, '').replace('<br>' + GOATCOUNTER_FOOTER, '') : restored.replace(/<p class="goatcounter-notice"[^>]*>[^<]*<\/p>/, '');
+      if (name === 'index.html') assert.equal(tracked.split(GOATCOUNTER_FOOTER).length - 1, 1, 'index footer analytics line once');
       if (oldPolicy) restored = restored.replace(newPolicy, oldPolicy);
       assert.equal(restored, plain, name + ' all other bytes unchanged');
     }
