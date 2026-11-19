@@ -27,6 +27,7 @@ Claude Code と ChatGPT（Codex など）の共通指示です。
   - 変更は小さく1目的に絞る。`calculator/border-history.html`・`calculator/e-border.html`（生成物）と `PAGES_VERSION` は手で書き換えない。
   - PRのCI「メーター計算・ボーダー保存の検証」の合否を基準にする（資料だけの変更ではCIは動かない）。
   - 実行できなかった手順（`npm run pages:prepare`・`npm run version:bump`・`npm run test:extra`・スマホ表示確認）はPR本文の「未確認・残作業」に書き、Claude Code か Codex で仕上げてからマージする。
+- `calculator/ocr/` は手で変えない（バイト列を SHA-256 で固定。版を上げるときは NOTICE.md の手順に従い、端末のある環境で実ブラウザの読取まで確認する）。`calculator/ocr/NOTICE.md` は資料に見えるが公開物でテストの照合対象。
 - `.openai/hosting.json`・`TRANSFER_TO_CLAUDE.md` は旧Sites時代の記録。Sites公開・本番DB操作には使わない。
 - 作業を終えたら docs/CHANGELOG.md の先頭に1行、状態が変わったら docs/HANDOVER.md を書き換える（Code と同じ）。
 
@@ -54,7 +55,7 @@ Claude Code と ChatGPT（Codex など）の共通指示です。
 - docs/archive/・docs/legacy-source/ は過去の記録。書き換えない。
 
 ## 大きいファイルの扱い（トークン節約）
-- 全体を読まない：`calculator/border-history.html`（1.2MB、389行目が埋め込みデータ1行）、`calculator/index.html`（540KB、2528行目が長い1行）、`calculator/offline-assets.mjs`（26行目が画像データ1行）、`data/borders.json`、`pnpm-lock.yaml`、`tsconfig.tsbuildinfo`、`SOURCE_MANIFEST.json`。
+- 全体を読まない：`calculator/border-history.html`（1.2MB、389行目が埋め込みデータ1行）、`calculator/index.html`（540KB、2528行目が長い1行）、`calculator/offline-assets.mjs`（26行目が画像データ1行）、`data/borders.json`、`pnpm-lock.yaml`、`tsconfig.tsbuildinfo`、`SOURCE_MANIFEST.json`、`calculator/ocr/` の `.js`・`.gz`（E帯の画像読取用に同梱した第三者ファイル。数MBの1行。読むのは `calculator/ocr/NOTICE.md` だけ）。
 - 検索で行番号を特定し、必要な範囲だけ読む。長い行は `cut -c1-300` や `rg --max-columns 300` で切る。
 - `.ignore` で旧資料・大きいデータを検索対象から外している。対象にしたいときはパスを直接指定する。
 - データの確認は全文表示せず `node -e` 等で件数・該当日だけ取り出す。
