@@ -131,7 +131,7 @@ function withVisitorStats(html, name, code) {
   if (/goatcounter|gc\.zgo\.at/i.test(html)) throw new Error('Pages build: ' + name + ' already contains GoatCounter');
   const origin = `https://${code}.goatcounter.com`;
   const policies = [...html.matchAll(/<meta\b[^>]*http-equiv="Content-Security-Policy"[^>]*content="([^"]+)"[^>]*>/gi)];
-  if (policies.length > 1 || (!policies.length && name !== 'calculation-methods.html')) {
+  if (policies.length !== 1) {
     throw new Error('Pages build: expected one CSP in ' + name);
   }
   if (policies.length) {
