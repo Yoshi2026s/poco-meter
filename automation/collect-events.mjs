@@ -54,10 +54,22 @@ const arg = (name, def) => { const a = process.argv.find(x => x.startsWith(`--${
 
 class Blocked extends Error {}
 
-async function get(url, {binary = false} = {}) {
+// 自動で取りに行くホストの許可リスト。手動の貼り付け（pasted）でない取得元の rss・sitemap・news のホストだけ（現在は report.pococha.com・www.pococha.com）。
+// RSS の <link> やリダイレクト先がこれ以外を指しても取得しない。取得元を追加するときは SOURCES の checked と合わせてここに入る。
+export const FETCH_HOSTS = new Set(SOURCES.filter(s => !s.pasted).flatMap(s => [s.rss, s.sitemap, s.news]).filter(Boolean).map(u => new URL(u).hostname));
+export function fetchableUrl(url) {
+  let u;
+  try { u = new URL(url); } catch { return null; }
+  if (u.protocol !== 'https:' || u.username || u.password || (u.port && u.port !== '443') || !FETCH_HOSTS.has(u.hostname)) return null;
+  return u;
+}
+
+export async function get(url, {binary = false} = {}) {
   const jar = get.jar || (get.jar = new Map());
   let target = url;
   for (let hop = 0; hop < 5; hop++) {
+    // 取得前（リダイレクト先も含めて毎回）に https・許可ホストかを確かめる。
+    if (!fetchableUrl(target)) throw new Error(`許可外の取得先のため取得しません ${target}`);
     const host = new URL(target).host;
     const cookies = jar.get(host) || new Map(); // 名前ごとに上書き（積み上げるとヘッダーが肥大して 431 になる）
     const res = await fetch(target, {redirect: 'manual', headers: {'user-agent': UA, 'accept-language': 'ja', ...(cookies.size ? {cookie: [...cookies].map(([k, v]) => `${k}=${v}`).join('; ')} : {})}});
@@ -112,12 +124,12 @@ export function readPasted(source, byId, text, report = {}) {
 async function listArticles(source, {since, backfill}) {
   const urls = new Map();
   const rss = await get(source.rss);
-  for (const m of rss.matchAll(/<item>[\s\S]*?<link>([^<]+)<\/link>[\s\S]*?<pubDate>([^<]+)<\/pubDate>[\s\S]*?<\/item>/g)) urls.set(m[1].trim(), new Date(m[2]).toISOString());
+  for (const m of rss.matchAll(/<item>[\s\S]*?<link>([^<]+)<\/link>[\s\S]*?<pubDate>([^<]+)<\/pubDate>[\s\S]*?<\/item>/g)) if (fetchableUrl(m[1].trim())) urls.set(m[1].trim(), new Date(m[2]).toISOString());
   const lastmod = new Map();
   if (source.sitemap) {
     const xml = gunzipSync(await get(source.sitemap, {binary: true})).toString('utf8');
     for (const m of xml.matchAll(/<url>\s*<loc>([^<]+)<\/loc>\s*(?:<lastmod>([^<]+)<\/lastmod>)?/g)) {
-      if (!/\/n\/[a-z0-9]+$/.test(m[1])) continue;
+      if (!/\/n\/[a-z0-9]+$/.test(m[1]) || !fetchableUrl(m[1])) continue;
       if (m[2]) lastmod.set(m[1], m[2]);
       if (backfill && (!m[2] || m[2].slice(0, 10) >= since) && !urls.has(m[1])) urls.set(m[1], m[2] || null);
     }
