@@ -1,7 +1,7 @@
 {
  "schema": "poco-events-v1",
  "note": "イベント名・期間・対象ランク・対象（audience）・URLなどの事実だけを記録。本文は保存しない。confidence: high=「開催期間」等の見出し付きの期間を検出 / low=見出しなしの期間 / none=期間を検出できず。使用期限・配信時間・応募や選考などの期間は除外（excluded に件数）。",
- "updatedAt": "2026-11-19T15:03:55.021Z",
+ "updatedAt": "2026-11-19T17:08:11.838Z",
  "sources": [
   {
    "id": "pococha-official-note",
@@ -1351,7 +1351,7 @@
    "sourceId": "pococha-official-note",
    "sourceKind": "official",
    "published": "2026-10-28T13:02:37.000+09:00",
-   "modified": "2026-10-28T13:02:37.000+09:00",
+   "modified": "2026-11-19T10:58:10.000+09:00",
    "type": "big",
    "start": null,
    "end": null,
@@ -1379,7 +1379,7 @@
    "confidence": "none",
    "audience": [],
    "excluded": 0,
-   "fetchedAt": "2026-11-12T08:14:30.739Z"
+   "fetchedAt": "2026-11-19T17:08:08.069Z"
   },
   {
    "id": "ne9db6a61a79d",
@@ -2085,23 +2085,23 @@
    "sourceId": "pococha-official-note",
    "sourceKind": "official",
    "published": "2026-09-30T12:00:00.000+09:00",
-   "modified": "2026-11-19T09:48:21.000+09:00",
+   "modified": "2026-11-19T11:42:43.000+09:00",
    "type": "big",
    "start": null,
    "end": null,
    "periods": [
     {
-     "start": "2026-11-26",
-     "end": "2026-12-02",
+     "start": "2026-10-21",
+     "end": "2026-10-25",
      "startTime": null,
      "endTime": null,
-     "label": "ぽこチャレ",
-     "labeled": true,
+     "label": "世代ウォーズ(NEW)",
+     "labeled": false,
      "ranks": []
     },
     {
-     "start": "2026-10-21",
-     "end": "2026-10-25",
+     "start": "2026-11-13",
+     "end": "2026-11-17",
      "startTime": null,
      "endTime": null,
      "label": "世代ウォーズ(NEW)",
@@ -2150,7 +2150,7 @@
    "confidence": "high",
    "audience": [],
    "excluded": 0,
-   "fetchedAt": "2026-11-19T01:43:55.511Z"
+   "fetchedAt": "2026-11-19T17:08:05.993Z"
   },
   {
    "id": "pococha_rookies_202609_2nd_1_001_223880",
