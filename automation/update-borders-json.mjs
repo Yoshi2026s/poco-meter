@@ -7,7 +7,7 @@ import {readFile, writeFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {resolve, dirname, join} from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {discoverArticles, parseArticle, SOURCE_INDEX, RANKS, validDate, validTriple, sourceUrl, jstDate} from '../lib/border-source.mjs';
+import {discoverArticles, parseArticle, SOURCE_INDEX, RANKS, validDate, validTriple, sourceUrl, jstDate, BORDER_UA} from '../lib/border-source.mjs';
 import {decodePNG, readTables, rowsFromResults} from './table-reader.mjs';
 
 const SOURCE_HOST = 'one-carat.com';
@@ -42,7 +42,7 @@ async function getSource(url, fetch, log) {
     const entry = {url: u.origin + u.pathname, attempt};
     let response;
     try {
-      response = await fetch(url, {headers: {Accept: 'text/html'}, redirect: 'error', signal: AbortSignal.timeout(TIMEOUT_MS)});
+      response = await fetch(url, {headers: {Accept: 'text/html', 'User-Agent': BORDER_UA}, redirect: 'error', signal: AbortSignal.timeout(TIMEOUT_MS)});
     } catch {
       entry.status = 0;
       log.push(entry);
@@ -67,7 +67,7 @@ async function getImage(url, fetch, log) {
   for (let attempt = 1; attempt <= 2; attempt++) {
     const entry = {url, attempt};
     let response;
-    try { response = await fetch(url, {headers: {Accept: 'image/png'}, redirect: 'error', signal: AbortSignal.timeout(TIMEOUT_MS)}); }
+    try { response = await fetch(url, {headers: {Accept: 'image/png', 'User-Agent': BORDER_UA}, redirect: 'error', signal: AbortSignal.timeout(TIMEOUT_MS)}); }
     catch { entry.status = 0; log.push(entry); if (attempt < 2) continue; throw new StopError('network', {url}); }
     entry.status = response.status; entry.contentType = response.headers.get('content-type') || ''; log.push(entry);
     if (response.status === 403) throw new StopError('forbidden', {url});
