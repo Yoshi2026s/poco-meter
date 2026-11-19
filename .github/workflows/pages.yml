@@ -38,9 +38,17 @@ jobs:
       - name: 公開ファイルを作成
         run: node scripts/build-pages.mjs --out=_site
       - uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
-      - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
+      # actions/upload-pages-artifact と同じ処理（_site を tar にまとめ、github-pages という名前で上げる）を、
+      # すべてのアクションを SHA 固定で書く。upload-pages-artifact は中で actions/upload-artifact をタグ指定で呼ぶため、
+      # リポジトリ設定「SHA 固定必須」（sha_pinning_required）のもとでは動かない。
+      - name: 公開物を tar にまとめる
+        run: tar --dereference --hard-dereference --directory _site -cvf "$RUNNER_TEMP/artifact.tar" --exclude=.git --exclude=.github .
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          path: _site
+          name: github-pages
+          path: ${{ runner.temp }}/artifact.tar
+          retention-days: 1
+          if-no-files-found: error
   deploy:
     needs: build
     runs-on: ubuntu-latest
