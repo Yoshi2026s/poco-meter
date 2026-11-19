@@ -7,13 +7,12 @@
 
 ## 連絡方法
 
-脆弱性やセキュリティ上の問題に気づいた場合は、このリポジトリの [Issues](https://github.com/Yoshi2026s/poco-meter/issues) から連絡してください。
+脆弱性やセキュリティ上の問題に気づいた場合は、GitHub の非公開の報告窓口から連絡してください。内容は制作者だけが見られます。
 
-Issues は誰でも見られる公開の場です。秘密情報や悪用の手順は書かないでください。
+- [脆弱性を非公開で報告する（Report a vulnerability）](https://github.com/Yoshi2026s/poco-meter/security/advisories/new)
+- リポジトリの「Security」タブ →「Report a vulnerability」からも開けます（GitHub へのログインが必要です）。
 
-- **詳細は書かず、連絡が必要な旨だけを書いてください。**
-- 例：「公開サイトのセキュリティについて連絡したいことがあります」
-- 詳しい内容のやり取りの方法は、Issue 上でご案内します。
+公開の [Issues](https://github.com/Yoshi2026s/poco-meter/issues) には、秘密情報や悪用の手順を書かないでください。
 
 ## 対象外
 
