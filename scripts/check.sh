@@ -9,7 +9,7 @@ tools="${POCOCHA_TEST_TOOLS:-${TMPDIR:-/tmp}/poco-meter-test-tools}"
 log="${TMPDIR:-/tmp}/poco-meter-check"
 mkdir -p "$log"
 if [[ ! -d "$tools/node_modules/acorn" ]]; then
-  npm install --prefix "$tools" --no-save --no-audit --no-fund acorn@8.15.0 >/dev/null 2>&1 || { echo "NG: acorn を準備できません"; exit 1; }
+  npm install --prefix "$tools" --no-save --no-audit --no-fund --ignore-scripts acorn@8.15.0 >/dev/null 2>&1 || { echo "NG: acorn を準備できません"; exit 1; }
 fi
 # NODE_PATH の区切りは Node に合わせる（Windows は ; と C:… の形。: でつなぐと Git Bash で依存が見つからなくなる）
 sep=$(node -p 'require("path").delimiter')
