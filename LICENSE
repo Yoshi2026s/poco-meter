@@ -8,7 +8,9 @@ Copyright (c) 2026 Yoshi1012. All rights reserved.
    （GitHub の利用規約で認められた閲覧・フォークの範囲を除きます）
 3. ボーダーの数値は ONE CARAT（ライバーキャンパス、https://one-carat.com/campus/）の
    掲載記事をもとにしています。その権利は各権利者に帰属し、本条件の対象外です。
-4. 本ツールは個人が作成した非公式ツールで、Pococha および運営会社とは関係ありません。
+4. calculator/ocr/（tesseract.js・Tesseract OCR の同梱ファイル）や vendor/ などの第三者のソフトウェアは、
+   それぞれのライセンス（Apache-2.0・MIT など、各フォルダーの表示）に従い、本条件の対象外です。
+5. 本ツールは個人が作成した非公式ツールで、Pococha および運営会社とは関係ありません。
    計算結果・予想は目安で、正確性や目標達成を保証しません。
    本ツールの利用で生じた損害について、制作者は責任を負いません。
 
@@ -17,5 +19,7 @@ The public site may be used free of charge. Copying, modifying, republishing or
 redistributing any part of this repository without the author's permission is
 prohibited, except as permitted by the GitHub Terms of Service. Border figures are
 based on articles published by ONE CARAT and remain the property of their owners.
+Third-party software bundled in calculator/ocr/ and vendor/ is licensed under its own
+terms (Apache-2.0, MIT, etc.) and is not covered by these terms.
 This is an unofficial tool and is not affiliated with Pococha or its operator.
 Provided "as is", without warranty of any kind.

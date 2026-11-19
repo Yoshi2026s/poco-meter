@@ -16,7 +16,7 @@ const ROOT = fileURLToPath(new URL('../', import.meta.url));
 const EVENT_DAYS_AHEAD = 60; // イベントカレンダーで先の予定として載せる日数
 // Tool version shown on the page. Change only when the tool itself changes
 // (data updates do not change it).
-export const PAGES_VERSION = {version: 'v2026.11.20.3', updatedAt: '2026-11-20T02:44:00+09:00', label: '2026/11/20 02:44:00'};
+export const PAGES_VERSION = {version: 'v2026.11.20.4', updatedAt: '2026-11-20T02:56:00+09:00', label: '2026/11/20 02:56:00'};
 // GoatCounter のサイトコード。空なら計測タグを入れない。
 export const GOATCOUNTER_CODE = 'poco-meter';
 // Official stable script and SRI: https://www.goatcounter.com/help/countjs-versions
@@ -24,6 +24,8 @@ const GOATCOUNTER_SCRIPT = 'https://gc.zgo.at/count.v5.js';
 const GOATCOUNTER_INTEGRITY = 'sha384-atnOLvQb9t+jTSipvd75X2yginT4PjVbqDdlJAmxMm+wYElFmeR6EmLP5bYeoRVQ';
 const SITE_VISIT_FILE = 'goatcounter-site-visit.js';
 const SITE_VISIT_SCRIPT = await readFile(new URL('./' + SITE_VISIT_FILE, import.meta.url), 'utf8');
+export const FOOTER_STORAGE_LINE = '入力は端末内で処理し、このブラウザーに保存します。';
+export const GOATCOUNTER_FOOTER = 'アクセス数は GoatCounter で集計しています（Cookie なし。詳しくは免責事項）。';
 // E帯の画像読取（tesseract.js）は外部CDNを使わず、同梱したファイルをそのまま配信する（calculator/ocr/NOTICE.md）。
 // 日付・数値は jpn、ランクは eng で読む（e-border-ui.mjs の reinitialize('eng')）。
 export const OCR_FILES = ['tesseract.min.js', 'worker.min.js', 'tesseract-core-lstm.wasm.js', 'tesseract-core-simd-lstm.wasm.js', 'jpn.traineddata.gz', 'eng.traineddata.gz'];
@@ -150,6 +152,8 @@ function withVisitorStats(html, name, code) {
     const notices = [...html.matchAll(/<p id="toolDisclaimerText">[^<]*<\/p>/g)];
     if (notices.length !== 1) throw new Error('Pages build: expected one calculator disclaimer');
     html = replaceOnce(html, notices[0][0], notices[0][0].replace('</p>', GOATCOUNTER_NOTICE + '</p>'));
+    // 免責事項は閉じているため、最下段にも常に見える短い告知を出す（詳しい説明は免責事項）。
+    html = replaceOnce(html, FOOTER_STORAGE_LINE, FOOTER_STORAGE_LINE + '<br>' + GOATCOUNTER_FOOTER);
   } else {
     // Other pages: place the notice at the bottom, just above the creator logo.
     const footers = [...html.matchAll(/<div class="tool-creator-footer"[^>]*>/g)];

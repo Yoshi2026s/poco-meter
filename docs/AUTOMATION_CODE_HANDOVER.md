@@ -121,14 +121,14 @@ GitHubへpushできてもSites更新やAPI保存はできるとは限らない�
 | 署名キー | 本番のBORDER_WRITER_KEYは、ChatGPTのSites接続トークンから導出した値 | Code側には値も導出元もない。同じ値を移すのか、新しいキーを設定してChatGPT側の導出をやめるのか（キー変更）を決める必要がある。どちらもSitesの環境変数を扱う権限が必要で、ChatGPT側の操作になる |
 | BORDER_WRITER_ORIGIN | 既定は本番origin | 変更不要（POSTの宛先は本番originのまま） |
 | Sitesへのデプロイ | Code側には権限なし | 書き込みクライアントだけならデプロイは不要（サーバーは変更していない） |
-| GitHub | ユーザーPCのghでYoshi2026sとして認証済み。(root)へpush可（保護なし） | Actionsで定期実行するなら、Secretsの登録とSites到達の確認が必要 |
+| GitHub | ユーザーPCのghでYoshi2026sとして認証済み。(root)へpush可（当時は保護なし。2026/11/20 からルールセットで強制push・削除を禁止） | Actionsで定期実行するなら、Secretsの登録とSites到達の確認が必要 |
 
 CI（2026/11/06、run 42236514700）：自動取得クライアントの手順は16/16成功。既存の計算テストの手順は、依存（next）が未インストールのため失敗が続いている（取り込み時点からの既存の状態）。
 
 ### 実行場所：GitHub Actions（2026/11/06 ユーザー決定）
 - `.github/workflows/border-writer.yml`：手動起動（workflow_dispatch）のみ。scheduleは未設定。
 - 入力 `mode`（既定はplan）。`refresh` は入力 `confirm` に `production-write` を入れないと停止する。
-- `BORDER_WRITER_KEY` は、discover／refresh のときだけリポジトリSecretsから渡す。現在、Secretsは未登録（`gh secret list` で空を確認）。
+- `BORDER_WRITER_KEY` は、discover／refresh のときだけリポジトリSecretsから渡す。（2026/11/06 時点の記録）当時はSecretsが未登録だった。
 - CLIは、CI上ではworkflow_dispatch以外でplan以外を拒否する。push・PR・scheduleからは通信しない。
 - 結果のJSONはジョブ概要に出力する。公開リポジトリのため、ログと概要は公開される。キー・署名・本文は出力しない。
 - 起動できるのは書き込み権限を持つ人だけ。フォークからのPRにはSecretsが渡らない。
@@ -146,7 +146,7 @@ CI（2026/11/06、run 42236514700）：自動取得クライアントの手順�
 - 旧候補の値・指紋は、今後の設定に使わない。リポジトリに旧候補の指紋は含まれていない。チャット履歴やGit履歴からの削除はしていない。
 - 引数（--body）とクリップボードで値を渡していた旧スクリプト2本は、作業フォルダ（リポジトリ外）で `.retired` に改名し、実行できないようにした。
 - GitHub：ghはYoshi2026sで認証済み（scopes repo・workflow）。リポジトリは管理者権限。
-  BORDER_WRITER_KEY は登録済みで、最終更新は 2026-11-06T15:16:45Z。どの値かは読み出せないため不明。削除はしていない。
+  （2026/11/07 時点の記録）BORDER_WRITER_KEY は登録済みで、最終更新は 2026-11-06T15:16:45Z。どの値かは読み出せないため不明。2026/11/20 に `gh secret list` が空であることを確認（現在は登録なし）。
 - Code側の自動更新を停止：border-writer.yml を `disabled_manually` にした。scheduleはどのワークフローにもない。実行履歴は diagnose 1回だけ。
 - 公開版：v2026.10.23.3（2026/11/07 確認）。環境変数のrevisionは、Codeからは確認できない。
 - Sitesへの秘密値の設定経路：Code（このセッション）には、ChatGPT Sitesへの正式な接続がない。

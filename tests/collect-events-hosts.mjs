@@ -6,7 +6,7 @@ import {mkdtemp, rm, readFile} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {gzipSync} from 'node:zlib';
-import {FETCH_HOSTS, fetchableUrl, get, collect, SOURCES} from '../automation/collect-events.mjs';
+import {FETCH_HOSTS, fetchableUrl, noteSessionHop, get, collect, SOURCES} from '../automation/collect-events.mjs';
 
 function mockFetch(routes) {
   const calls = [];
@@ -96,4 +96,25 @@ test('collect：RSS・サイトマップの許可外リンクは取得しない'
     const urls = JSON.parse(await readFile(file, 'utf8')).events.map(e => e.url);
     assert.ok(!urls.some(u => /evil|^http:/.test(u)), urls.join('\n'));
   } finally { m.restore(); await rm(dir, {recursive: true, force: true}); }
+});
+
+test('get：note.com/cd/sessions はリダイレクトの経由先としてだけ通し、戻り先が許可ホストでなければ止める', async () => {
+  const back = 'https://report.pococha.com/n/nb1';
+  const hop = 'https://note.com/cd/sessions?redirect_to=' + encodeURIComponent(back);
+  assert.ok(noteSessionHop(hop));
+  assert.equal(noteSessionHop('https://note.com/cd/sessions?redirect_to=' + encodeURIComponent('https://evil.example/x')), null);
+  assert.equal(noteSessionHop('https://note.com/other?redirect_to=' + encodeURIComponent(back)), null);
+  assert.equal(noteSessionHop('http://note.com/cd/sessions?redirect_to=' + encodeURIComponent(back)), null);
+  let first = true;
+  const m = mockFetch({
+    [back]: () => first ? (first = false, new Response('', {status: 302, headers: {location: hop}})) : new Response('<p>ok</p>', {status: 200}),
+    [hop]: () => new Response('', {status: 302, headers: {location: back}}),
+    'https://report.pococha.com/n/body': () => new Response('', {status: 302, headers: {location: 'https://note.com/cd/sessions?redirect_to=' + encodeURIComponent('https://report.pococha.com/n/x')}}),
+    ['https://note.com/cd/sessions?redirect_to=' + encodeURIComponent('https://report.pococha.com/n/x')]: () => new Response('note page', {status: 200}),
+  });
+  try {
+    assert.equal(await get(back), '<p>ok</p>');
+    await assert.rejects(get('https://report.pococha.com/n/body'), /経由先から本文が返った/);
+    await assert.rejects(get(hop), /許可外の取得先/); // 最初の取得先としては使わない
+  } finally { m.restore(); }
 });

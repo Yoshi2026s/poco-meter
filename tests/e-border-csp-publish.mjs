@@ -37,7 +37,7 @@ test('公開版の e-border.html は OCR 用に self を許し外部を許さず
 });
 
 test('sealCalculatorHTML は古いハッシュ・全許可を捨て、個別の送信元だけを残す', () => {
-  const html = `<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' 'sha256-old=' 'nonce-x' * https: https://cdn.jsdelivr.net 'wasm-unsafe-eval' https://cdn.jsdelivr.net; style-src 'unsafe-inline'"><script>run()</script>`;
+  const html = `<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' 'sha256-old=' 'nonce-x' * https: https://* *.example.com http://evil.example //evil.example https://evil.example:8443 'inline-speculation-rules' 'UNSAFE-INLINE' data: blob: https://cdn.jsdelivr.net 'wasm-unsafe-eval' https://cdn.jsdelivr.net; style-src 'unsafe-inline'"><script>run()</script>`;
   const sealed = sealCalculatorHTML(html);
   const sources = sealed.match(/script-src\s+([^;]+);/)[1].split(' ');
   assert.deepEqual(sources, [scriptSources(html), 'https://cdn.jsdelivr.net', "'wasm-unsafe-eval'"]);
