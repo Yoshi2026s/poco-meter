@@ -16,7 +16,7 @@ const ROOT = fileURLToPath(new URL('../', import.meta.url));
 const EVENT_DAYS_AHEAD = 60; // イベントカレンダーで先の予定として載せる日数
 // Tool version shown on the page. Change only when the tool itself changes
 // (data updates do not change it).
-export const PAGES_VERSION = {version: 'v2026.11.19.5', updatedAt: '2026-11-19T14:21:00+09:00', label: '2026/11/19 14:21:00'};
+export const PAGES_VERSION = {version: 'v2026.11.19.6', updatedAt: '2026-11-19T21:14:00+09:00', label: '2026/11/19 21:14:00'};
 // GoatCounter のサイトコード。空なら計測タグを入れない。
 export const GOATCOUNTER_CODE = 'poco-meter';
 // Official stable script and SRI: https://www.goatcounter.com/help/countjs-versions
@@ -26,8 +26,6 @@ const SITE_VISIT_FILE = 'goatcounter-site-visit.js';
 const SITE_VISIT_SCRIPT = await readFile(new URL('./' + SITE_VISIT_FILE, import.meta.url), 'utf8');
 const SITE_VISIT_INTEGRITY = 'sha384-' + createHash('sha384').update(SITE_VISIT_SCRIPT).digest('base64');
 const GOATCOUNTER_NOTICE = 'アクセス数の集計に GoatCounter を使用しています（Cookie は使わず、個人を特定する情報は保存しません）。日別の重複を避けるため、集計用の日付だけをこのブラウザーに保存します。';
-const SITES_ORIGIN = 'https://poco-meter.freefreelife2000.chatgpt.site';
-const COLLECTOR_ORIGIN = 'https://pococha-comment-access.freefreelife2000.chatgpt.site';
 const BORDER_FETCH = "fetch('/api/borders',{cache:'no-cache',credentials:'same-origin',signal:controller.signal})";
 const BORDER_FETCH_PAGES = "fetch('./data/borders.json',{cache:'no-cache',credentials:'same-origin',signal:controller.signal})";
 
@@ -44,24 +42,26 @@ export function withPageHead(html, name) {
   for (const present of ['name="description"', 'name="theme-color"', 'rel="icon"', 'rel="apple-touch-icon"']) {
     if (html.includes(present)) throw new Error('Pages build: ' + name + ' already declares ' + present);
   }
-  return replaceOnce(html, '<meta charset="utf-8">', '<meta charset="utf-8">' +
+  return sharePreview(replaceOnce(html, '<meta charset="utf-8">', '<meta charset="utf-8">' +
     `<meta name="description" content="${escapeAttr(PAGE_DESCRIPTIONS[name])}">` +
     '<meta name="theme-color" content="#1E78D6">' +
     '<link rel="icon" type="image/png" sizes="192x192" href="./meter-icon-192.png">' +
-    '<link rel="apple-touch-icon" href="./meter-icon-180.png">');
+    '<link rel="apple-touch-icon" href="./meter-icon-180.png">'), name);
 }
-// Link previews (LINE, X and others) read these from the calculator page.
-function sharePreview(html) {
+// Link previews (LINE, X and others) read these from every public page (404.html has none).
+function sharePreview(html, name = 'index.html') {
+  if (/<meta[^>]*property="og:/.test(html)) throw new Error('Pages build: ' + name + ' already declares og: tags');
   const title = html.match(/<title>([^<]+)<\/title>/)?.[1];
   const description = html.match(/<meta name="description" content="([^"]+)">/)?.[0];
-  if (!title || !description) throw new Error('Pages build: index.html has no title or description');
+  if (!title || !description) throw new Error('Pages build: ' + name + ' has no title or description');
+  const url = name === 'index.html' ? PUBLIC_URL : PUBLIC_URL + name;
   const content = description.match(/content="([^"]+)"/)[1];
   return replaceOnce(html, description, [description,
     '<meta property="og:type" content="website">',
     '<meta property="og:site_name" content="ポコメーター番長">',
     `<meta property="og:title" content="${title}">`,
     `<meta property="og:description" content="${content}">`,
-    `<meta property="og:url" content="${PUBLIC_URL}">`,
+    `<meta property="og:url" content="${url}">`,
     `<meta property="og:image" content="${PUBLIC_URL}meter-icon-512.png">`,
     '<meta name="twitter:card" content="summary">'].join('\n'));
 }
@@ -114,11 +114,6 @@ function replaceOnce(source, from, to) {
   if (source.split(from).length !== 2) throw new Error('Pages build: source changed near ' + String(from).slice(0, 80));
   return source.replace(from, to);
 }
-function removeOnce(source, pattern, label) {
-  const matches = source.match(new RegExp(pattern.source, pattern.flags.includes('g') ? pattern.flags : pattern.flags + 'g')) || [];
-  if (matches.length !== 1) throw new Error('Pages build: expected one ' + label + ', found ' + matches.length);
-  return source.replace(pattern, '');
-}
 function validateGoatcounter(code) {
   if (typeof code !== 'string' || (code !== '' && !/^[a-z0-9-]{2,50}$/.test(code))) {
     throw new Error('Pages build: invalid GoatCounter site code');
@@ -131,7 +126,7 @@ function withVisitorStats(html, name, code) {
   if (/goatcounter|gc\.zgo\.at/i.test(html)) throw new Error('Pages build: ' + name + ' already contains GoatCounter');
   const origin = `https://${code}.goatcounter.com`;
   const policies = [...html.matchAll(/<meta\b[^>]*http-equiv="Content-Security-Policy"[^>]*content="([^"]+)"[^>]*>/gi)];
-  if (policies.length > 1 || (!policies.length && name !== 'calculation-methods.html')) {
+  if (policies.length !== 1) {
     throw new Error('Pages build: expected one CSP in ' + name);
   }
   if (policies.length) {
@@ -150,6 +145,12 @@ function withVisitorStats(html, name, code) {
     const notices = [...html.matchAll(/<p id="toolDisclaimerText">[^<]*<\/p>/g)];
     if (notices.length !== 1) throw new Error('Pages build: expected one calculator disclaimer');
     html = replaceOnce(html, notices[0][0], notices[0][0].replace('</p>', GOATCOUNTER_NOTICE + '</p>'));
+  } else {
+    // Other pages: place the notice at the bottom, just above the creator logo.
+    const footers = [...html.matchAll(/<div class="tool-creator-footer"[^>]*>/g)];
+    if (footers.length !== 1) throw new Error('Pages build: expected one creator footer in ' + name);
+    html = replaceOnce(html, footers[0][0], footers[0][0] +
+      `<p class="goatcounter-notice" style="margin:0 0 10px;font-size:12px;line-height:1.6;opacity:.8">${GOATCOUNTER_NOTICE}</p>`);
   }
   const tag = `<script data-goatcounter="${origin}/count" async src="${GOATCOUNTER_SCRIPT}" crossorigin="anonymous" integrity="${GOATCOUNTER_INTEGRITY}"></script>`;
   const siteVisit = `<script defer src="./${SITE_VISIT_FILE}" integrity="${SITE_VISIT_INTEGRITY}"></script>`;
@@ -168,14 +169,10 @@ function assertClean(html, name) {
 
 export function exportCalculator(source, version = PAGES_VERSION, {goatcounter = GOATCOUNTER_CODE} = {}) {
   let html = replaceOnce(source, '<!-- sites-host-context -->', '<!-- GitHub Pages publication -->');
-  html = removeOnce(html, /\s*<script id="pococha-public-access-tracker">[\s\S]*?<\/script>/, 'access tracker');
-  html = removeOnce(html, /\s*<!-- Pococha1012 security management: start -->[\s\S]*?<!-- Pococha1012 security management: end -->/, 'admin link');
-  html = replaceOnce(html, `connect-src 'self' ${COLLECTOR_ORIGIN};`, "connect-src 'self';");
   html = replaceOnce(html, 'href="/meter.webmanifest"', 'href="./meter.webmanifest"');
   html = replaceOnce(html, 'href="/meter-icon-180.png"', 'href="./meter-icon-180.png"');
   html = html.replaceAll('href="/border-history"', 'href="./border-history.html"');
   html = replaceOnce(html, 'href="/calculation-methods"', 'href="./calculation-methods.html"');
-  html = replaceOnce(html, `href="${SITES_ORIGIN}/e-border.html"`, 'href="./e-border.html"');
   html = replaceOnce(html, BORDER_FETCH, BORDER_FETCH_PAGES);
   // There is no server clock on Pages. The existing fallback shows device time,
   // labelled as device time (never as the official clock).

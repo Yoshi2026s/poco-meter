@@ -71,13 +71,14 @@ test('empty code adds no analytics; enabled builds add only the four page tags a
         expected['img-src'].push(origin);
         assert.deepEqual(directives(newPolicy), expected, name + ' minimal CSP additions');
       } else {
-        assert.equal(name, 'calculation-methods.html');
-        assert.equal(newPolicy, undefined, 'no new CSP on methods page');
+        assert.fail(name + ' must carry its own CSP');
       }
-      assert.equal(tracked.split(notice).length - 1, name === 'index.html' ? 1 : 0);
+      // 計測している全ページに同じ告知を1回だけ出す（index は免責の中、他は制作者ロゴの直前）。
+      assert.equal(tracked.split(notice).length - 1, 1, name + ' analytics notice once');
       if (name === 'index.html') assert.match(tracked, /<p id="toolDisclaimerText">[^<]*GoatCounter[^<]*<\/p>/);
       // Full output comparison also protects referrer metadata, storage and URL/hash handling.
-      let restored = tracked.replace(tag + '\n' + helperTag + '\n', '').replace(notice, '');
+      let restored = tracked.replace(tag + '\n' + helperTag + '\n', '');
+      restored = name === 'index.html' ? restored.replace(notice, '') : restored.replace(/<p class="goatcounter-notice"[^>]*>[^<]*<\/p>/, '');
       if (oldPolicy) restored = restored.replace(newPolicy, oldPolicy);
       assert.equal(restored, plain, name + ' all other bytes unchanged');
     }
@@ -277,10 +278,12 @@ test('missing or repeated injection anchors fail instead of silently losing or d
   assert.throws(() => exportCalculator(sources['index.html'].replace('id="toolDisclaimerText"', 'id="missing"'), undefined, {goatcounter: 'test-code'}), /expected one calculator disclaimer/);
 });
 
-test('a future CSP on the methods page is widened without changing other directives', () => {
-  const csp = "default-src 'none'; script-src 'self'; connect-src 'self'; img-src 'self' data:; object-src 'none'";
-  const source = sources['calculation-methods.html'].replace('<meta charset="utf-8">', `<meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="${csp}">`);
+test('the methods page CSP is widened without changing other directives', () => {
+  const source = sources['calculation-methods.html'];
+  const csp = policy(source);
+  assert.ok(csp, 'methods page has its own CSP');
   const expected = directives(csp);
+  if (!expected['script-src'].includes("'self'")) expected['script-src'].push("'self'");
   expected['script-src'].push('https://gc.zgo.at');
   expected['connect-src'].push(origin);
   expected['img-src'].push(origin);

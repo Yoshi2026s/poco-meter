@@ -1,5 +1,6 @@
 {
-  "name": "site-creator-vinext-starter",
+  "name": "poco-meter",
+  "description": "ポコメーター番長（Pococha配信者向けボーダー計算ツール）",
   "version": "0.1.0",
   "private": true,
   "engines": {

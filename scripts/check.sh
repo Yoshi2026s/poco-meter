@@ -9,7 +9,7 @@ tools="${POCOCHA_TEST_TOOLS:-${TMPDIR:-/tmp}/poco-meter-test-tools}"
 log="${TMPDIR:-/tmp}/poco-meter-check"
 mkdir -p "$log"
 if [[ ! -d "$tools/node_modules/acorn" ]]; then
-  npm install --prefix "$tools" --no-save --no-audit --no-fund acorn@8.15.0 >/dev/null 2>&1 || { echo "NG: acorn を準備できません"; exit 1; }
+  npm install --prefix "$tools" --no-save --no-audit --no-fund --ignore-scripts acorn@8.15.0 >/dev/null 2>&1 || { echo "NG: acorn を準備できません"; exit 1; }
 fi
 # NODE_PATH の区切りは Node に合わせる（Windows は ; と C:… の形。: でつなぐと Git Bash で依存が見つからなくなる）
 sep=$(node -p 'require("path").delimiter')
@@ -21,7 +21,7 @@ run() {
   if "$@" >"$log/$name.log" 2>&1; then echo "ok  $name"; else echo "NG  $name"; tail -n 20 "$log/$name.log"; failed=1; fi
 }
 run pages-borders+table-channel node --test tests/pages-borders.mjs tests/table-channel.mjs tests/pages-visitor-stats.mjs
-for t in calculation-engine periods-default-rank items-core-input current-input-confirm next-move-line current-restore hit-calendar-pick touch-select-native border-write-auth history-search event-calendar meter-sources always-on-forecast forecast-log; do run "$t" node "tests/$t.mjs"; done
+for t in calculation-engine periods-default-rank items-core-input current-input-confirm next-move-line current-restore hit-calendar-pick touch-select-native public-safety e-border-csp-publish subpage-ogp pages-goatcounter-notice event-link-url collect-events-hosts border-user-agent e-border-disclaimer border-write-auth history-search event-calendar meter-sources always-on-forecast forecast-log; do run "$t" node "tests/$t.mjs"; done
 run pages-build node scripts/build-pages.mjs --out="$log/_site"
 # 生成物（過去ボーダー・E帯・メーター画面に書き写したイベント読み取り部品）が元ファイルと一致するか。不一致なら元に戻して知らせる。
 gen=(calculator/border-history.html calculator/e-border.html calculator/index.html)

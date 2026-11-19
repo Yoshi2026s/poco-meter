@@ -3,7 +3,7 @@
 <head>
 <!-- sites-host-context -->
 <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-tMemgW7bV6msHa5HAsWYmecfohHaCxo6txYBxvGEyR0=' 'sha256-b5XnwwsB/zr5m7w8faRJcu7net6MM1JYPR6o6rtcrOE=' 'sha256-MIrOb9N7J7Ofg2ILAxDCaT2K8JrW8mpIpNQa6X/OdCU='; style-src 'unsafe-inline'; img-src 'self' data: blob:; font-src 'none'; connect-src 'self' https://pococha-comment-access.freefreelife2000.chatgpt.site; object-src 'none'; frame-src 'none'; worker-src 'self'; media-src 'none'; manifest-src 'self'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Gn8glmeckhq1Pybhp1j0Un7Ngs7PY8WDnDuIku8xECE=' 'sha256-7txai+c73qaS6FurdZpabafV3v2suKrahLQone24mj0='; style-src 'unsafe-inline'; img-src 'self' data: blob:; font-src 'none'; connect-src 'self'; object-src 'none'; frame-src 'none'; worker-src 'self'; media-src 'none'; manifest-src 'self'; base-uri 'none'; form-action 'none'">
 <meta name="pococha-app" content="meter-offline-v1">
 <!-- offline-head:start -->
 <link rel="manifest" href="/meter.webmanifest">
@@ -1574,7 +1574,6 @@ header.card>.header-main>#toolUpdatedDate>time{font-size:.75rem;white-space:norm
 #toolContact .contact-image-preview{min-width:0;margin:0;padding:8px;border:1px solid var(--line);border-radius:8px}
 #toolContact #contactImageThumbnails img{height:140px;width:100%;max-height:140px}
 #toolContact .contact-image-preview button{display:block;width:100%;min-height:44px;margin-top:6px;font-size:.875rem!important;white-space:normal}
-#pococha-security-management{display:inline-flex;align-items:center;justify-content:center;margin-top:12px;padding:8px 12px;font-size:.875rem;text-decoration:underline;min-height:44px}
 .saved-records-panel{margin:12px 0}
 /* Keep menu titles compact; close controls remain inside each opened menu. */
 :root details>summary{list-style:none}
@@ -2408,7 +2407,7 @@ html.always-on-mode body #eventCalendarPanel{display:none!important}
 <small id="miniBufferError" hidden role="status" aria-live="polite"></small>
 <!-- phone-current:end -->
 <section id="itemsWindow" aria-labelledby="itemsWindowTitle"><div class="items-window-head"><h2 id="itemsWindowTitle">残りアイテムの目安</h2><div class="items-core"><label for="coreCountItems">現コア数</label><input id="coreCountItems" class="num" type="text" inputmode="numeric" enterkeyhint="done" autocomplete="off" placeholder="0" aria-label="現コア数（0〜1000人）" aria-describedby="coreCountItemsError inputStatus" value="0"></div></div><small id="coreCountItemsError" class="items-core-error" hidden></small><div id="itemsWindowRow"></div></section>
-<a class="main-history-link" id="mainHistoryLink" href="/border-history"><span class="mhl-icon" aria-hidden="true">📋</span><span class="mhl-text"><b>過去のボーダー表</b><small>カレンダーで日ごとの±0・+1・+2</small></span><span class="mhl-arrow" aria-hidden="true">›</span></a><details class="event-cal-panel" id="eventCalendarPanel"><summary><span class="evc-title">📅 Pocochaイベントカレンダー</span><small>開催中・最終日のイベントを日ごとに</small></summary><div id="eventCalendar" class="evc" aria-live="polite"></div></details>
+<a class="main-history-link" id="mainHistoryLink" href="/border-history"><span class="mhl-icon" aria-hidden="true">📋</span><span class="mhl-text"><b>過去のボーダー表</b><small>カレンダーで日ごとの±0・+1・+2</small></span><span class="mhl-arrow" aria-hidden="true">›</span></a><details class="event-cal-panel" id="eventCalendarPanel"><summary><span class="evc-title">📅 Pocochaイベントカレンダー</span><small>開催中・最終日のイベントを日ごとに表示</small></summary><div id="eventCalendar" class="evc" aria-live="polite"></div></details>
 <section class="main-card main-forecast-card" id="mainForecastCard" aria-labelledby="aoRankHead"><h2 class="main-card-head" id="aoRankHead" tabindex="-1">設定ランクの予想</h2><div class="ao-fvalue num" id="aoForecast"></div><div class="ao-frange num" id="aoRange"></div><div class="ao-trend" id="aoTrend"></div><p class="ao-accuracy" id="aoAccuracy"></p><p class="ao-accuracy ao-record" id="aoRecord"></p><div class="ao-history" id="aoHistoryBox" hidden><button type="button" class="ao-history-toggle" id="aoHistoryToggle" aria-expanded="false" aria-controls="aoHistory"><span class="ao-history-mark" aria-hidden="true">▸</span> <span id="aoHistorySummary">直近の答え合わせ</span></button><ul id="aoHistory" hidden></ul></div><ul class="ao-reasons" id="aoReasons"></ul><p class="ao-note" id="aoForecastNote"></p><details class="ao-calendar" id="hitCalendar"><summary>📅 的中率カレンダー（日ごとの答え合わせ）</summary><div class="ao-cal-body"><div class="ao-cal-pick" role="group" aria-label="カレンダーで見るランク帯・ボーダー・締め時間"><label>ランク<select id="hitCalRank" aria-label="カレンダーで見るランク帯"></select></label><label>ボーダー<select id="hitCalBorder" aria-label="カレンダーで見るボーダー"></select></label><label>締め<select id="hitCalClose" aria-label="カレンダーで見る締め時間"><option value="13">13時</option><option value="22">22時</option><option value="24">24時</option></select></label></div><div class="ao-cal-nav"><button type="button" id="hitCalPrev" aria-label="前の月">◀</button><b id="hitCalMonth" aria-live="polite"></b><button type="button" id="hitCalNext" aria-label="次の月">▶</button></div><p class="ao-cal-sum" id="hitCalSummary"></p><div class="ao-cal-grid" id="hitCalGrid"></div><p class="ao-cal-detail" id="hitCalDetail" role="status" aria-live="polite"></p><p class="ao-note" id="hitCalNote">上の「ランク・ボーダー・締め」でメイン画面の設定を変えずに切り替えて見られます（メイン画面の設定を変えると、それに合わせ直します）。緑は±10%以内、橙は±10%超。その日より前のデータだけで作った予想と実際のボーダーの比較です（補正は月ごとに作り直し）。下線は毎日の自動記録の予想。●は設定ランクが対象の大型イベント、◆はイベラス（その日が最終日のイベント）がある日。日付をタップすると、その日のイベントも表示します（イベラスは橙、開催中は青の文字）。</p></div></details></section>
 <section class="main-card main-events-card" id="mainEventsCard" aria-labelledby="aoEventsHead"><h2 class="main-card-head ao-last-head" id="aoLastHead">本日<span id="aoLastDate"></span>のイベラス（最終日）</h2><ul class="ao-list ao-last" id="aoLast"></ul><p class="ao-note" id="aoLastNote"></p><h2 class="main-card-head" id="aoEventsHead">今日の開催イベント</h2><ul class="ao-list" id="aoEvents"></ul><h2 class="main-card-head ao-next-head" id="aoTomorrowHead" hidden>明日から</h2><ul class="ao-list" id="aoTomorrow"></ul><p class="ao-note" id="aoEventsNote"></p><details class="ao-calendar ao-sns" id="aoSns"><summary>公式X・インスタの告知を読み取る</summary><div class="ao-sns-body"><p class="ao-note">半日・時間限定のイベントは公式X（@pococha_jp）やインスタだけで告知されることがあります。X・インスタは規約で自動収集が禁止のため自動では取りに行きません。投稿文をコピーしてここに貼ると、期間・時間帯・対象ランクを読み取り、この端末の「今日の開催イベント」と的中率カレンダーに出します（本文は保存しません）。</p><label class="ao-sns-label" for="aoSnsText">投稿文</label><textarea id="aoSnsText" rows="4" placeholder="例：本日21時〜24時 夜の部ランキング開催！対象：S1〜S6"></textarea><div class="ao-sns-row"><label class="ao-sns-label" for="aoSnsDate">投稿日</label><input type="date" id="aoSnsDate"><label class="ao-sns-label" for="aoSnsUrl">投稿のURL（任意）</label><input type="url" id="aoSnsUrl" inputmode="url" placeholder="https://x.com/pococha_jp/status/…"></div><button type="button" class="ao-sns-btn" id="aoSnsRead">読み取って追加</button><p class="ao-sns-result" id="aoSnsResult" role="status" aria-live="polite"></p><ul class="ao-sns-list" id="aoSnsList"></ul></div></details></section>
 <section class="main-tools" id="mainTools" aria-label="目標の条件・コピー・換算"><p class="hint goal-context" id="appliedContext" tabindex="0" aria-label="目標設定時の条件"></p><p id="manualTargetMsg" class="toast" role="status"></p>
@@ -2645,7 +2644,7 @@ html.always-on-mode body #eventCalendarPanel{display:none!important}
 <div class="wrap">
   <p class="hint" id="borderSyncStatus" role="status" style="font-size:.68rem;margin:5px 2px 8px;line-height:1.5">ボーダー確認中…</p>
   
-  <div class="history-portal"><a href="https://poco-meter.freefreelife2000.chatgpt.site/e-border.html" class="manual-link" id="eBorderPortalLink"><span aria-hidden="true">📝</span><span class="history-portal-text"><span class="history-portal-title">E帯の記録を追加</span><span class="hint">画像取り込み・手入力・編集（表示は過去のボーダー表）</span></span><span class="history-portal-arrow" aria-hidden="true">›</span></a></div>
+  <div class="history-portal"><a href="./e-border.html" class="manual-link" id="eBorderPortalLink"><span aria-hidden="true">📝</span><span class="history-portal-text"><span class="history-portal-title">E帯の記録を追加</span><span class="hint">画像取り込み・手入力・編集（表示は過去のボーダー表）</span></span><span class="history-portal-arrow" aria-hidden="true">›</span></a></div>
   <div class="history-portal" id="historyPortal"><a href="/border-history" class="manual-link" id="historyPortalLink"><span aria-hidden="true">📋</span><span class="history-portal-text"><span class="history-portal-title">過去のボーダー表</span><span class="hint">カレンダー・ランク切り替え（E帯も表示）</span></span><span class="history-portal-arrow" aria-hidden="true">›</span></a></div>
   
   <div class="period-notice-actions" id="periodNoticeActions" hidden><button type="button" id="reviewPeriodCurrent">現在値を確認・入力</button><button type="button" id="resetPeriodCurrent">0にリセット</button></div>
@@ -2723,15 +2722,12 @@ html.always-on-mode body #eventCalendarPanel{display:none!important}
 
   <footer>無断転載・転用・再配布禁止<br>入力は端末内で処理し、このブラウザーに保存します。
     <div class="footer-support">
-      <details class="tool-disclaimer" id="toolDisclaimer"><summary id="toolDisclaimerSummary">免責事項</summary><div class="header-help-panel"><p id="toolDisclaimerText">本ツールは非公式です。計算結果は目安としてご利用ください。</p>
+      <details class="tool-disclaimer" id="toolDisclaimer"><summary id="toolDisclaimerSummary">免責事項</summary><div class="header-help-panel"><p id="toolDisclaimerText">本ツールは個人が作成した非公式ツールで、Pococha および運営会社とは関係ありません。ボーダー・予想は ONE CARAT（ライバーキャンパス）の掲載値と過去の記録から計算した目安で、正確性や目標達成を保証しません。本ツールの利用で生じた損害について制作者は責任を負いません。入力した値や記録はこの端末のブラウザーにだけ保存され、制作者や外部へは送信されません。</p>
         <div class="ylogo-bar">
     </div>
       </div></details>
       <span class="tool-creator-logo" aria-label="制作者 Yoshi1012" style="display:inline-block;max-width:100%;box-sizing:border-box;padding:8px 18px 9px;border:1px solid #1676bc;border-left:3px solid #36c5ff;border-radius:3px;background:linear-gradient(115deg,#02050b 0%,#0b1d31 55%,#03070e 100%);color:#66d5ff;font-family:Arial,Helvetica,sans-serif;font-size:18px;font-weight:900;font-style:italic;letter-spacing:.08em;line-height:1.3;text-shadow:0 0 8px #008cce;box-shadow:inset 0 1px 0 #24618a,0 3px 12px #001c3c55">Yoshi1012</span>
     </div>
-  <!-- Pococha1012 security management: start -->
-<a id="pococha-security-management" href="https://pococha-comment-library.freefreelife2000.chatgpt.site/admin/tools/meter" target="_blank" rel="noopener noreferrer">管理ページ</a>
-<!-- Pococha1012 security management: end -->
 </footer>
 </div>
 
@@ -5159,12 +5155,25 @@ return {createEventCalendar:createEventCalendar,eventCalendarMonth:eventCalendar
   // 同じ日の時刻つき開催の時間帯（例：12:00〜23:59（半日）、0:00〜23:59（1日））。それ以外は空。
   function aoTimeSpan(e){if(!e||!e.start||(e.end&&e.end!==e.start)||!e.startTime||!e.endTime)return '';var m=function(t){var p=String(t).split(':');return +p[0]*60+ +p[1];},d=m(e.endTime)-m(e.startTime);return e.startTime+'〜'+e.endTime+(d>0&&d<=6*60?'（'+Math.floor(d/60)+'時間'+(d%60?d%60+'分':'')+'）':d>6*60&&d<=13*60?'（半日）':d>=23*60?'（1日）':'');}
   function aoMD(d){return d?Number(d.slice(5,7))+'/'+Number(d.slice(8,10)):'';}
+  // イベントのリンク先：イベントカレンダー（calculator/event-calendar.mjs の eventCalendarURL）と同じ検証。
+  // https で、pococha.com（とそのサブドメイン）・yotei.ember-w.com・このリポジトリ（github.com/Yoshi2026s/poco-meter/）だけ。
+  // 貼り付けた公式X・インスタの告知（sns）だけは https の x.com・twitter.com・instagram.com も通す。不合格なら ''（リンクにしない）。
+  // PocoEventCalendar は生成ブロックで eventCalendarURL を公開していないため、ここに同じ条件を書く（tests/event-link-url.mjs で一致を確認）。
+  function aoEventURL(e){
+    var v=e&&e.url;if(typeof v!=='string')return '';
+    try{
+      var u=new URL(v),h=u.hostname;if(u.protocol!=='https:'||u.username||u.password)return '';
+      if(h==='pococha.com'||h.slice(-12)==='.pococha.com'||h==='yotei.ember-w.com'||h==='github.com'&&u.pathname.indexOf('/Yoshi2026s/poco-meter/')===0)return u.href;
+      return e.sns&&/^(?:(?:www\.|mobile\.)?(?:x|twitter)\.com|(?:www\.)?instagram\.com)$/.test(h)?u.href:'';
+    }catch(err){return '';}
+  }
   function aoEventItems(list,rank,lastView){
     var ul=typeof document.createDocumentFragment==="function"?document.createDocumentFragment():document.createElement("div");
     list.forEach(function(e){
-      var li=document.createElement('li'),a=document.createElement('a'),meta=document.createElement('small');
+      var href=aoEventURL(e),li=document.createElement('li'),a=document.createElement(href?'a':'span'),meta=document.createElement('small');
       if(e.type==='big')li.className='ao-big';
-      a.href=e.url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=aoEventName(e);li.appendChild(a);
+      // 検証に通らない URL（javascript: や許可外のホスト）はリンクにせず、名前だけ文字で出す
+      if(href){a.href=href;a.target='_blank';a.rel='noopener noreferrer';}a.textContent=aoEventName(e);li.appendChild(a);
       // 印（対象ランク・最終日）は名前の下の行の末尾に付ける（名前の後ろで1行だけ折り返さないように）
       var badges=[];
       if((e.ranks||[]).indexOf(rank)>=0){var b=document.createElement('span');b.className='ao-badge';b.textContent='対象ランク';badges.push(b);}
@@ -5203,7 +5212,7 @@ return {createEventCalendar:createEventCalendar,eventCalendarMonth:eventCalendar
     aoSet('aoAccuracy',acc?'過去の的中率 ±10%以内 '+acc.within10+'%・誤差の中央値 '+acc.medianAbsErr+'%\n（'+aoSpan(acc.from,acc.to)+(acc.days?'・'+acc.days+'日':'')+(acc.scope==='series'?'':'・'+rank.charAt(0)+'帯全体')+'）':'');
     trend.className='ao-trend'+(f.pct>=1?' up':f.pct<=-1?' down':'');
     f.reasons.forEach(function(r){var li=document.createElement('li');li.textContent=r.label+' '+(r.pct>0?'+':'')+r.pct+'%';reasons.appendChild(li);});
-    aoSet('aoForecastNote',(forecastError?forecastError+'。':'')+(forecastLoading&&!forecastData?'予想データを読み込み中…':'')+(forecastData&&!f.inRange?'この日の暦・イベント情報は予想データの範囲外です。':'')+'基準 '+aoK(f.base,100)+'（前日までの直近14日のうち'+f.n+'日分から）。'+aoDataTime(forecastData));
+    aoSet('aoForecastNote',(forecastError?forecastError+'。':'')+(forecastLoading&&!forecastData?'予想データを読み込み中…':'')+(forecastData&&!f.inRange?'この日の暦・イベント情報は予想データの範囲外です。':'')+'基準 '+aoK(f.base,100)+'（前日までの直近14日のうち'+f.n+'日分から）。'+aoDataTime(forecastData)+'予想は目安で、当日のボーダーを保証しません。');
   }
   // 日々の予想と実際の記録（公開時に予想データの record へ入る）から、設定の系列の「前回の答え合わせ」と「記録の的中」を作る。
   // 設定の系列について、答え合わせ済みの日を新しい順に並べる（誤差は過去の答え合わせと同じく「予想÷実際−1」）。
@@ -5477,112 +5486,6 @@ return {createEventCalendar:createEventCalendar,eventCalendarMonth:eventCalendar
   }
 })();
 </script>
-
-
-
-<script id="pococha-public-access-tracker">(() => {
-  "use strict";
-  const toolId = "meter";
-  const allowedPages = [{"origin":"https://poco-meter.freefreelife2000.chatgpt.site","paths":["/","/index.html"]},{"origin":"https://pococha2026.github.io","paths":["/poco-meter/","/poco-meter/index.html"]}];
-  const collectorOrigin = "https://pococha-comment-access.freefreelife2000.chatgpt.site";
-  const guard = "__pococha1012Visit_" + toolId;
-  if (window[guard]) return;
-  window[guard] = true;
-  let preparing = false, sent = false, eventId;
-  function allowed() {
-    try {
-      if (!allowedPages.some(item => location.origin === item.origin && item.paths.includes(location.pathname))) return false;
-      if (navigator.webdriver || document.visibilityState === "hidden") return false;
-      if (navigator.globalPrivacyControl === true) return false;
-      if ([navigator.doNotTrack, navigator.msDoNotTrack, window.doNotTrack].some(value => /^(?:1|yes)$/i.test(String(value || "")))) return false;
-      if (/bot|spider|crawl|slurp|headless|phantom|selenium|playwright|puppeteer|lighthouse|preview|facebookexternalhit|whatsapp|telegrambot/i.test(String(navigator.userAgent || ""))) return false;
-      if (window.top !== window.self) {
-        // Sites normally renders inside ChatGPT. Other embedded/automated frames are excluded.
-        if (!location.origin.endsWith(".chatgpt.site") || new URL(document.referrer || "").origin !== "https://chatgpt.com") return false;
-        const ancestors = Array.from(location.ancestorOrigins || []);
-        if (ancestors.some(origin => origin !== "https://chatgpt.com" && origin !== location.origin)) return false;
-      }
-      return typeof fetch === "function";
-    } catch { return false; }
-  }
-  function metadata() {
-    const ua = String(navigator.userAgent || "");
-    const ios = /iPhone|iPad|iPod/i.test(ua) || (/Macintosh/i.test(ua) && Number(navigator.maxTouchPoints || 0) > 1);
-    const android = /Android/i.test(ua);
-    let os = "unknown";
-    if (ios) os = "ios";
-    else if (android) os = "android";
-    else if (/Windows/i.test(ua)) os = "windows";
-    else if (/CrOS/i.test(ua)) os = "chromeos";
-    else if (/Macintosh|Mac OS X/i.test(ua)) os = "macos";
-    else if (/Linux|X11/i.test(ua)) os = "linux";
-    let device = "unknown";
-    if (/iPad/i.test(ua) || (ios && /Macintosh/i.test(ua))) device = "tablet";
-    else if (/iPhone|iPod|Mobile/i.test(ua)) device = "mobile";
-    else if (android) device = "tablet";
-    else if (os !== "unknown") device = "desktop";
-    let browser = "unknown";
-    if (/Edg(?:e|A|iOS)?\//i.test(ua)) browser = "edge";
-    else if (/OPR\/|Opera|OPT\//i.test(ua)) browser = "opera";
-    else if (/SamsungBrowser\//i.test(ua)) browser = "samsung";
-    else if (/Firefox\/|FxiOS\//i.test(ua)) browser = "firefox";
-    else if (/Chrome\/|CriOS\//i.test(ua)) browser = "chrome";
-    else if (/Safari\//i.test(ua)) browser = "safari";
-    else if (ua) browser = "other";
-    return { device, os, browser, model: "unknown" };
-  }
-  async function withReportedModel(meta) {
-    let timer;
-    try {
-      const hints = navigator.userAgentData;
-      if (!hints || typeof hints.getHighEntropyValues !== "function") return meta;
-      const result = await Promise.race([
-        Promise.resolve().then(() => hints.getHighEntropyValues(["model"])),
-        new Promise(resolve => { timer = setTimeout(() => resolve(null), 500); })
-      ]);
-      const model = typeof result?.model === "string" ? result.model.trim() : "";
-      if (/^[A-Za-z0-9][A-Za-z0-9 ._()+,-]{0,79}$/.test(model) && !/^(?:k|unknown|generic|android|iphone|ipad|ipod|pc)$/i.test(model) && !/^(?:\d{1,3}\.){3}\d{1,3}$/.test(model)) meta.model = "reported:" + model;
-    } catch { /* Unsupported hints remain unknown. */ }
-    finally { if (timer !== undefined) clearTimeout(timer); }
-    return meta;
-  }
-  function uuid() {
-    try {
-      if (typeof crypto.randomUUID === "function") {
-        const value = crypto.randomUUID();
-        if (/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value)) return value;
-      }
-      const bytes = new Uint8Array(16);
-      crypto.getRandomValues(bytes);
-      bytes[6] = (bytes[6] & 15) | 64;
-      bytes[8] = (bytes[8] & 63) | 128;
-      const hex = Array.from(bytes, byte => byte.toString(16).padStart(2, "0")).join("");
-      return hex.slice(0, 8) + "-" + hex.slice(8, 12) + "-" + hex.slice(12, 16) + "-" + hex.slice(16, 20) + "-" + hex.slice(20);
-    } catch { return undefined; }
-  }
-  async function record() {
-    if (sent || preparing || !allowed()) return;
-    preparing = true;
-    try {
-      const meta = await withReportedModel(metadata());
-      if (!allowed()) return;
-      eventId ||= uuid();
-      if (!eventId) return;
-      const page = location.origin + location.pathname;
-      const body = JSON.stringify({ toolId, eventId, page, meta });
-      if (body.length > 1024) return;
-      sent = true;
-      await fetch(collectorOrigin + "/api/visits", {
-        method: "POST", headers: { "Content-Type": "application/json" }, body,
-        credentials: "omit", cache: "no-store", keepalive: true, referrerPolicy: "no-referrer"
-      });
-    } catch { /* Tracking failure must never interrupt the tool. */ }
-    finally { preparing = false; }
-  }
-  window.addEventListener("pageshow", record);
-  document.addEventListener("visibilitychange", record);
-  void record();
-})();</script>
 
 
 </body>
