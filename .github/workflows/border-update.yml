@@ -26,8 +26,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: '22'
       - name: テスト（ネットワークなし）
@@ -62,7 +64,11 @@ jobs:
         if: github.event_name != 'push'
         continue-on-error: true
         run: node automation/record-forecast.mjs | tee forecast-log-report.json
+      # checkout は資格情報を残さない（取得元へアクセスする手順に書き込み権限を渡さない）。
+      # push のときだけ、この手順の env で github.token を URL に付けて使う（.git/config には保存しない）。
       - name: 変更があればコミット
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           if [ -z "$(git status --porcelain -- data/)" ]; then
             echo "変更なし"; exit 0
@@ -72,8 +78,9 @@ jobs:
           git add data/borders.json data/border-provenance.json 2>/dev/null || git add data/borders.json
           git add data/events.json data/task-events.txt data/meter-factors.json data/forecast-backtest.json data/forecast-history-*.json data/forecast-log.json 2>/dev/null || true
           git commit -m "ボーダー自動更新 $(TZ=Asia/Tokyo date '+%Y-%m-%d %H:%M') JST"
+          remote="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           for attempt in 1 2 3; do
-            git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:refs/heads/${GITHUB_REF_NAME}" && exit 0
+            git pull --rebase "$remote" "${GITHUB_REF_NAME}" && git push "$remote" "HEAD:refs/heads/${GITHUB_REF_NAME}" && exit 0
             sleep 5
           done
           echo "pushに失敗しました"; exit 1
