@@ -35,6 +35,14 @@ jobs:
           node tests/current-restore.mjs
           node tests/hit-calendar-pick.mjs
           node tests/touch-select-native.mjs
+          node tests/public-safety.mjs
+          node tests/e-border-csp-publish.mjs
+          node tests/subpage-ogp.mjs
+          node tests/pages-goatcounter-notice.mjs
+          node tests/event-link-url.mjs
+          node tests/collect-events-hosts.mjs
+          node tests/border-user-agent.mjs
+          node tests/e-border-disclaimer.mjs
           node tests/border-write-auth.mjs
           node tests/history-search.mjs
           node tests/event-calendar.mjs

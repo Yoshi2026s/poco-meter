@@ -51,7 +51,7 @@
 <details><summary>保存データの復旧</summary><p class="small">通常の保存前の状態を、復元用コピーとして端末内に保持します。復元すると現在の記録が置き換わるため、先にバックアップを保存してください。</p><button id="downloadRaw">現在の保存内容をそのまま保存</button><button id="downloadDrafts">下書きの元データを保存</button><button id="downloadUnreadableDrafts">読めなかった下書きの別保管データを保存</button><button id="recover">保存前のコピーを確認して復元</button></details>
 <details><summary>E帯の全データを削除</summary><p class="small">このブラウザーのE帯の記録・下書き・ごみ箱・復元用コピーを削除します。</p><button id="eraseAllE" class="danger">E帯を全削除</button></details>
 <p class="footer-back"><a class="back-link" href="./">← メーター計算へ</a></p>
-<p class="small">本ツールは非公式です。計算結果は目安としてご利用ください。</p><script>const E_SCHEMA='pococha-e-display-v1';
+<p class="small">本ツールは個人が作成した非公式ツールで、Pococha および運営会社とは関係ありません。数値は目安で、正確性や目標達成を保証しません。</p><p class="small">E帯の記録は、利用者が画像の読み取りや手入力で登録した値です。記録と画像はこのブラウザー内で扱い、画像を外部へ送信しません。</p><script>const E_SCHEMA='pococha-e-display-v1';
 const E_MAX=3000;
 // Legacy sublabels remain readable as storage identities; user-facing rank is E.
 const eRankLabel=rank=>/^E(?:[123])?$/.test(rank)?'E':rank;

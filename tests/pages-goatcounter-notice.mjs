@@ -24,8 +24,8 @@ for (const [name, exporter] of Object.entries(exporters)) {
     if (name === 'index.html') {
       assert.match(tracked, /<p id="toolDisclaimerText">[^<]*GoatCounter[^<]*<\/p>/);
     } else {
-      // Bottom of the page, directly inside the creator footer, ahead of the logo.
-      assert.match(tracked, /<div class="tool-creator-footer"[^>]*><p class="goatcounter-notice"[^>]*>アクセス数の集計に GoatCounter[^<]*<\/p><span class="tool-creator-logo"/);
+      // Bottom of the page: first inside the creator footer, ahead of the disclaimer line and the logo.
+      assert.match(tracked, /<div class="tool-creator-footer"[^>]*><p class="goatcounter-notice"[^>]*>アクセス数の集計に GoatCounter[^<]*<\/p>[\s\S]*?<span class="tool-creator-logo"/);
     }
   });
 }
