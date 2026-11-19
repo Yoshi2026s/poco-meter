@@ -1789,6 +1789,8 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)!important}
 :root body #mini.main-screen .main-inputs{padding:8px;border:1px solid var(--line);border-radius:12px;background:#fff5c2!important}
 :root body #mini.main-screen .mini-input label{color:#445466!important}
 :root body #mini.main-screen .mini-action-msg{color:#145737!important}
+:root body #mini.main-screen .mini-action-msg.warn{color:#9d2034!important;font-weight:700}
+:root body :is(#miniActionMsg,#currentActionMsg) .msg-undo{display:inline-block;min-height:32px;margin:2px 0 0 8px;padding:2px 10px;border-radius:8px;font-size:13px;font-weight:700;line-height:1.3;vertical-align:middle;white-space:nowrap}
 :root body #mini.main-screen :is(#targetMiniError,#currentMiniError,#coreCountItemsError){color:#9d2034!important}
 :root body #mini.main-screen #itemsWindow{background:#ffe5ef!important}
 :root body #mini.main-screen #itemsWindowTitle{color:#17283a!important}
@@ -4061,7 +4063,14 @@ html.always-on-mode body #eventCalendarPanel{display:none!important}
   function renderCurrentUndo(){if($('miniUndoCurrent'))$('miniUndoCurrent').disabled=!currentUndo;var button=$('undoCurrent');if(button){button.disabled=!currentUndo;button.setAttribute('aria-label',currentUndo?'現在値を '+fmt(parseNum(currentUndo.value))+' ptに戻す':'現在値を戻す操作はありません');}}
   function resetCurrentUndo(){currentUndo=null;currentEdit=null;numericComposing={};renderCurrentUndo();var msg=$('currentActionMsg');if(msg)msg.textContent='';}
   function commitCurrent(v,options){options=options||{};var next=String(Math.min(MAX_VALUE,Math.max(0,v))),changed=next!==state.current,el=options.editElement;if(el&&document.activeElement===el)beginCurrentEdit(el);if(changed){var previous=el&&currentEdit&&currentEdit.id===el.id?currentEdit:{value:state.current,savedAt:state.currentSavedAt};currentUndo={value:previous.value,savedAt:previous.savedAt};var msg=$('currentActionMsg');if(msg){msg.className='toast';msg.textContent='';}}state.current=next;if(changed||options.refresh)state.currentSavedAt=Date.now();if(options.format){['current','currentTop','currentMini'].forEach(function(id){$(id).value=fmt(parseNum(state.current));flagInput($(id),'');});}renderCurrentUndo();var persisted=save();update();return !!persisted&&!storageFailed;}
-  function confirmCurrent(el,explicit){if(isNumericComposing(el))return false;var n=readNumber(el.value);if(n===null){flagInput(el,pointInputError(el.value,'current'));return false;}flagInput(el,'');el.value=fmt(n);commitCurrent(n,{editElement:el,refresh:!!explicit});return true;}
+  function confirmCurrent(el,explicit){if(isNumericComposing(el))return false;var n=readNumber(el.value);if(n===null){flagInput(el,pointInputError(el.value,'current'));return false;}flagInput(el,'');var before=currentEdit&&currentEdit.id===el.id?parseNum(currentEdit.value):null;el.value=fmt(n);commitCurrent(n,{editElement:el,refresh:!!explicit});var warning=currentMagnitudeWarning(before,n);if(warning)setCurrentInputMsg(el,warning,true);else if(currentReadingShown[el.id])setCurrentInputMsg(el,'');currentReadingShown[el.id]=false;return true;}
+  // 入力中は読み取った値を見せ、確定時に前回の10倍以上・前回より少ない値なら確認を出す（値は書き換えない）。
+  var currentReadingShown={};
+  function currentManText(n){var man=Math.round(n/1000)/10;return man>=1?'（約'+man.toLocaleString('ja-JP')+'万）':'';}
+  function currentMagnitudeWarning(before,n){if(before===null||!(before>0)||n===before||n===0)return '';if(n>=before*10)return '桁を確認：前回 '+fmt(before)+' ptの10倍以上です（今回 '+fmt(n)+' pt）。';if(n<before)return '確認：前回 '+fmt(before)+' ptより少ない値です（今回 '+fmt(n)+' pt）。';return '';}
+  function appendCurrentUndoButton(msg,onUndo){if(!currentUndo||!msg||typeof msg.appendChild!=='function'||typeof document.createElement!=='function')return;var b=document.createElement('button');b.type='button';b.className='msg-undo';b.textContent='取り消し';b.setAttribute('aria-label','現在値を '+fmt(parseNum(currentUndo.value))+' ptに戻す');b.onclick=onUndo;msg.appendChild(b);}
+  function setCurrentInputMsg(el,text,warn){if(el&&el.id==='currentMini'){showMiniAction(text,{warn:warn,undo:warn});return;}var msg=el&&el.id==='currentTop'?$('currentActionMsg'):null;if(!msg)return;msg.className=warn?'toast warn':'toast';msg.textContent=text||'';if(warn)appendCurrentUndoButton(msg,undoCurrent);}
+  ['currentTop','currentMini'].forEach(function(id){$(id).addEventListener('input',function(e){if(isNumericComposing(this,e))return;var n=readNumber(this.value);if(n===null||this.value.trim()===''||n===0){if(currentReadingShown[id]){currentReadingShown[id]=false;setCurrentInputMsg(this,'');}return;}currentReadingShown[id]=true;setCurrentInputMsg(this,'読み取り：'+fmt(n)+' pt'+currentManText(n));});});
   function undoCurrent(){if(!currentUndo)return false;var previous=currentUndo,returnFocus=document.activeElement===$('undoCurrent');currentUndo=null;currentEdit=null;state.current=previous.value;state.currentSavedAt=previous.savedAt;['current','currentTop','currentMini'].forEach(function(id){delete numericComposing[id];$(id).value=fmt(parseNum(state.current));flagInput($(id),'');});renderCurrentUndo();var persisted=save();update();numericActionMessage('currentActionMsg','現在値を '+fmt(parseNum(state.current))+' ptに戻しました。',persisted);focusRestoredInput('currentTop',returnFocus);return true;}
   ['current','currentTop','currentMini'].forEach(function(id){$(id).addEventListener('focus',function(){beginCurrentEdit(this,true);});$(id).addEventListener('blur',function(){if(isNumericComposing(this))return;confirmCurrent(this);finishCurrentEdit(this);});$(id).addEventListener('keydown',function(e){if(e.key==='Enter'&&!isNumericComposing(this,e)){e.preventDefault();if(confirmCurrent(this,true)){finishCurrentEdit(this);this.blur();}}});});
   if($('undoCurrent'))$('undoCurrent').onclick=undoCurrent;
@@ -4071,6 +4080,8 @@ html.always-on-mode body #eventCalendarPanel{display:none!important}
   function adjustCurrentBy(delta){
     var before=parseNum(state.current),requested=before+delta,persisted=setCurrent(requested),actual=parseNum(state.current)-before;
     numericActionMessage('currentActionMsg',(actual?(actual>0?'＋':'−')+fmt(Math.abs(actual))+' ptを反映しました。':'現在値は変わっていません。')+(requested<0?'0 ptを下回るため、0 ptで止めました。':requested>MAX_VALUE?'入力上限に達したため、上限で止めました。':''),persisted);
+    if(actual&&typeof navigator!=='undefined'&&navigator&&typeof navigator.vibrate==='function'){try{navigator.vibrate(12);}catch(e){}}
+    return actual;
   }
   $('resetTop').onclick=resetCurrentValue;
   $('reviewPeriodCurrent').onclick=function(){revealMenuTarget('currentTop',true);};
@@ -4318,12 +4329,12 @@ html.always-on-mode body #eventCalendarPanel{display:none!important}
   if('IntersectionObserver' in window){new IntersectionObserver(function(es){es.forEach(function(e){miniOutsideView=!e.isIntersecting&&e.boundingClientRect.top<0;});syncMiniVisibility();}).observe($('remain'));}
   window.addEventListener('resize',syncMiniVisibility);
   if('ResizeObserver' in window)new ResizeObserver(syncMiniVisibility).observe($('mini'));
-  [['miniSub1k',-1000],['miniAdd1k',1000],['miniAdd10k',10000],['miniAdd100k',100000]].forEach(function(pair){$(pair[0]).onclick=function(){adjustCurrentBy(pair[1]);showMiniAction($('currentActionMsg').textContent);};});
+  [['miniSub1k',-1000],['miniAdd1k',1000],['miniAdd10k',10000],['miniAdd100k',100000]].forEach(function(pair){$(pair[0]).onclick=function(){var actual=adjustCurrentBy(pair[1]);showMiniAction($('currentActionMsg').textContent,{undo:!!actual});};});
   $('miniUndoCurrent').onclick=function(){var undone=undoCurrent();showMiniAction(undone===false?'戻す操作はありません。':'現在値を直前の値に戻しました。');};
   // Tapping a main-screen number selects it, so a new value replaces the old one without deleting digits by hand.
   ['targetMini','currentMini','coreCountItems'].forEach(function(id){$(id).addEventListener('focus',function(){var el=this;setTimeout(function(){if(document.activeElement===el&&el.value&&typeof el.select==='function')el.select();},0);});});
   $('resetTargetMini').onclick=function(){if(typeof window.confirm==='function'&&!window.confirm('目標値をリセットしますか？'))return;var reset=document.querySelector('[data-reset="target"]');if(reset)reset.click();showMiniAction($('manualTargetMsg').textContent||'目標値をリセットしました。');};
-  var miniActionTimer=0;function showMiniAction(text){var msg=$('miniActionMsg');msg.textContent=text||'';clearTimeout(miniActionTimer);if(text)miniActionTimer=setTimeout(function(){msg.textContent='';},5000);}
+  var miniActionTimer=0;function showMiniAction(text,options){options=options||{};var msg=$('miniActionMsg');msg.className='mini-action-msg'+(options.warn&&text?' warn':'');msg.textContent=text||'';clearTimeout(miniActionTimer);if(text&&options.undo)appendCurrentUndoButton(msg,function(){var undone=undoCurrent();showMiniAction(undone===false?'戻す操作はありません。':'現在値を直前の値に戻しました。');});if(text)miniActionTimer=setTimeout(function(){msg.textContent='';msg.className='mini-action-msg';},options.undo?10000:5000);}
   syncMiniVisibility();
   // バックアップ
 
