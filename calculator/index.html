@@ -3013,18 +3013,20 @@ html.always-on-mode body #eventCalendarPanel{display:none!important}
         if(match>=0){event.preventDefault();focusRow(match);}
       }
     });
+    // スマホ・タブレット（指で操作する画面）では端末標準の選択リストだけを使う。独自の選択リストも開くと、同じ項目を2回選ぶことになるため。
+    var touchPicker=function(){try{return !!(window.matchMedia&&window.matchMedia('(pointer:coarse)').matches);}catch(e){return false;}};
     document.querySelectorAll('select').forEach(function(select){
       if(select.hasAttribute('hidden')||select.getAttribute('aria-hidden')==='true'||select.multiple)return;
       // These compact controls use the browser's own list directly.
       if(select.id==='closeSel'||select.closest('#quickTargetControls')||select.closest('#miniGoalMenu')||select.closest('#dailyViewer'))return;
-      select.setAttribute('aria-haspopup','dialog');select.setAttribute('aria-controls','selectWindow');select.setAttribute('aria-expanded','false');
-      select.addEventListener('mousedown',function(event){if(event.button===0&&!select.disabled){event.preventDefault();open(select);}});
+      if(!touchPicker()){select.setAttribute('aria-haspopup','dialog');select.setAttribute('aria-controls','selectWindow');select.setAttribute('aria-expanded','false');}
+      select.addEventListener('mousedown',function(event){if(touchPicker())return;if(event.button===0&&!select.disabled){event.preventDefault();open(select);}});
       var touchStart=null;
       select.addEventListener('touchstart',function(event){var t=event.touches&&event.touches.length===1&&event.touches[0];touchStart=t?{x:t.clientX,y:t.clientY}:null;},{passive:true});
       select.addEventListener('touchcancel',function(){touchStart=null;},{passive:true});
-      select.addEventListener('touchend',function(event){var t=event.changedTouches&&event.changedTouches[0];if(t&&touchStart&&Math.abs(t.clientX-touchStart.x)<10&&Math.abs(t.clientY-touchStart.y)<10&&!select.disabled){event.preventDefault();open(select);}touchStart=null;},{passive:false});
-      select.addEventListener('click',function(event){if(!select.disabled){event.preventDefault();open(select);}});
-      select.addEventListener('keydown',function(event){if(['Enter',' ','ArrowDown','ArrowUp'].indexOf(event.key)>=0&&!event.ctrlKey&&!event.metaKey&&!select.disabled){event.preventDefault();open(select);}});
+      select.addEventListener('touchend',function(event){if(touchPicker()){touchStart=null;return;}var t=event.changedTouches&&event.changedTouches[0];if(t&&touchStart&&Math.abs(t.clientX-touchStart.x)<10&&Math.abs(t.clientY-touchStart.y)<10&&!select.disabled){event.preventDefault();open(select);}touchStart=null;},{passive:false});
+      select.addEventListener('click',function(event){if(touchPicker())return;if(!select.disabled){event.preventDefault();open(select);}});
+      select.addEventListener('keydown',function(event){if(touchPicker())return;if(['Enter',' ','ArrowDown','ArrowUp'].indexOf(event.key)>=0&&!event.ctrlKey&&!event.metaKey&&!select.disabled){event.preventDefault();open(select);}});
     });
   }
   var fmt=function(n){return Math.round(n).toLocaleString('ja-JP')};
