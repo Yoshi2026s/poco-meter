@@ -29,6 +29,7 @@ jobs:
           node tests/periods-default-rank.mjs
           node tests/items-core-input.mjs
           node tests/current-input-confirm.mjs
+          node tests/next-move-line.mjs
           node tests/border-write-auth.mjs
           node tests/history-search.mjs
           node tests/event-calendar.mjs
