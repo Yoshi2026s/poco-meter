@@ -44,24 +44,26 @@ export function withPageHead(html, name) {
   for (const present of ['name="description"', 'name="theme-color"', 'rel="icon"', 'rel="apple-touch-icon"']) {
     if (html.includes(present)) throw new Error('Pages build: ' + name + ' already declares ' + present);
   }
-  return replaceOnce(html, '<meta charset="utf-8">', '<meta charset="utf-8">' +
+  return sharePreview(replaceOnce(html, '<meta charset="utf-8">', '<meta charset="utf-8">' +
     `<meta name="description" content="${escapeAttr(PAGE_DESCRIPTIONS[name])}">` +
     '<meta name="theme-color" content="#1E78D6">' +
     '<link rel="icon" type="image/png" sizes="192x192" href="./meter-icon-192.png">' +
-    '<link rel="apple-touch-icon" href="./meter-icon-180.png">');
+    '<link rel="apple-touch-icon" href="./meter-icon-180.png">'), name);
 }
-// Link previews (LINE, X and others) read these from the calculator page.
-function sharePreview(html) {
+// Link previews (LINE, X and others) read these from every public page (404.html has none).
+function sharePreview(html, name = 'index.html') {
+  if (/<meta[^>]*property="og:/.test(html)) throw new Error('Pages build: ' + name + ' already declares og: tags');
   const title = html.match(/<title>([^<]+)<\/title>/)?.[1];
   const description = html.match(/<meta name="description" content="([^"]+)">/)?.[0];
-  if (!title || !description) throw new Error('Pages build: index.html has no title or description');
+  if (!title || !description) throw new Error('Pages build: ' + name + ' has no title or description');
+  const url = name === 'index.html' ? PUBLIC_URL : PUBLIC_URL + name;
   const content = description.match(/content="([^"]+)"/)[1];
   return replaceOnce(html, description, [description,
     '<meta property="og:type" content="website">',
     '<meta property="og:site_name" content="ポコメーター番長">',
     `<meta property="og:title" content="${title}">`,
     `<meta property="og:description" content="${content}">`,
-    `<meta property="og:url" content="${PUBLIC_URL}">`,
+    `<meta property="og:url" content="${url}">`,
     `<meta property="og:image" content="${PUBLIC_URL}meter-icon-512.png">`,
     '<meta name="twitter:card" content="summary">'].join('\n'));
 }
