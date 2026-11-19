@@ -177,5 +177,5 @@ test('public navigation keeps one contact panel and removes the combined histori
  assert.ok(!html.includes('お問い合わせ・過去統計'));
  assert.ok(!html.includes('admin-page-link'));
  assert.ok(!html.includes('窓口を別タブで開く'));
- assert.equal((html.match(/id="pococha-security-management"/g)||[]).length,1);
+ assert.ok(!html.includes('pococha-security-management'));
 });
