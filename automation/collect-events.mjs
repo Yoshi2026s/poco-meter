@@ -76,7 +76,8 @@ export function noteSessionHop(url) {
 export async function get(url, {binary = false} = {}) {
   const jar = get.jar || (get.jar = new Map());
   let target = url;
-  for (let hop = 0; hop < 5; hop++) {
+  // note の独自ドメインは note.com/cd/sessions を経由して戻るため、経由分の余裕を持たせて8段まで。
+  for (let hop = 0; hop < 8; hop++) {
     // 取得前（リダイレクト先も含めて毎回）に https・許可ホストかを確かめる。
     const viaNote = hop > 0 && !fetchableUrl(target) && !!noteSessionHop(target);
     if (!fetchableUrl(target) && !viaNote) throw new Error(`許可外の取得先のため取得しません ${target}`);

@@ -23,12 +23,12 @@ Pocochaの目標メーター計算・過去ボーダー管理ツールです。�
 | 取得元の方針 | ボーダーは ONE CARAT（ライバーキャンパス）の公開記事の数値を取得し、各行に出典リンクを付けています。転載の許諾は得ていません。取得元から求めがあれば公開を止めます。HAISHIN LAB は規約で無断転載が禁止されているため使わない（許可を得た場合のみ追加を検討） |
 | アイコン | `calculator/meter-icon.svg`（`scripts/meter-icon-svg.mjs` で生成）。ホーム画面用PNG（180・192・512）は同じ図形を描画して `calculator/offline-assets.mjs` に格納 |
 
-利用者の履歴・設定・E帯データは各端末のブラウザーに保存されます。サーバーへは送りません。
+利用者の履歴・設定・E帯データは各端末のブラウザーに保存され、制作者のサーバーへは送りません（アクセス数だけ GoatCounter で集計、Cookie なし）。E帯の画像読取用データ（約30MB）は初回にこのサイトから取得し、ブラウザーに保存して再利用します。
 旧Sites（https://poco-meter.freefreelife2000.chatgpt.site/）からの移行は、旧Sitesで「保存・出力」→JSONバックアップを保存し、新しいURLで読み込みます。
 
 ## 旧Sites版の名残（現行の公開には使わない）
 
-次のフォルダー・ファイルは旧 ChatGPT Sites 版（Next.js＋DB）の名残です。GitHub Pages に公開されるのは `scripts/build-pages.mjs` が `_site/` に出力する画面（`calculator/` から作るHTML・SW・アイコン）と `data/` の一部JSONだけで、これらは公開されません。
+次のフォルダー・ファイルは旧 ChatGPT Sites 版（Next.js＋DB）の名残です。GitHub Pages に公開されるのは `scripts/build-pages.mjs` が `_site/` に出力する画面（`calculator/` から作るHTML・SW・アイコン）と `data/` の一部JSON、E帯の画像読取用に同梱した `calculator/ocr/`（tesseract.js と言語データ。ハッシュ固定・Apache-2.0、`calculator/ocr/NOTICE.md`）だけで、これらは公開されません。
 
 | 場所 | 現在の扱い |
 | --- | --- |

@@ -8,6 +8,7 @@
 | 計算画面 | `calculator/index.html` | 下の「index.html の中身」参照 |
 | 過去ボーダー画面 | `calculator/history-page-template.html`・`history-core.mjs`・`history-ui.mjs` | `calculator/border-history.html` は生成物。編集後 `npm run pages:prepare` |
 | E帯画面 | `calculator/e-border-template.html`・`e-border-core.mjs`・`e-border-store.mjs`・`e-border-async.mjs`・`e-border-ui.mjs` | `calculator/e-border.html` は生成物。同上 |
+| E帯の画像読取 | `calculator/ocr/`（tesseract.js 6.0.1・core 6.0.0・jpn/eng 4.0.0_best を同梱、`NOTICE.md` にハッシュ表とライセンス） | 手で変えない。`scripts/build-pages.mjs` の `OCR_FILES`・`OCR_NOTICE_FILES` で公開物の `ocr/` に出す |
 | 算出方法 | `calculator/calculation-methods.html` | |
 | オフライン（SW） | `calculator/sw.js`・`offline-assets.mjs`（manifest・アイコンPNG） | アイコン図形は `scripts/meter-icon-svg.mjs` |
 | 公開用の加工 | `scripts/build-pages.mjs`（`PAGES_VERSION`）→ `scripts/prepare-github-meter.mjs`・`lib/browser-security.mjs`（CSPハッシュ） | Sites専用部分（統計送信・管理リンク等）をここで外す |
@@ -45,5 +46,6 @@
 - 計算：`tests/calculation-engine.mjs`、締め時間別：`tests/cutoff-reference-target.mjs`
 - 公開物・ボーダー：`tests/pages-borders.mjs`、表画像：`tests/table-channel.mjs`
 - 過去ボーダー画面：`tests/history-page-ui.mjs`・`tests/history-independent.mjs`
-- E帯：`tests/e-*.mjs`、オフライン：`tests/offline-*.mjs`
+- E帯：`tests/e-*.mjs`、画像読取の同梱：`tests/ocr-self-host.mjs`、オフライン：`tests/offline-*.mjs`
+- 公開物の安全性（旧URL・個人情報の混入、CSP・referrer・免責・出典・解析の告知）：`tests/public-safety.mjs`・`tests/e-border-csp-publish.mjs`・`tests/pages-visitor-stats.mjs`・`tests/pages-goatcounter-notice.mjs`・`tests/security-management.mjs`
 - 画面の見た目・スマホ幅：`npm run test:extra`

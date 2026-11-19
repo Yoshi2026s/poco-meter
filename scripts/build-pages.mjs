@@ -16,7 +16,7 @@ const ROOT = fileURLToPath(new URL('../', import.meta.url));
 const EVENT_DAYS_AHEAD = 60; // イベントカレンダーで先の予定として載せる日数
 // Tool version shown on the page. Change only when the tool itself changes
 // (data updates do not change it).
-export const PAGES_VERSION = {version: 'v2026.11.20.4', updatedAt: '2026-11-20T02:56:00+09:00', label: '2026/11/20 02:56:00'};
+export const PAGES_VERSION = {version: 'v2026.11.20.5', updatedAt: '2026-11-20T03:25:00+09:00', label: '2026/11/20 03:25:00'};
 // GoatCounter のサイトコード。空なら計測タグを入れない。
 export const GOATCOUNTER_CODE = 'poco-meter';
 // Official stable script and SRI: https://www.goatcounter.com/help/countjs-versions
@@ -32,7 +32,7 @@ export const OCR_FILES = ['tesseract.min.js', 'worker.min.js', 'tesseract-core-l
 // 同梱した第三者ソフトウェアのライセンス表示も公開物に含める（Apache-2.0 の写し・組み込みライブラリの表示）。
 export const OCR_NOTICE_FILES = ['NOTICE.md', 'LICENSE-Apache-2.0.txt', 'tesseract.min.js.LICENSE.txt', 'worker.min.js.LICENSE.txt'];
 const SITE_VISIT_INTEGRITY = 'sha384-' + createHash('sha384').update(SITE_VISIT_SCRIPT).digest('base64');
-const GOATCOUNTER_NOTICE = 'アクセス数の集計に GoatCounter を使用しています（Cookie は使わず、個人を特定する情報は保存しません）。日別の重複を避けるため、集計用の日付だけをこのブラウザーに保存します。';
+const GOATCOUNTER_NOTICE = 'アクセス数の集計に GoatCounter を使用しています（Cookie は使わず、個人を特定する情報は保存しません）。日別の重複を避けるため、この集計用には日付だけをこのブラウザーに保存します。';
 const BORDER_FETCH = "fetch('/api/borders',{cache:'no-cache',credentials:'same-origin',signal:controller.signal})";
 const BORDER_FETCH_PAGES = "fetch('./data/borders.json',{cache:'no-cache',credentials:'same-origin',signal:controller.signal})";
 

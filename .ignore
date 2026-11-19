@@ -8,3 +8,6 @@ docs/legacy-source/
 docs/*.json
 db/*.json
 data/*.json
+# E帯の画像読取用に同梱した第三者ファイル（巨大な1行。読むのは calculator/ocr/NOTICE.md だけ）
+calculator/ocr/*.js
+calculator/ocr/*.gz

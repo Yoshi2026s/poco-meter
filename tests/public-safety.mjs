@@ -17,8 +17,9 @@ const walk = dir => readdirSync(dir).flatMap(name => {
   return statSync(path).isDirectory() ? walk(path) : [path];
 });
 const files = walk(out).map(path => ({path, name: relative(out, path).split('\\').join('/')}));
-// ocr/ は同梱した第三者ファイル（バイト列をハッシュで固定。tests/ocr-self-host.mjs が照合）なので文字列検査の対象外。
-const textFiles = files.filter(f => ['.html', '.js', '.json', '.webmanifest'].includes(extname(f.name)) && !f.name.startsWith('ocr/'));
+// ocr/ の .js・.gz は同梱した第三者ファイル（バイト列をハッシュで固定。tests/ocr-self-host.mjs が照合）なので文字列検査の対象外。
+// ocr/ の NOTICE.md・ライセンス文（.md・.txt）は自分で書いた・置いたものなので検査する。
+const textFiles = files.filter(f => ['.html', '.js', '.json', '.webmanifest', '.md', '.txt'].includes(extname(f.name)) && !(f.name.startsWith('ocr/') && /\.(js|gz)$/.test(f.name)));
 const read = f => readFileSync(f.path, 'utf8');
 const htmlFiles = textFiles.filter(f => f.name.endsWith('.html'));
 const pageFiles = htmlFiles.filter(f => f.name !== '404.html');
@@ -39,7 +40,7 @@ test('公開物が作られ、検査対象のファイルがある', () => {
 });
 
 // 1. 旧Sites・個人情報・ローカル環境の痕跡が公開物に残っていない
-const FORBIDDEN = ['chatgpt.site', 'freefreelife2000', 'pococha-comment-library', 'Pococha1012', 'localhost', 'OneDrive', 'C:\\Users', 'C:\\\\Users', '@gmail.com'];
+const FORBIDDEN = ['chatgpt.site', 'freefreelife2000', 'pococha-comment-library', 'Pococha1012', 'localhost', 'OneDrive', 'C:\\Users', 'C:\\\\Users', '@gmail.com', 'pococha2026'];
 test('1. 公開されるファイルに旧Sites・個人情報・ローカルパスの文字列がない', () => {
   const hits = [];
   for (const f of textFiles) {

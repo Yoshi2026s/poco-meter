@@ -10,7 +10,7 @@ import {buildPages, exportCalculator, exportHistory, exportEBorder, exportMethod
 import {scriptSources} from '../lib/browser-security.mjs';
 
 const pages = ['index.html', 'border-history.html', 'e-border.html', 'calculation-methods.html'];
-const notice = 'アクセス数の集計に GoatCounter を使用しています（Cookie は使わず、個人を特定する情報は保存しません）。日別の重複を避けるため、集計用の日付だけをこのブラウザーに保存します。';
+const notice = 'アクセス数の集計に GoatCounter を使用しています（Cookie は使わず、個人を特定する情報は保存しません）。日別の重複を避けるため、この集計用には日付だけをこのブラウザーに保存します。';
 const origin = 'https://test-code.goatcounter.com';
 const helperName = 'goatcounter-site-visit.js';
 const helper = await readFile(new URL('../scripts/' + helperName, import.meta.url), 'utf8');

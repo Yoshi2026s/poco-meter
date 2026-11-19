@@ -210,6 +210,8 @@ $('images').onchange=async e=>{
  let localWorker=null,done=0,failed=0,skipped=0,regions=0;const pending=[],seen=new Set(drafts.map(d=>d.imageHash).filter(Boolean));
  const check=()=>{if(signal.aborted||id!==runId)throw Object.assign(Error('読取を中止しました。'),{name:'AbortError'});};
  const job=async p=>{try{const value=await eTimed(p,45000,signal,'1つの読取処理が長いため中止しました。候補を確認するか少ない枚数で再試行してください。');check();return value;}catch(e){if(e.code==='ETIMEOUT'){controller.abort();if(localWorker)terminateWorker(localWorker);}throw e;}};
+ // 初回のランク読取は英語データ（約13MB）の取得を含むため、準備と同じく300秒まで待つ（1枚ごとの読取は45秒）。
+ const prepJob=async(p,msg)=>{try{const value=await eTimed(p,300000,signal,msg);check();return value;}catch(e){if(e.code==='ETIMEOUT'){controller.abort();if(localWorker)terminateWorker(localWorker);}throw e;}};
  const recognize=async image=>{const r=await job(localWorker.recognize(image));$('ocrProgress').value=++regions;return r;};
  try{
   status('読取の準備中です。初回は読取用データ（約30MB）を取得するため、通信によっては数分かかります。中止して手入力へ切り替えることもできます。');
@@ -235,7 +237,7 @@ $('images').onchange=async e=>{
     }
    }catch(err){if(signal.aborted)throw err;failed++;if(entry)entry.warning='読取できない項目があります。画像を見ながら修正してください。';else{const d=addDraft({date:'',rank:'',close:'',values:['','','']});d?.box.append(node('p','画像を開けませんでした。元の画像を確認して入力してください。','error'));}}
   }
-  if(pending.some(p=>p.rankImage)){check();status('ランクを確認しています…');await job(localWorker.reinitialize('eng'));await job(localWorker.setParameters({tessedit_pageseg_mode:'7',tessedit_char_whitelist:'ESABCD0123456'}));}
+  if(pending.some(p=>p.rankImage)){check();status('ランクを確認しています…（初回はランク読取用のデータを取得します）');await prepJob(localWorker.reinitialize('eng'),'ランク読取用データの準備が長いため中止しました。通信を確認するか手入力を利用してください。');await job(localWorker.setParameters({tessedit_pageseg_mode:'7',tessedit_char_whitelist:'ESABCD0123456'}));}
   for(const entry of pending){check();if(entry.rankImage){try{const r=await recognize(entry.rankImage);entry.row.rank=eOCRRank(r.data.text);if(Number.isFinite(r.data.confidence)&&r.data.confidence<60)entry.warnings.push('ランクのOCRの確かさが低いため画像と照合してください。');if(!entry.row.rank&&entry.rankBackup){await job(localWorker.setParameters({tessedit_pageseg_mode:'6'}));const retry=await recognize(entry.rankBackup);entry.row.rank=eOCRRank(retry.data.text);await job(localWorker.setParameters({tessedit_pageseg_mode:'7'}));}if(entry.row.rank&&entry.row.rank!=='E'){entry.row.unsupported=true;entry.warning='画像のランクは'+entry.row.rank+'です。この画面はE帯専用のため保存できません。';}}catch(err){if(signal.aborted)throw err;failed++;entry.warning='ランクを確認できません。画像を見て選択してください。';}}}
   status('読取が終わりました。候補 '+pending.length+'件／同一画像の省略 '+skipped+'件／読取失敗 '+failed+'件／日付・〆・ランクの未確定 '+pending.filter(p=>!p.row.date||!p.row.close||!p.row.rank).length+'件。画像と見比べて確認し、保存してください。');
  }catch(err){if(!signal.aborted)controller.abort();status(err.name==='AbortError'?'読取を中止しました。読取済み・入力途中の候補は残します。':'画像読取を完了できません：'+err.message+' 手入力で続けられます。',err.name!=='AbortError');}
