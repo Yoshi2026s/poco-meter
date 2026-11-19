@@ -8,6 +8,7 @@ Pocochaの目標メーター計算・過去ボーダー管理ツールです。�
 - [開発指示（Code・ChatGPT共通）](AGENTS.md)
 - [引継ぎ資料（現状）](docs/HANDOVER.md)／[要望・仕様メモ](docs/REQUESTS.md)／[変更履歴](docs/CHANGELOG.md)
 - [自動取得の経緯](docs/AUTOMATION_CODE_HANDOVER.md)
+- 利用条件：[LICENSE](LICENSE)（サイトの利用は自由。コード・データの無断転載・再配布は禁止）
 
 ## 仕組み
 
