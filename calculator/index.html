@@ -2864,6 +2864,14 @@ html.always-on-mode body #eventCalendarPanel{display:none!important}
   // 同じ締め時間の区切りで保存した現メーターを残す。それ以外のスマホでの起動は従来どおり0から始める。
   var keepAlwaysOnCurrent=false;
   try{keepAlwaysOnCurrent=phoneDefaultsOnOpen&&location.hash==='#always-on'&&Number(state.currentSavedAt)>0&&Number(state.currentSavedAt)<=Date.now()&&meterWindow(Number(state.currentSavedAt)).end===meterWindow(Date.now()).end;}catch(e){keepAlwaysOnCurrent=false;}
+  // スマホで0から始める前に、同じ締めまでの前回入力を別キーに残し、「前回値に戻す」で1タップで戻せるようにする（保存形式は変えない）。
+  var CURRENT_RESTORE_KEY='pococha-meter-current-restore-v1',openCurrentRestore=null;
+  function sameMeterPeriod(ms){return Number.isFinite(ms)&&ms>0&&ms<=Date.now()&&meterWindow(ms).end===meterWindow(Date.now()).end;}
+  if(phoneDefaultsOnOpen&&!keepAlwaysOnCurrent){try{
+    var lastCurrent=parseNum(state.current),lastSavedAt=Number(state.currentSavedAt);
+    if(lastCurrent>0&&sameMeterPeriod(lastSavedAt)){openCurrentRestore={value:String(lastCurrent),savedAt:lastSavedAt};localStorage.setItem(CURRENT_RESTORE_KEY,JSON.stringify({version:1,value:openCurrentRestore.value,savedAt:lastSavedAt}));}
+    else{var kept=JSON.parse(localStorage.getItem(CURRENT_RESTORE_KEY)||'null');if(isRecord(kept)&&kept.version===1&&/^[1-9][0-9]*$/.test(String(kept.value))&&+kept.value<=MAX_VALUE&&sameMeterPeriod(Number(kept.savedAt)))openCurrentRestore={value:String(kept.value),savedAt:Number(kept.savedAt)};}
+  }catch(e){openCurrentRestore=null;}}
   if(phoneDefaultsOnOpen){state.target='';if(!keepAlwaysOnCurrent){state.current='0';state.currentSavedAt=Date.now();}}
   if(state.goalDefaults.applyOnLoad||phoneDefaultsOnOpen)assignGoalDefaults(state.goalDefaults);
   state.coreCount='0';
@@ -4233,7 +4241,7 @@ html.always-on-mode body #eventCalendarPanel{display:none!important}
   $('applyGoalDefaults').onclick=function(){try{var defaults=cleanGoalDefaults(state.goalDefaults);clearTargetResetUndo();delete numericComposing.target;assignGoalDefaults(defaults);automaticTargetSignature='';statsCache={};syncAllInputs();loadEditor();var persisted=save();update();renderGoalDefaultDraft();if(!persisted||storageFailed){goalDefaultMessage('この画面に適用しましたが、端末へ保存できません。画面の保存エラーを確認してください。',true);return;}goalDefaultMessage('既定値を適用しました。'+(goalDefaultDraftChanged()?'未保存の変更は残っています。':''),false);}catch(e){goalDefaultMessage(e.message,true);}};
   $('restoreGoalDefaults').onclick=function(){$('applyGoalDefaults').click();$('summaryStatus').className=$('goalDefaultsStatus').className;$('summaryStatus').textContent=$('goalDefaultsStatus').textContent;};
   syncGoalDefaultInputs(state.goalDefaults);
-  if(phoneDefaultsOnOpen){$('goalDefaultsHelp').textContent='スマホでは、開くたびに既定値を適用し、現在値は0から始まります（常時表示モードのまま開き直したときは、同じ締めまでの現在値を残します）。';$('defaultOnLoad').parentNode.lastChild.textContent='PCでも起動時に既定値を適用';}
+  if(phoneDefaultsOnOpen){$('goalDefaultsHelp').textContent='スマホでは、開くたびに既定値を適用し、現在値は0から始まります（常時表示モードのまま開き直したときは、同じ締めまでの現在値を残します。同じ締めまでの前回入力は「戻す」で戻せます）。';$('defaultOnLoad').parentNode.lastChild.textContent='PCでも起動時に既定値を適用';}
   syncAllInputs();loadEditor();
 
 
@@ -4369,6 +4377,15 @@ html.always-on-mode body #eventCalendarPanel{display:none!important}
   ['targetMini','currentMini','coreCountItems'].forEach(function(id){$(id).addEventListener('focus',function(){var el=this;setTimeout(function(){if(document.activeElement===el&&el.value&&typeof el.select==='function')el.select();},0);});});
   $('resetTargetMini').onclick=function(){if(typeof window.confirm==='function'&&!window.confirm('目標値をリセットしますか？'))return;var reset=document.querySelector('[data-reset="target"]');if(reset)reset.click();showMiniAction($('manualTargetMsg').textContent||'目標値をリセットしました。');};
   var miniActionTimer=0;function showMiniAction(text,options){options=options||{};var msg=$('miniActionMsg');msg.className='mini-action-msg'+(options.warn&&text?' warn':'');msg.textContent=text||'';clearTimeout(miniActionTimer);if(text&&options.undo)appendCurrentUndoButton(msg,function(){var undone=undoCurrent();showMiniAction(undone===false?'戻す操作はありません。':'現在値を直前の値に戻しました。');});if(text)miniActionTimer=setTimeout(function(){msg.textContent='';msg.className='mini-action-msg';},options.undo?10000:5000);}
+  // スマホで0から始めたとき、同じ締めまでの前回入力があれば「戻す」で戻せるようにし、10秒だけ案内する（最初の画面を押し下げ続けないため）。
+  if(openCurrentRestore&&parseNum(state.current)===0){
+    currentUndo={value:openCurrentRestore.value,savedAt:openCurrentRestore.savedAt};renderCurrentUndo();
+    (function(){var msg=$('miniActionMsg'),t=jstNow(openCurrentRestore.savedAt),mins=Math.floor(t.mins),pad=function(n){return String(n).padStart(2,'0');},value=fmt(parseNum(openCurrentRestore.value));
+      msg.className='mini-action-msg';msg.textContent='前回 '+value+' pt（'+pad(Math.floor(mins/60))+':'+pad(mins%60)+'入力）';
+      if(typeof document.createElement==='function'){var b=document.createElement('button');b.type='button';b.className='msg-undo';b.id='restoreLastCurrent';b.textContent='前回値に戻す';b.setAttribute('aria-label','現在値を前回の入力 '+value+' ptに戻す');
+        b.onclick=function(){var undone=undoCurrent();showMiniAction(undone===false?'戻す操作はありません。':'前回の入力に戻しました。');};msg.appendChild(b);}
+      clearTimeout(miniActionTimer);miniActionTimer=setTimeout(function(){msg.textContent='';msg.className='mini-action-msg';},10000);})();
+  }
   syncMiniVisibility();
   // バックアップ
 
