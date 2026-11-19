@@ -26,8 +26,6 @@ const SITE_VISIT_FILE = 'goatcounter-site-visit.js';
 const SITE_VISIT_SCRIPT = await readFile(new URL('./' + SITE_VISIT_FILE, import.meta.url), 'utf8');
 const SITE_VISIT_INTEGRITY = 'sha384-' + createHash('sha384').update(SITE_VISIT_SCRIPT).digest('base64');
 const GOATCOUNTER_NOTICE = 'アクセス数の集計に GoatCounter を使用しています（Cookie は使わず、個人を特定する情報は保存しません）。日別の重複を避けるため、集計用の日付だけをこのブラウザーに保存します。';
-const SITES_ORIGIN = 'https://poco-meter.freefreelife2000.chatgpt.site';
-const COLLECTOR_ORIGIN = 'https://pococha-comment-access.freefreelife2000.chatgpt.site';
 const BORDER_FETCH = "fetch('/api/borders',{cache:'no-cache',credentials:'same-origin',signal:controller.signal})";
 const BORDER_FETCH_PAGES = "fetch('./data/borders.json',{cache:'no-cache',credentials:'same-origin',signal:controller.signal})";
 
@@ -116,11 +114,6 @@ function replaceOnce(source, from, to) {
   if (source.split(from).length !== 2) throw new Error('Pages build: source changed near ' + String(from).slice(0, 80));
   return source.replace(from, to);
 }
-function removeOnce(source, pattern, label) {
-  const matches = source.match(new RegExp(pattern.source, pattern.flags.includes('g') ? pattern.flags : pattern.flags + 'g')) || [];
-  if (matches.length !== 1) throw new Error('Pages build: expected one ' + label + ', found ' + matches.length);
-  return source.replace(pattern, '');
-}
 function validateGoatcounter(code) {
   if (typeof code !== 'string' || (code !== '' && !/^[a-z0-9-]{2,50}$/.test(code))) {
     throw new Error('Pages build: invalid GoatCounter site code');
@@ -176,14 +169,10 @@ function assertClean(html, name) {
 
 export function exportCalculator(source, version = PAGES_VERSION, {goatcounter = GOATCOUNTER_CODE} = {}) {
   let html = replaceOnce(source, '<!-- sites-host-context -->', '<!-- GitHub Pages publication -->');
-  html = removeOnce(html, /\s*<script id="pococha-public-access-tracker">[\s\S]*?<\/script>/, 'access tracker');
-  html = removeOnce(html, /\s*<!-- Pococha1012 security management: start -->[\s\S]*?<!-- Pococha1012 security management: end -->/, 'admin link');
-  html = replaceOnce(html, `connect-src 'self' ${COLLECTOR_ORIGIN};`, "connect-src 'self';");
   html = replaceOnce(html, 'href="/meter.webmanifest"', 'href="./meter.webmanifest"');
   html = replaceOnce(html, 'href="/meter-icon-180.png"', 'href="./meter-icon-180.png"');
   html = html.replaceAll('href="/border-history"', 'href="./border-history.html"');
   html = replaceOnce(html, 'href="/calculation-methods"', 'href="./calculation-methods.html"');
-  html = replaceOnce(html, `href="${SITES_ORIGIN}/e-border.html"`, 'href="./e-border.html"');
   html = replaceOnce(html, BORDER_FETCH, BORDER_FETCH_PAGES);
   // There is no server clock on Pages. The existing fallback shows device time,
   // labelled as device time (never as the official clock).
