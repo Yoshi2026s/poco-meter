@@ -17,7 +17,8 @@ const walk = dir => readdirSync(dir).flatMap(name => {
   return statSync(path).isDirectory() ? walk(path) : [path];
 });
 const files = walk(out).map(path => ({path, name: relative(out, path).split('\\').join('/')}));
-const textFiles = files.filter(f => ['.html', '.js', '.json', '.webmanifest'].includes(extname(f.name)));
+// ocr/ は同梱した第三者ファイル（バイト列をハッシュで固定。tests/ocr-self-host.mjs が照合）なので文字列検査の対象外。
+const textFiles = files.filter(f => ['.html', '.js', '.json', '.webmanifest'].includes(extname(f.name)) && !f.name.startsWith('ocr/'));
 const read = f => readFileSync(f.path, 'utf8');
 const htmlFiles = textFiles.filter(f => f.name.endsWith('.html'));
 const pageFiles = htmlFiles.filter(f => f.name !== '404.html');
@@ -79,14 +80,16 @@ test('4. gc.zgo.at を読み込む .html には GoatCounter の告知がある',
   assert.deepEqual(missing, [], missing.join('\n'));
 });
 
-// 5. E帯ページは OCR（jsDelivr の WebAssembly）を使えるCSPになっている
-test("5. e-border.html の CSP の script-src に https://cdn.jsdelivr.net と 'wasm-unsafe-eval' がある", () => {
+// 5. E帯ページは OCR を同じサイトの同梱ファイルだけで動かすCSPになっている（外部の配信元を許可しない）
+test("5. e-border.html の CSP は OCR 用に 'self' だけを許し、外部の配信元を許可しない", () => {
   const policy = csp(byName('e-border.html'));
   assert.ok(policy, 'e-border.html に CSP がありません');
   const src = directive(policy, 'script-src');
   assert.ok(src, 'script-src がありません: ' + policy);
-  assert.ok(src.includes('https://cdn.jsdelivr.net'), 'https://cdn.jsdelivr.net: ' + src.join(' '));
-  assert.ok(src.includes("'wasm-unsafe-eval'"), "'wasm-unsafe-eval': " + src.join(' '));
+  assert.ok(src.includes("'self'"), "script-src 'self': " + src.join(' '));
+  assert.deepEqual(directive(policy, 'worker-src'), ["'self'"], 'worker-src');
+  assert.ok(!/jsdelivr|projectnaptha/.test(policy), '外部の配信元を含まない: ' + policy);
+  for (const name of ['ocr/tesseract.min.js', 'ocr/worker.min.js', 'ocr/tesseract-core-lstm.wasm.js', 'ocr/tesseract-core-simd-lstm.wasm.js', 'ocr/jpn.traineddata.gz']) assert.ok(files.some(f => f.name === name), name);
 });
 
 // 6. 別タブで開くリンクは opener を渡さない

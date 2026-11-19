@@ -35,6 +35,7 @@ jobs:
           node tests/current-restore.mjs
           node tests/hit-calendar-pick.mjs
           node tests/touch-select-native.mjs
+          node tests/ocr-self-host.mjs
           node tests/public-safety.mjs
           node tests/e-border-csp-publish.mjs
           node tests/subpage-ogp.mjs
