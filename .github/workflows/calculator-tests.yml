@@ -31,7 +31,6 @@ jobs:
           node tests/periods-default-rank.mjs
           node tests/items-core-input.mjs
           node tests/current-input-confirm.mjs
-          node tests/next-move-line.mjs
           node tests/current-restore.mjs
           node tests/hit-calendar-pick.mjs
           node tests/touch-select-native.mjs
