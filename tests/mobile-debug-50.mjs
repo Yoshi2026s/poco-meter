@@ -125,11 +125,11 @@ test('D30 日別記録の編集を選んだ場合は入力欄へ移動', () => {
   const p = page(autoSettings); const edit = p.element('analysisRows').children.flatMap(row => row.children).flatMap(cell => cell.children).find(node => node.dataset.date === '2026-10-02');
   edit.click(); assert.equal(p.element('editDate').value, '2026-10-02'); assert.equal(p.document.activeElement, p.element('editZero'));
 });
-test('D31 画面内メニューの移動を戻る操作の履歴に残す', () => {
-  const p = page(); p.element('openBorderTargets').click(); assert.equal(p.window.location.hash, '#targetStudio');
+test('D31 目標詳細設定への移動ボタンを削除', () => {
+  const p = page(); assert.equal(p.document.getElementById('openBorderTargets'), null); assert.equal(p.element('targetStudio').hidden, true);
 });
-test('D32 動きの軽減設定をメニュー移動へ反映', () => {
-  const p = page({}, { reducedMotion: true }); p.element('openBorderTargets').click(); assert.equal(p.element('targetStudio').lastScroll.behavior, 'auto');
+test('D32 デフォルト値設定への移動ボタンを削除', () => {
+  const p = page({}, { reducedMotion: true }); assert.equal(p.document.getElementById('openGoalDefaults'), null);
 });
 test('D33 動きの軽減設定を日別編集移動へも反映', () => {
   const p = page(autoSettings, { reducedMotion: true }); const edit = p.element('analysisRows').children.flatMap(row => row.children).flatMap(cell => cell.children).find(node => node.dataset.date === '2026-10-02'); edit.click(); assert.equal(p.element('recordEditor').lastScroll.behavior, 'auto');

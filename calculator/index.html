@@ -3,7 +3,7 @@
 <head>
 <!-- sites-host-context -->
 <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Gn8glmeckhq1Pybhp1j0Un7Ngs7PY8WDnDuIku8xECE=' 'sha256-YHw1tCHufplYGUX3oKPttjyMJC0tBwP4YofWVaN+/YI='; style-src 'unsafe-inline'; img-src 'self' data: blob:; font-src 'none'; connect-src 'self'; object-src 'none'; frame-src 'none'; worker-src 'self'; media-src 'none'; manifest-src 'self'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-qKhDscg9AgudR1gCaqTooFMs7QdrOEauY1jAvcP0l6E=' 'sha256-39s6xTGyeaYneR1A65jvkVuMWB+ZC3tqyO4VokrMpgs='; style-src 'unsafe-inline'; img-src 'self' data: blob:; font-src 'none'; connect-src 'self'; object-src 'none'; frame-src 'none'; worker-src 'self'; media-src 'none'; manifest-src 'self'; base-uri 'none'; form-action 'none'">
 <meta name="pococha-app" content="meter-offline-v1">
 <!-- offline-head:start -->
 <link rel="manifest" href="/meter.webmanifest">
@@ -1640,7 +1640,7 @@ footer .footer-support .tool-disclaimer ul{font-size:.875rem;line-height:1.8}
 
 /* 2026-11-07 tap targets: compact simple-menu controls are at least 44px tall (user decision: 44px, not 48px).
    Only when the screen is tall enough: the panel is fixed, so landscape and short screens keep the compact size. */
-@media (min-height:640px){#mini :is(#restoreTargetMini,#openMiniTargetDetails,#resetCurrentMini,#miniPeriod,#miniRank,#miniBorder,#miniMethod,#miniBuffer){min-height:44px!important}}
+@media (min-height:640px){#mini :is(#restoreTargetMini,#resetCurrentMini,#miniPeriod,#miniRank,#miniBorder,#miniMethod,#miniBuffer){min-height:44px!important}}
 
 /* 2026-11 main screen: the simple menu is the main screen on every screen size (in normal flow, not fixed).
    Other menus open from buttons. Phone portrait first: 16px controls (no iOS zoom), 44-48px tap targets. */
@@ -2393,11 +2393,11 @@ html.always-on-mode body #eventCalendarPanel{display:none!important}
 <div class="ao-mode-bar" id="aoModeBar" hidden><span id="aoWake" role="status"></span><button type="button" id="alwaysOnClose">常時表示を終了</button></div>
 <div class="main-hero"><div class="mini-remaining"><span id="miniL">目標まであと</span><b id="miniR" class="num">-</b></div><div class="mini-countdown"><span id="miniDeadlineLabel">締めまで</span><span class="mt" id="miniT">-</span><div class="main-progress" id="miniProgress" role="progressbar" aria-label="目標の達成率" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="main-progress-bar"><span id="miniFill"></span></div><span id="miniPct" class="num">0%</span></div><button type="button" id="miniPeriodReview" hidden>締め後の現在値を確認</button></div>
 <small class="clock-accuracy" id="miniClockAccuracy">標準時との差 未確認</small>
-<p class="next-move" id="nextMove" data-tone=""><span id="nextMoveMain">-</span><span id="nextMoveDetail"></span></p>
+
 <!-- phone-current:start -->
 <time id="miniNow" class="num" title="現在日時・日本時間（時刻同期を確認中）"><span id="miniNowDate"></span><span id="miniClockReading"><span id="miniTimeLabel">時刻を確認中</span> <b id="miniNowTime"></b></span>
 </time></div>
-<div class="main-inputs"><div class="mini-input mini-target" id="miniTargetField"><div class="mini-label-row"><label for="targetMini">目標<span class="lbl-tail">値</span></label><span class="mini-label-actions"><button type="button" class="mini-action" id="restoreTargetMini" aria-label="既定の目標設定を適用">既定値</button><button type="button" class="mini-action" id="openMiniTargetDetails" aria-controls="sectionBody-1" aria-label="目標値の詳細設定を開く">詳細</button><button type="button" class="mini-action mini-reset" id="resetTargetMini" aria-label="目標値をリセット" title="目標値をリセット">クリア</button></span></div><div class="mini-input-box"><input class="num" id="targetMini" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="未設定" aria-describedby="targetMiniError targetUpdateNote inputStatus"><small class="target-update-note" id="targetUpdateNote" title="公開ボーダーは日本時間の5時・17時頃に更新します。"><span class="note-wide">ボーダー</span>更新 5時・17時頃</small></div><small class="mini-forecast num" id="miniForecast" role="button" tabindex="0" hidden></small></div>
+<div class="main-inputs"><div class="mini-input mini-target" id="miniTargetField"><div class="mini-label-row"><label for="targetMini">目標<span class="lbl-tail">値</span></label><span class="mini-label-actions"><button type="button" class="mini-action" id="restoreTargetMini" aria-label="既定の目標設定を適用">既定値</button><button type="button" class="mini-action mini-reset" id="resetTargetMini" aria-label="目標値をリセット" title="目標値をリセット">クリア</button></span></div><div class="mini-input-box"><input class="num" id="targetMini" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="未設定" aria-describedby="targetMiniError targetUpdateNote inputStatus"><small class="target-update-note" id="targetUpdateNote" title="公開ボーダーは日本時間の5時・17時頃に更新します。"><span class="note-wide">ボーダー</span>更新 5時・17時頃</small></div><small class="mini-forecast num" id="miniForecast" role="button" tabindex="0" hidden></small></div>
 <div class="mini-input mini-current" id="miniCurrentField"><div class="mini-label-row"><label for="currentMini">現在<span class="lbl-tail">値</span></label><span class="mini-label-actions"><button type="button" class="mini-action" id="miniUndoCurrent" disabled aria-label="直前の現在値に戻す">戻す</button><button type="button" class="mini-action mini-reset" id="resetCurrentMini" aria-label="現在値を0にリセット" title="現在値を0にリセット">クリア</button></span></div><input class="num" id="currentMini" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="0" aria-describedby="currentMiniError inputStatus"></div>
 <small id="targetMiniError" hidden role="status" aria-live="polite"></small>
 <small id="currentMiniError" hidden role="status" aria-live="polite"></small>
@@ -2415,7 +2415,7 @@ html.always-on-mode body #eventCalendarPanel{display:none!important}
     
     <div class="item-conversion-tools">
     <details class="conversion-note"><summary>換算条件（ボーナス<span id="coreNote">＝100%</span>）</summary><p class="hint">必要コインは、残りポイントを（4 × ボーナス倍率）で割って切り上げます。アイテムの個数は、それぞれ単独で目標に届く場合の目安です。</p></details>
-    <details id="registeredItemNeeds" class="registered-item-needs"><summary id="customItemSummary">登録アイテムの必要数</summary><p class="hint">登録した1個あたりのポイントから必要数を計算します。</p><div id="customItemNeeds" class="custom-item-needs" tabindex="0" role="region" aria-label="登録アイテムの必要数"></div></details>
+    <details id="registeredItemNeeds" class="registered-item-needs" hidden><summary id="customItemSummary">登録アイテムの必要数</summary><p class="hint">登録した1個あたりのポイントから必要数を計算します。</p><div id="customItemNeeds" class="custom-item-needs" tabindex="0" role="region" aria-label="登録アイテムの必要数"></div></details>
     </div>
     <details class="pace-details"><summary>必要ペース</summary>
     <div class="pace num">
@@ -2436,8 +2436,9 @@ html.always-on-mode body #eventCalendarPanel{display:none!important}
   <section class="card collapsed" id="borderTargets" data-collapse-key="📊 ボーダー別の必要量">
     <h2>📊 ボーダー別の必要量（<span class="closeLbl">22時締め</span>）</h2>
     <div class="section-body" id="sectionBody-3" hidden>
-    <div style="max-width:220px"><label for="rank">ランク</label>
-      <select id="rank"></select></div>
+    <div class="border-target-filters" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:360px"><div><label for="rank">ランク</label>
+      <select id="rank"></select></div><div><label for="borderClose">締め時間</label>
+      <select id="borderClose"><option value="13:00">13時締め</option><option value="22:00">22時締め</option><option value="00:00">24時締め</option><option value="custom" hidden>手入力</option></select></div></div>
     <div class="rows" id="borders" style="margin-top:12px"></div>
     
 
@@ -2445,7 +2446,7 @@ html.always-on-mode body #eventCalendarPanel{display:none!important}
 </div>
   </section>
 
-  <section class="pick card studio collapsed" id="targetStudio" data-collapse-key="目標の自動計算・分析">
+  <section class="pick card studio collapsed" id="targetStudio" data-collapse-key="目標の自動計算・分析" hidden inert aria-hidden="true"><!-- 2026-11-20 目標詳細設定は画面から削除（自動目標の計算に使う内部の選択欄だけ残す） -->
     <h2>📈 <span id="analysisHeading">目標詳細設定</span></h2>
     <div class="section-body" id="sectionBody-1" hidden>
     <div class="studio-head"><span class="coverage-pill" id="dataBadge">記録を確認中</span></div>
@@ -2512,7 +2513,7 @@ html.always-on-mode body #eventCalendarPanel{display:none!important}
 </div>
   </section>
 
-  <section class="card collapsed" data-collapse-key="🎁 アイテム換算">
+  <section class="card collapsed" id="itemRegister" data-collapse-key="🎁 アイテム換算" hidden inert aria-hidden="true"><!-- 2026-11-20 アイテム登録は画面から削除（保存済みデータは消さない） -->
     <h2>🎁 アイテム登録</h2>
     <div class="section-body" id="sectionBody-5" hidden>
     <div class="rows" id="items"></div>
@@ -2703,7 +2704,7 @@ html.always-on-mode body #eventCalendarPanel{display:none!important}
     <div class="manual-goal" id="manualGoal">
       <div class="lblrow"><label for="target">目標値</label><span class="mode-pill" id="manualTargetMode">手入力</span><div class="goal-reset-actions"><button type="button" id="restoreGoalDefaults">デフォルト値に戻す</button><button type="button" class="x" data-reset="target" aria-label="目標値をリセット">リセット</button></div></div>
       <div class="manual-goal-controls"><input class="big num" id="target" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" aria-describedby="manualTargetHelp inputStatus" placeholder="例 500K / 50万"><button type="button" class="main" id="applyManualTarget">設定</button></div>
-      <div class="goal-setting-links"><button type="button" id="openBorderTargets" class="border-target-link" aria-controls="sectionBody-1">詳細設定</button><button type="button" id="openGoalDefaults" class="border-target-link" aria-controls="goalDefaultsPanel">デフォルト値設定</button></div>
+      
       <p class="hint short-input-help" id="manualTargetHelp">K・万・全角数字OK／入力時に反映</p><div class="goal-tools"><button type="button" id="undoTarget" disabled>戻す</button></div>
       
       
@@ -2746,7 +2747,7 @@ html.always-on-mode body #eventCalendarPanel{display:none!important}
   }
   function render(){
     mini.classList.add('show');mini.classList.remove('hud-collapsed');mini.setAttribute('aria-hidden','false');
-    ['targetMini','currentMini','restoreTargetMini','openMiniTargetDetails','resetTargetMini','resetCurrentMini','miniPeriod','miniRank','miniBorder','miniMethod','miniBuffer','miniClose'].forEach(function(id){var el=document.getElementById(id);if(el)el.tabIndex=0;});
+    ['targetMini','currentMini','restoreTargetMini','resetTargetMini','resetCurrentMini','miniPeriod','miniRank','miniBorder','miniMethod','miniBuffer','miniClose'].forEach(function(id){var el=document.getElementById(id);if(el)el.tabIndex=0;});
     document.documentElement.style.setProperty('--meter-hud-height','0px');document.documentElement.style.setProperty('--items-window-height','0px');
   }
   // 2026-11: the auxiliary menus are integrated into the simple menu; nothing is hidden behind a separate menu.
@@ -4016,7 +4017,7 @@ html.always-on-mode body #eventCalendarPanel{display:none!important}
     var label=$('currentSavedTime'),time=jstNow(state.currentSavedAt),now=jstNow();label.textContent='入力 '+(time.y!==now.y?time.y+'/'+time.m+'/'+time.d+' ':time.m!==now.m||time.d!==now.d?time.m+'/'+time.d+' ':'')+String(Math.floor(time.mins/60)).padStart(2,'0')+':'+String(Math.floor(time.mins%60)).padStart(2,'0');label.title=new Date(state.currentSavedAt).toLocaleString('ja-JP',{timeZone:'Asia/Tokyo'});
     $('liveMeter').classList.toggle('goal-done',parseNum(state.target)>0&&parseNum(state.current)>=parseNum(state.target));
     $('copyRemaining').disabled=!parseNum(state.target);
-    $('registeredItemNeeds').hidden=state.items.length===0;
+    $('registeredItemNeeds').hidden=true;
 
   }
   var copyOperations={};
@@ -4083,10 +4084,8 @@ html.always-on-mode body #eventCalendarPanel{display:none!important}
   if($('undoTarget'))$('undoTarget').onclick=undoTargetReset;
   renderTargetUndo();
   $('applyManualTarget').onclick=function(){applyManualGoal($('target'));};
-  $('openBorderTargets').onclick=function(){navigateMenuTarget('targetStudio');};
-  $('openMiniTargetDetails').onclick=function(){navigateMenuTarget('targetStudio');};
   var goalDefaultsReturnTrigger=null;
-  $('openGoalDefaults').onclick=function(){goalDefaultsReturnTrigger=this;navigateMenuTarget('goalDefaultsPanel');};
+
   ['target','targetMini'].forEach(function(id){$(id).addEventListener('keydown',function(e){if(e.key==='Enter'&&!isNumericComposing(this,e)){e.preventDefault();if(applyManualGoal(this))this.blur();}});});
   ['target','targetMini','current','currentTop','currentMini'].forEach(function(id){
     var el=$(id),key=isTargetInput(el)?'target':'current';
@@ -4248,7 +4247,7 @@ html.always-on-mode body #eventCalendarPanel{display:none!important}
 
   update();
   var pendingCloseCustom=false;
-  function syncClose(){var d=state.deadline||'22:00',el=$('closeSel');var customCard=$('customDeadlineCard');if(customCard)customCard.hidden=!(pendingCloseCustom||['13:00','22:00','00:00'].indexOf(d)<0);if(document.activeElement!==el)el.value=pendingCloseCustom?'custom':(['13:00','22:00','00:00'].indexOf(d)>=0)?d:'custom';var mini=$('miniClose');if(mini.options.length&&document.activeElement!==mini)mini.value=pendingCloseCustom?'custom':(['13:00','22:00','00:00'].indexOf(d)>=0?d:'custom');el.title='締め時刻：'+(d==='00:00'?'24:00':d)+(pendingCloseCustom?'（手入力で変更中）':'');el.setAttribute('aria-label',el.title);}
+  function syncClose(){var d=state.deadline||'22:00',el=$('closeSel');var customCard=$('customDeadlineCard');if(customCard)customCard.hidden=!(pendingCloseCustom||['13:00','22:00','00:00'].indexOf(d)<0);if(document.activeElement!==el)el.value=pendingCloseCustom?'custom':(['13:00','22:00','00:00'].indexOf(d)>=0)?d:'custom';var bc=$('borderClose');if(bc&&document.activeElement!==bc)bc.value=pendingCloseCustom?'custom':(['13:00','22:00','00:00'].indexOf(d)>=0?d:'custom');var mini=$('miniClose');if(mini.options.length&&document.activeElement!==mini)mini.value=pendingCloseCustom?'custom':(['13:00','22:00','00:00'].indexOf(d)>=0?d:'custom');el.title='締め時刻：'+(d==='00:00'?'24:00':d)+(pendingCloseCustom?'（手入力で変更中）':'');el.setAttribute('aria-label',el.title);}
   $('closeSel').addEventListener('blur',function(){if(this.value!=='custom'&&this.value!==state.deadline)this.dispatchEvent(new Event('change',{bubbles:true}));syncClose();});
   function prepareCutoffTarget(value){
     if(value===state.deadline)return;
@@ -4263,6 +4262,7 @@ html.always-on-mode body #eventCalendarPanel{display:none!important}
     pendingCloseCustom=false;prepareCutoffTarget(value);state.deadline=value;$('deadline').value=value;flagInput($('deadline'),'');save();update();syncClose();
   }
   $('closeSel').onchange=function(){commitClose(this.value);};
+  $('borderClose').onchange=function(){commitClose(this.value);};
   function commitMiniClose(){commitClose(this.value);}
   $('miniClose').addEventListener('input',commitMiniClose);$('miniClose').addEventListener('change',commitMiniClose);$('miniClose').addEventListener('blur',function(){if(this.value!==state.deadline&&this.value!=='custom')commitMiniClose.call(this);syncClose();});
   $('deadline').addEventListener('input',function(){if(toMins(this.value)!==null)pendingCloseCustom=false;syncClose();});
@@ -4356,7 +4356,7 @@ html.always-on-mode body #eventCalendarPanel{display:none!important}
   if(phoneLayoutQuery){if(phoneLayoutQuery.addEventListener)phoneLayoutQuery.addEventListener('change',syncPhoneLayout);else if(phoneLayoutQuery.addListener)phoneLayoutQuery.addListener(syncPhoneLayout);}
   syncPhoneLayout();
   function isEditingField(el){return !!el&&(el.tagName==='SELECT'||el.tagName==='TEXTAREA'||(el.tagName==='INPUT'&&['checkbox','radio','file'].indexOf(el.type)<0));}
-  function syncMiniVisibility(){var editing=isEditingField(document.activeElement),phone=touchInputQuery.matches;var viewport=window.visualViewport,offset=phone&&viewport?Math.max(0,window.innerHeight-viewport.height-viewport.offsetTop):0,top=phone&&viewport?Math.max(0,viewport.offsetTop||0):0;document.documentElement.style.setProperty('--meter-keyboard-offset',offset+'px');document.documentElement.style.setProperty('--meter-viewport-top',top+'px');document.body.classList.toggle('editing-field',editing);var visibleHeight=viewport&&viewport.height||window.innerHeight;if(Number.isFinite(visibleHeight)&&visibleHeight>0)document.documentElement.style.setProperty('--meter-visible-height',visibleHeight+'px');syncItemsWindow();$('mini').classList.add('show');$('mini').setAttribute('aria-hidden','false');['targetMini','currentMini','restoreTargetMini','openMiniTargetDetails','resetTargetMini','resetCurrentMini','miniPeriod','miniRank','miniBorder','miniMethod','miniBuffer','miniClose'].forEach(function(id){$(id).tabIndex=0;});document.documentElement.style.setProperty('--meter-hud-height','0px');document.documentElement.style.setProperty('--hud-bottom',$('mini').getBoundingClientRect().bottom+'px');}
+  function syncMiniVisibility(){var editing=isEditingField(document.activeElement),phone=touchInputQuery.matches;var viewport=window.visualViewport,offset=phone&&viewport?Math.max(0,window.innerHeight-viewport.height-viewport.offsetTop):0,top=phone&&viewport?Math.max(0,viewport.offsetTop||0):0;document.documentElement.style.setProperty('--meter-keyboard-offset',offset+'px');document.documentElement.style.setProperty('--meter-viewport-top',top+'px');document.body.classList.toggle('editing-field',editing);var visibleHeight=viewport&&viewport.height||window.innerHeight;if(Number.isFinite(visibleHeight)&&visibleHeight>0)document.documentElement.style.setProperty('--meter-visible-height',visibleHeight+'px');syncItemsWindow();$('mini').classList.add('show');$('mini').setAttribute('aria-hidden','false');['targetMini','currentMini','restoreTargetMini','resetTargetMini','resetCurrentMini','miniPeriod','miniRank','miniBorder','miniMethod','miniBuffer','miniClose'].forEach(function(id){$(id).tabIndex=0;});document.documentElement.style.setProperty('--meter-hud-height','0px');document.documentElement.style.setProperty('--hud-bottom',$('mini').getBoundingClientRect().bottom+'px');}
   function keepMiniInputVisible(){
     var el=document.activeElement;
     if(!touchInputQuery.matches||!isEditingField(el))return;

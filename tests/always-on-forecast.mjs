@@ -275,7 +275,11 @@ assert.ok(html.includes('id="perHour"') && !html.includes('id="aoPace"'));
 assert.match(html, /id="targetMini"[\s\S]{0,600}id="miniForecast"/);
 // 目標値・現在値の操作ボタンは見出し行に並べる（ボタンだけの行を作らない）
 // 見出しは「目標値」「現在値」（359px以下は末尾の「値」を隠して「目標」「現在」と表示、読み上げ名は変わらない）
-assert.match(html, /<label for="targetMini">目標<span class="lbl-tail">値<\/span><\/label><span class="mini-label-actions">[\s\S]{0,200}id="restoreTargetMini"[\s\S]{0,300}id="openMiniTargetDetails"[\s\S]{0,300}id="resetTargetMini"/);
+assert.match(html, /<label for="targetMini">目標<span class="lbl-tail">値<\/span><\/label><span class="mini-label-actions">[\s\S]{0,200}id="restoreTargetMini"[\s\S]{0,300}id="resetTargetMini"/);
+assert.doesNotMatch(html, /id="(?:openMiniTargetDetails|openBorderTargets|openGoalDefaults|nextMove)"/);
+assert.match(html, /<section class="pick card studio collapsed" id="targetStudio"[^>]*\bhidden inert aria-hidden="true"/);
+assert.match(html, /id="itemRegister"[^>]*\bhidden inert/);
+assert.match(html, /<label for="borderClose">締め時間<\/label>\s*<select id="borderClose">/);
 assert.match(html, /<label for="currentMini">現在<span class="lbl-tail">値<\/span><\/label><span class="mini-label-actions">[\s\S]{0,200}id="miniUndoCurrent"[\s\S]{0,200}id="resetCurrentMini"/);
 assert.match(html, /@media \(max-width:359px\)\{\n  html:root body #mini\.main-screen :is\(#miniTargetField,#miniCurrentField\) \.mini-label-row \.lbl-tail\{display:none\}/);
 assert.ok(!html.includes('class="mini-target-actions"'), 'ボタンだけの行は無い');

@@ -69,10 +69,10 @@ async function step(p){await p.waitForTimeout(80);}
   await fill(p,'#targetMini','600K');await p.locator('#targetMini').press('Enter');assert.equal((await p.locator('#miniR').innerText()).trim(),'475K');assert.equal(await p.evaluate(()=>JSON.parse(localStorage.getItem('pococha-meter-calc-v1')).target),'600000');
   await fill(p,'#targetMini','500K');await p.locator('#targetMini').press('Enter');
   // Scrolling into the integrated sub menus shows the status bar; nothing covers a focused field.
-  await p.locator('#targetStudio .sectionToggle').click();await p.evaluate(()=>window.scrollTo(0,document.getElementById('mainSubMenus').getBoundingClientRect().top+scrollY));await p.clock.runFor(300);await step(p);
+  await p.locator('#borderTargets .sectionToggle').click();await p.evaluate(()=>window.scrollTo(0,document.getElementById('mainSubMenus').getBoundingClientRect().top+scrollY));await p.clock.runFor(300);await step(p);
   assert.equal(await p.locator('#stickyStatus').isVisible(),true,'status bar while the hero is out of view');assert.equal((await p.locator('#stickyR').innerText()).trim(),'375K');
-  await p.locator('#roundUnit').focus();await step(p);assert.equal(await p.evaluate(()=>{const r=document.getElementById('roundUnit').getBoundingClientRect();return document.elementFromPoint(r.left+r.width/2,r.top+r.height/2)?.id;}),'roundUnit','nothing covers the focused field');
-  await p.locator('#roundUnit').blur();await p.evaluate(()=>window.scrollTo(0,0));await p.clock.runFor(300);await step(p);assert.equal(await p.locator('#stickyStatus').isVisible(),false,'status bar hidden at top');
+  await p.locator('#borderClose').focus();await step(p);assert.equal(await p.evaluate(()=>{const r=document.getElementById('borderClose').getBoundingClientRect();return document.elementFromPoint(r.left+r.width/2,r.top+r.height/2)?.id;}),'borderClose','nothing covers the focused field');
+  await p.locator('#borderClose').blur();await p.evaluate(()=>window.scrollTo(0,0));await p.clock.runFor(300);await step(p);assert.equal(await p.locator('#stickyStatus').isVisible(),false,'status bar hidden at top');
   if(config.scale===1&&[320,390,430].includes(config.width)&&config.weight==='bold')await p.screenshot({path:path.join(OUT,'phone-'+config.width+'-'+config.theme+'.png'),fullPage:true,animations:'disabled'});
   await fill(p,'#targetMini','514.421K');await p.locator('#targetMini').press('Enter');await fill(p,'#currentMini','100K');await p.locator('#currentMini').press('Enter');assert.equal((await p.locator('#miniR').innerText()).trim(),'414.421K');
   assert.equal(await p.locator('#miniR').evaluate(e=>e.scrollWidth<=e.clientWidth+1),true,'typical long K value fits available space');
@@ -157,7 +157,6 @@ async function step(p){await p.waitForTimeout(80);}
   opened=await open(390,path.join(ROOT,'calculator/index.html'),{defaultsOnly:true});const p=opened.p;
   assert.equal(await p.locator('#coreCountTop').inputValue(),'0');assert.equal(await p.locator('#coreBonusTop').innerText(),'100%');
   const base=await p.evaluate(()=>JSON.parse(localStorage.getItem('pococha-meter-calc-v1')));assert.equal(base.goalDefaults.coreCount,'0');
-  await p.locator('#openMiniTargetDetails').click();await p.locator('#goalDefaultsPanel > summary').click();await p.locator('#standardGoalDefaults').click();assert.equal(await p.locator('#defaultCore').inputValue(),'0');
   await opened.context.close();opened=null;
   for(const core of [undefined,'invalid','0','40','45']){
    const state={...base,coreCount:core,goalDefaults:{...base.goalDefaults,rank:'S3',coreCount:'55',applyOnLoad:false},goalDefaultsVersion:0};
