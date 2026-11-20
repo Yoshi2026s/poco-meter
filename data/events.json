@@ -1,7 +1,7 @@
 {
  "schema": "poco-events-v1",
  "note": "イベント名・期間・対象ランク・対象（audience）・URLなどの事実だけを記録。本文は保存しない。confidence: high=「開催期間」等の見出し付きの期間を検出 / low=見出しなしの期間 / none=期間を検出できず。使用期限・配信時間・応募や選考などの期間は除外（excluded に件数）。",
- "updatedAt": "2026-11-19T17:08:11.838Z",
+ "updatedAt": "2026-11-20T01:40:24.773Z",
  "sources": [
   {
    "id": "pococha-official-note",
@@ -346,6 +346,36 @@
    "confirmedAt": "2026-11-18"
   },
   {
+   "id": "n6bfccb14eefa",
+   "title": "【20Stars】推しを応援して限定プロフ背景をゲット！リスナーミッション解説",
+   "url": "https://report.pococha.com/n/n6bfccb14eefa",
+   "sourceId": "pococha-official-note",
+   "sourceKind": "official",
+   "published": "2026-11-20T09:30:08.000+09:00",
+   "modified": "2026-11-20T09:30:08.000+09:00",
+   "type": "mission",
+   "start": "2026-12-11",
+   "end": "2026-12-17",
+   "periods": [
+    {
+     "start": "2026-12-11",
+     "end": "2026-12-17",
+     "startTime": "12:00",
+     "endTime": "23:59",
+     "label": "20Stars リスナーミッションとは？",
+     "labeled": false,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "low",
+   "audience": [
+    "リスナー"
+   ],
+   "excluded": 1,
+   "fetchedAt": "2026-11-20T01:40:19.005Z"
+  },
+  {
    "id": "nbf2c1188a729#task-4ce30f13c2",
    "title": "POCO LAND 2026 20Stars C・D・Voice C/D",
    "url": "https://report.pococha.com/n/nbf2c1188a729#task-4ce30f13c2",
@@ -438,6 +468,35 @@
    "excluded": 0,
    "fetchedAt": null,
    "confirmedAt": "2026-11-14"
+  },
+  {
+   "id": "nbf2c1188a729#task-00b5dcdffd",
+   "title": "POCO LAND 2026 ぽこチャレ",
+   "url": "https://report.pococha.com/n/nbf2c1188a729#task-00b5dcdffd",
+   "sourceId": "pococha-official-task",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "big",
+   "start": "2026-11-26",
+   "end": "2026-12-02",
+   "periods": [
+    {
+     "start": "2026-11-26",
+     "end": "2026-12-02",
+     "startTime": "12:00",
+     "endTime": "23:59",
+     "label": "POCO LAND 2026 ぽこチャレ",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-16"
   },
   {
    "id": "n642997ac8aa1",
@@ -695,7 +754,7 @@
    "sourceId": "pococha-official-note",
    "sourceKind": "official",
    "published": "2026-11-16T21:12:51.000+09:00",
-   "modified": "2026-11-18T16:07:47.000+09:00",
+   "modified": "2026-11-19T14:40:56.000+09:00",
    "type": "notice",
    "start": null,
    "end": null,
@@ -706,7 +765,7 @@
     "リスナー"
    ],
    "excluded": 0,
-   "fetchedAt": "2026-11-18T16:59:16.857Z"
+   "fetchedAt": "2026-11-20T01:40:21.068Z"
   },
   {
    "id": "nf7d13f42a013",
