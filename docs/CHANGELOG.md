@@ -1,5 +1,7 @@
 # 変更履歴
 
+- 2026/11/21 設定のみ：`.claude/settings.json` の許可リストに日常のgit操作（switch・add・commit・pull・branch・rev-parse・ls-remote）・`npm run pages:prepare`・rg・ls・wc・cut を追加し、強制push（`git push --force`・`-f`）を禁止に追加（ユーザー依頼）。確認待ちの削減のため。検証：JSONの形式確認、npm run check 合格。
+
 - 2026/11/21 資料のみ：読む量の削減。HANDOVER を現状だけに圧縮（71KB→13KB、旧本文は archive/HANDOVER-2026-11-21.md）、CHANGELOG の11/17以前を archive/CHANGELOG-2026-11-06-to-11-17.md へ移動（61KB→11KB）、AGENTS.md に資料の上限と部分読みのルールを追加。検証：npm run check 合格。
 
 - 2026/11/21 v2026.11.21.1：現コア数の欄（残りアイテムの目安・換算条件）で全角数字を入力中に半角へ直す（IME変換中は待つ）。320px幅で全角「１０００」が欄に収まらなかった hud-items-browser の既存不合格を解消。同テストの文字幅の測り方を実際の文字サイズに合わせ、入力中に半角になることも検査。検証：npm run check 合格、test:extra 13本すべて合格（Chromiumのエミュレーション）。
