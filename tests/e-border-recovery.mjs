@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';import {eHarness} from './e-border-harness.mjs';import {E_SEEDS,E_SCHEMA,eValue,eMerge,eBackup,eReadCSV,eParseOCR,eKey} from '../calculator/e-border-core.mjs';import {E_KEY,E_DRAFT_KEY,E_RECOVERY_KEY,eState,eEncode,eWrite,eRemove,eDraftEncode,eArchive,eFilterPrefs,E_FILTER_KEY} from '../calculator/e-border-store.mjs';
 const base=E_SEEDS[0],seed=eState(null),row={date:'2026-08-01',rank:'E',close:'22',values:['100','1K','2K'],source:'端末で確認した画面表示値',precision:'display'};
 const plain=o=>JSON.parse(JSON.stringify(o));
-async function fill(h,box,r){const a=h.inputs(box);for(const [i,v]of [r.date,r.rank,r.close,...r.values].entries()){a[i].value=v;await a[i].dispatch('input');}const cb=a.find(c=>c.type==='checkbox');cb.checked=true;await cb.dispatch('change');}
+async function fill(h,box,r){const a=h.inputs(box);for(const [i,v]of [r.date,r.rank,r.close,...r.values].entries()){a[i].value=v;await a[i].dispatch('input');}const cb=a.find(c=>c.type==='checkbox');if(cb){cb.checked=true;await cb.dispatch('change');}}
 assert.equal(eValue('1.001K').n,1001);assert.equal(eValue('1.001M').n,1001000);assert.doesNotThrow(()=>eMerge([],[{...row,values:['1001','1.001K','2K']}]));
 assert.equal(eParseOCR('2026年8月1日 22:00\n締め時間22:00','E1','').date,'');assert.equal(eParseOCR('2026年8月1日\n2026年8月2日\n締め時間24:00','E1','').date,'');
 {
@@ -60,5 +60,5 @@ for(const raw of ['{','null','[]','{"rank":"E9"}','{"month":"2026-13"}']){const 
  const h=eHarness();try{await h.click('manual');const box=h.get('drafts').children[0],inputs=h.inputs(box);for(const [i,v] of ['2026-08-01','E','24','9000','1K','2K'].entries()){inputs[i].value=v;await inputs[i].dispatch('input');}await h.click('nextDraft');assert.equal(h.focus(),inputs[3]);assert.equal(inputs[3].getAttribute('aria-invalid'),'true');}finally{h.close();}
 }
 {
- const h=eHarness();try{h.eval('addBatch([E_SEEDS[0],E_SEEDS[1]])');const cb=h.inputs(h.get('drafts').children[0])[0];cb.checked=true;await cb.dispatch('change');assert.ok(h.get('draftReviewSummary').textContent.includes('記録 2件'));assert.ok(h.get('draftReviewSummary').textContent.includes('確認済み 1組'));await h.click('nextDraft');assert.ok(h.get('status').textContent.includes('すべての候補'));await h.click('reload');assert.ok(h.get('draftReviewSummary').textContent.includes('確認済み 0組'));}finally{h.close();}
+ const h=eHarness();try{h.eval('addBatch([E_SEEDS[0],E_SEEDS[1]])');const cb=h.inputs(h.get('drafts').children[0])[0];cb.checked=true;await cb.dispatch('change');assert.ok(h.get('draftReviewSummary').textContent.includes('記録 2件'));assert.ok(h.get('draftReviewSummary').textContent.includes('保存できる 1組'));await h.click('nextDraft');assert.ok(h.get('status').textContent.includes('すべての候補'));await h.click('reload');assert.ok(h.get('draftReviewSummary').textContent.includes('保存できる 0組'));}finally{h.close();}
 }
