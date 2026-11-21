@@ -11,3 +11,13 @@ data/*.json
 # E帯の画像読取用に同梱した第三者ファイル（巨大な1行。読むのは calculator/ocr/NOTICE.md だけ）
 calculator/ocr/*.js
 calculator/ocr/*.gz
+# 旧Sites版（Next.js）の不使用コード・完了した作業メモ（README「旧Sites版の名残」）。必要なときはパスを直接指定する。
+app/
+components/
+hooks/
+examples/
+github-sync/
+drizzle/
+deployment/
+docs/codex-tasks/
+docs/research/
