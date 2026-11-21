@@ -49,7 +49,7 @@ git switch -c codex/example-task "origin/(root)"
 - 公開：GitHub Pages https://yoshi2026s.github.io/poco-meter/ （既定ブランチ `(root)` への push で自動公開）
 - ボーダー：`data/borders.json`。GitHub Actions が毎日 05:00・17:00 JST に ONE CARAT から取得（記事本文＋月別表画像の2系統）。同じジョブでPococha公式noteのイベント新着も収集する。
 - 旧Sites・署名キー・旧ChatGPTタスクは使わない。旧Sitesには新URLへの移転案内を掲示済み。ただし2026/11/19時点で旧Sitesは稼働中で、書き込みAPI（/api/borders/refresh）と管理ページが応答する。止める・キーを無効にするのはSites側の操作（ユーザー作業）。GitHub Secrets は2026/11/20に登録なし（`gh secret list` が空）を確認済み。
-- ツール版：`scripts/build-pages.mjs` の `PAGES_VERSION`（v2026.11.20.5）。
+- ツール版：`scripts/build-pages.mjs` の `PAGES_VERSION`（v2026.11.21.1）。
 - 訪問者統計：GoatCounter（`GOATCOUNTER_CODE` が空なら無効、現在 `poco-meter`）。公開4画面のページ別集計に加え、共通イベント `site-visitor-daily`（「サイト全体の訪問者数（1日・日本時間）」）で同じブラウザーを日本時間0時〜翌0時の1日1件にまとめる。[管理画面](https://poco-meter.goatcounter.com/)の同名行を読む。「合計」はイベントを除外したページ訪問数。`scripts/goatcounter-site-visit.js` が Web Locks で複数タブを直列化し、`poco-meter-daily-visit-v1` に最後の送信受付日だけを保存。日別イベントだけは公式 `ns=true` で8時間判定を使わず、翌日0時直後も数える。Cookie・独自IDなし。別端末/別ブラウザー/保存データ削除後は別件になり得る。固定版 count.v5.js＋公式SRI・ヘルパーSRI・自アクセス除外を維持。以前の8時間集計 `site-visitor` は過去データとして残し、日別と合算しない。見方・送信失敗時の扱い・対応条件は [訪問者統計](codex-tasks/visitor-stats.md) を参照。
 - メーター画面の並び：最上部にタイトル欄（使い方・目標値の算出方法・表示設定・再読み込み・アプリ更新）、その下にメーター、補助メニュー、E帯・過去ボーダーの入口。タイトル欄は `#titleTop`（`.title-top`）に入り、幅はメーターと同じ。 タイトル欄は2段（1段目：タイトルと更新日時・版、2段目：4ボタン）で、スマホでは約106px。
 - 表示設定パネル（v2026.11.17.9）：「おすすめ配色」は名前が長く、2列表示（361px以上）で「デフォルト設定（太文字）」などが途中で切れていたため、全幅で先頭に置く（`.display-preset-row`、CSSの order と grid-column。DOMの順は変えていない）。標準チェック・test:extra 13本に合格。[PR #139](https://github.com/Yoshi2026s/poco-meter/pull/139) で統合・公開済み（`3bbffc7`）。公開URLで版 v2026.11.17.9 を確認。物理端末は未確認。

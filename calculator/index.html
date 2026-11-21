@@ -3,7 +3,7 @@
 <head>
 <!-- sites-host-context -->
 <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-qKhDscg9AgudR1gCaqTooFMs7QdrOEauY1jAvcP0l6E=' 'sha256-39s6xTGyeaYneR1A65jvkVuMWB+ZC3tqyO4VokrMpgs='; style-src 'unsafe-inline'; img-src 'self' data: blob:; font-src 'none'; connect-src 'self'; object-src 'none'; frame-src 'none'; worker-src 'self'; media-src 'none'; manifest-src 'self'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-qKhDscg9AgudR1gCaqTooFMs7QdrOEauY1jAvcP0l6E=' 'sha256-KyAH1oneXNsieC7U3aTWWNlApR/aPyduEWVk/8RJ8Zo='; style-src 'unsafe-inline'; img-src 'self' data: blob:; font-src 'none'; connect-src 'self'; object-src 'none'; frame-src 'none'; worker-src 'self'; media-src 'none'; manifest-src 'self'; base-uri 'none'; form-action 'none'">
 <meta name="pococha-app" content="meter-offline-v1">
 <!-- offline-head:start -->
 <link rel="manifest" href="/meter.webmanifest">
@@ -4044,7 +4044,7 @@ html.always-on-mode body #eventCalendarPanel{display:none!important}
     var c=Math.min(1000,parseNum(state.coreCount));state.coreCount=String(c);
     var html='';for(var i=0;i<=1000;i++)html+='<option value="'+i+'">'+i+'人</option>';
     $('coreCount').innerHTML=html;$('coreCount').value=String(c);$('coreCountTop').value=String(c);$('coreCountItems').value=String(c);
-    function changeCore(e){if(isNumericComposing(this,e))return;var n=readCoreCount(this.value);if(n===null){flagInput(this,'コア数は0〜1000の整数を入力してください。');return;}flagInput(this,'');state.coreCount=String(n);$('coreCount').value=String(n);var source=this;['coreCountTop','coreCountItems'].forEach(function(id){var el=$(id);if(el!==source){el.value=String(n);flagInput(el,'');}});save();update();}
+    function changeCore(e){if(isNumericComposing(this,e))return;if(/[０-９]/.test(this.value)){var half=this.value.replace(/[０-９]/g,function(d){return String.fromCharCode(d.charCodeAt(0)-0xFEE0);});if(half!==this.value){this.value=half;try{this.setSelectionRange(half.length,half.length);}catch(_){}}}var n=readCoreCount(this.value);if(n===null){flagInput(this,'コア数は0〜1000の整数を入力してください。');return;}flagInput(this,'');state.coreCount=String(n);$('coreCount').value=String(n);var source=this;['coreCountTop','coreCountItems'].forEach(function(id){var el=$(id);if(el!==source){el.value=String(n);flagInput(el,'');}});save();update();}
     ['coreCountTop','coreCountItems'].forEach(function(id){var el=$(id);el.addEventListener('input',changeCore);el.addEventListener('change',changeCore);el.addEventListener('compositionstart',function(){numericComposing[this.id]=true;});el.addEventListener('compositionend',function(){delete numericComposing[this.id];changeCore.call(this);});el.addEventListener('keydown',function(e){if(e.key==='Enter'&&!isNumericComposing(this,e)){e.preventDefault();changeCore.call(this);if(this.getAttribute('aria-invalid')!=='true')this.blur();}});el.addEventListener('blur',function(){delete numericComposing[this.id];changeCore.call(this);if(this.getAttribute('aria-invalid')!=='true')this.value=state.coreCount;});});
     $('coreCount').addEventListener('change',function(){state.coreCount=this.value;['coreCountTop','coreCountItems'].forEach(function(id){$(id).value=state.coreCount;flagInput($(id),'');});save();update();});
   })();
