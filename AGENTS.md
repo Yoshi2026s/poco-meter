@@ -49,14 +49,16 @@ Claude Code と ChatGPT（Codex など）の共通指示です。
 - 締め時間ごとに異なる既知データを用いて計算を検証。同値を機械的に異なる数字へ変えない。
 
 ## 資料の更新ルール（読む量を増やさないため）
-- docs/HANDOVER.md は「今の状態」だけを書き、古くなった記述は書き換える（追記で伸ばさない）。
-- 変更ごとに docs/CHANGELOG.md の先頭へ1行（日付・版・内容・検証）。詳細はPR本文とコミットに書く。
+- docs/HANDOVER.md は「今の状態」だけを書き、古くなった記述は書き換える（追記で伸ばさない）。200行・20KB以内。版ごとの画面仕様・検証結果は書かない（PR本文とCHANGELOGに書く）。
+- 変更ごとに docs/CHANGELOG.md の先頭へ1行（日付・版・内容・検証）。詳細はPR本文とコミットに書く。20KBを超えたら古い日付の分を docs/archive/CHANGELOG-<期間>.md へ移す。
+- CHANGELOG・HANDOVER を直すときは全体を読まない。CHANGELOG は先頭10行だけ読んで追記し、HANDOVER は見出しを検索して該当箇所だけ読む。
 - 検証レポートや結果JSONを新しく docs/ 直下に増やさない。残す必要があればPR本文か docs/archive/ へ。
 - docs/archive/・docs/legacy-source/ は過去の記録。書き換えない。
 
 ## 大きいファイルの扱い（トークン節約）
 - 全体を読まない：`calculator/border-history.html`（1.2MB、389行目が埋め込みデータ1行）、`calculator/index.html`（540KB、2528行目が長い1行）、`calculator/offline-assets.mjs`（26行目が画像データ1行）、`data/borders.json`、`pnpm-lock.yaml`、`tsconfig.tsbuildinfo`、`SOURCE_MANIFEST.json`、`calculator/ocr/` の `.js`・`.gz`（E帯の画像読取用に同梱した第三者ファイル。数MBの1行。読むのは `calculator/ocr/NOTICE.md` だけ）。
 - 検索で行番号を特定し、必要な範囲だけ読む。長い行は `cut -c1-300` や `rg --max-columns 300` で切る。
+- 旧資料（docs/archive/・docs/legacy-source/）は必要なときだけ、語で検索して該当行を読む。
 - `.ignore` で旧資料・大きいデータを検索対象から外している。対象にしたいときはパスを直接指定する。
 - データの確認は全文表示せず `node -e` 等で件数・該当日だけ取り出す。
 
