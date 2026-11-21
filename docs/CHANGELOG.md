@@ -1,5 +1,7 @@
 # 変更履歴
 
+- 2026/11/21 資料・設定のみ：AGENTS.md を規則を保ったまま簡潔化（8.9KB→7.3KB、毎回自動で読む量を削減）。`.ignore` に旧Sites版の不使用コード（app/・components/・hooks/・examples/・github-sync/・drizzle/・deployment/）と完了した作業メモ（docs/codex-tasks/・docs/research/）を追加し、検索対象を350→250ファイルに。検証：npm run check 合格。
+
 - 2026/11/21 設定のみ：`.claude/settings.json` の許可リストに日常のgit操作（switch・add・commit・pull・branch・rev-parse・ls-remote）・`npm run pages:prepare`・rg・ls・wc・cut を追加し、強制push（`git push --force`・`-f`）を禁止に追加（ユーザー依頼）。確認待ちの削減のため。検証：JSONの形式確認、npm run check 合格。
 
 - 2026/11/21 資料のみ：読む量の削減。HANDOVER を現状だけに圧縮（71KB→13KB、旧本文は archive/HANDOVER-2026-11-21.md）、CHANGELOG の11/17以前を archive/CHANGELOG-2026-11-06-to-11-17.md へ移動（61KB→11KB）、AGENTS.md に資料の上限と部分読みのルールを追加。検証：npm run check 合格。
