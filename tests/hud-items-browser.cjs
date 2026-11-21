@@ -78,11 +78,13 @@ for(const id of ['#hudToggle','#itemsHudToggle','#closeItemsWindow'])assert.equa
 const coreCount = page.locator('#coreCountItems');
 for (const value of ['1000', '１０００']) {
   await coreCount.fill(value);
+  assert.equal(await coreCount.inputValue(), '1000', `${width}px: full-width digits become half-width while typing`);
   const size = await coreCount.evaluate(input => {
     const style = getComputedStyle(input);
     const text = document.createElement('span');
     text.style.cssText = 'position:absolute;visibility:hidden;white-space:pre';
-    text.style.font = style.font;
+    // style.font is empty when the shorthand cannot express the computed style, so copy each part (measures at the real size).
+    for (const key of ['fontFamily', 'fontSize', 'fontWeight', 'fontStyle', 'fontStretch']) text.style[key] = style[key];
     text.style.fontVariantNumeric = style.fontVariantNumeric;
     text.style.letterSpacing = style.letterSpacing;
     text.textContent = input.value;
