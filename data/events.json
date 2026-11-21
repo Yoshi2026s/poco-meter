@@ -1,7 +1,7 @@
 {
  "schema": "poco-events-v1",
  "note": "イベント名・期間・対象ランク・対象（audience）・URLなどの事実だけを記録。本文は保存しない。confidence: high=「開催期間」等の見出し付きの期間を検出 / low=見出しなしの期間 / none=期間を検出できず。使用期限・配信時間・応募や選考などの期間は除外（excluded に件数）。",
- "updatedAt": "2026-11-20T01:40:24.773Z",
+ "updatedAt": "2026-11-21T15:02:36.854Z",
  "sources": [
   {
    "id": "pococha-official-note",
@@ -156,6 +156,35 @@
    "excluded": 0,
    "fetchedAt": null,
    "confirmedAt": "2026-11-14"
+  },
+  {
+   "id": "n803868883e7d#task-d2a9669448",
+   "title": "マンスリーエンタメ ダービー ミッション",
+   "url": "https://report.pococha.com/n/n803868883e7d#task-d2a9669448",
+   "sourceId": "pococha-official-task",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "mission",
+   "start": "2026-12-26",
+   "end": "2026-12-28",
+   "periods": [
+    {
+     "start": "2026-12-26",
+     "end": "2026-12-28",
+     "startTime": null,
+     "endTime": null,
+     "label": "マンスリーエンタメ ダービー ミッション",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-22"
   },
   {
    "id": "n803868883e7d#12",
