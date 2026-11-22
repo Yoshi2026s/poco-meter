@@ -1,7 +1,7 @@
 {
  "schema": "poco-events-v1",
  "note": "イベント名・期間・対象ランク・対象（audience）・URLなどの事実だけを記録。本文は保存しない。confidence: high=「開催期間」等の見出し付きの期間を検出 / low=見出しなしの期間 / none=期間を検出できず。使用期限・配信時間・応募や選考などの期間は除外（excluded に件数）。",
- "updatedAt": "2026-11-22T02:59:08.467Z",
+ "updatedAt": "2026-11-22T16:00:45.235Z",
  "sources": [
   {
    "id": "pococha-official-note",
@@ -2031,7 +2031,7 @@
    "sourceId": "pococha-official-note",
    "sourceKind": "official",
    "published": "2026-10-01T18:00:00.000+09:00",
-   "modified": "2026-11-17T11:24:47.000+09:00",
+   "modified": "2026-11-22T12:20:44.000+09:00",
    "type": "collab",
    "start": null,
    "end": null,
@@ -2040,7 +2040,7 @@
    "confidence": "none",
    "audience": [],
    "excluded": 0,
-   "fetchedAt": "2026-11-17T02:47:26.911Z"
+   "fetchedAt": "2026-11-22T16:00:41.626Z"
   },
   {
    "id": "4d2ihhx90bj",
