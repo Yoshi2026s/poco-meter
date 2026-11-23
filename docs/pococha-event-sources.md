@@ -9,6 +9,10 @@
 
 ### 参考・公開反映と再照合
 
+- 11/23 12時台：Kimono MUSE創刊号専属モデル選抜#2の公式11/10記事本文で、準決勝11/7〜11/13、決勝11/18〜11/22を確認。旧候補#1と今回#2の回の相違は公式の#2を根拠として記録。時刻・ランク・締切・プライズ獲得条件は同本文で未確認、第三者の時刻と混ぜて公式確定にしない。別開催を断定せず旧履歴保全。公式リンク先の準決勝ページは本文抽出0行。https://report.pococha.com/n/n9a17730b03fb ・ https://event.pococha.com/ja-jp/festivals/Kimono_MUSE_1_001_227050
+- きせかえ人気投票は今日11/23まで（終了時刻記載なし）。アプリ内フォーム、1アカウント1回、複数アカウント投票不可、送信後の変更・取消不可。おいも大収穫祭の開催11/25 12:00〜11/28 23:59、対象ランク判定11/24 20:00の条件を再確認。既存同開催回への補足で重複追記しない。https://report.pococha.com/n/n0f40d159ce34 ・ https://report.pococha.com/n/n642997ac8aa1
+- 公式noteトップ、321一覧、個人note、EMBER11/21 21:40版を再読込。前回確認から新しい開催日時変更・中止の確定なし。今日のピンキミニタオル・デビューぽこトレ・ルーキーバナーは既存の第三者候補で公式詳細未確認。検索期間は前回保存11/23 00時台から24時間重複。SNS個別本文・動画説明欄・アプリ内詳細・画像のみの追加条件は今回確認なし。https://report.pococha.com/ ・ https://321.inc/event ・ https://note.com/tanaka_deke813/n/nb300b83e0f67 ・ https://yotei.ember-w.com/events/2026-11/
+
 - 11/22 23時台〜11/23 00時台に公開event-days.jsonを再取得。ダービーはマンスリーエンタメミッション（ダービー）の1件（12/26〜12/28）に統合され、前回の別名重複は解消。20Starsリスナーミッションも公式記事URLの1件、12/11 12:00〜12/17 23:59で日付時刻一致。公開データでの確認であり、カレンダー画面の実操作は未実施。https://yoshi2026s.github.io/poco-meter/data/event-days.json ・ https://report.pococha.com/n/n6bfccb14eefa
 - 公式リスナーミッション本文、321一覧、個人note、EMBER11/21 21:40版を再読込し、新たな日程変更・中止の確定なし。公式SKE48特設サイトは本文抽出0行のため詳細未確認。https://report.pococha.com/n/n6bfccb14eefa ・ https://321.inc/event ・ https://note.com/tanaka_deke813/n/nb300b83e0f67 ・ https://yotei.ember-w.com/events/2026-11/ ・ https://ske48theater.pococha.com/
 - 11/23開始の第三者掲載はおねんねミニタオルピンキ（12:00〜23:59、D3〜S6）、デビューぽこトレ（同時刻、E1〜D3）、ルーキーバナー（12:00〜11/27 23:59、C1〜C3）。11/22開始POCOTOMOプロフforブロンズ〜シルバーは11/26 23:59終了、D2〜C3の掲載。公式ID・締切・プライズ獲得条件は引き続き未確認。既存候補と照合し新規の公式行には追加しない。https://yotei.ember-w.com/events/2026-11/
