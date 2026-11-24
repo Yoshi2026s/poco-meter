@@ -5,7 +5,8 @@ import { createPocochaTimeApi, POCOCHA_TIME_URL, POCOCHA_TIME_SCHEMA,
   POCOCHA_TIME_SOURCE } from '../lib/pococha-clock.mjs';
 
 const BASE = Date.parse('2026-10-11T19:16:00Z');
-const ORIGIN = 'https://pococha2026.github.io';
+// 他サイト（旧 GitHub 版の公開先を含む）からの読み取りは許可しない。
+const ORIGIN = 'https://other-site.example';
 const request = (method = 'GET', origin, url = 'https://example.chatgpt.site/api/pococha-time') =>
   new Request(url, { method, headers: origin ? { Origin: origin } : {} });
 function upstream(headers = {}, status = 200) {
@@ -96,7 +97,7 @@ test('concurrent requests share one upstream sample while keeping individual res
   complete(upstream());
   const a = await first, b = await second;
   assert.deepEqual(await a.json(), await b.json());
-  assert.equal(a.headers.get('access-control-allow-origin'), ORIGIN);
+  assert.equal(a.headers.get('access-control-allow-origin'), null);
   assert.equal(b.headers.get('access-control-allow-origin'), null);
 });
 
@@ -255,13 +256,13 @@ test('failure backoff suppresses request floods, expires, and recovers after clo
   assert.equal(rollback.calls.length, 2);
 });
 
-test('GET and HEAD CORS is restricted to the publication origin without credentials', async () => {
+test('GET and HEAD never allow cross-origin reads or credentials', async () => {
   const f = fixture();
   for (const origin of [ORIGIN, 'https://attacker.example', ORIGIN + '.attacker.example', undefined]) {
     for (const method of ['GET', 'HEAD']) {
       const response = await f.api(request(method, origin));
       assert.equal(response.status, 200);
-      assert.equal(response.headers.get('access-control-allow-origin'), origin === ORIGIN ? ORIGIN : null);
+      assert.equal(response.headers.get('access-control-allow-origin'), null);
       assert.equal(response.headers.get('access-control-allow-credentials'), null);
       assert.equal(response.headers.get('vary'), 'Origin');
       if (method === 'HEAD') assert.equal(await response.text(), '');
@@ -272,8 +273,8 @@ test('GET and HEAD CORS is restricted to the publication origin without credenti
 test('preflight and rejected methods never contact the upstream or accept writes', async () => {
   const f = fixture();
   const options = await f.api(request('OPTIONS', ORIGIN));
-  assert.equal(options.status, 204);
-  assert.equal(options.headers.get('access-control-allow-methods'), 'GET, HEAD');
+  assert.equal(options.status, 403);
+  assert.equal(options.headers.get('access-control-allow-methods'), null);
   assert.equal((await f.api(request('OPTIONS', 'https://attacker.example'))).status, 403);
   for (const method of ['POST', 'PUT', 'PATCH', 'DELETE']) {
     const response = await f.api(request(method, ORIGIN));

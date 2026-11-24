@@ -22,7 +22,7 @@
 
 ## 安全性・リポジトリ設定（残り）
 - 同じ origin の注意：https://yoshi2026s.github.io は同じアカウントの他の公開 Pages（pococha-dentetsu など9件）と同じ origin で、localStorage・IndexedDB・CSP の 'self' を共有する。pococha-dentetsu は gstatic の Firebase を SRI なしで読む。保存データは計算用の値だけで機微度は低いが、根本策は poco-meter を独自ドメインか別アカウントへ分けること。ルートのユーザーサイト（yoshi2026s.github.io）にスコープ "/" の Service Worker を置かないこと。
-- 旧コードに残る別アカウント名「pococha2026」（github-sync/、lib/border-store.mjs の CORS、scripts/prepare-github-meter.mjs など。公開物には出ない、tests/public-safety.mjs で検出）は、GitHub 上にそのアカウントが存在せず第三者が取得できる名前。旧Sites用コードを整理するときに削除する。
+- 別アカウント名「pococha2026」と旧GitHub版の書き出し（`scripts/prepare-github-meter.mjs`・`github-sync/`・`scripts/security-tools.mjs`・`npm run dev/build/github:export`）は 2026/11/24 に削除。旧Sites用APIの CORS 許可（ボーダー・時刻）も外した。公開SWの書き換えは `scripts/pages-worker.mjs`（公開物は削除前と同一を確認）。`tests/public-safety.mjs` は引き続きこの名前を検出する。
 - 未対応の低リスク：OCR の IndexedDB キャッシュのキーに版がない（データ差し替え時は cachePath に版を付ける）、CSP の不要な許可（img-src の data:/blob: など）、iframe 埋め込み対策、取得値の急変検知、バックアップ取り込みの取り消し、「残りをコピー」の文に必要コインが入る、マージ済みブランチが多数（削除は承認が必要）。
 - リポジトリ設定（2026/11/20、ユーザー承認）：脆弱性の非公開報告（SECURITY.md から案内）と依存関係の脆弱性アラートを有効、Actions は GitHub 製のみ（allowed_actions=selected・github_owned_allowed）で SHA 固定必須（sha_pinning_required）、Wiki・プロジェクトは無効。新しいアクションを使うときはこの設定に合うか確認する（GitHub 製以外・タグ指定は動かない。中でタグ指定のアクションを呼ぶ composite アクションも動かないため、pages.yml は upload-pages-artifact の代わりに tar＋SHA 固定の upload-artifact を使う）。
 - 残り（ユーザー作業）：取得元 ONE CARAT への転載許諾の問い合わせ／旧Sitesの停止（書き込みAPI・管理ページ）／GitHub のメール設定（Keep my email addresses private・Block command line pushes that expose my email）。
@@ -37,10 +37,9 @@
 ## 未確認・既知のテスト差
 - 画面系テスト（`npm run test:extra`）13本は v2026.11.21.1 で全合格（Chromiumのエミュレーション）。hud-items-browser の320px既存不合格は解消。
 - 物理端末のSafariとOSキーボードは未確認。
-- 標準外の旧テスト（2026/11/16 全件実行、`0968ad7`）：`tests/*.mjs` のうち標準チェック・画面系以外の77本中51本は合格。失敗26本はすべて取込直後 `8913782` でも失敗しており、現行コードの不具合ではない（落ちる項目が増えた7本も、仕様変更・廃止した欄・取得ファイルが1本増えたことによるずれと確認）。
-  - 旧Sites・Worker前提（Pages版では使わない）：`admin-worker`・`contact-*`（images・tracking・worker）・`cloudflare-pages-migration`・`security-hardening`・`security-management`・`image-metadata-security`・`debug-current-10000`。
-  - 古い仕様の期待値：`e-border-100-rounds`（E1〜E3。現行は `e-rank-unified` が合格）・`strengthen-50`・`mobile-debug-50`（廃止した `adjustAmount` 等）・`retired-external-app-features`・`fixed-panel-focus`・`save-menu`・`saved-record-months`・`pococha-clock-ui`・`border-client-precision`・`border-reliability-regressions`（旧API前提、予想データの取得分だけ呼び出し回数が多い）・`history-debug-ten-rounds`（内部の `security-hardening` のみ失敗）。
-  - オフライン系 `offline-ui-50`・`offline-ui-5000`・`offline-sw-5000`・`offline-reliability-1000` も同様。`meter-validation-ten-rounds` は5分を超えるため未完了。`history-mobile-audit` は引数が必要。
+- 標準外の旧テスト（2026/11/24 全件実行）：削除済み機能・旧Sites専用で失敗していた11本（`github-meter-export`・`admin-worker`・`contact-images`・`contact-tracking`・`contact-worker`・`cloudflare-pages-migration`・`debug-current-10000`・`retired-external-app-features`・`e-border-100-rounds`・`strengthen-50`・`mobile-debug-50`）は削除。残る標準外テストで失敗するのは次の古い期待値のもの（現行コードの不具合ではないと 11/16 に確認済み）。
+  - `fixed-panel-focus`・`save-menu`・`saved-record-months`・`pococha-clock-ui`・`border-client-precision`・`border-reliability-regressions`（旧API前提）・`history-debug-ten-rounds`（内部の `security-hardening` のみ）・オフライン系 `offline-ui-50`・`offline-ui-5000`・`offline-sw-5000`・`offline-reliability-1000`。
+  - `meter-validation-ten-rounds` は5分超、`history-independent`・`history-page-ui` は2分超かかるが合格。`history-mobile-audit` は引数が必要。
   - 古いテストを直すときは1本ずつ仕様を確かめて期待値を更新する（実行すると `docs/` に結果JSONを書くものがあるので、終わったら元に戻す）。
 
 ## 主なユーザー決定（覆さない）

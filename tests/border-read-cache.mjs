@@ -4,7 +4,7 @@ import { DatabaseSync } from 'node:sqlite';
 import { readFileSync } from 'node:fs';
 import { borderApi, readBorders, refreshBorders } from '../lib/border-store.mjs';
 
-const origin='https://meter.example',github='https://pococha2026.github.io';
+const origin='https://meter.example',github='https://other-site.example';
 function setup() {
   const sql=new DatabaseSync(':memory:');
   sql.exec(readFileSync(new URL('../drizzle/0000_sweet_corsair.sql',import.meta.url),'utf8'));
@@ -21,7 +21,7 @@ function setup() {
 const request=(etag,requestOrigin=github)=>new Request(origin+'/api/borders',{headers:{
   'CF-Connecting-IP':'203.0.113.42',...(requestOrigin?{Origin:requestOrigin}:{}),...(etag?{'If-None-Match':etag}:{}),
 }});
-function checkPublic(response,expectedOrigin=github){
+function checkPublic(response,expectedOrigin=null){
   assert.equal(response.headers.get('Cache-Control'),'public, max-age=0, must-revalidate');
   assert.equal(response.headers.get('Vary'),'Origin');
   assert.equal(response.headers.get('Access-Control-Allow-Origin'),expectedOrigin);
@@ -102,8 +102,8 @@ test('conditional requests still exhaust quota and denied or unavailable respons
   try{
     const first=await borderApi(request(),s.env),etag=first.headers.get('ETag');
     for(let i=1;i<120;i++)assert.equal((await borderApi(request(etag),s.env)).status,304);
-    const limited=await borderApi(request(etag),s.env);assert.equal(limited.status,429);assert.equal(limited.headers.get('Cache-Control'),'private, no-store');assert.equal(limited.headers.get('ETag'),null);assert.equal(limited.headers.get('Vary'),'Origin');assert.equal(limited.headers.get('Access-Control-Allow-Origin'),github);
-    const unavailable=await borderApi(request('*'),{});assert.equal(unavailable.status,503);assert.match(unavailable.headers.get('Cache-Control'),/no-store/);assert.equal(unavailable.headers.get('ETag'),null);assert.equal(unavailable.headers.get('Access-Control-Allow-Origin'),github);
+    const limited=await borderApi(request(etag),s.env);assert.equal(limited.status,429);assert.equal(limited.headers.get('Cache-Control'),'private, no-store');assert.equal(limited.headers.get('ETag'),null);assert.equal(limited.headers.get('Vary'),'Origin');assert.equal(limited.headers.get('Access-Control-Allow-Origin'),null);
+    const unavailable=await borderApi(request('*'),{});assert.equal(unavailable.status,503);assert.match(unavailable.headers.get('Cache-Control'),/no-store/);assert.equal(unavailable.headers.get('ETag'),null);assert.equal(unavailable.headers.get('Access-Control-Allow-Origin'),null);
     assert.equal(s.reads.days,1);
   }finally{s.sql.close();}
 });

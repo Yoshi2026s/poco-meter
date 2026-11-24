@@ -1,5 +1,7 @@
 # 変更履歴
 
+- 2026/11/24 整理：旧GitHub版の書き出し（prepare-github-meter・github-sync・security-tools・dev/build/github:export）と pococha2026 宛てCORS許可を削除、SW書き換えを scripts/pages-worker.mjs へ移設（公開物は同一）。削除済み機能・旧Sites専用の失敗テスト11本を削除。検証：npm run check・test:extra。
+
 - 2026/11/24 資料のみ：取得元の新162値公開・保存待ちと04:54取得成功、おいも開催前条件を再照合。検証：npm run check。
 
 - 2026/11/24 資料のみ：321年間集計の参照と翌日候補、夜のメーター対象日未取得・更新待ちを記録。検証：npm run check。

@@ -36,10 +36,9 @@ Pocochaの目標メーター計算・過去ボーダー管理ツールです。�
 | `db/` | テスト・生成で参照（過去ボーダーの元データ。`scripts/prepare-history-page.mjs` と各テストが読む） |
 | `drizzle/` | テストで参照（旧DBの定義をテスト用の一時DBに使う） |
 | `deployment/` | テストで参照（`tests/cloudflare-pages-migration.mjs`） |
-| `github-sync/` | 不使用（旧同期の出力先。`npm run github:export` を実行したときだけ書き出す） |
 | `.openai/` | 不使用（旧Sitesの公開設定。`vite.config.ts` から読まれるが公開・本番操作には使わない） |
 | `docs/legacy-source/`・`docs/archive/`・`SECURITY-20261018.md` | 旧Sites時代の記録（参照のみ・書き換えない）。署名キーの導出手順やセキュリティ点検の未対応項目は旧Sites用で、現行の公開（GitHub Pages）には当てはまらない。旧Sitesの書き込み用キーは廃止済みで、GitHub Secrets にも登録はない |
-| `npm run dev`・`npm run build`・`npm run github:export`・`npm start` | 旧Sites用で、現在は使えない（旧Sitesのコード削除により `scripts/prepare-github-meter.mjs` の書き出しが止まる）。公開は `npm run pages:build`／GitHub Actions、確認は `npm run check` |
+| `npm start` | 旧Sites用で、現在は使えない。公開は `npm run pages:build`／GitHub Actions、確認は `npm run check` |
 
 ## ローカルでの確認
 
