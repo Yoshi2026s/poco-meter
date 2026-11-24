@@ -298,14 +298,15 @@ test('Clock samples stay in memory and do not create or alter clock-specific sto
 });
 
 test('Unavailable monotonic clocks leave a usable and honestly labeled device-clock calculator', async () => {
-  let requests = 0;
-  const page = pageEngine({ ...baseline, target: '100000' }, { fetch: () => { requests++; return new Promise(() => {}); } });
+  const requests = [];
+  const page = pageEngine({ ...baseline, target: '100000' }, { fetch: url => { requests.push(String(url)); return new Promise(() => {}); } });
   await settle();
   assert.match(sourceLabel(page), /端末時計/);
   assertTimeLabels(page, '端末時刻');
   assert.match(syncLabel(page), /未同期/);
   assertTimes(page, '21:00:00', '01:00:00');
-  assert.equal(requests, 1, 'Only the existing border request is sent without a monotonic clock');
+  // 単調時計がなくても時刻APIは呼ばない。送るのはボーダーと予想データ（v2026.11 で追加）の取得だけ。
+  assert.deepEqual(requests.sort(), ['./data/meter-forecast.json', '/api/borders']);
   page.element('currentTop').value = '1000'; page.element('currentTop').dispatchEvent(new Event('input'));
   assert.equal(page.element('remain').textContent, '99K');
 });

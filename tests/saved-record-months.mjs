@@ -11,7 +11,10 @@ function page(phone = true) {
     }
     return media.get(query);
   };
-  const state = { ...plain(engine().state), pick: '', target: '2000', current: '500', rank: 'S1', coreCount: '0', seedVer: 3, seedVer13: 1, snapshotVersion: '2026-10-02-v3', goalDefaultsVersion: 1, provenance: {},
+  const state = { ...plain(engine().state), pick: '', target: '2000', current: '500', rank: 'S1',
+    // スマホ起動時は「既定の目標設定」が適用される（現行仕様）。利用者が既定ランクをS1にしている前提。
+    goalDefaults: { period: '30d', rank: 'S1', pick: 0, targetMethod: 'p75', bufferPct: 0, roundUnit: 1, deadline: '22:00', coreCount: '0', target: '', asOfDate: '', applyOnLoad: false },
+    coreCount: '0', seedVer: 3, seedVer13: 1, snapshotVersion: '2026-10-02-v3', goalDefaultsVersion: 1, provenance: {},
     log: { '2025-01-01': { S1: [1,2,3] }, '2026-09-01': { S1: [100,200,300] }, '2026-09-02': { S1: [101,201,301] }, '2026-10-01': { S1: [10,20,30] }, '2026-10-02': { S1: [11,22,33], S6: [111,222,333] } }, log13: {}, log24: {} };
   const p = pageEngine(state, { navigator: { onLine: false }, matchMedia });
   return { p, media, groups: () => p.element('logList').children, rows: group => group.querySelector('.saved-record-month-rows').children };

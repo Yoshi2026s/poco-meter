@@ -174,7 +174,7 @@ test('M07 400 JSON exports/restores preserve settings, display, records and draf
       input(source,'target',target);input(source,'currentTop',current);input(source,'coreCountTop',core);input(source,'quickRank',rank,'change');
       input(source,'screenColor',color,'change');input(source,'textWeight',weight,'change');input(source,'screenTheme',theme,'change');input(source,'editDate',date,'change');
       input(source,'editZero',draftValues[0]);input(source,'editPlus1',draftValues[1]);input(source,'editPlus2',draftValues[2]);
-      const data=exportBackup(source);assert.equal(data.pmcBackup,1);assert.deepEqual(data.display,{color,weight,theme,background:'theme',listColor:'white',numberColor:'blue'});
+      const data=exportBackup(source);assert.equal(data.pmcBackup,1);assert.deepEqual(data.display,{color,weight,theme,background:'theme',hudBackground:'black',listColor:'white',numberColor:'blue'});
       const key='22|'+rank+'|'+date;assert.deepEqual(data.editorDrafts.drafts[key],draftValues);
       restore(destination,data);const actual=saved(destination);
       assert.equal(actual.target,String(target));assert.equal(actual.current,String(current));assert.equal(actual.coreCount,String(core));assert.equal(actual.rank,rank);

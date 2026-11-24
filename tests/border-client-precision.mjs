@@ -75,7 +75,7 @@ test('Latest source status excludes current and future records while retaining t
     '2026-10-03':{S1:[200,300,400]},'2026-11-01':{S1:[300,400,500]}};
   const provenance={'22':Object.fromEntries(Object.keys(log).map(date=>[date,{S1:{origin:'remote',source:sourceURL}}]))};
   const p=pageEngine({...baseline,seedVer:3,seedVer13:1,snapshotVersion:'2026-10-02-v3',
-    log,log13:{},log24:{},provenance,pick:0},{navigator:{onLine:false}});
+    log,log13:{},log24:{},provenance,pick:0,rank:'S1'},{navigator:{onLine:false}});
   assert.match(p.element('borderSyncStatus').textContent,/最新 2026-10-02/);
   assert.match(p.element('borderSyncStatus').textContent,/集計 1日/);
   assert.doesNotMatch(p.element('borderSyncStatus').textContent,/前日分未取得/);
@@ -88,8 +88,8 @@ test('Latest source status excludes current and future records while retaining t
 test('Successful source confirmation labels missing previous-day records using the API day when the device date is wrong',async()=>{
   const baseline=plain(engine().state),payload=packet([{...row('2026-10-12T00:00:00Z'),date:'2026-10-10'}]);
   payload.serverDate='2026-10-12';payload.sync.last_attempt='2026-10-12T00:00:00Z';
-  const p=pageEngine({...baseline,seedVer:3,seedVer13:1,snapshotVersion:'2026-10-02-v3',log:{},log13:{},log24:{},provenance:{},pick:''},
-    {navigator:{onLine:true},fetch:async url=>{assert.equal(url,'/api/borders');return {ok:true,headers:{get:()=> 'application/json'},json:async()=>payload};}});
+  const p=pageEngine({...baseline,seedVer:3,seedVer13:1,snapshotVersion:'2026-10-02-v3',log:{},log13:{},log24:{},provenance:{},pick:'',rank:'S1'},
+    {navigator:{onLine:true},fetch:async url=>{if(url==='./data/meter-forecast.json')return {ok:false,status:404,headers:{get:()=>null}};assert.equal(url,'/api/borders');return {ok:true,headers:{get:()=> 'application/json'},json:async()=>payload};}});
   for(let i=0;i<50;i++)await Promise.resolve();
   assert.match(p.element('borderSyncStatus').textContent,/最新 2026-10-10/);
   assert.match(p.element('borderSyncStatus').textContent,/前日分未取得/);

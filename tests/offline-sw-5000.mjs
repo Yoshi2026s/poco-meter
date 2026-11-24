@@ -13,6 +13,10 @@ const OLD = `${CACHE}-previous-release`;
 const MARKER = workerSource.match(/const APP_MARKER = '([^']+)'/)[1];
 const METHOD_PATH = workerSource.match(/const METHOD_PATH = '([^']+)'/)[1];
 const METHOD_MARKER = workerSource.match(/const METHOD_MARKER = '([^']+)'/)[1];
+// 過去ボーダー表のページも事前保存の対象（現行のSW）。
+const HISTORY_PATH = workerSource.match(/const HISTORY_PATH = '([^']+)'/)[1];
+const HISTORY_MARKER = workerSource.match(/const HISTORY_MARKER = '([^']+)'/)[1];
+const PAGES = [METHOD_PATH, HISTORY_PATH];
 const ASSETS = ['/meter.webmanifest', '/meter-icon-192.png', '/meter-icon-512.png', '/meter-icon-180.png'];
 const STAMP = '2026-10-01T00:00:00.000Z', EPOCH = Date.parse('2026-10-03T12:00:00.000Z');
 
@@ -36,8 +40,8 @@ function shell(label, options = {}) {
     url: HOME, type: 'basic', headers: { 'Content-Type': 'text/html; charset=utf-8', 'X-Pococha-Saved-At': STAMP }, ...options });
 }
 function asset(path, label, options = {}) {
-  return new FakeResponse(path===METHOD_PATH?METHOD_MARKER+label:label, { url: new URL(path, HOME).href, type: 'basic',
-    headers: { 'Content-Type': path===METHOD_PATH?'text/html':path.endsWith('.png') ? 'image/png' : 'application/manifest+json' }, ...options });
+  return new FakeResponse(path===METHOD_PATH?METHOD_MARKER+label:path===HISTORY_PATH?HISTORY_MARKER+label:label, { url: new URL(path, HOME).href, type: 'basic',
+    headers: { 'Content-Type': PAGES.includes(path)?'text/html':path.endsWith('.png') ? 'image/png' : 'application/manifest+json' }, ...options });
 }
 function request(path = '/', options = {}) { return { url: new URL(path, HOME).href, method: 'GET', mode: 'navigate', ...options }; }
 function deferred() { let resolve, reject; const promise = new Promise((yes, no) => { resolve = yes; reject = no; }); return { promise, resolve, reject }; }
@@ -135,9 +139,10 @@ for (const sourceUrl of sources) for (const seed of ['valid', 'none', 'marker', 
     assert.equal(reply.id, id); assert.equal(reply.type, 'POCOCHA_OFFLINE_STATUS'); assert.equal(reply.version, CACHE);
     assert.equal(reply.ready, prepared || seed === 'valid'); assert.equal(reply.failed, false);
     assert.equal(reply.preparedAt, prepared ? new Date(EPOCH).toISOString() : seed === 'valid' ? STAMP : '');
-    assert.equal(h.calls.length, prepared ? 1+ASSETS.length+1 : 0);
+    assert.equal(h.calls.length, prepared ? 1+ASSETS.length+PAGES.length : 0);
     if(prepared)assert.ok(h.cached(new URL(METHOD_PATH,HOME).href)?.body.includes(METHOD_MARKER),'Preparation also saves the public calculation help');
-    assert.equal(h.operations.filter(op => op[0] === 'put').length, prepared ? 1+ASSETS.length+1 : 0);
+    if(prepared)assert.ok(h.cached(new URL(HISTORY_PATH,HOME).href)?.body.includes(HISTORY_MARKER),'Preparation also saves the border history page');
+    assert.equal(h.operations.filter(op => op[0] === 'put').length, prepared ? 1+ASSETS.length+PAGES.length : 0);
     if (seed === 'old') assert.match(h.cached(HOME, OLD).body, /old release/);
   });
 }
