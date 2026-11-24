@@ -6,7 +6,6 @@ import calculatorHTML from "../calculator/index.html?raw";
 import calculationMethodsHTML from "../calculator/calculation-methods.html?raw";
 import serviceWorker from "../calculator/sw.js?raw";
 import { manifest, iconData } from "../calculator/offline-assets.mjs";
-import githubMeterRelease from "../github-sync/release.generated.json";
 import { borderApi } from "../lib/border-store.mjs";
 import { pocochaTimeApi } from "../lib/pococha-clock.mjs";
 import { recordVisit } from "../lib/visitor-stats.mjs";
@@ -25,12 +24,6 @@ export default {
       return new Response(request.method === "HEAD" ? null : historyHTML, {headers:{"Content-Type":"text/html; charset=utf-8","Cache-Control":"no-store","X-Content-Type-Options":"nosniff","Content-Security-Policy":pagePolicy(historyHTML),"Referrer-Policy":"no-referrer"}});
     }
     if (path === "/api/pococha-time") return pocochaTimeApi(request);
-    if (path === "/github-meter-release.json" && (request.method === "GET" || request.method === "HEAD")) {
-      return new Response(request.method === "HEAD" ? null : JSON.stringify(githubMeterRelease), { headers: {
-        "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store",
-        "X-Content-Type-Options": "nosniff"
-      }});
-    }
     if (path === "/api/visits") return recordVisit(request, env);
     if (/^\/api\/contact\/attachments\/[^/]+$/.test(path)) return contactAttachmentApi(request, env);
     if (/^\/api\/admin\/contact\/attachments\/[^/]+$/.test(path)) return contactAttachmentApi(request, env, true);

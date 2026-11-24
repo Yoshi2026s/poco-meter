@@ -7,7 +7,7 @@ import {resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 import {manifest, iconData} from '../calculator/offline-assets.mjs';
-import {exportWorker} from './prepare-github-meter.mjs';
+import {exportWorker} from './pages-worker.mjs';
 import {sealCalculatorHTML, scriptSources} from '../lib/browser-security.mjs';
 import {validateData} from '../automation/update-borders-json.mjs';
 import {forecastBundle, calendarEventDays} from '../automation/build-meter-factors.mjs';
