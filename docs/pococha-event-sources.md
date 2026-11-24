@@ -13,6 +13,9 @@
 
 ### 参考・再照合
 
+- 11/24 12時台：公式noteトップ、おいも本文、POCO LAND本文、321一覧、個人note、EMBER11/23 13:32版を再読込。新たな日程変更・中止の確定なし。おいも対象ランク判定は今日20:00、開催は明日11/25 12:00〜11/28 23:59で変更確認なし。既存の同開催回は再登録しない。https://report.pococha.com/ ・ https://report.pococha.com/n/n642997ac8aa1 ・ https://report.pococha.com/n/nbf2c1188a729 ・ https://321.inc/event ・ https://note.com/tanaka_deke813/n/nb300b83e0f67 ・ https://yotei.ember-w.com/events/2026-11/
+- 今日開始候補のウトのつぼ缶、WINGプロフィール、メッセージ花火制作権は前回の第三者掲載と期間・ランク一致。公式ID・締切・プライズ条件は未確認。検索期間は前回保存11/24 00時台の24時間前まで重複し、12月予告も再確認。SNS対象個別本文・動画説明欄・アプリ内詳細・画像だけの条件は追加確認なし。HAISHIN LAB不使用。
+
 - 11/23 23時台に公式noteトップ、おいも大収穫祭本文、きせかえ人気投票、321一覧、個人note、EMBER11/21 21:40版を再読込し、新しい開催日時変更・中止の確定なし。きせかえ投票の公式案内期間は11/23までだが終了時刻・フォーム閉鎖状態は未確認。おいも対象ランク判定は11/24 20:00、開催11/25 12:00〜11/28 23:59のまま。既存同開催回は重複登録しない。https://report.pococha.com/ ・ https://report.pococha.com/n/n642997ac8aa1 ・ https://report.pococha.com/n/n0f40d159ce34 ・ https://321.inc/event ・ https://note.com/tanaka_deke813/n/nb300b83e0f67 ・ https://yotei.ember-w.com/events/2026-11/
 - 11/24の第三者掲載はウトのつぼ缶（12:00〜23:59、D3〜S6）、WINGプロフィール（12:00〜11/26 23:59、D1〜S6）、メッセージ花火制作権フラッシュミントグリーン×ガーガー（12:00〜11/30 23:59、A1〜S6）。公式ID・締切・プライズ条件は未確認で既存候補と照合継続。https://yotei.ember-w.com/events/2026-11/
 - 検索期間は前回保存11/23 12時台の24時間前まで重複。開催中と12月予告も再確認。個人X/Instagramの対象個別本文、YouTube説明欄、アプリ内詳細、画像だけの条件は追加確認なし。検索抜粋は確定資料に使わずHAISHIN LAB不使用。
