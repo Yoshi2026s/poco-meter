@@ -282,5 +282,166 @@
    }
   ],
   "addedAt": "2026-11-10T16:11:07.107Z"
+ },
+ {
+  "date": "2026-11-19",
+  "close": "13",
+  "channel": "onecarat-table-image",
+  "status": "added",
+  "ranks": 18,
+  "sourceURL": "https://one-carat.com/campus/archives/90414",
+  "images": [
+   {
+    "url": "https://one-carat.com/campus/wp-content/uploads/c1f97afefd53dea8307e585cad6e142c-68.png",
+    "sha256": "24e3152efc9f7317bd13c0d7c291a40be9c0faa5def6d3a90629b7f736d5aff8"
+   },
+   {
+    "url": "https://one-carat.com/campus/wp-content/uploads/b357748cdd3ad860424e39007354c616-68.png",
+    "sha256": "8e962e27f6903b2ab4deff15b8494cfca3df0826062d9b4348fc5f78222a53b4"
+   },
+   {
+    "url": "https://one-carat.com/campus/wp-content/uploads/ad58771651fdbc5bfb7115ba2710a15c-42.png",
+    "sha256": "b1a4612ebf71c373b9ef8389e280749bb168fc773abeed698c539f881a5f3e35"
+   }
+  ],
+  "addedAt": "2026-11-24T04:38:21.449Z"
+ },
+ {
+  "date": "2026-11-20",
+  "close": "13",
+  "channel": "onecarat-table-image",
+  "status": "added",
+  "ranks": 18,
+  "sourceURL": "https://one-carat.com/campus/archives/90414",
+  "images": [
+   {
+    "url": "https://one-carat.com/campus/wp-content/uploads/c1f97afefd53dea8307e585cad6e142c-68.png",
+    "sha256": "24e3152efc9f7317bd13c0d7c291a40be9c0faa5def6d3a90629b7f736d5aff8"
+   },
+   {
+    "url": "https://one-carat.com/campus/wp-content/uploads/b357748cdd3ad860424e39007354c616-68.png",
+    "sha256": "8e962e27f6903b2ab4deff15b8494cfca3df0826062d9b4348fc5f78222a53b4"
+   },
+   {
+    "url": "https://one-carat.com/campus/wp-content/uploads/ad58771651fdbc5bfb7115ba2710a15c-42.png",
+    "sha256": "b1a4612ebf71c373b9ef8389e280749bb168fc773abeed698c539f881a5f3e35"
+   }
+  ],
+  "addedAt": "2026-11-24T04:38:21.449Z"
+ },
+ {
+  "date": "2026-11-21",
+  "close": "13",
+  "channel": "onecarat-table-image",
+  "status": "added",
+  "ranks": 18,
+  "sourceURL": "https://one-carat.com/campus/archives/90414",
+  "images": [
+   {
+    "url": "https://one-carat.com/campus/wp-content/uploads/c1f97afefd53dea8307e585cad6e142c-68.png",
+    "sha256": "24e3152efc9f7317bd13c0d7c291a40be9c0faa5def6d3a90629b7f736d5aff8"
+   },
+   {
+    "url": "https://one-carat.com/campus/wp-content/uploads/b357748cdd3ad860424e39007354c616-68.png",
+    "sha256": "8e962e27f6903b2ab4deff15b8494cfca3df0826062d9b4348fc5f78222a53b4"
+   },
+   {
+    "url": "https://one-carat.com/campus/wp-content/uploads/ad58771651fdbc5bfb7115ba2710a15c-42.png",
+    "sha256": "b1a4612ebf71c373b9ef8389e280749bb168fc773abeed698c539f881a5f3e35"
+   }
+  ],
+  "addedAt": "2026-11-24T04:38:21.449Z"
+ },
+ {
+  "date": "2026-11-20",
+  "close": "22",
+  "channel": "onecarat-table-image",
+  "status": "added",
+  "ranks": 18,
+  "sourceURL": "https://one-carat.com/campus/archives/90413",
+  "images": [
+   {
+    "url": "https://one-carat.com/campus/wp-content/uploads/7856587a7aa05ebcc6c237449276365f-67.png",
+    "sha256": "fece8331df49051d271a881b0fb2ce43277b86f2574bb86b9fbacd0f31d38a87"
+   },
+   {
+    "url": "https://one-carat.com/campus/wp-content/uploads/009ef3d5b350294276ee80769dd89f0d-67.png",
+    "sha256": "f55fb003f341996bb5b977d39f760d38ef76659422a1462ec5382229e3f84bde"
+   },
+   {
+    "url": "https://one-carat.com/campus/wp-content/uploads/9e7d2c17e9252a43e5d1c449e4cc4506-67.png",
+    "sha256": "a38b5e50d350dec5d8f274e111f773e6dc118d7530386c64c7b9be5bbdb35422"
+   }
+  ],
+  "addedAt": "2026-11-24T04:38:21.449Z"
+ },
+ {
+  "date": "2026-11-21",
+  "close": "22",
+  "channel": "onecarat-table-image",
+  "status": "added",
+  "ranks": 18,
+  "sourceURL": "https://one-carat.com/campus/archives/90413",
+  "images": [
+   {
+    "url": "https://one-carat.com/campus/wp-content/uploads/7856587a7aa05ebcc6c237449276365f-67.png",
+    "sha256": "fece8331df49051d271a881b0fb2ce43277b86f2574bb86b9fbacd0f31d38a87"
+   },
+   {
+    "url": "https://one-carat.com/campus/wp-content/uploads/009ef3d5b350294276ee80769dd89f0d-67.png",
+    "sha256": "f55fb003f341996bb5b977d39f760d38ef76659422a1462ec5382229e3f84bde"
+   },
+   {
+    "url": "https://one-carat.com/campus/wp-content/uploads/9e7d2c17e9252a43e5d1c449e4cc4506-67.png",
+    "sha256": "a38b5e50d350dec5d8f274e111f773e6dc118d7530386c64c7b9be5bbdb35422"
+   }
+  ],
+  "addedAt": "2026-11-24T04:38:21.449Z"
+ },
+ {
+  "date": "2026-11-20",
+  "close": "24",
+  "channel": "onecarat-table-image",
+  "status": "added",
+  "ranks": 18,
+  "sourceURL": "https://one-carat.com/campus/archives/90412",
+  "images": [
+   {
+    "url": "https://one-carat.com/campus/wp-content/uploads/ed9d93c0ca55dcf7558add28c04f595e-67.png",
+    "sha256": "b0448c6b57f861f4f64f0ae1f7340dc0591a0029f6c4faed61cbfdddb6312465"
+   },
+   {
+    "url": "https://one-carat.com/campus/wp-content/uploads/3450ebec7249e16b08849edc8efdbac6-67.png",
+    "sha256": "98342b09c24fc1f31f7b02dd2b068c5e46e459166d5ac5b9bb5878934d52e855"
+   },
+   {
+    "url": "https://one-carat.com/campus/wp-content/uploads/874e415c5f361e5648e0b04d3294b120-66.png",
+    "sha256": "719fdb0d7757dc00fcf192d91b302c3bc2c8caefd6eff9fe7e724cbabe5371cd"
+   }
+  ],
+  "addedAt": "2026-11-24T04:38:21.449Z"
+ },
+ {
+  "date": "2026-11-21",
+  "close": "24",
+  "channel": "onecarat-table-image",
+  "status": "added",
+  "ranks": 18,
+  "sourceURL": "https://one-carat.com/campus/archives/90412",
+  "images": [
+   {
+    "url": "https://one-carat.com/campus/wp-content/uploads/ed9d93c0ca55dcf7558add28c04f595e-67.png",
+    "sha256": "b0448c6b57f861f4f64f0ae1f7340dc0591a0029f6c4faed61cbfdddb6312465"
+   },
+   {
+    "url": "https://one-carat.com/campus/wp-content/uploads/3450ebec7249e16b08849edc8efdbac6-67.png",
+    "sha256": "98342b09c24fc1f31f7b02dd2b068c5e46e459166d5ac5b9bb5878934d52e855"
+   },
+   {
+    "url": "https://one-carat.com/campus/wp-content/uploads/874e415c5f361e5648e0b04d3294b120-66.png",
+    "sha256": "719fdb0d7757dc00fcf192d91b302c3bc2c8caefd6eff9fe7e724cbabe5371cd"
+   }
+  ],
+  "addedAt": "2026-11-24T04:38:21.449Z"
  }
 ]
