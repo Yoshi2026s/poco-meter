@@ -6,7 +6,7 @@ import {engine,pageEngine,plain,html} from './calculator-harness.mjs';
 // browser's download UI, clipboard permissions or physical phone rendering.
 const key='pococha-meter-calc-v1';
 const settings=()=>({...plain(engine().state),seedVer:3,seedVer13:1,
-  snapshotVersion:'2026-10-02-v3',goalDefaultsVersion:1,target:'1001',current:'0',pick:'',
+  snapshotVersion:'2026-10-02-v3',goalDefaultsVersion:1,target:'1001',current:'0',pick:'',rank:'S1',
   log:{'2026-10-02':{S1:[100,200,300]},'2026-09-30':{S1:[500,600,700]}},
   log13:{'2026-10-01':{S2:[1,2,3]}},log24:{'2026-10-01':{B1:[10,20,30]}},
   presets:[{name:'旧目標',val:400}],provenance:{'22':{'2026-09-30':{S1:{origin:'legacy',source:'旧版'}}}}});

@@ -29,7 +29,7 @@ function parameters(variant) {
 function config(params,extra={}) {
   const logs={log:{},log13:{},log24:{}};
   logs[params.close==='13'?'log13':params.close==='24'?'log24':'log']['2026-10-01']={[params.rank]:params.local};
-  return {...clone(fixture),seedVer:3,seedVer13:1,snapshotVersion:'2026-10-02-v3',goalDefaultsVersion:1,
+  return {...clone(fixture),seedVer:3,seedVer13:1,snapshotVersion:'2026-10-02-v3',goalDefaultsVersion:4,
     target:String(params.target),current:String(params.current),coreCount:String(params.core),
     deadline:CLOSE_TIMES[params.close],rank:params.rank,pick:'',period:'30d',
     targetOrigin:null,goalDefaults:{...clone(engine(NOW).standardGoalDefaults()),applyOnLoad:false},
@@ -48,7 +48,9 @@ function response(body,extra={}) {
   return {ok:true,status:200,headers:{get:name=>name==='content-type'?'application/json; charset=utf-8':null},
     json:async()=>clone(body),...extra};
 }
-function open(cfg,caps={}) { return pageEngine(cfg,{navigator:{onLine:false},fetch:()=>new Promise(()=>{}),...caps}); }
+// 予想データ（./data/meter-forecast.json、v2026.11 で追加）の取得は別の通信。ここではボーダーAPIだけを数える。
+const bordersOnly=fn=>(url,...rest)=>String(url).includes('meter-forecast')?Promise.resolve({ok:false,status:404,headers:{get:()=>null},json:async()=>null}):fn(url,...rest);
+function open(cfg,caps={}) { return pageEngine(cfg,{navigator:{onLine:false},...caps,fetch:bordersOnly(caps.fetch??(()=>new Promise(()=>{})))}); }
 function memory(seed) {
   const map=new Map(Object.entries(seed));
   return {map,getItem:key=>map.get(key)??null,setItem:(key,value)=>map.set(key,value)};
@@ -69,14 +71,14 @@ function noFalseSuccess(p) {
 
 // A: 10 malformed response contracts x 25 different rank/cutoff/core/value states.
 const malformedKinds=['missing-sync','unknown-status','missing-server-date','invalid-server-date',
-  'missing-public-rank','unexpected-E-rank','unordered-triple','unpublished-day','untrusted-source','duplicate-date-cutoff'];
+  'empty-ranks','unexpected-E-rank','unordered-triple','unpublished-day','untrusted-source','duplicate-date-cutoff'];
 for (const kind of malformedKinds) for (let variant=0;variant<25;variant++) {
   const params=parameters(variant),body=payload(params);
   if(kind==='missing-sync')delete body.sync;
   if(kind==='unknown-status')body.sync.status='completed';
   if(kind==='missing-server-date')delete body.serverDate;
   if(kind==='invalid-server-date')body.serverDate='2026-02-30';
-  if(kind==='missing-public-rank')delete body.records[0].ranks[PUBLIC_RANKS[(variant+7)%18]];
+  if(kind==='empty-ranks')body.records[0].ranks={};
   if(kind==='unexpected-E-rank')body.records[0].ranks.E=[100+variant,200+variant,300+variant];
   if(kind==='unordered-triple')body.records[0].ranks[params.rank]=[10000+variant,2000+variant,14000+variant];
   if(kind==='unpublished-day')body.records[0].date=body.serverDate;
@@ -162,7 +164,7 @@ for (const failure of ['write-quota','read-failure']) for (const status of ['ok'
 for(const mode of ['cold-offline-reconnect','rapid-offline-bounce','timeout-reconnect'])for(let variant=0;variant<50;variant++){
   const params=parameters(variant);
   caseOf('reconnect',{mode,...params},async()=>{
-    const nav={onLine:mode!=='cold-offline-reconnect'},cfg=config(params,{pick:0});let calls=0,deliver;
+    const nav={onLine:mode!=='cold-offline-reconnect'},cfg=config(params,{pick:0,targetMethod:'mean'});let calls=0,deliver;
     const fetcher=(_url,options)=>{
       calls++;
       if(mode!=='cold-offline-reconnect'&&calls===1){
@@ -181,7 +183,7 @@ for(const mode of ['cold-offline-reconnect','rapid-offline-bounce','timeout-reco
     assert.equal(saved(p).target,String(expected));
     assert.equal(pointsFromK(p.element('remain').textContent),BigInt(Math.max(0,expected-params.current)));
     assert.deepEqual(saved(p)[params.close==='13'?'log13':params.close==='24'?'log24':'log']['2026-10-02'][params.rank],params.incoming);
-    assert.equal(saved(p).coreCount,String(params.core));
+    assert.equal(saved(p).coreCount,'0','Core count starts from 0 on every launch (current spec)');
   });
 }
 
@@ -197,7 +199,7 @@ for(const origin of ORIGINS)for(const status of STATUSES)for(let rankIndex=0;ran
     const body=payload(params,status);body.records=[incoming];
     const p=open(cfg,{navigator:{onLine:true},fetch:async()=>response(body)});await flush();const actual=saved(p);
     assert.deepEqual(actual[key][date][params.rank],personal);
-    assert.equal(actual.target,String(params.target));assert.equal(actual.current,String(params.current));assert.equal(actual.coreCount,String(params.core));
+    assert.equal(actual.target,String(params.target));assert.equal(actual.current,String(params.current));assert.equal(actual.coreCount,'0','Core count starts from 0 on every launch (current spec)');
     assert.deepEqual(actual.items,cfg.items);assert.deepEqual(actual.presets,cfg.presets);
     assert.equal(actual.deadline,cfg.deadline);assert.equal(actual.rank,cfg.rank);
   });
@@ -233,6 +235,8 @@ for(const method of methods)for(const period of periods)for(const close of ['13'
     const expected=expectedTarget(selected,method,buffer,unit);let calls=0;
     const p=open(cfg,{navigator:{onLine:false},fetch:()=>{calls++;throw Error('offline must not fetch');}});await flush();
     assert.equal(calls,0);assert.equal(saved(p).target,String(expected));
+    // 起動時はコア数が0に戻る（現行仕様）。この配信のコア数を入力してから必要コインを確かめる。
+    assert.equal(saved(p).coreCount,'0');input(p,'coreCountTop',params.core);
     const remain=Math.max(0,expected-params.current);assert.equal(pointsFromK(p.element('remain').textContent),BigInt(remain));
     const bonus=TIERS.filter(pair=>params.core>=pair[0]).at(-1)?.[1]??0;
     const denominator=BigInt(100+bonus),coins=(BigInt(remain)*25n+denominator-1n)/denominator;
@@ -241,7 +245,7 @@ for(const method of methods)for(const period of periods)for(const close of ['13'
     input(p,'currentTop',params.current+1);assert.equal(saved(p).target,String(expected));
     const q=open(saved(p),{navigator:{onLine:false},fetch:()=>{calls++;throw Error('offline restart must not fetch');}});await flush();
     assert.equal(calls,0);assert.equal(saved(q).target,String(expected));assert.equal(saved(q).current,String(params.current+1));
-    assert.equal(saved(q).coreCount,String(params.core));assert.equal(saved(q).bufferPct,buffer);
+    assert.equal(saved(q).coreCount,'0');assert.equal(saved(q).bufferPct,buffer);
   });
 }
 
@@ -249,11 +253,22 @@ assert.equal(cases.length,1000);assert.equal(seen.size,1000);
 assert.deepEqual(groupCounts,{contract:250,network:200,storage:100,reconnect:150,'personal-protection':100,'offline-calculation':200});
 const signatureHash=crypto.createHash('sha256').update(cases.map(item=>item.signature).join('\n')).digest('hex');
 console.log(JSON.stringify({matrix:'offline-reliability-1000',uniqueConditions:seen.size,groups:groupCounts,
-  signatureHash,status:'registered',contract:'18 public ranks, sync.status and serverDate are required'}));
+  signatureHash,status:'registered',contract:'sync.status and serverDate are required; verified rows may omit ranks (1-18), E is rejected'}));
 for(const [group,count]of Object.entries(groupCounts))test('Offline reliability: '+group+' / '+count+' unique scenarios',async()=>{
   for(const item of cases.filter(item=>item.group===group)){
     try{await item.run();completed.add(item.signature);}
     catch(error){error.message='Scenario '+item.signature+'\n'+error.message;throw error;}
+  }
+});
+test('Verified rows with missing ranks are saved and the missing rank stays absent (current spec)',async()=>{
+  for(let variant=0;variant<25;variant++){
+    const params=parameters(variant),body=payload(params),missing=PUBLIC_RANKS[(variant+7)%18];
+    if(missing===params.rank)continue;
+    delete body.records[0].ranks[missing];
+    const p=open(config(params),{navigator:{onLine:true},fetch:async()=>response(body)});await flush();
+    const log=saved(p)[params.close==='13'?'log13':params.close==='24'?'log24':'log'];
+    assert.deepEqual(log['2026-10-02'][params.rank],params.incoming);assert.equal(log['2026-10-02'][missing],undefined);
+    assert.doesNotMatch(p.element('borderSyncStatus').textContent,/取得・検証失敗/);
   }
 });
 test('Offline reliability: 1,000 distinct completed signatures',()=>{

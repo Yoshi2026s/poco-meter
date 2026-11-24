@@ -37,9 +37,9 @@
 ## 未確認・既知のテスト差
 - 画面系テスト（`npm run test:extra`）13本は v2026.11.21.1 で全合格（Chromiumのエミュレーション）。hud-items-browser の320px既存不合格は解消。
 - 物理端末のSafariとOSキーボードは未確認。
-- 標準外の旧テスト（2026/11/24 全件実行）：削除済み機能・旧Sites専用で失敗していた11本（`github-meter-export`・`admin-worker`・`contact-images`・`contact-tracking`・`contact-worker`・`cloudflare-pages-migration`・`debug-current-10000`・`retired-external-app-features`・`e-border-100-rounds`・`strengthen-50`・`mobile-debug-50`）は削除。残る標準外テストで失敗するのは次の古い期待値のもの（現行コードの不具合ではないと 11/16 に確認済み）。
-  - `fixed-panel-focus`・`save-menu`・`saved-record-months`・`pococha-clock-ui`・`border-client-precision`・`border-reliability-regressions`（旧API前提）・`history-debug-ten-rounds`（内部の `security-hardening` のみ）・オフライン系 `offline-ui-50`・`offline-ui-5000`・`offline-sw-5000`・`offline-reliability-1000`。
-  - `meter-validation-ten-rounds` は5分超、`history-independent`・`history-page-ui` は2分超かかるが合格。`history-mobile-audit` は引数が必要。
+- 標準外の旧テスト（2026/11/24）：削除済み機能・旧Sites専用の11本は削除。古い期待値で失敗していた11本は現行仕様に合わせて修正し、標準外テストは全件合格。
+  - 修正で反映した現行仕様：既定ランクS2・スマホ起動時に既定の目標設定を適用・起動時コア数0・保存形式v4未満は平均→p75に移行・予想データ（./data/meter-forecast.json）の取得・一部ランクだけの検証済み記録を受け入れ・SWは過去ボーダー表も事前保存・固定パネルなし（入力欄が見える範囲外のときだけページを動かす）・表示設定に hudBackground。
+  - 長時間：`offline-ui-5000` 約5分、`history-debug-ten-rounds` 約6分、`meter-validation-ten-rounds` は5分超（未完了）。`history-mobile-audit` は引数が必要。
   - 古いテストを直すときは1本ずつ仕様を確かめて期待値を更新する（実行すると `docs/` に結果JSONを書くものがあるので、終わったら元に戻す）。
 
 ## 主なユーザー決定（覆さない）

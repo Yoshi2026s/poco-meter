@@ -1,5 +1,7 @@
 # 変更履歴
 
+- 2026/11/24 テストのみ：古い期待値で失敗していた標準外テスト11本（fixed-panel-focus・save-menu・saved-record-months・pococha-clock-ui・border-client-precision・border-reliability-regressions・history-debug-ten-rounds・offline-ui-50・offline-ui-5000・offline-sw-5000・offline-reliability-1000）を現行仕様に合わせて修正。検証：npm run check・標準外テスト全件。
+
 - 2026/11/24 整理：旧GitHub版の書き出し（prepare-github-meter・github-sync・security-tools・dev/build/github:export）と pococha2026 宛てCORS許可を削除、SW書き換えを scripts/pages-worker.mjs へ移設（公開物は同一）。削除済み機能・旧Sites専用の失敗テスト11本を削除。検証：npm run check・test:extra。
 
 - 2026/11/24 資料のみ：取得元の新162値公開・保存待ちと04:54取得成功、おいも開催前条件を再照合。検証：npm run check。
