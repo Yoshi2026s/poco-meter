@@ -48,6 +48,7 @@ jobs:
           node tests/border-write-auth.mjs
           node tests/history-search.mjs
           node tests/event-calendar.mjs
+          node tests/e-rank-dedupe.mjs
           node tests/meter-sources.mjs
           node tests/always-on-forecast.mjs
           node tests/forecast-log.mjs
