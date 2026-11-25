@@ -7,6 +7,17 @@
 
 ## 2026-11-25（日本時間）
 
+### 参考・12時台の再照合
+
+- 11/25 12時台に公式noteトップ・おいも大収穫祭・POCO LAND・20Starsリスナーミッションの本文を再読込。新しい日時変更・中止の確定なし。おいもは公式開催期間11/25 12:00〜11/28 23:59に入ったが、アプリ内の稼働状態は未確認。明日開始のぽこチャレは公式11/26 12:00、エントリ期限12/2 23:59:59のまま。既存の同開催回を再登録しない。https://report.pococha.com/ ・ https://report.pococha.com/n/n642997ac8aa1 ・ https://report.pococha.com/n/nbf2c1188a729 ・ https://report.pococha.com/n/n6bfccb14eefa
+- EMBER12月版は11/23 13:32表示へ更新され、CDE/SAB両部門がE1〜S6掲載となった。旧12月版の部門別ランクと異なるため履歴を保全し、アプリ内条件が確認できるまで採用しない。開始15:00掲載と公式12:00の不一致も継続。11月版の本日開始候補3件（シャイニー、LILY Modern、しらスタ審査編）は先の表から変更確認なし。各申込締切・獲得条件・公式IDは未確認。https://yotei.ember-w.com/events/2026-12/ ・ https://yotei.ember-w.com/events/2026-11/
+- 321一覧、個人note本文も再読込。事務所抽選会の詳細サイトは今回取得不可、前回の確認済み条件は履歴参照にとどめ新規変更とは扱わない。個人マイイベの期間は依然記載なし。公式X個別本文・Instagramトップ・YouTubeは再取得不可、アプリ内詳細・画像条件は確認できず。検索抜粋・ミラーを本文確認に数えず、HAISHIN LAB不使用。検索期間は直近保存11/25 00時台の24時間前まで重ね、12月予告と開催中も対象。https://321.inc/event ・ https://321christmas2026.studio.site/ ・ https://note.com/tanaka_deke813/n/nb300b83e0f67 ・ https://x.com/pococha_jp/status/2124412575731294210 ・ https://www.instagram.com/pococha_jp/ ・ https://www.youtube.com/@pococha
+
+### 第三者カレンダーで確認した候補（参考・事務所企画の本文補足）
+
+- ONECARAT 11月マンスリーキャンペーン。10/30告知、対象期間11/1〜11/30（開始終了時刻は記載なし）。ONECARAT所属の全ランクが対象で月間時間ダイヤ75時間を取り切った方から抽選10名、選べるプライズ。達成後にフォーム申請、締切12/4 23:59。達成前の申請は無効、未申請・期限後は受付不可。マグカップ・文字クッションは12月頃渡し予定。全景品とイラスト条件の画像は今回未確認。Pococha運営公式のアプリ内イベントとは分離する。https://one-carat.com/campus/archives/89629
+- ONECARAT クリスマスコスプレ企画の既存参照先を本文で補足。10/30告知、11/1〜11/30（開催時刻記載なし）。条件達成者から抽選7名にクリスマスコスプレ。参加申込締切11/30 23:59、達成前の申請可。対象者・達成条件は画像で本文から読めず未確認、マンスリー企画の全ランク・75時間条件を流用しない。アプリ内イベントとしての公式裏付けは未確認。https://one-carat.com/campus/archives/90198
+
 ### 参考・再照合と確認範囲
 
 - 00時台に公式noteトップ、おいも大収穫祭、POCO LAND、20Starsリスナーミッションの本文を再読込。新しい公式日程変更・中止の確定なし。おいもは本日12:00開始、11/24 20:00のランク判定時点は経過。既存の公式行は同じ開催回のため追加しない。https://report.pococha.com/ ・ https://report.pococha.com/n/n642997ac8aa1 ・ https://report.pococha.com/n/nbf2c1188a729 ・ https://report.pococha.com/n/n6bfccb14eefa
