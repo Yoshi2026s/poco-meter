@@ -1,10 +1,110 @@
 [
   {
+    "name": "シンプルホワイトプロフィール",
+    "date": "2026-11-16",
+    "end": "2026-11-20",
+    "startTime": "12:00",
+    "endTime": "23:59",
+    "rankRange": "D3〜S6",
+    "url": "https://yotei.ember-w.com/events/2026-11/",
+    "confirmed": "2026-11-20"
+  },
+  {
+    "name": "ルーキーバナー",
+    "date": "2026-11-16",
+    "end": "2026-11-20",
+    "startTime": "12:00",
+    "endTime": "23:59",
+    "rankRange": "C1〜C3",
+    "url": "https://yotei.ember-w.com/events/2026-11/",
+    "confirmed": "2026-11-20"
+  },
+  {
+    "name": "トークバラエティ ゲスト出演権",
+    "date": "2026-11-17",
+    "end": "2026-11-21",
+    "startTime": "12:00",
+    "endTime": "23:59",
+    "rankRange": "B1〜S6",
+    "url": "https://yotei.ember-w.com/events/2026-11/",
+    "confirmed": "2026-11-20"
+  },
+  {
+    "name": "トークバラエティ サブMC出演権",
+    "date": "2026-11-17",
+    "end": "2026-11-21",
+    "startTime": "12:00",
+    "endTime": "23:59",
+    "rankRange": "B1〜S6",
+    "url": "https://yotei.ember-w.com/events/2026-11/",
+    "confirmed": "2026-11-20"
+  },
+  {
+    "name": "新潟駅広告",
+    "date": "2026-11-17",
+    "end": "2026-11-23",
+    "startTime": "12:00",
+    "endTime": "23:59",
+    "rankRange": "C1〜S6",
+    "url": "https://yotei.ember-w.com/events/2026-11/",
+    "confirmed": "2026-11-20"
+  },
+  {
+    "name": "Music Pococha! オリジナル曲 for vocals",
+    "date": "2026-11-18",
+    "end": "2026-11-24",
+    "startTime": "12:00",
+    "endTime": "23:59",
+    "rankRange": "B1〜S6",
+    "url": "https://yotei.ember-w.com/events/2026-11/",
+    "confirmed": "2026-11-20"
+  },
+  {
+    "name": "Kimono MUSE #2 決勝",
+    "date": "2026-11-18",
+    "end": "2026-11-22",
+    "startTime": "18:00",
+    "endTime": "20:59",
+    "rankRange": "E1〜S6",
+    "url": "https://yotei.ember-w.com/events/2026-11/",
+    "confirmed": "2026-11-20"
+  },
+  {
+    "name": "Music Pococha Live!! in OSAKA",
+    "date": "2026-11-19",
+    "end": "2026-11-23",
+    "startTime": "12:00",
+    "endTime": "23:59",
+    "rankRange": "C1〜S6",
+    "url": "https://yotei.ember-w.com/events/2026-11/",
+    "confirmed": "2026-11-20"
+  },
+  {
+    "name": "Lucky charm コレクション クリスタルプロフィール",
+    "date": "2026-11-20",
+    "end": "2026-11-22",
+    "startTime": "12:00",
+    "endTime": "23:59",
+    "rankRange": "D1〜S6",
+    "url": "https://yotei.ember-w.com/events/2026-11/",
+    "confirmed": "2026-11-20"
+  },
+  {
     "name": "ポコリンミニ フェリ",
     "date": "2026-11-20",
     "startTime": "12:00",
     "endTime": "23:59",
     "rankRange": "D3〜S6",
+    "url": "https://yotei.ember-w.com/events/2026-11/",
+    "confirmed": "2026-11-20"
+  },
+  {
+    "name": "ar誌面出演権",
+    "date": "2026-11-21",
+    "end": "2026-11-27",
+    "startTime": "12:00",
+    "endTime": "23:59",
+    "rankRange": "B1〜S6",
     "url": "https://yotei.ember-w.com/events/2026-11/",
     "confirmed": "2026-11-20"
   },
@@ -27,6 +127,26 @@
     "confirmed": "2026-11-20"
   },
   {
+    "name": "渋谷駅広告 ブラッククール編",
+    "date": "2026-11-21",
+    "end": "2026-11-27",
+    "startTime": "12:00",
+    "endTime": "23:59",
+    "rankRange": "C1〜S6",
+    "url": "https://yotei.ember-w.com/events/2026-11/",
+    "confirmed": "2026-11-20"
+  },
+  {
+    "name": "新人戦",
+    "date": "2026-11-21",
+    "end": "2026-11-24",
+    "startTime": "12:00",
+    "endTime": "23:59",
+    "rankRange": "D1〜S6",
+    "url": "https://yotei.ember-w.com/events/2026-11/",
+    "confirmed": "2026-11-20"
+  },
+  {
     "name": "おねんねミニタオルピンキ",
     "date": "2026-11-23",
     "startTime": "12:00",
@@ -45,6 +165,26 @@
     "confirmed": "2026-11-23"
   },
   {
+    "name": "ルーキーバナー",
+    "date": "2026-11-23",
+    "end": "2026-11-27",
+    "startTime": "12:00",
+    "endTime": "23:59",
+    "rankRange": "C1〜C3",
+    "url": "https://yotei.ember-w.com/events/2026-11/",
+    "confirmed": "2026-11-23"
+  },
+  {
+    "name": "WINGプロフィール",
+    "date": "2026-11-24",
+    "end": "2026-11-26",
+    "startTime": "12:00",
+    "endTime": "23:59",
+    "rankRange": "D1〜S6",
+    "url": "https://yotei.ember-w.com/events/2026-11/",
+    "confirmed": "2026-11-24"
+  },
+  {
     "name": "ウトのつぼ缶",
     "date": "2026-11-24",
     "startTime": "12:00",
@@ -54,11 +194,51 @@
     "confirmed": "2026-11-24"
   },
   {
+    "name": "メッセージ花火制作権フラッシュミントグリーン×ガーガー",
+    "date": "2026-11-24",
+    "end": "2026-11-30",
+    "startTime": "12:00",
+    "endTime": "23:59",
+    "rankRange": "A1〜S6",
+    "url": "https://yotei.ember-w.com/events/2026-11/",
+    "confirmed": "2026-11-24"
+  },
+  {
+    "name": "Black Profile LILY Modern Rule",
+    "date": "2026-11-25",
+    "end": "2026-11-29",
+    "startTime": "12:00",
+    "endTime": "23:59",
+    "rankRange": "S3〜S6",
+    "url": "https://yotei.ember-w.com/events/2026-11/",
+    "confirmed": "2026-11-25"
+  },
+  {
     "name": "ポコリンミニ シャイニー",
     "date": "2026-11-25",
     "startTime": "12:00",
     "endTime": "23:59",
     "rankRange": "D3〜S6",
+    "url": "https://yotei.ember-w.com/events/2026-11/",
+    "confirmed": "2026-11-25"
+  },
+  {
+    "name": "歌うまオリジナル楽曲 〜しらスタ審査編〜",
+    "date": "2026-11-25",
+    "end": "2026-11-29",
+    "startTime": "12:00",
+    "endTime": "23:59",
+    "rankRange": "D1〜S6",
+    "url": "https://yotei.ember-w.com/events/2026-11/",
+    "confirmed": "2026-11-25"
+  },
+  {
+    "name": "Black Profile LILY Classic Rule",
+    "date": "2026-11-26",
+    "end": "2026-11-30",
+    "startTime": "12:00",
+    "endTime": "23:59",
+    "rankRange": "S3〜S6",
     "url": "https://yotei.ember-w.com/events/2026-11/",
     "confirmed": "2026-11-25"
   },
@@ -72,11 +252,51 @@
     "confirmed": "2026-11-26"
   },
   {
+    "name": "はじめてのオリジナル楽曲制作 ブロンズ・シルバー",
+    "date": "2026-11-26",
+    "end": "2026-11-29",
+    "startTime": "12:00",
+    "endTime": "23:59",
+    "rankRange": "D1〜C3",
+    "url": "https://yotei.ember-w.com/events/2026-11/",
+    "confirmed": "2026-11-25"
+  },
+  {
+    "name": "はじめてのオリジナル楽曲制作 SAB",
+    "date": "2026-11-27",
+    "end": "2026-11-29",
+    "startTime": "12:00",
+    "endTime": "23:59",
+    "rankRange": "B1〜S6",
+    "url": "https://yotei.ember-w.com/events/2026-11/",
+    "confirmed": "2026-11-25"
+  },
+  {
+    "name": "新人戦 決勝戦",
+    "date": "2026-11-27",
+    "end": "2026-11-29",
+    "startTime": "12:00",
+    "endTime": "23:59",
+    "rankRange": "D1〜S6",
+    "url": "https://yotei.ember-w.com/events/2026-11/",
+    "confirmed": "2026-11-25"
+  },
+  {
     "name": "配信で激辛チャレンジ！激辛麺セット",
     "date": "2026-11-28",
     "startTime": "12:00",
     "endTime": "23:59",
     "rankRange": "D3〜S6",
+    "url": "https://yotei.ember-w.com/events/2026-11/",
+    "confirmed": "2026-11-25"
+  },
+  {
+    "name": "復刻版 Blooming Flowersプロフィール 夜のバラ編",
+    "date": "2026-11-28",
+    "end": "2026-11-30",
+    "startTime": "12:00",
+    "endTime": "23:59",
+    "rankRange": "D1〜S6",
     "url": "https://yotei.ember-w.com/events/2026-11/",
     "confirmed": "2026-11-25"
   },

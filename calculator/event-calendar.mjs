@@ -182,7 +182,7 @@ export function createEventCalendar(box, {load, today = () => new Date(Date.now(
         : 'この月はイベント情報の範囲外です（' + model.from.replaceAll('-', '/') + '〜' + model.to.replaceAll('-', '/') + '）。', 'evc-note'));
     }
     box.appendChild(detail);
-    box.appendChild(el('p', '公式の告知や第三者のイベントカレンダーなどで期間を確認できたイベントを表示します（1日につき開催中は最大12件＋最終日のもの）。「公式未確認」は第三者のイベントカレンダーにだけ載っている半日・1日イベントです。内容・条件はアプリ内の告知で確認してください。', 'evc-note'));
+    box.appendChild(el('p', '公式の告知や第三者のイベントカレンダーなどで期間を確認できたイベントを表示します（1日につき開催中は最大12件＋最終日のもの）。「公式未確認」は第三者のイベントカレンダーにだけ載っているイベントです。内容・条件はアプリ内の告知で確認してください。', 'evc-note'));
   }
   return {open, render};
 }

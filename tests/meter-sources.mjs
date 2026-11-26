@@ -214,9 +214,9 @@ assert.equal(titleNameOf('「ヒーロー戦隊」アイテム登場!'), 'ヒー
   assert.deepEqual(skipped.map(s => s.reason).sort(), ['期間を読めない', '既にあり（https://report.pococha.com/n/n1#7）', '中止・延期などの記載あり'].sort());
   assert.equal(parsePeriod('エントリ 11/26〜', '2026-11-16'), null, '終わりの無い期間は読まない');
   assert.deepEqual(extractTaskEvents('', []).lines, []);
-  // 半日・1日イベントの候補（公式未確認）：表と「第三者掲載は…」の箇条書きから、同じ日に終わるものだけ。公式の行には混ぜない
+  // イベントの候補（公式未確認）：表と「第三者掲載は…」の箇条書きから、半日・1日・複数日の開催を取り出す。公式の行には混ぜない
   const {extractTableCandidates, proseCandidates} = await import('../automation/extract-task-events.mjs');
-  const {forecastBundle, calendarEventDays} = await import('../automation/build-meter-factors.mjs');
+  const {forecastBundle, calendarEventDays, EVENTS_PER_DAY} = await import('../automation/build-meter-factors.mjs');
   const cmd = [
     '## 2026-11-25（日本時間）',
     '### 第三者カレンダーで確認した候補（参考・公式未照合）',
@@ -230,21 +230,25 @@ assert.equal(titleNameOf('「ヒーロー戦隊」アイテム登場!'), 'ヒー
     '| 古い掲載 | 11/26 12:00〜23:59 | D3〜S6 |',
     '### 参考・再照合',
     '- 11/24の第三者掲載はウトのつぼ缶（12:00〜23:59、D3〜S6）、WINGプロフィール（12:00〜11/26 23:59、D1〜S6）。https://yotei.ember-w.com/events/2026-11/',
-    '- 本日開始の第三者候補は既存表のデビューぽこトレ（12:00〜23:59、E1〜D3）、新人（同時刻、D1〜S6）。',
+    '- 本日開始の第三者候補は既存表のデビューぽこトレ（12:00〜23:59、E1〜D3）、新人（同時刻、D1〜S6）、複数日（12:00〜11/29 23:59、D1〜S6）。',
+    '- 11/29の第三者掲載は年またぎ企画（12:00〜1/3 23:59、S1〜S6）。',
     '| 名前 | 備考 |', '|---|---|', '| 期間列の無い表 | 11/25 12:00〜23:59 |',
     '## 2026-11-20（日本時間）',
     '| 第三者掲載イベント | 開催期間（日本時間） | 掲載ランク |', '|---|---|---|',
     '| 古い掲載 | 11/26 12:00〜22:59 | D3〜S6 |',
   ].join('\n');
   const cand = extractTableCandidates(cmd);
-  assert.deepEqual(cand.map(c => [c.date, c.startTime, c.endTime, c.name, c.rankRange || '', c.url, c.confirmed]), [
-    ['2026-11-24', '12:00', '23:59', 'ウトのつぼ缶', 'D3〜S6', 'https://yotei.ember-w.com/events/2026-11/', '2026-11-25'],
-    ['2026-11-25', '12:00', '23:59', 'デビューぽこトレ', 'E1〜D3', 'https://github.com/Yoshi2026s/poco-meter/blob/HEAD/docs/pococha-event-sources.md', '2026-11-25'],
-    ['2026-11-25', '12:00', '23:59', 'ポコリンミニ シャイニー', 'D3〜S6', 'https://yotei.ember-w.com/events/2026-11/', '2026-11-25'],
-    ['2026-11-25', '12:00', '23:59', '新人', 'D1〜S6', 'https://github.com/Yoshi2026s/poco-meter/blob/HEAD/docs/pococha-event-sources.md', '2026-11-25'],
-    ['2026-11-26', '12:00', '23:59', '古い掲載', 'D3〜S6', 'https://yotei.ember-w.com/events/2026-11/', '2026-11-25'],
-    ['2026-11-30', '12:00', '23:59', 'デビューぽこトレ', 'E1〜D3', 'https://yotei.ember-w.com/events/2026-11/', '2026-11-25'],
-  ], '同じ日に終わる行だけ・複数日・中止・期間なし・期間列の無い表は入れない・掲載元はPococha公式以外のURL・回の表記は名前から外す・「同時刻」は前の項目の時刻');
+  assert.deepEqual(cand.map(c => [c.date, c.end || '', c.startTime, c.endTime, c.name, c.rankRange || '', c.url, c.confirmed]), [
+    ['2026-11-24', '2026-11-26', '12:00', '23:59', 'WINGプロフィール', 'D1〜S6', 'https://yotei.ember-w.com/events/2026-11/', '2026-11-25'],
+    ['2026-11-24', '', '12:00', '23:59', 'ウトのつぼ缶', 'D3〜S6', 'https://yotei.ember-w.com/events/2026-11/', '2026-11-25'],
+    ['2026-11-25', '', '12:00', '23:59', 'デビューぽこトレ', 'E1〜D3', 'https://github.com/Yoshi2026s/poco-meter/blob/HEAD/docs/pococha-event-sources.md', '2026-11-25'],
+    ['2026-11-25', '', '12:00', '23:59', 'ポコリンミニ シャイニー', 'D3〜S6', 'https://yotei.ember-w.com/events/2026-11/', '2026-11-25'],
+    ['2026-11-25', '', '12:00', '23:59', '新人', 'D1〜S6', 'https://github.com/Yoshi2026s/poco-meter/blob/HEAD/docs/pococha-event-sources.md', '2026-11-25'],
+    ['2026-11-25', '2026-11-29', '12:00', '23:59', '複数日の企画', 'D1〜S6', 'https://yotei.ember-w.com/events/2026-11/', '2026-11-25'],
+    ['2026-11-26', '', '12:00', '23:59', '古い掲載', 'D3〜S6', 'https://yotei.ember-w.com/events/2026-11/', '2026-11-25'],
+    ['2026-11-29', '2027-01-03', '12:00', '23:59', '年またぎ企画', 'S1〜S6', 'https://github.com/Yoshi2026s/poco-meter/blob/HEAD/docs/pococha-event-sources.md', '2026-11-25'],
+    ['2026-11-30', '', '12:00', '23:59', 'デビューぽこトレ', 'E1〜D3', 'https://yotei.ember-w.com/events/2026-11/', '2026-11-25'],
+  ], '半日・1日・複数日（年またぎ）を読む・中止・期間なし・期間列の無い表は入れない・掲載元はPococha公式以外のURL・回の表記は名前から外す・「同時刻」は前の項目の時刻・箇条書きの「複数日」は表の「複数日の企画」と期間・時刻・ランクが同じで名前が共通するので表の方だけ');
   assert.deepEqual(proseCandidates('11/24の第三者掲載は中止の企画（12:00〜23:59、D3〜S6）。', '2026-11-25'), [], '中止の記載がある箇条書きは読まない');
   assert.equal(extractTaskEvents(cmd, []).lines.length, 0, '表の行・参考欄の箇条書きは公式の行（task-events）に入れない');
   // 画面用データ：候補は candidate: true で本日のイベラス（lasts）と明日開始（phase first）に入り、公式に同じものがあれば足さない
@@ -257,8 +261,24 @@ assert.equal(titleNameOf('「ヒーロー戦隊」アイテム登場!'), 'ヒー
   assert.ok(debut && debut.candidate && debut.phase === 'first' && debut.ends && debut.rankRange === 'E1〜D3' && debut.ranks.join() === 'D1,D2,D3' && debut.startTime === '12:00', '候補は1日開催（開始日＝最終日）として入る');
   assert.ok(fb.days['2026-11-30'].events.some(e => e.candidate), '明日開始の一覧（events の phase first）にも入る');
   assert.ok(!Object.values(forecastBundle({weekday: {}}, official, '2026-11-25', {before: 1, after: 5}).days).some(d => [...d.events, ...d.lasts].some(e => e.candidate)), '候補を渡さなければ入らない（予想の答え合わせ・記録は従来どおり）');
+  // 複数日の候補：開始日は first（明日開始）、途中は middle（開催中）、終了日は last＋lasts（本日のイベラス）
+  const multi = d => fb.days[d].events.find(e => e.title === '複数日の企画');
+  assert.deepEqual(['2026-11-25', '2026-11-27', '2026-11-29'].map(d => [multi(d)?.phase, multi(d)?.ends, multi(d)?.start, multi(d)?.end]), [['first', false, '2026-11-25', '2026-11-29'], ['middle', false, '2026-11-25', '2026-11-29'], ['last', true, '2026-11-25', '2026-11-29']]);
+  assert.ok(fb.days['2026-11-29'].lasts.some(e => e.title === '複数日の企画' && e.candidate) && !fb.days['2026-11-28'].lasts.some(e => e.title === '複数日の企画'), '複数日の候補は終了日だけイベラス');
+  assert.equal(fb.days['2026-11-30'].events.filter(e => e.candidate).length, 2, '掲載元URLが同じ候補も名前が違えば両方残る（デビューぽこトレ・年またぎ企画）');
+  // 公式と同じ名前で期間が重なる複数日の候補は足さない（開始日がずれた掲載でも公式だけ）
+  const officialMulti = {events: [...official.events, {title: 'WINGプロフィール', url: 'https://www.pococha.com/ja/news/w', type: 'event', confidence: 'high', ranks: [], periods: [{start: '2026-11-25', end: '2026-11-26', ranks: []}]}]};
+  assert.ok(!Object.values(forecastBundle({weekday: {}}, officialMulti, '2026-11-25', {before: 2, after: 3, candidates: cand}).days).some(d => d.events.some(e => e.candidate && /WING/.test(e.title))), '公式と期間が重なる同じ名前の候補は出さない');
+  // 件数の上限：公式と候補は別々に数え、候補で公式が押し出されない
+  const manyOfficial = {events: Array.from({length: 14}, (_, i) => ({title: '公式' + i, url: 'https://www.pococha.com/ja/news/o' + i, type: 'event', confidence: 'high', ranks: [], periods: [{start: '2026-11-20', end: '2026-11-30', ranks: []}]}))};
+  const manyCand = Array.from({length: 14}, (_, i) => ({name: '候補イベント' + i, date: '2026-11-20', end: '2026-11-30', url: 'https://yotei.ember-w.com/events/2026-11/'}));
+  const busy = forecastBundle({weekday: {}}, manyOfficial, '2026-11-25', {before: 0, after: 0, candidates: manyCand}).days['2026-11-25'].events;
+  assert.deepEqual([busy.filter(e => !e.candidate).length, busy.filter(e => e.candidate).length], [EVENTS_PER_DAY, EVENTS_PER_DAY]);
   const cal = calendarEventDays(official, '2026-11-20', '2026-11-30', cand);
-  assert.ok(!(cal.days['2026-11-25'].c || []).some(i => /シャイニー/.test(cal.list[i].title)) && (cal.days['2026-11-30'].c || []).length === 1, 'イベントカレンダーの候補（c）も公式と重ねない');
+  assert.ok(!(cal.days['2026-11-25'].c || []).some(i => /シャイニー/.test(cal.list[i].title)) && (cal.days['2026-11-30'].c || []).length === 2, 'イベントカレンダーの候補（c）も公式と重ねない');
+  const wing = cal.list.findIndex(x => x.title === 'WINGプロフィール');
+  assert.deepEqual(['2026-11-23', '2026-11-24', '2026-11-25', '2026-11-26', '2026-11-27'].map(d => (cal.days[d]?.c || []).includes(wing)), [false, true, true, true, false], 'カレンダーでも複数日の候補は期間の各日に出る');
+  assert.deepEqual([cal.list[wing].start, cal.list[wing].end], ['2026-11-24', '2026-11-26']);
   // 取り込み：collect-events の取得元として読め、同じ記事の自動収集の記録を上書きしない
   const task = SOURCES.find(x => x.id === TASK_SOURCE_ID);
   assert.ok(task && task.pasted === 'data/task-events.txt' && task.kind === 'official', '取得元：ChatGPT定期タスクの確認記録');

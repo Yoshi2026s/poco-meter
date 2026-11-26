@@ -189,17 +189,17 @@ export const FORECAST_TAGS = ['payday10-actual', 'payday10-next', 'payday20-actu
 const TYPE_ORDER = {big: 0, event: 1, collab: 2, newcomer: 3, mission: 4, item: 5, notice: 6};
 // 1日に持つ開催中イベントの上限（最終日のものは別）
 export const EVENTS_PER_DAY = 12;
-// 公式未確認の候補（data/calendar-event-candidates.json）が、公式の取得元にある同じ日・同じ名前の開催と重なるか。
+// 公式未確認の候補（data/calendar-event-candidates.json）が、公式の取得元にある同じ名前の開催と期間が重なるか（重なれば公式だけを出す）。
 const normalizeName = name => String(name || '').normalize('NFKC').replace(/[^\p{L}\p{N}]/gu, '').toLowerCase();
-export function candidateIsOfficial(events, {name, date}) {
-  const nameKey = normalizeName(name);
+export function candidateIsOfficial(events, {name, date, end}) {
+  const nameKey = normalizeName(name), last = end || date;
   return (events?.events || []).some(event => event.confidence !== 'none' && event.periods?.some(period =>
-    period.start === date && (period.end || date) === date && [period.label, event.title].some(title => {
+    period.start && period.start <= last && (period.end || period.start) >= date && [period.label, event.title].some(title => {
       const key = normalizeName(title);
       return key && (key === nameKey || (key.length >= 5 && nameKey.length >= 5 && (key.includes(nameKey) || nameKey.includes(key))));
     })));
 }
-// candidates を渡すと、公式未確認の候補（半日・1日イベント）も各日の events・lasts に candidate: true で入る（画面の「本日のイベラス」用）。
+// candidates を渡すと、公式未確認の候補（半日・1日・複数日のイベント）も各日の events・lasts に candidate: true で入る（画面の「開催中」「本日のイベラス」「明日開始」用）。
 export function forecastBundle(factors, events, todayISO, {before = 3, after = 45, backtest = null, log = null, candidates = []} = {}) {
   const usable = s => s && s.status !== 'insufficient' && Number.isFinite(s.pct);
   const pick = obj => Object.fromEntries(Object.entries(obj || {}).filter(([, s]) => usable(s)).map(([k, s]) => [k, {pct: s.pct, ...(s.label ? {label: s.label} : {}), days: s.days}]));
@@ -224,26 +224,28 @@ export function forecastBundle(factors, events, todayISO, {before = 3, after = 4
           ...(e.audience?.length ? {audience: e.audience} : {}), ...(e.sourceId === 'pococha-official-sns' ? {sns: true} : {})});
       }
     }
-    // 公式未確認の候補（第三者カレンダー掲載の半日・1日イベント）。公式に同じものがあれば足さない。画面では「公式未確認」と出す。
+    // 公式未確認の候補（第三者カレンダー掲載のイベント）。公式に同じものがあれば足さない。画面では「公式未確認」と出す。
     for (const c of candidates || []) {
-      if (!c || c.date !== d || typeof c.name !== 'string' || candidateIsOfficial(events, c)) continue;
-      list.push({title: c.name.slice(0, 60), label: null, type: 'event', ranks: findRanks(c.rankRange || ''), phase: 'first', ends: true, start: d, end: null,
+      const last = c && (c.end || c.date);
+      if (!c || !c.date || d < c.date || d > last || typeof c.name !== 'string' || candidateIsOfficial(events, c)) continue;
+      list.push({title: c.name.slice(0, 60), label: null, type: 'event', ranks: findRanks(c.rankRange || ''), phase: d === c.date ? 'first' : d === last ? 'last' : 'middle', ends: d === last, start: c.date, end: c.end || null,
         startTime: c.startTime || null, endTime: c.endTime || null, url: c.url, candidate: true, ...(c.rankRange ? {rankRange: c.rankRange} : {})});
     }
     // 同じ記事の重複と、別の記事に載った同じイベント（名前と期間が同じ）を除き、大型→通常イベント→その他の順に並べる。
     // 最終日のものは件数に数えず（別に lasts でも持つ）、それ以外の開催中は最大 EVENTS_PER_DAY 件（最終日が多い日に開催中のものが押し出されないように）。
     const seen = new Set();
     const nameKey = x => `${String(x.label || x.title).replace(/\s*(開催期間|イベント期間|開催日程|キャンペーン期間)$/, '').replace(/[\s「」『』【】！!]/g, '')}|${x.start}|${x.end}`;
-    const once = x => { const k1 = x.url, k2 = nameKey(x); if (seen.has(k1) || seen.has(k2)) return false; seen.add(k1); seen.add(k2); return true; };
-    let running = 0;
+    // 候補は掲載元URLが共通なので、URLの代わりに名前で区別する
+    const once = x => { const k1 = x.candidate ? 'c|' + nameKey(x) : x.url, k2 = nameKey(x); if (seen.has(k1) || seen.has(k2)) return false; seen.add(k1); seen.add(k2); return true; };
+    let running = 0, runningCandidates = 0; // 公式と公式未確認の候補は別々に最大 EVENTS_PER_DAY 件
     const uniq = list.sort((a, b) => (a.phase === 'last' ? 0 : 1) - (b.phase === 'last' ? 0 : 1))
       .filter(once) // 1記事1件（最終日の期間を優先）
-      .sort((a, b) => (TYPE_ORDER[a.type] ?? 9) - (TYPE_ORDER[b.type] ?? 9) || (b.ranks.length ? 1 : 0) - (a.ranks.length ? 1 : 0))
-      .filter(x => x.ends || running++ < EVENTS_PER_DAY);
+      .sort((a, b) => (a.candidate ? 1 : 0) - (b.candidate ? 1 : 0) || (TYPE_ORDER[a.type] ?? 9) - (TYPE_ORDER[b.type] ?? 9) || (b.ranks.length ? 1 : 0) - (a.ranks.length ? 1 : 0)) // 件数の上限で公式が押し出されないよう候補は後ろ
+      .filter(x => x.ends || (x.candidate ? runningCandidates++ : running++) < EVENTS_PER_DAY);
     // 本日のイベラス（この日が最終日のもの。1日だけの開催も含む）は件数を絞りすぎないよう別に持つ。
     seen.clear();
     const lasts = list.filter(x => x.ends).filter(once)
-      .sort((a, b) => (TYPE_ORDER[a.type] ?? 9) - (TYPE_ORDER[b.type] ?? 9) || (a.endTime || '24:00').localeCompare(b.endTime || '24:00')).slice(0, 15);
+      .sort((a, b) => (a.candidate ? 1 : 0) - (b.candidate ? 1 : 0) || (TYPE_ORDER[a.type] ?? 9) - (TYPE_ORDER[b.type] ?? 9) || (a.endTime || '24:00').localeCompare(b.endTime || '24:00')).slice(0, 15);
     out.days[d] = {tags: calendarTags(d).filter(x => FORECAST_TAGS.includes(x)), events: uniq, lasts};
   }
   // 過去データの答え合わせ（automation/backtest-forecast.mjs）の要約。締め時間×ランク帯の的中率だけを入れる。
@@ -278,12 +280,15 @@ export function calendarEventDays(events, fromISO, toISO, candidates = []) {
     const e = (day.events || []).filter(x => !x.ends).map(ref), l = (day.lasts || []).map(ref);
     if (e.length || l.length) out[d] = {...(e.length ? {e} : {}), ...(l.length ? {l} : {})};
   }
-  for (const {name, date, startTime, endTime, rankRange, url} of candidates) {
-    if (!days[date] || candidateIsOfficial(events, {name, date})) continue;
-    const day = out[date] ||= {};
-    const candidateId = ref({title: name, label: name, type: 'event', ranks: findRanks(rankRange), rankRange, start: date, end: date, startTime, endTime, url});
-    const ids = day.c ||= [];
-    if (!ids.includes(candidateId)) ids.push(candidateId);
+  for (const {name, date, end, startTime, endTime, rankRange, url} of candidates) {
+    if (!date || candidateIsOfficial(events, {name, date, end})) continue;
+    const candidateId = ref({title: name, label: name, type: 'event', ranks: findRanks(rankRange), rankRange, start: date, end: end || date, startTime, endTime, url});
+    for (let t = Date.parse(date + 'T00:00:00Z'), stop = Date.parse((end || date) + 'T00:00:00Z'); t <= stop; t += DAY) {
+      const d = iso(t);
+      if (!days[d]) continue;
+      const ids = (out[d] ||= {}).c ||= [];
+      if (!ids.includes(candidateId)) ids.push(candidateId);
+    }
   }
   return {schema: 'poco-meter-event-days-v1', from: fromISO, to: toISO, list, days: out};
 }
