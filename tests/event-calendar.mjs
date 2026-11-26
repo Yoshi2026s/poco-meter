@@ -145,3 +145,24 @@ test('イベントカレンダーの半日・公式未確認の印', () => {
   assert.match(html, /\.evc-tag\.hours\{/, 'index.html に印の色');
   assert.match(html, /e\.candidate\?'・公式未確認（第三者カレンダー掲載'/, 'メイン画面のイベント欄にも公式未確認と出す');
 });
+
+// 日付マスの「半日」の印：その日に半日イベント（同じ日の時刻つき、6〜13時間）があれば件数を数える
+test('イベントカレンダーの日付マスに半日の印', () => {
+  const half = {events: [
+    {title: '半日A', url: 'https://www.pococha.com/ja/news/h1', type: 'item', confidence: 'high', ranks: [], periods: [{start: '2026-01-10', end: '2026-01-10', startTime: '12:00', endTime: '23:59', ranks: []}]},
+    {title: '3時間B', url: 'https://www.pococha.com/ja/news/h2', type: 'event', confidence: 'high', ranks: [], periods: [{start: '2026-01-10', end: '2026-01-10', startTime: '20:00', endTime: '23:00', ranks: []}]},
+    {title: '複数日C', url: 'https://www.pococha.com/ja/news/h3', type: 'event', confidence: 'high', ranks: [], periods: [{start: '2026-01-10', end: '2026-01-12', startTime: '12:00', endTime: '23:59', ranks: []}]}]};
+  const cand = [{name: '半日候補D', date: '2026-01-10', startTime: '12:00', endTime: '23:59', url: 'https://yotei.ember-w.com/events/2026-01/'}];
+  const month = eventCalendarMonth(calendarEventDays(half, '2026-01-01', '2026-01-31', cand), '2026-01');
+  const day = d => month.cells.find(c => c && c.date === d);
+  assert.equal(day('2026-01-10').half, 2, '公式の半日と公式未確認の半日を数え、3時間・複数日は数えない');
+  assert.equal(day('2026-01-11').half, 0);
+  const src = fs.readFileSync(new URL('../calculator/event-calendar.mjs', import.meta.url), 'utf8');
+  assert.match(src, /if \(cell\.half\) b\.appendChild\(el\('span', '半日'/);
+  assert.match(src, /legend\.appendChild\(el\('span', '半日', 'evc-tag hours'\)\)/);
+});
+test('対象ランクの無い候補でもカレンダーのデータを作れる', () => {
+  const r = calendarEventDays({events: []}, '2026-01-01', '2026-01-31', [{name: 'ランク不明', date: '2026-01-05', end: '2026-01-06', url: 'https://yotei.ember-w.com/events/2026-01/'}]);
+  assert.equal(r.list[r.days['2026-01-06'].c[0]].title, 'ランク不明');
+  assert.deepEqual(r.list[r.days['2026-01-06'].c[0]].ranks, []);
+});
