@@ -1,4 +1,4 @@
-import {E_SCHEMA,E_MAX,E_SEEDS,eDate,eCoverage,eYesterday,eKey,eRow,eMerge,eBackup} from './e-border-core.mjs';
+import {E_SCHEMA,E_MAX,E_SEEDS,eDate,eCoverage,eYesterday,eKey,eRow,eMerge,eBackup,eRankLabel} from './e-border-core.mjs';
 export const E_KEY='pococha-e-display-v1',E_DRAFT_KEY=E_KEY+'-drafts',E_RECOVERY_KEY=E_KEY+'-previous';
 export function eState(raw){
  if(raw===null)return {records:eMerge([],E_SEEDS).rows,hiddenSeeds:[],trash:[],lastChangedAt:''};
@@ -36,10 +36,14 @@ export function eArchive(state,rows,now=new Date().toISOString()){
  let trash=state.trash.slice();for(const r of rows){const row=eRow(r);trash=[{row,removedAt:now},...trash.filter(t=>eKey(t.row)!==eKey(row))];}
  return {...state,trash:trash.slice(0,100)};
 }
+// 旧E1〜E3で保存済みの記録と、日付・締め・値が同じEの記録（CSV往復・手入力）は保存済みとして扱い、二重登録しない。
+const eSameShown=r=>[r.date,eRankLabel(r.rank),r.close,JSON.stringify(r.values)].join('|');
 export function eMergeState(state,incoming,replace=false){
- const result=eMerge(state.records,incoming,replace),current=new Map(state.records.map(r=>[eKey(r),r])),overwritten=[];
+ const shown=new Map(state.records.map(r=>[eSameShown(r),r]));let unified=0;
+ const fresh=Array.isArray(incoming)&&incoming.length<=E_MAX?incoming.filter(r=>{const v=eRow(r),old=shown.get(eSameShown(v));if(old&&old.rank!==v.rank){unified++;return false;}return true;}):incoming;
+ const result=eMerge(state.records,fresh,replace),current=new Map(state.records.map(r=>[eKey(r),r])),overwritten=[];
  for(const row of result.rows){const old=current.get(eKey(row));if(old&&JSON.stringify(old.values)!==JSON.stringify(row.values))overwritten.push(old);}
- return {...result,state:{...eArchive(state,overwritten),records:result.rows}};
+ return {...result,same:result.same+unified,state:{...eArchive(state,overwritten),records:result.rows}};
 }
 export function eRestoreTrash(state,key,replace=false){
  const item=state.trash.find(t=>eKey(t.row)===key);if(!item)throw Error('復元する記録がありません。');
@@ -70,8 +74,8 @@ export function eDraftWrite(storage,rows,expected){
 export function eDraftPlan(existing,incoming,occupied=existing.length){
  const old=JSON.parse(eDraftEncode(existing)).drafts,next=JSON.parse(eDraftEncode(incoming)).drafts;
  if(!Number.isInteger(occupied)||occupied<old.length||occupied>100)throw Error('候補数を確認してください。');
- const seen=new Set(old.map(r=>JSON.stringify(r))),rows=[];let duplicates=0;
- for(const row of next){const key=JSON.stringify(row);if(seen.has(key)){duplicates++;continue;}seen.add(key);rows.push(row);}
+ const same=r=>JSON.stringify({...r,rank:eRankLabel(r.rank)}),seen=new Set(old.map(same)),rows=[];let duplicates=0;
+ for(const row of next){const key=same(row);if(seen.has(key)){duplicates++;continue;}seen.add(key);rows.push(row);}
  if(occupied+rows.length>100)throw Error('候補が多すぎます。先に保存してから取り込んでください。');
  return {rows,duplicates};
 }

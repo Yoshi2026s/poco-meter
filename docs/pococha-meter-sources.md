@@ -1,5 +1,11 @@
 # Pocochaメーター出典・照合記録
 
+## 2026-11-27（日本時間）
+
+- 00時台のONECARAT本文は11/24・13時、11/25・22時／24時を掲載。各D1〜S6の18ランク×±0・+1・+2の54値、計162値を既定ブランチae1a2dd20637302e8a10ca23cc6ee9100689e260と比較し全一致。該当3区分の欠損0・不一致0。前回の13時本文対象日の相違は今回の11/24値で照合できたが、以前の取得版差の原因は特定していない。実測値はdata/borders.jsonの同集計日・締め区分・ランクを参照し転載しない。https://one-carat.com/campus/archives/90414 ・ https://one-carat.com/campus/archives/90413 ・ https://one-carat.com/campus/archives/90412
+- 11/25・24時の集計対象日は11/25、締め日時は11/26 00:00日本時間として区別。最終取得成功11/26 11:40:00日本時間（sync.last_success=2026-11-26T02:40:00.446Z）。11:39:44開始schedule実行成功、保存コミットae1a2dd20637302e8a10ca23cc6ee9100689e260、後続Pages公開も成功。11/26 03:29開始scheduleも成功へ進んでいる。https://github.com/Yoshi2026s/poco-meter/actions/runs/45743904366 ・ https://github.com/Yoshi2026s/poco-meter/actions/runs/45743987454 ・ https://github.com/Yoshi2026s/poco-meter/commit/ae1a2dd20637302e8a10ca23cc6ee9100689e260
+- 11/24・13時は今回の本文と全一致で欠損解消。11/25・13時は保存行なしで対象日本文未取得。11/26・13時／22時も保存行なし・対象本文未取得で更新待ち、掲載なしとは断定しない。11/26・24時は11/27 00:00締め直後で公開待ち、11/27各締めは締め前として欠損集計対象外。E帯・ボイス別の母数と値は未確認。既存ボーダーの手編集・ゼロ埋めなし。公開borders.jsonを再取得し、同3区分のranksが既定ブランチと一致することも確認。画面操作とは区別する。https://yoshi2026s.github.io/poco-meter/data/borders.json
+
 ## 2026-11-26（日本時間）
 
 - 00時台に既定ブランチdf03c3eb25f5d4e721fd1abc2da2b1df9b0ceb37を読込。前回保存待ちの11/23・13時と11/24・22時／24時は各18ランク54値の保存行があり、計162値の保存待ちは解消。ただし今回本文との数値再照合は22時・24時の計108値に限り全一致（欠損0・不一致0）。11/23・13時の54値は保存行確認のみ。実測値はdata/borders.jsonの対象日・締め区分・ランクを参照し転載しない。https://github.com/Yoshi2026s/poco-meter/commit/df03c3eb25f5d4e721fd1abc2da2b1df9b0ceb37 ・ https://one-carat.com/campus/archives/90413 ・ https://one-carat.com/campus/archives/90412
