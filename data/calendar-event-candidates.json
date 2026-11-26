@@ -127,22 +127,22 @@
     "confirmed": "2026-11-20"
   },
   {
-    "name": "渋谷駅広告 ブラッククール編",
-    "date": "2026-11-21",
-    "end": "2026-11-27",
-    "startTime": "12:00",
-    "endTime": "23:59",
-    "rankRange": "C1〜S6",
-    "url": "https://yotei.ember-w.com/events/2026-11/",
-    "confirmed": "2026-11-20"
-  },
-  {
     "name": "新人戦",
     "date": "2026-11-21",
     "end": "2026-11-24",
     "startTime": "12:00",
     "endTime": "23:59",
     "rankRange": "D1〜S6",
+    "url": "https://yotei.ember-w.com/events/2026-11/",
+    "confirmed": "2026-11-20"
+  },
+  {
+    "name": "渋谷駅広告 ブラッククール編",
+    "date": "2026-11-21",
+    "end": "2026-11-27",
+    "startTime": "12:00",
+    "endTime": "23:59",
+    "rankRange": "C1〜S6",
     "url": "https://yotei.ember-w.com/events/2026-11/",
     "confirmed": "2026-11-20"
   },
@@ -282,21 +282,21 @@
     "confirmed": "2026-11-25"
   },
   {
-    "name": "配信で激辛チャレンジ！激辛麺セット",
-    "date": "2026-11-28",
-    "startTime": "12:00",
-    "endTime": "23:59",
-    "rankRange": "D3〜S6",
-    "url": "https://yotei.ember-w.com/events/2026-11/",
-    "confirmed": "2026-11-25"
-  },
-  {
     "name": "復刻版 Blooming Flowersプロフィール 夜のバラ編",
     "date": "2026-11-28",
     "end": "2026-11-30",
     "startTime": "12:00",
     "endTime": "23:59",
     "rankRange": "D1〜S6",
+    "url": "https://yotei.ember-w.com/events/2026-11/",
+    "confirmed": "2026-11-25"
+  },
+  {
+    "name": "配信で激辛チャレンジ！激辛麺セット",
+    "date": "2026-11-28",
+    "startTime": "12:00",
+    "endTime": "23:59",
+    "rankRange": "D3〜S6",
     "url": "https://yotei.ember-w.com/events/2026-11/",
     "confirmed": "2026-11-25"
   },
