@@ -112,13 +112,14 @@ export function extractTaskEvents(markdown, existing = []) {
   return {lines, skipped};
 }
 
-// 記録の表（「| 名前 | 開催期間 | ランク |」の形）にある、同じ日に終わる開催（半日・1日イベント）を
+// 記録の表（「| 名前 | 開催期間 | ランク |」の形）にある開催（半日・1日・複数日のイベント）を
 // 「公式未確認の候補」として取り出す（data/calendar-event-candidates.json）。公式の行（data/task-events.txt）には混ぜない。
 // - 日付の節（## YYYY-MM-DD）の表だけを読む。見出しに「参考」があっても読む（第三者カレンダーの表は参考欄に置かれるため）。
 // - 見出し行に「期間」を含む列が無い表は読まない。中止・延期などの記載がある行、名前・期間を読めない行は入れない（推測で埋めない）。
 // - 「11/24の第三者掲載はA（12:00〜23:59、D3〜S6）、…」の形の箇条書き（proseCandidates）も同じく候補にする。
 // - 掲載元は表の直前（同じ小見出しの中）にある最後の、Pococha公式以外のURL。無ければこの記録。HAISHIN LAB は使わない。
-// - 同じ名前・同じ日・同じ開始時刻は一番新しい確認日の1件だけ。公式の行との重複は画面用データを作るときに除く。
+// - 形：{name, date（開始日）, end（複数日のときだけ終了日）, startTime, endTime, rankRange, url, confirmed}。
+// - 同じ名前・同じ開始日・同じ開始時刻は一番新しい確認日の1件だけ（終了日の訂正も新しい方）。公式の行との重複は画面用データを作るときに除く。
 const cells = row => row.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map(s => s.trim());
 const isTable = raw => /^\s*\|.*\|\s*$/.test(raw);
 const isRule = raw => /^\s*\|(?:\s*:?-{2,}:?\s*\|)+\s*$/.test(raw);
@@ -134,10 +135,10 @@ function candidateUrl(text) {
   }
   return null;
 }
-// 箇条書きの「11/24の第三者掲載はA（12:00〜23:59、D3〜S6）、B（同時刻、E1〜D3）、C（12:00〜11/26 23:59、…）。」から、同じ日に終わるもの（A・B）だけ。
-// 「本日開始の第三者候補は…」の本日は節の日付。別の日付を含む（複数日にまたがる）ものと、時刻を読めないものは入れない。
+// 箇条書きの「11/24の第三者掲載はA（12:00〜23:59、D3〜S6）、B（同時刻、E1〜D3）、C（12:00〜11/26 23:59、…）。」から A・B・C。
+// 「本日開始の第三者候補は…」の本日は節の日付。120日を超える期間と、時刻を読めないものは入れない。
 const PROSE = /^(?:本日|(\d{1,2})\/(\d{1,2}))(?:開始)?の(?:既存の?)?第三者(?:掲載|候補)は([^。]+)/;
-const PROSE_ITEM = /([^、（(]{2,60}?)[（(]((\d{1,2}:\d{2})〜(\d{1,2}:\d{2})|同時刻)、\s*([DSABCE][1-6]\s*[〜～~]\s*[DSABCE][1-6])[）)]/gu;
+const PROSE_ITEM = /([^、（(]{2,60}?)[（(]((\d{1,2}:\d{2})〜(?:(\d{1,2})\/(\d{1,2})\s*)?(\d{1,2}:\d{2})|同時刻)、\s*([DSABCE][1-6]\s*[〜～~]\s*[DSABCE][1-6])[）)]/gu;
 export function proseCandidates(body, confirmed) {
   const m = String(body || '').match(PROSE);
   if (!m || SKIP_TEXT.test(m[3])) return [];
@@ -146,22 +147,32 @@ export function proseCandidates(body, confirmed) {
   const out = [];
   let last = null;
   for (const x of m[3].matchAll(PROSE_ITEM)) {
-    const times = x[3] ? [hhmm(x[3]), hhmm(x[4])] : last;
+    const times = x[3] ? [hhmm(x[3]), hhmm(x[6])] : last;
     if (!times) continue;
     last = times;
+    let end = date;
+    if (x[4]) {
+      let y = +date.slice(0, 4);
+      if (iso(y, +x[4], +x[5]) < date) y++;
+      if (!valid(y, +x[4], +x[5])) continue;
+      end = iso(y, +x[4], +x[5]);
+      if (days(end, date) > 120) continue;
+    }
     const name = tidyName(x[1].replace(/^(?:既存(?:表|候補)?の|新規の?)/, ''));
     if (!name || NOT_NAME.test(name)) continue;
-    out.push({name, date, startTime: times[0], endTime: times[1], rankRange: rankRange(x[5])});
+    out.push({name, date, ...(end !== date ? {end} : {}), startTime: times[0], endTime: times[1], rankRange: rankRange(x[7])});
   }
   return out;
 }
 export function extractTableCandidates(markdown) {
   const found = new Map();
   let confirmed = null, url = null, cols = null;
-  const add = (c, src) => {
+  const prose = new Set();
+  const add = (c, src, fromProse = false) => {
     const id = `${norm(c.name)}|${c.date}|${c.startTime || ''}`, prev = found.get(id);
     if (prev && prev.confirmed >= confirmed) return;
-    found.set(id, {name: c.name, date: c.date, ...(c.startTime ? {startTime: c.startTime} : {}), ...(c.endTime ? {endTime: c.endTime} : {}), ...(c.rankRange ? {rankRange: c.rankRange} : {}), url: src || RECORD_URL, confirmed});
+    if (fromProse) prose.add(id); else prose.delete(id);
+    found.set(id, {name: c.name, date: c.date, ...(c.end && c.end !== c.date ? {end: c.end} : {}), ...(c.startTime ? {startTime: c.startTime} : {}), ...(c.endTime ? {endTime: c.endTime} : {}), ...(c.rankRange ? {rankRange: c.rankRange} : {}), url: src || RECORD_URL, confirmed});
   };
   for (const raw of String(markdown || '').split(/\r?\n/)) {
     const day = raw.match(/^##\s+(\d{4}-\d{2}-\d{2})/);
@@ -173,7 +184,7 @@ export function extractTableCandidates(markdown) {
       cols = null;
       const u = candidateUrl(raw); if (u) url = u;
       const item = raw.match(/^\s*[-*]\s+(.*)/);
-      if (item) for (const c of proseCandidates(item[1], confirmed)) add(c, u);
+      if (item) for (const c of proseCandidates(item[1], confirmed)) add(c, u, true);
       continue;
     }
     if (isRule(raw)) continue;
@@ -185,9 +196,15 @@ export function extractTableCandidates(markdown) {
     }
     if (cols.skip || SKIP_TEXT.test(raw)) continue;
     const name = tidyName(c[0]), p = parsePeriod(c[cols.period] || '', confirmed);
-    if (!name || name.length > 60 || NOT_NAME.test(name) || /https?:/.test(name) || !p || p.end !== p.start) continue;
-    add({name, date: p.start, startTime: p.startTime, endTime: p.endTime, rankRange: cols.rank > 0 ? rankRange(c[cols.rank]) : null}, url);
+    if (!name || name.length > 60 || NOT_NAME.test(name) || /https?:/.test(name) || !p) continue;
+    add({name, date: p.start, end: p.end, startTime: p.startTime, endTime: p.endTime, rankRange: cols.rank > 0 ? rankRange(c[cols.rank]) : null}, url);
   }
+  // 箇条書きの名前は表の名前を略したもの（「LILY Classic」＝表の「Black Profile LILY Classic Rule」）があるため、
+  // 表の行と期間・時刻・掲載ランクが同じで、名前の一方が他方を含むか4文字以上共通する箇条書きの候補は表の方だけを残す。
+  const same = (a, b) => a.date === b.date && (a.end || a.date) === (b.end || b.date) && a.startTime === b.startTime && a.endTime === b.endTime && a.rankRange === b.rankRange;
+  const shares = (a, b) => { const x = norm(a), y = norm(b); if (x.includes(y) || y.includes(x)) return true; for (let i = 0; i + 4 <= x.length; i++) if (y.includes(x.slice(i, i + 4))) return true; return false; };
+  const tables = [...found].filter(([id]) => !prose.has(id)).map(([, c]) => c);
+  for (const id of prose) { const c = found.get(id); if (tables.some(t => same(c, t) && shares(c.name, t.name))) found.delete(id); }
   return [...found.values()].sort((a, b) => a.date.localeCompare(b.date) || (a.startTime || '').localeCompare(b.startTime || '') || a.name.localeCompare(b.name));
 }
 

@@ -3,7 +3,7 @@
 <head>
 <!-- sites-host-context -->
 <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-qKhDscg9AgudR1gCaqTooFMs7QdrOEauY1jAvcP0l6E=' 'sha256-9IhJI/Hr0MaIIpfvrkwn90UaK4aGaXAf/hNmOwUs/iY='; style-src 'unsafe-inline'; img-src 'self' data: blob:; font-src 'none'; connect-src 'self'; object-src 'none'; frame-src 'none'; worker-src 'self'; media-src 'none'; manifest-src 'self'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-qKhDscg9AgudR1gCaqTooFMs7QdrOEauY1jAvcP0l6E=' 'sha256-V/BM9oHFTDDyC083GQIbNY4FJSj1pIQg0ddCLj1TiB0='; style-src 'unsafe-inline'; img-src 'self' data: blob:; font-src 'none'; connect-src 'self'; object-src 'none'; frame-src 'none'; worker-src 'self'; media-src 'none'; manifest-src 'self'; base-uri 'none'; form-action 'none'">
 <meta name="pococha-app" content="meter-offline-v1">
 <!-- offline-head:start -->
 <link rel="manifest" href="/meter.webmanifest">
@@ -5142,7 +5142,7 @@ function createEventCalendar(box, {load, today = () => new Date(Date.now() + 9 *
         : 'この月はイベント情報の範囲外です（' + model.from.replaceAll('-', '/') + '〜' + model.to.replaceAll('-', '/') + '）。', 'evc-note'));
     }
     box.appendChild(detail);
-    box.appendChild(el('p', '公式の告知や第三者のイベントカレンダーなどで期間を確認できたイベントを表示します（1日につき開催中は最大12件＋最終日のもの）。「公式未確認」は第三者のイベントカレンダーにだけ載っている半日・1日イベントです。内容・条件はアプリ内の告知で確認してください。', 'evc-note'));
+    box.appendChild(el('p', '公式の告知や第三者のイベントカレンダーなどで期間を確認できたイベントを表示します（1日につき開催中は最大12件＋最終日のもの）。「公式未確認」は第三者のイベントカレンダーにだけ載っているイベントです。内容・条件はアプリ内の告知で確認してください。', 'evc-note'));
   }
   return {open, render};
 }

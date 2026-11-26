@@ -47,7 +47,7 @@ jobs:
       # メーター予想の情報源。公式noteのRSSから新しい記事だけを取り、事実（名前・期間・対象ランク・URL）を
       # data/events.json に追記する。失敗してもボーダーの保存は止めない。
       # ChatGPTの定期タスクの照合記録（docs/pococha-event-sources.md）から、期間を読める行を data/task-events.txt に、
-      # 表・「第三者掲載は…」の箇条書きにある半日・1日イベント（公式未確認）を data/calendar-event-candidates.json にする。
+      # 表・「第三者掲載は…」の箇条書きにあるイベント（半日・1日・複数日、公式未確認）を data/calendar-event-candidates.json にする。
       - name: ChatGPT定期タスクの確認記録からイベントの行を作る
         continue-on-error: true
         run: node automation/extract-task-events.mjs | tee task-events-report.json
