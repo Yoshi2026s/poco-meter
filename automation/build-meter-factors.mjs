@@ -282,7 +282,7 @@ export function calendarEventDays(events, fromISO, toISO, candidates = []) {
   }
   for (const {name, date, end, startTime, endTime, rankRange, url} of candidates) {
     if (!date || candidateIsOfficial(events, {name, date, end})) continue;
-    const candidateId = ref({title: name, label: name, type: 'event', ranks: findRanks(rankRange), rankRange, start: date, end: end || date, startTime, endTime, url});
+    const candidateId = ref({title: name, label: name, type: 'event', ranks: findRanks(rankRange || ''), rankRange, start: date, end: end || date, startTime, endTime, url});
     for (let t = Date.parse(date + 'T00:00:00Z'), stop = Date.parse((end || date) + 'T00:00:00Z'); t <= stop; t += DAY) {
       const d = iso(t);
       if (!days[d]) continue;

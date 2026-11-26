@@ -78,7 +78,8 @@ export function eventCalendarMonth(data, month, rank = '') {
     const items = [...ids('l').map(i => pick(i, true)), ...ids('e').map(i => pick(i, false)), ...ids('c').map(i => { const x = pick(i, false, true); if (x) x.last = (x.end || x.start) === date; return x; })] // 候補もその日が最終日ならイベラス
       .filter(x => x && !seen.has(x.name + '|' + x.start) && seen.add(x.name + '|' + x.start)).sort(order(date));
     count += items.length;
-    return {date, items, big: items.some(x => x.type === 'big'), lasts: items.filter(x => x.last).length};
+    // half：その日に開催される半日イベント（同じ日の時刻つき、6〜13時間）の件数。日付マスに「半日」の印を出す
+    return {date, items, big: items.some(x => x.type === 'big'), lasts: items.filter(x => x.last).length, half: items.filter(x => eventHours(x) === '半日').length};
   });
   const from = validDate(data.from) ? data.from : '', to = validDate(data.to) ? data.to : '';
   return {...calendar, rank, cells, count, from, to, covered: !!from && !!to && calendar.end >= from && calendar.start <= to};
@@ -137,7 +138,7 @@ export function createEventCalendar(box, {load, today = () => new Date(Date.now(
     rankSelect.value = rank;
     rankSelect.addEventListener('change', () => { rank = rankSelect.value; render(); find('evcRank')?.focus?.({preventScroll: true}); });
     rankRow.appendChild(rankLabel); rankRow.appendChild(rankSelect); box.appendChild(rankRow);
-    const legend = el('p', undefined, 'evc-legend'); legend.appendChild(el('span', '件数＝その日のイベント')); legend.appendChild(el('span', '大型', 'evc-tag big')); legend.appendChild(el('span', 'ラス＝最終日', 'evc-tag last')); box.appendChild(legend);
+    const legend = el('p', undefined, 'evc-legend'); legend.appendChild(el('span', '件数＝その日のイベント')); legend.appendChild(el('span', '大型', 'evc-tag big')); legend.appendChild(el('span', 'ラス＝最終日', 'evc-tag last')); legend.appendChild(el('span', '半日', 'evc-tag hours')); box.appendChild(legend);
     const week = el('div', undefined, 'evc-week'); week.setAttribute('aria-hidden', 'true');
     for (const w of ['日', '月', '火', '水', '木', '金', '土']) week.appendChild(el('span', w));
     box.appendChild(week);
@@ -151,8 +152,9 @@ export function createEventCalendar(box, {load, today = () => new Date(Date.now(
       if (cell.items.length) b.appendChild(el('span', cell.items.length + '件', 'evc-count'));
       if (cell.big) b.appendChild(el('span', '大型', 'evc-tag big'));
       if (cell.lasts) b.appendChild(el('span', 'ラス' + (cell.lasts > 1 ? cell.lasts : ''), 'evc-tag last'));
+      if (cell.half) b.appendChild(el('span', '半日' + (cell.half > 1 ? cell.half : ''), 'evc-tag hours'));
       b.disabled = !cell.items.length; b.setAttribute('aria-pressed', String(cell.date === selected));
-      b.setAttribute('aria-label', cell.date + ' ' + (cell.items.length ? cell.items.map(x => (x.last ? '最終日 ' : '') + x.name).join('、') : 'イベント情報なし'));
+      b.setAttribute('aria-label', cell.date + ' ' + (cell.items.length ? cell.items.map(x => (x.last ? '最終日 ' : '') + (eventHours(x) === '半日' ? '半日 ' : '') + x.name).join('、') : 'イベント情報なし'));
       b.addEventListener('click', () => { selected = cell.date; render(); find('evcDetail')?.scrollIntoView?.({block: 'nearest', behavior: 'auto'}); box.querySelector?.('[data-event-day="' + cell.date + '"]')?.focus?.({preventScroll: true}); });
       grid.appendChild(b);
     }
