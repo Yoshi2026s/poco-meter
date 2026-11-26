@@ -90,6 +90,15 @@ export function eventSpan(x, ref = '') {
   return s + (x.startTime ? ' ' + x.startTime : '') + (e || x.endTime ? '〜' + (e ? e + (x.endTime ? ' ' : '') : '') + (x.endTime || '') : '');
 }
 
+// 同じ日の時刻つき開催の長さの印（メイン画面の aoTimeSpan と同じ区切り）：6時間以下は「3時間」など、6〜13時間は「半日」、23時間以上は「1日」。それ以外は空。
+export function eventHours(x) {
+  const min = v => { const m = typeof v === 'string' && v.match(/^(\d{1,2}):(\d{2})$/); return m ? Number(m[1]) * 60 + Number(m[2]) : NaN; };
+  if (!x || !x.start || (x.end && x.end !== x.start)) return '';
+  const d = min(x.endTime) - min(x.startTime);
+  if (!(d > 0)) return '';
+  return d <= 360 ? Math.floor(d / 60) + '時間' + (d % 60 ? d % 60 + '分' : '') : d <= 780 ? '半日' : d >= 1380 ? '1日' : '';
+}
+
 // 画面：box（中身を描き直す要素）に月の表を出す。load は data/event-days.json を返す Promise。開いたときに open() を呼ぶ。
 export function createEventCalendar(box, {load, today = () => new Date(Date.now() + 9 * 36e5).toISOString().slice(0, 10)} = {}) {
   const doc = box.ownerDocument || document;
@@ -157,6 +166,8 @@ export function createEventCalendar(box, {load, today = () => new Date(Date.now(
         const li = el('li', undefined, 'evc-item' + (x.last ? ' last' : '') + (x.type === 'big' ? ' big' : '')), head = el('div', undefined, 'evc-head');
         if (x.last) head.appendChild(el('span', '最終日', 'evc-tag last'));
         if (x.type === 'big') head.appendChild(el('span', '大型', 'evc-tag big'));
+        if (eventHours(x)) head.appendChild(el('span', eventHours(x), 'evc-tag hours'));
+        if (x.candidate) head.appendChild(el('span', '公式未確認', 'evc-tag candidate'));
         head.appendChild(el('strong', x.name)); li.appendChild(head);
         // 対象ランクは下位→上位（D1〜S6）で出す（掲載ランクの書き方とそろえる）
         const ranks = x.rankRange ? '掲載ランク ' + x.rankRange : x.ranks.length ? '対象 ' + (x.ranks.length > 6 ? x.ranks[x.ranks.length - 1] + '〜' + x.ranks[0] : x.ranks.slice().reverse().join('・')) : '対象ランクの記載なし';
@@ -171,7 +182,7 @@ export function createEventCalendar(box, {load, today = () => new Date(Date.now(
         : 'この月はイベント情報の範囲外です（' + model.from.replaceAll('-', '/') + '〜' + model.to.replaceAll('-', '/') + '）。', 'evc-note'));
     }
     box.appendChild(detail);
-    box.appendChild(el('p', '公式の告知や第三者のイベントカレンダーなどで期間を確認できたイベントを表示します（1日につき開催中は最大12件＋最終日のもの）。内容・条件はアプリ内の告知で確認してください。', 'evc-note'));
+    box.appendChild(el('p', '公式の告知や第三者のイベントカレンダーなどで期間を確認できたイベントを表示します（1日につき開催中は最大12件＋最終日のもの）。「公式未確認」は第三者のイベントカレンダーにだけ載っている半日・1日イベントです。内容・条件はアプリ内の告知で確認してください。', 'evc-note'));
   }
   return {open, render};
 }

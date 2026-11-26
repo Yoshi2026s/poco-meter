@@ -112,6 +112,85 @@ export function extractTaskEvents(markdown, existing = []) {
   return {lines, skipped};
 }
 
+// 記録の表（「| 名前 | 開催期間 | ランク |」の形）にある、同じ日に終わる開催（半日・1日イベント）を
+// 「公式未確認の候補」として取り出す（data/calendar-event-candidates.json）。公式の行（data/task-events.txt）には混ぜない。
+// - 日付の節（## YYYY-MM-DD）の表だけを読む。見出しに「参考」があっても読む（第三者カレンダーの表は参考欄に置かれるため）。
+// - 見出し行に「期間」を含む列が無い表は読まない。中止・延期などの記載がある行、名前・期間を読めない行は入れない（推測で埋めない）。
+// - 「11/24の第三者掲載はA（12:00〜23:59、D3〜S6）、…」の形の箇条書き（proseCandidates）も同じく候補にする。
+// - 掲載元は表の直前（同じ小見出しの中）にある最後の、Pococha公式以外のURL。無ければこの記録。HAISHIN LAB は使わない。
+// - 同じ名前・同じ日・同じ開始時刻は一番新しい確認日の1件だけ。公式の行との重複は画面用データを作るときに除く。
+const cells = row => row.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map(s => s.trim());
+const isTable = raw => /^\s*\|.*\|\s*$/.test(raw);
+const isRule = raw => /^\s*\|(?:\s*:?-{2,}:?\s*\|)+\s*$/.test(raw);
+const tidyName = s => String(s || '').replace(/\*\*/g, '').replace(/\s*[（(](?:\d{1,2}\/\d{1,2}|\d{1,2}月\d{1,2}日)回?[）)]\s*$/u, '').replace(/[「」『』]/g, '').trim();
+function rankRange(text) {
+  const m = String(text || '').normalize('NFKC').match(/([DSABCE][1-6])\s*[〜～~-]\s*([DSABCE][1-6])/) || String(text || '').normalize('NFKC').match(/^\s*([DSABCE][1-6])\s*$/);
+  return m ? (m[2] ? `${m[1]}〜${m[2]}` : m[1]) : null;
+}
+// 候補の掲載元：Pococha公式以外の最初のURL（第三者の掲載を公式の告知と見誤らせない）。無ければ null。
+function candidateUrl(text) {
+  for (const m of String(text || '').matchAll(/https?:\/\/[^\s｜）)」、。]+/g)) {
+    try { const u = new URL(m[0]); if (u.protocol === 'https:' && !u.username && !u.password && !BLOCKED_HOST.test(u.hostname) && u.hostname !== 'pococha.com' && !u.hostname.endsWith('.pococha.com')) return `${u.origin}${u.pathname}${u.search}`; } catch {}
+  }
+  return null;
+}
+// 箇条書きの「11/24の第三者掲載はA（12:00〜23:59、D3〜S6）、B（同時刻、E1〜D3）、C（12:00〜11/26 23:59、…）。」から、同じ日に終わるもの（A・B）だけ。
+// 「本日開始の第三者候補は…」の本日は節の日付。別の日付を含む（複数日にまたがる）ものと、時刻を読めないものは入れない。
+const PROSE = /^(?:本日|(\d{1,2})\/(\d{1,2}))(?:開始)?の(?:既存の?)?第三者(?:掲載|候補)は([^。]+)/;
+const PROSE_ITEM = /([^、（(]{2,60}?)[（(]((\d{1,2}:\d{2})〜(\d{1,2}:\d{2})|同時刻)、\s*([DSABCE][1-6]\s*[〜～~]\s*[DSABCE][1-6])[）)]/gu;
+export function proseCandidates(body, confirmed) {
+  const m = String(body || '').match(PROSE);
+  if (!m || SKIP_TEXT.test(m[3])) return [];
+  let date = confirmed;
+  if (m[1]) { const y = nearestYear(+m[1], +m[2], confirmed); if (!y) return []; date = iso(y, +m[1], +m[2]); }
+  const out = [];
+  let last = null;
+  for (const x of m[3].matchAll(PROSE_ITEM)) {
+    const times = x[3] ? [hhmm(x[3]), hhmm(x[4])] : last;
+    if (!times) continue;
+    last = times;
+    const name = tidyName(x[1].replace(/^(?:既存(?:表|候補)?の|新規の?)/, ''));
+    if (!name || NOT_NAME.test(name)) continue;
+    out.push({name, date, startTime: times[0], endTime: times[1], rankRange: rankRange(x[5])});
+  }
+  return out;
+}
+export function extractTableCandidates(markdown) {
+  const found = new Map();
+  let confirmed = null, url = null, cols = null;
+  const add = (c, src) => {
+    const id = `${norm(c.name)}|${c.date}|${c.startTime || ''}`, prev = found.get(id);
+    if (prev && prev.confirmed >= confirmed) return;
+    found.set(id, {name: c.name, date: c.date, ...(c.startTime ? {startTime: c.startTime} : {}), ...(c.endTime ? {endTime: c.endTime} : {}), ...(c.rankRange ? {rankRange: c.rankRange} : {}), url: src || RECORD_URL, confirmed});
+  };
+  for (const raw of String(markdown || '').split(/\r?\n/)) {
+    const day = raw.match(/^##\s+(\d{4}-\d{2}-\d{2})/);
+    if (day) { confirmed = day[1]; url = null; cols = null; continue; }
+    if (/^#{1,2}\s/.test(raw)) { confirmed = null; cols = null; continue; }
+    if (/^###\s/.test(raw)) { url = null; cols = null; continue; }
+    if (!confirmed) continue;
+    if (!isTable(raw)) {
+      cols = null;
+      const u = candidateUrl(raw); if (u) url = u;
+      const item = raw.match(/^\s*[-*]\s+(.*)/);
+      if (item) for (const c of proseCandidates(item[1], confirmed)) add(c, u);
+      continue;
+    }
+    if (isRule(raw)) continue;
+    const c = cells(raw);
+    if (!cols) { // 見出し行
+      const period = c.findIndex(x => /期間|日時|日程/.test(x));
+      cols = period > 0 ? {period, rank: c.findIndex(x => /ランク|対象/.test(x))} : {skip: true};
+      continue;
+    }
+    if (cols.skip || SKIP_TEXT.test(raw)) continue;
+    const name = tidyName(c[0]), p = parsePeriod(c[cols.period] || '', confirmed);
+    if (!name || name.length > 60 || NOT_NAME.test(name) || /https?:/.test(name) || !p || p.end !== p.start) continue;
+    add({name, date: p.start, startTime: p.startTime, endTime: p.endTime, rankRange: cols.rank > 0 ? rankRange(c[cols.rank]) : null}, url);
+  }
+  return [...found.values()].sort((a, b) => a.date.localeCompare(b.date) || (a.startTime || '').localeCompare(b.startTime || '') || a.name.localeCompare(b.name));
+}
+
 export const HEADER = `# ChatGPTの定期タスクの照合記録（docs/pococha-event-sources.md）から自動で作る行。手で編集しない（次の実行で作り直される）。
 # 作り方：automation/extract-task-events.mjs が日付の節（「参考」の欄を除く）にある、期間を読める行を取り出す。公式未確認（第三者カレンダー・候補・未確認）の行も正式イベントとして入れる。
 #   中止・延期の行、他の取得元に同じ開催日・同じ名前のイベントがある行は入れない。
@@ -126,6 +205,10 @@ async function main() {
   try { events = JSON.parse(await readFile(arg('events', 'data/events.json'), 'utf8')).events || []; } catch {}
   const {lines, skipped} = extractTaskEvents(md, events);
   await writeFile(arg('out', 'data/task-events.txt'), HEADER + lines.map(l => l + '\n').join(''));
-  console.log(JSON.stringify({lines: lines.length, skipped}, null, 1));
+  // 表の半日・1日イベント（公式未確認の候補）。内容が変わったときだけ書き換える。
+  const candidates = extractTableCandidates(md), file = arg('candidates', 'data/calendar-event-candidates.json');
+  const text = JSON.stringify(candidates, null, 2) + '\n';
+  if (await readFile(file, 'utf8').catch(() => '') !== text) await writeFile(file, text);
+  console.log(JSON.stringify({lines: lines.length, candidates: candidates.length, skipped}, null, 1));
 }
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) await main();

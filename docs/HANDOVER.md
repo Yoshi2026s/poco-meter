@@ -1,6 +1,6 @@
 # ポコメーター番長 引継ぎ（現状）
 
-更新日：2026/11/26（日本時間）
+更新日：2026/11/27（日本時間）
 
 共通ルールは [AGENTS.md](../AGENTS.md)。この文書は「今の状態」だけを書き、**200行・20KB以内**に保つ。版ごとの画面仕様・検証結果の詳細は [archive/HANDOVER-2026-11-21.md](archive/HANDOVER-2026-11-21.md)（2026/11/21までの旧本文）を、必要な語で検索して該当箇所だけ読む。
 
@@ -14,7 +14,8 @@
 - 公開：GitHub Pages https://yoshi2026s.github.io/poco-meter/ （既定ブランチ `(root)` への push で自動公開）
 - ボーダー：`data/borders.json`。GitHub Actions が毎日 05:00・17:00 JST に ONE CARAT から取得（記事本文＋月別表画像の2系統）。同じジョブでPococha公式noteのイベント新着も収集する。
 - 旧Sites・署名キー・旧ChatGPTタスクは使わない。旧Sitesには新URLへの移転案内を掲示済み。ただし2026/11/19時点で旧Sitesは稼働中で、書き込みAPI（/api/borders/refresh）と管理ページが応答する。止める・キーを無効にするのはSites側の操作（ユーザー作業）。GitHub Secrets は2026/11/20に登録なし（`gh secret list` が空）を確認済み。
-- ツール版：`scripts/build-pages.mjs` の `PAGES_VERSION`（v2026.11.26.1）。
+- ツール版：`scripts/build-pages.mjs` の `PAGES_VERSION`（v2026.11.27.1）。
+- 半日・1日イベント：照合記録 `docs/pococha-event-sources.md` の表（| 名前 | 開催期間 | ランク |）と「○/○の第三者掲載はA（12:00〜23:59、D3〜S6）…」の箇条書きから、同じ日に終わる開催を `automation/extract-task-events.mjs` が `data/calendar-event-candidates.json`（公式未確認の候補、毎回作り直し）にする。公式の行（task-events）には混ぜず、画面では「公式未確認」と表示。公式に同じ日・同じ名前があれば公式だけを出す。複数日の第三者候補は従来どおり反映しない。
 - E帯の旧ランク（E1〜E3）の記録は、日付・締め・値が同じEの記録（CSVの書き出し→取り込み、下書きの再復元）と同じものとして扱い、二重登録しない。旧記録を編集して保存しても元のランクを保つ（v2026.11.26.1、`tests/e-rank-dedupe.mjs`）。
 - 訪問者統計：GoatCounter（`GOATCOUNTER_CODE` が空なら無効、現在 `poco-meter`）。公開4画面のページ別集計に加え、共通イベント `site-visitor-daily`（「サイト全体の訪問者数（1日・日本時間）」）で同じブラウザーを日本時間0時〜翌0時の1日1件にまとめる。[管理画面](https://poco-meter.goatcounter.com/)の同名行を読む。「合計」はイベントを除外したページ訪問数。`scripts/goatcounter-site-visit.js` が Web Locks で複数タブを直列化し、`poco-meter-daily-visit-v1` に最後の送信受付日だけを保存。日別イベントだけは公式 `ns=true` で8時間判定を使わず、翌日0時直後も数える。Cookie・独自IDなし。別端末/別ブラウザー/保存データ削除後は別件になり得る。固定版 count.v5.js＋公式SRI・ヘルパーSRI・自アクセス除外を維持。以前の8時間集計 `site-visitor` は過去データとして残し、日別と合算しない。見方・送信失敗時の扱い・対応条件は [訪問者統計](codex-tasks/visitor-stats.md) を参照。
 - 目標のボーダー選択（メーターのボーダー欄・詳細側の `quickBorder`・`pickBorder`）は ±0・+1・+2 のみで「手入力」の選択肢は無い。目標値を直接入力した時も欄は直前のボーダー（`state.analysisBorder`、無ければ±0）を表示し、フォーカスが外れただけでは自動計算に戻さない。別のボーダーを選ぶか「既定値」で自動計算に戻る。既定値設定の `defaultBorder` だけは「手入力」を残す（JSで追加）。
