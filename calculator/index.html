@@ -3,7 +3,7 @@
 <head>
 <!-- sites-host-context -->
 <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-qKhDscg9AgudR1gCaqTooFMs7QdrOEauY1jAvcP0l6E=' 'sha256-gGclpYy3/Geiem1Hc3+0C23+lJJ3PhcC5oL2UcoTUWA='; style-src 'unsafe-inline'; img-src 'self' data: blob:; font-src 'none'; connect-src 'self'; object-src 'none'; frame-src 'none'; worker-src 'self'; media-src 'none'; manifest-src 'self'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-qKhDscg9AgudR1gCaqTooFMs7QdrOEauY1jAvcP0l6E=' 'sha256-bFzQzmROjZK3JvRXB2eojG7oXjkaN3eZgj97ymcTRWc='; style-src 'unsafe-inline'; img-src 'self' data: blob:; font-src 'none'; connect-src 'self'; object-src 'none'; frame-src 'none'; worker-src 'self'; media-src 'none'; manifest-src 'self'; base-uri 'none'; form-action 'none'">
 <meta name="pococha-app" content="meter-offline-v1">
 <!-- offline-head:start -->
 <link rel="manifest" href="/meter.webmanifest">
@@ -2055,6 +2055,7 @@ footer .footer-support>details[open]~.tool-creator-logo{grid-row:auto;grid-colum
 :root body #mini.main-screen .main-card .ao-last li small b{color:#9a3412!important}
 :root body #mini.main-screen .main-card .ao-badge{display:inline-block;margin-left:6px;padding:0 6px;border-radius:6px;background:#1763b5!important;color:#fff!important;font-size:12px!important;font-weight:700;vertical-align:baseline}
 :root body #mini.main-screen .main-card .ao-badge.last{background:#c2410c!important}
+:root body #mini.main-screen .main-card .ao-badge.half{background:#0e7490!important}
 :root body #mini.main-screen #miniT.soon{color:#ffa94d!important}
 :root body #mini.main-screen #miniT.urgent{color:#ff7b7b!important}
 /* 常時表示モード：同じ画面のまま、設定・メニュー類を隠して数字を大きくする。上部の帯に点灯維持の状態と終了ボタン。 */
@@ -5193,6 +5194,8 @@ return {createEventCalendar:createEventCalendar,eventCalendarMonth:eventCalendar
       var badges=[];
       if((e.ranks||[]).indexOf(rank)>=0){var b=document.createElement('span');b.className='ao-badge';b.textContent='対象ランク';badges.push(b);}
       if(e.phase==='last'&&!lastView){var l=document.createElement('span');l.className='ao-badge last';l.textContent='最終日';badges.push(l);}
+      // 半日（同じ日の時刻つき、6〜13時間）の開催には「半日」の印（イベントカレンダーの印と同じ色）
+      if(/（半日）$/.test(aoTimeSpan(e))){var h=document.createElement('span');h.className='ao-badge half';h.textContent='半日';badges.push(h);}
       if(lastView){var endB=document.createElement('b');endB.textContent=aoTimeSpan(e)?'本日 '+aoTimeSpan(e):(e.endTime?'本日 '+e.endTime+' まで':'本日まで');meta.appendChild(endB);meta.appendChild(document.createTextNode('・'+(e.start&&e.start!==(e.end||e.start)?aoMD(e.start)+'〜':'1日開催')+aoEventKind(e)));}
       else meta.textContent=aoMD(e.start)+(aoTimeSpan(e)?' '+aoTimeSpan(e):(e.end&&e.end!==e.start?'〜'+aoMD(e.end):'')+(e.endTime?' '+e.endTime+'まで':''))+aoEventKind(e);
       badges.forEach(function(x){meta.appendChild(x);});

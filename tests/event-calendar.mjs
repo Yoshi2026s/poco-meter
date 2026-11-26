@@ -166,3 +166,8 @@ test('対象ランクの無い候補でもカレンダーのデータを作れ�
   assert.equal(r.list[r.days['2026-01-06'].c[0]].title, 'ランク不明');
   assert.deepEqual(r.list[r.days['2026-01-06'].c[0]].ranks, []);
 });
+test('メイン画面のイベント欄にも半日の印', () => {
+  const html = fs.readFileSync(new URL('../calculator/index.html', import.meta.url), 'utf8');
+  assert.match(html, /if\(\/（半日）\$\/\.test\(aoTimeSpan\(e\)\)\)\{var h=document\.createElement\('span'\);h\.className='ao-badge half';h\.textContent='半日';badges\.push\(h\);\}/, '半日の開催に「半日」の印');
+  assert.match(html, /\.main-card \.ao-badge\.half\{background:#0e7490!important\}/, '印の色はイベントカレンダーの半日と同じ');
+});
