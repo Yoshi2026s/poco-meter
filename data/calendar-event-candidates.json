@@ -1,34 +1,101 @@
 [
   {
-    "name": "ポコリンミニ ヌヌ",
-    "date": "2026-11-16",
+    "name": "ポコリンミニ フェリ",
+    "date": "2026-11-20",
     "startTime": "12:00",
     "endTime": "23:59",
     "rankRange": "D3〜S6",
-    "url": "https://yotei.ember-w.com/events/2026-11/"
+    "url": "https://yotei.ember-w.com/events/2026-11/",
+    "confirmed": "2026-11-20"
+  },
+  {
+    "name": "ネクター＆スクエアタンブラー",
+    "date": "2026-11-21",
+    "startTime": "12:00",
+    "endTime": "23:59",
+    "rankRange": "D3〜S6",
+    "url": "https://yotei.ember-w.com/events/2026-11/",
+    "confirmed": "2026-11-20"
+  },
+  {
+    "name": "ぷっくりシール",
+    "date": "2026-11-21",
+    "startTime": "12:00",
+    "endTime": "23:59",
+    "rankRange": "D3〜S6",
+    "url": "https://yotei.ember-w.com/events/2026-11/",
+    "confirmed": "2026-11-20"
+  },
+  {
+    "name": "おねんねミニタオルピンキ",
+    "date": "2026-11-23",
+    "startTime": "12:00",
+    "endTime": "23:59",
+    "rankRange": "D3〜S6",
+    "url": "https://yotei.ember-w.com/events/2026-11/",
+    "confirmed": "2026-11-23"
   },
   {
     "name": "デビューぽこトレ",
-    "date": "2026-11-16",
+    "date": "2026-11-23",
     "startTime": "12:00",
     "endTime": "23:59",
     "rankRange": "E1〜D3",
-    "url": "https://yotei.ember-w.com/events/2026-11/"
+    "url": "https://yotei.ember-w.com/events/2026-11/",
+    "confirmed": "2026-11-23"
   },
   {
-    "name": "バイカラーマグカップ（クリスマスVer.）",
-    "date": "2026-11-17",
+    "name": "ウトのつぼ缶",
+    "date": "2026-11-24",
     "startTime": "12:00",
     "endTime": "23:59",
     "rankRange": "D3〜S6",
-    "url": "https://yotei.ember-w.com/events/2026-11/"
+    "url": "https://yotei.ember-w.com/events/2026-11/",
+    "confirmed": "2026-11-24"
   },
   {
-    "name": "POCOTOMOパンクッション",
-    "date": "2026-11-18",
+    "name": "ポコリンミニ シャイニー",
+    "date": "2026-11-25",
     "startTime": "12:00",
     "endTime": "23:59",
     "rankRange": "D3〜S6",
-    "url": "https://yotei.ember-w.com/events/2026-11/"
+    "url": "https://yotei.ember-w.com/events/2026-11/",
+    "confirmed": "2026-11-25"
+  },
+  {
+    "name": "デビューぽこトレ",
+    "date": "2026-11-26",
+    "startTime": "12:00",
+    "endTime": "23:59",
+    "rankRange": "E1〜D3",
+    "url": "https://yotei.ember-w.com/events/2026-11/",
+    "confirmed": "2026-11-26"
+  },
+  {
+    "name": "配信で激辛チャレンジ！激辛麺セット",
+    "date": "2026-11-28",
+    "startTime": "12:00",
+    "endTime": "23:59",
+    "rankRange": "D3〜S6",
+    "url": "https://yotei.ember-w.com/events/2026-11/",
+    "confirmed": "2026-11-25"
+  },
+  {
+    "name": "もこもこ猫耳ヘアバンド",
+    "date": "2026-11-29",
+    "startTime": "12:00",
+    "endTime": "23:59",
+    "rankRange": "D3〜S6",
+    "url": "https://yotei.ember-w.com/events/2026-11/",
+    "confirmed": "2026-11-25"
+  },
+  {
+    "name": "デビューぽこトレ",
+    "date": "2026-11-30",
+    "startTime": "12:00",
+    "endTime": "23:59",
+    "rankRange": "E1〜D3",
+    "url": "https://yotei.ember-w.com/events/2026-11/",
+    "confirmed": "2026-11-25"
   }
 ]

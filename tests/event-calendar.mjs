@@ -2,7 +2,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {eventCalendarMonth, eventCalendarName, eventCalendarURL, eventSoonOrder, eventSpan, validEventDays} from '../calculator/event-calendar.mjs';
+import {eventCalendarMonth, eventCalendarName, eventCalendarURL, eventSoonOrder, eventSpan, eventHours, validEventDays} from '../calculator/event-calendar.mjs';
 import {calendarEventDays, forecastBundle, EVENTS_PER_DAY} from '../automation/build-meter-factors.mjs';
 
 const events = {events: [
@@ -127,4 +127,21 @@ test('期間の表示は月日に0を付けず、年が違う日付だけ年を�
   assert.equal(eventSpan({start: '2026-11-11', end: '2027-02-22'}, '2026-11-17'), '11/11〜2027/2/22');
   assert.equal(eventSpan({start: '2026-11-13', end: '2026-11-17', endTime: '23:59'}, '2026-11-17'), '11/13〜11/17 23:59');
   assert.equal(eventSpan({start: '2026-11-17', end: '2026-11-17', startTime: '12:00', endTime: '23:59'}, '2026-11-17'), '11/17 12:00〜23:59');
+});
+
+// 同じ日の時刻つき開催の長さの印（メイン画面の aoTimeSpan と同じ区切り）。詳細の一覧に「半日」「公式未確認」の印が出る。
+test('イベントカレンダーの半日・公式未確認の印', () => {
+  assert.equal(eventHours({start: '2026-01-03', end: '2026-01-03', startTime: '12:00', endTime: '23:59'}), '半日');
+  assert.equal(eventHours({start: '2026-01-03', startTime: '00:00', endTime: '23:59'}), '1日');
+  assert.equal(eventHours({start: '2026-01-03', startTime: '20:00', endTime: '23:00'}), '3時間');
+  assert.equal(eventHours({start: '2026-01-03', startTime: '21:00', endTime: '22:30'}), '1時間30分');
+  assert.equal(eventHours({start: '2026-01-03', end: '2026-01-05', startTime: '12:00', endTime: '23:59'}), '', '複数日の開催には付けない');
+  assert.equal(eventHours({start: '2026-01-03', end: '2026-01-03'}), '', '時刻が無ければ付けない');
+  assert.equal(eventHours({start: '2026-01-03', startTime: '06:00', endTime: '23:00'}), '', '13〜23時間は付けない');
+  const src = fs.readFileSync(new URL('../calculator/event-calendar.mjs', import.meta.url), 'utf8');
+  assert.match(src, /eventHours\(x\), 'evc-tag hours'/);
+  assert.match(src, /'公式未確認', 'evc-tag candidate'/);
+  const html = fs.readFileSync(new URL('../calculator/index.html', import.meta.url), 'utf8');
+  assert.match(html, /\.evc-tag\.hours\{/, 'index.html に印の色');
+  assert.match(html, /e\.candidate\?'・公式未確認（第三者カレンダー掲載'/, 'メイン画面のイベント欄にも公式未確認と出す');
 });
