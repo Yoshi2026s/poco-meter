@@ -1,7 +1,7 @@
 {
  "schema": "poco-events-v1",
  "note": "イベント名・期間・対象ランク・対象（audience）・URLなどの事実だけを記録。本文は保存しない。confidence: high=「開催期間」等の見出し付きの期間を検出 / low=見出しなしの期間 / none=期間を検出できず。使用期限・配信時間・応募や選考などの期間は除外（excluded に件数）。",
- "updatedAt": "2026-11-24T19:26:04.349Z",
+ "updatedAt": "2026-11-27T15:02:52.260Z",
  "sources": [
   {
    "id": "pococha-official-note",
@@ -214,6 +214,35 @@
    "excluded": 0,
    "fetchedAt": null,
    "confirmedAt": "2026-11-14"
+  },
+  {
+   "id": "raintree-seoul-202612#task-146b76bcb8",
+   "title": "Rain Tree 韓国公演特別企画 オフショット投稿と現地配信",
+   "url": "https://www.pococha.com/ja-jp/lp/raintree-seoul-202612#task-146b76bcb8",
+   "sourceId": "pococha-official-task",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "notice",
+   "start": "2026-12-19",
+   "end": "2026-12-21",
+   "periods": [
+    {
+     "start": "2026-12-19",
+     "end": "2026-12-21",
+     "startTime": null,
+     "endTime": null,
+     "label": "Rain Tree 韓国公演特別企画 オフショット投稿と現地配信",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-28"
   },
   {
    "id": "nbf2c1188a729#task-e5d2ee5500",
@@ -439,6 +468,35 @@
    "excluded": 0,
    "fetchedAt": null,
    "confirmedAt": "2026-11-18"
+  },
+  {
+   "id": "raintree-seoul-202612#task-a1362dff33",
+   "title": "Rain Tree 韓国公演特別企画 リレー配信",
+   "url": "https://www.pococha.com/ja-jp/lp/raintree-seoul-202612#task-a1362dff33",
+   "sourceId": "pococha-official-task",
+   "sourceKind": "official",
+   "published": null,
+   "modified": null,
+   "type": "notice",
+   "start": "2026-12-04",
+   "end": "2026-12-18",
+   "periods": [
+    {
+     "start": "2026-12-04",
+     "end": "2026-12-18",
+     "startTime": null,
+     "endTime": null,
+     "label": "Rain Tree 韓国公演特別企画 リレー配信",
+     "labeled": true,
+     "ranks": []
+    }
+   ],
+   "ranks": [],
+   "confidence": "high",
+   "audience": [],
+   "excluded": 0,
+   "fetchedAt": null,
+   "confirmedAt": "2026-11-28"
   },
   {
    "id": "n803868883e7d#10",

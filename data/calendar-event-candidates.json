@@ -319,6 +319,26 @@
     "confirmed": "2026-11-25"
   },
   {
+    "name": "Kimono MUSE 創刊号 専属モデル出演権 #3 準決勝",
+    "date": "2026-12-05",
+    "end": "2026-12-11",
+    "startTime": "18:00",
+    "endTime": "20:59",
+    "rankRange": "E1〜S6",
+    "url": "https://yotei.ember-w.com/events/2026-12/",
+    "confirmed": "2026-11-28"
+  },
+  {
+    "name": "Kimono MUSE 創刊号 専属モデル出演権 #3 決勝",
+    "date": "2026-12-16",
+    "end": "2026-12-20",
+    "startTime": "18:00",
+    "endTime": "20:59",
+    "rankRange": "E1〜S6",
+    "url": "https://yotei.ember-w.com/events/2026-12/",
+    "confirmed": "2026-11-28"
+  },
+  {
     "name": "Music Pococha Live!! in NAGOYA",
     "date": "2026-12-19",
     "end": "2026-12-23",
