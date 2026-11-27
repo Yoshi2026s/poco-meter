@@ -317,5 +317,55 @@
     "rankRange": "E1〜D3",
     "url": "https://yotei.ember-w.com/events/2026-11/",
     "confirmed": "2026-11-25"
+  },
+  {
+    "name": "Music Pococha Live!! in NAGOYA",
+    "date": "2026-12-19",
+    "end": "2026-12-23",
+    "startTime": "12:00",
+    "endTime": "23:59",
+    "rankRange": "C1〜S6",
+    "url": "https://yotei.ember-w.com/events/2026-12/",
+    "confirmed": "2026-11-27"
+  },
+  {
+    "name": "大変身！レトロ着物撮影",
+    "date": "2026-12-19",
+    "end": "2026-12-23",
+    "startTime": "12:00",
+    "endTime": "23:59",
+    "rankRange": "C1〜S6",
+    "url": "https://yotei.ember-w.com/events/2026-12/",
+    "confirmed": "2026-11-27"
+  },
+  {
+    "name": "熊本駅広告",
+    "date": "2026-12-24",
+    "end": "2026-12-30",
+    "startTime": "12:00",
+    "endTime": "23:59",
+    "rankRange": "C1〜S6",
+    "url": "https://yotei.ember-w.com/events/2026-12/",
+    "confirmed": "2026-11-27"
+  },
+  {
+    "name": "年末年始ぽこチャレ",
+    "date": "2026-12-28",
+    "end": "2027-01-03",
+    "startTime": "15:00",
+    "endTime": "23:59",
+    "rankRange": "E1〜S6",
+    "url": "https://yotei.ember-w.com/events/2026-12/",
+    "confirmed": "2026-11-27"
+  },
+  {
+    "name": "キックオフセレモニー出演権",
+    "date": "2026-12-29",
+    "end": "2026-12-31",
+    "startTime": "12:00",
+    "endTime": "23:59",
+    "rankRange": "C1〜S6",
+    "url": "https://yotei.ember-w.com/events/2026-12/",
+    "confirmed": "2026-11-27"
   }
 ]
