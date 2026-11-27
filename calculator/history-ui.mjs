@@ -1,7 +1,7 @@
 const $=id=>document.getElementById(id),MAIN_KEY='pococha-meter-calc-v1',PREF_KEY='pococha-meter-history-v1',THEME_KEY='pococha-meter-history-theme-v1';
 const filterIDs=['query','rank','close','start','end','units','order','origin','view','pageSize'];
 const cardCopyNodes=new Map(),pendingCardCopies=new Map(),copiedCardTexts=new Set();
-let localReadFailed=false,calViewMonth='',calRangeChosen=false,calSelected='',calPinned='',calUser=false,calRankFocus=null,calCloseFocus=null,eCalendarRows=[],eCalendarReadFailed=false;
+let localReadFailed=false,calViewMonth='',calRangeChosen=false,calSelected='',calPinned='',calUser=false,calRankFocus=null,calCloseFocus=null,eCalendarRows=[],eCalendarReadFailed=false,halfDays=new Map();
 let page=1,liveRows=[],seedRows=normalizeHistoryRows(SEED_HISTORY),localRows=[],index=createHistoryIndex(seedRows),allMatches=[],inputTimer=0,composing=false,manualCardCopy=null,latestCardCopyRequest=0,searchCopyRequest=0,searchCopyPending=false,lastFilterSignature='',publicRequest=null,cardCopyEpoch=0,lastCardCopyScope='',displayMonth='',renderedPageSize=20;
 for(const rank of HISTORY_RANKS){const option=document.createElement('option');option.value=rank;option.textContent=rank;$('rank').appendChild(option);}
 function filters(){return Object.fromEntries(filterIDs.map(id=>[id,$(id).value]));}
@@ -33,8 +33,9 @@ function renderCalendar(f){
  calendar.cells.forEach((date,i)=>{if(!date){const blank=node('span',undefined,'calendar-blank');blank.setAttribute('aria-hidden','true');$('calendarDays').appendChild(blank);return;}
   const count=days.get(date)||0,selected=f.start===date&&f.end===date,inRange=(!f.start||date>=f.start)&&(!f.end||date<=f.end)&&!!(f.start||f.end),button=node('button',undefined,'calendar-day');
   button.type='button';button.setAttribute('data-calendar-date',date);button.setAttribute('data-has-record',String(count>0));button.setAttribute('aria-pressed',String(selected));button.classList.toggle('in-range',inRange&&!selected);
-  button.setAttribute('aria-label',Number(date.slice(0,4))+'年'+Number(date.slice(5,7))+'月'+Number(date.slice(8))+'日 '+['日','月','火','水','木','金','土'][i%7]+'曜日、'+(count?'記録'+count+'件':'記録なし'));
+  button.setAttribute('aria-label',Number(date.slice(0,4))+'年'+Number(date.slice(5,7))+'月'+Number(date.slice(8))+'日 '+['日','月','火','水','木','金','土'][i%7]+'曜日、'+(count?'記録'+count+'件':'記録なし')+(halfDays.has(date)?'、半日イベントあり':''));
   button.appendChild(node('span',String(Number(date.slice(8)))));const mark=node('span',count?'●':'','calendar-mark');mark.setAttribute('aria-hidden','true');button.appendChild(mark);
+  if(halfDays.has(date)){const half=node('span','半日','cal-half');half.setAttribute('aria-hidden','true');button.appendChild(half);}
   button.addEventListener('click',()=>{setRange({start:date,end:date});moveTo('resultHeading');});buttons.set(date,button);$('calendarDays').appendChild(button);
  });
  $('calendarStatus').textContent=f.start&&f.start===f.end&&validHistoryDate(f.start)?f.start.replaceAll('-','/')+'を選択中':f.start||f.end?'検索期間：'+(f.start||'最初の記録')+'〜'+(f.end||'最新の記録'):'日付を押すと、その日の記録を表示します。';
@@ -135,6 +136,11 @@ async function refreshPublic(){
  }catch{if(publicRequest===request)showNetworkIdle(navigator.onLine===false?'オフライン：保存済みの記録を表示しています。接続後に再確認できます。':'公開データを確認できませんでした。保存済みの記録は閲覧できます。「公開データを再確認」で再試行できます。');}
  finally{clearTimeout(timer);if(publicRequest===request){publicRequest=null;$('retryPublic').disabled=false;$('retryPublic').setAttribute('aria-busy','false');}}
 }
+// 半日イベントの印：公開中の data/event-days.json（メーター画面のイベントカレンダーと同じ）を1回だけ読む。読めなければ印なしのまま。
+async function loadHalfDays(){const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);
+ try{const response=await fetch('./data/event-days.json',{cache:'no-cache',credentials:'same-origin',signal:controller.signal});if(!response.ok)return;const text=await response.text();if(text.length>4*1024*1024)return;
+  const found=historyHalfDayDates(JSON.parse(text));if(found.size){halfDays=found;render();}}catch{}finally{clearTimeout(timer);}}
+loadHalfDays();
 $('retryPublic').addEventListener('click',refreshPublic);refreshPublic();window.addEventListener('online',refreshPublic);
 window.addEventListener('offline',()=>stopPublic('オフライン：保存済みの記録を表示しています。接続後に再確認できます。'));
 window.addEventListener('pagehide',()=>{composing=false;clearTimeout(inputTimer);inputTimer=0;searchCopyRequest++;if(searchCopyPending)$('copySearchStatus').textContent='';searchCopyPending=false;$('copySearch').disabled=false;$('copySearch').setAttribute('aria-busy','false');latestCardCopyRequest++;cardCopyEpoch++;pendingCardCopies.clear();for(const state of cardCopyNodes.values())state.button.disabled=false;stopPublic('保存済みの記録を表示しています。必要に応じて公開データを再確認できます。');});
@@ -166,7 +172,7 @@ function renderCalendarView(f){
  if(calCloseFocus!==null){const t=calCloseFocus;calCloseFocus=null;[...closeBar.children].find(c=>c.getAttribute('data-close')===t)?.focus?.({preventScroll:true});}
  if(currentChip&&typeof requestAnimationFrame==='function')requestAnimationFrame(()=>{rankBar.scrollLeft=currentChip.offsetLeft-rankBar.clientWidth/2+currentChip.offsetWidth/2;});
  if(calRankFocus!==null){const target=calRankFocus===f.rank?currentChip:null;calRankFocus=null;target?.focus?.({preventScroll:true});}
-const legend=node('p',undefined,'cal-legend');for(const [k,t] of [[0,'±0'],[1,'+1'],[2,'+2']])legend.appendChild(node('span',t,'cal-val v'+k));legend.appendChild(node('span',model.closes.length>1?'（'+model.closes.join('・')+'時〆の順）':'（上から）','sub'));box.appendChild(legend);
+const legend=node('p',undefined,'cal-legend');for(const [k,t] of [[0,'±0'],[1,'+1'],[2,'+2']])legend.appendChild(node('span',t,'cal-val v'+k));legend.appendChild(node('span',model.closes.length>1?'（'+model.closes.join('・')+'時〆の順）':'（上から）','sub'));if(halfDays.size){legend.appendChild(node('span','半日','cal-half'));legend.appendChild(node('span','半日イベントのある日','sub'));}box.appendChild(legend);
  const today=new Date(Date.now()+9*36e5).toISOString().slice(0,10),groups=model.ranks.filter(g=>g.count||model.ranks.length===1);
  if(!groups.length)box.appendChild(node('p','この月は条件に合う記録がありません。前月・翌月を確認してください。','sub cal-note'));
  for(const group of groups){
@@ -177,11 +183,11 @@ const legend=node('p',undefined,'cal-legend');for(const [k,t] of [[0,'±0'],[1,'
   for(const cell of group.cells){
    if(!cell){const blank=node('span',undefined,'cal-blank');blank.setAttribute('aria-hidden','true');grid.appendChild(blank);continue;}
    const recs=cell.records.filter(r=>r.row),b=node('button',undefined,'cal-day'+(cell.date===today?' today':''));b.type='button';b.setAttribute('data-calendar-day',cell.date);
-   b.appendChild(node('span',String(Number(cell.date.slice(8))),'cal-num'));
+   const numRow=node('span',undefined,'cal-num-row');numRow.appendChild(node('span',String(Number(cell.date.slice(8))),'cal-num'));if(halfDays.has(cell.date)){const half=node('span','半日','cal-half');half.setAttribute('aria-hidden','true');numRow.appendChild(half);}b.appendChild(numRow);
    const triple=(r,cls)=>{const g=node('span',undefined,'cal-set'+cls);for(let k=0;k<3;k++)g.appendChild(node('span',calShort(r.row,k),'cal-val v'+k));return g;};
    if(model.closes.length>1){if(recs.length)for(const close of model.closes){const r=recs.find(x=>x.close===close);b.appendChild(r?triple(r,' multi'):node('span','－','cal-set multi none'));}}else for(const r of recs.slice(0,1))b.appendChild(triple(r,''));
    b.disabled=!recs.length;b.setAttribute('aria-pressed',String(cell.date===calSelected));
-   b.setAttribute('aria-label',cell.date+' '+group.rank+' '+(recs.length?recs.map(r=>r.close+'時〆 ±0 '+historyRowNumber(r.row,0,$('units').value)+'・+1 '+historyRowNumber(r.row,1,$('units').value)+'・+2 '+historyRowNumber(r.row,2,$('units').value)).join('、'):'記録なし'));
+   b.setAttribute('aria-label',cell.date+' '+group.rank+' '+(recs.length?recs.map(r=>r.close+'時〆 ±0 '+historyRowNumber(r.row,0,$('units').value)+'・+1 '+historyRowNumber(r.row,1,$('units').value)+'・+2 '+historyRowNumber(r.row,2,$('units').value)).join('、'):'記録なし')+(halfDays.has(cell.date)?'、半日イベント'+halfDays.get(cell.date)+'件':''));
    b.addEventListener('click',()=>{calSelected=cell.date;calUser=true;renderCalendarView(filters());$('calDetail')?.scrollIntoView({block:'nearest',behavior:'auto'});box.querySelector?.('[data-calendar-day="'+cell.date+'"]')?.focus({preventScroll:true});});
    grid.appendChild(b);
   }
