@@ -1,5 +1,12 @@
 # Pocochaメーター出典・照合記録
 
+## 2026-11-28（日本時間）
+
+- 11/28 00時台に24時記事を再取得しても11/26集計分のまま。00:00を過ぎたため11/27・24時（締め日時11/28 00:00）は公開待ちに移す。11/28・13時／22時／24時は締め前で欠損集計に含めない。公開JSONの再取得でも上記3区分のランク配列は正本と一致し、syncは昼の時刻のまま。https://yoshi2026s.github.io/poco-meter/data/borders.json
+
+- 11/27 23:57開始の再確認。ONECARAT本文は11/25・13時、11/26・22時／24時のまま。各D1〜S6の18ランク×±0・+1・+2、54値×3区分の計162値を既定ブランチff6b239bf849bb767a65c905e6c6ab5ddf791a00のdata/borders.jsonと照合し全一致（3区分の欠損0・不一致0）。数値は既存データの同日同締め同ランク・指標を参照し転載しない。https://one-carat.com/campus/archives/90414 ・ https://one-carat.com/campus/archives/90413 ・ https://one-carat.com/campus/archives/90412
+- 最終取得成功は引き続き11/27 11:40:44日本時間（sync.last_success=2026-11-27T02:40:44.176Z）。schedule一覧で11/27 17時以降の実行は確認できず、対象結果は更新待ち。資料pushによるイベント生成はボーダー取得元を読まないため、ボーダー更新成功と混同しない。https://github.com/Yoshi2026s/poco-meter/actions/runs/45929720169 ・ https://github.com/Yoshi2026s/poco-meter/blob/ff6b239bf849bb767a65c905e6c6ab5ddf791a00/.github/workflows/border-update.yml
+- 残る11/26・13時と11/27・13時／22時は保存行なし・対象日本文未取得で更新待ち（取得不可）。掲載なしとは判定しない。11/27・24時の集計対象日は11/27、締め日時は11/28 00:00で、23:57開始時点では締め前。E帯・ボイス別の母数・値は今回も未確認。11/15〜11/26の保存行の再確認範囲では欠けは11/26・13時のみ。11/15・13時と11/16・22時／24時の過去依頼162値は保存維持。旧日の出典本文による再比較は今回していない。
 ## 2026-11-27（日本時間）
 
 - 今回の自動更新と公開の実行根拠：https://github.com/Yoshi2026s/poco-meter/actions/runs/45929720169 ・ https://github.com/Yoshi2026s/poco-meter/actions/runs/45929803162 。公開data/borders.jsonも再取得し、11/25・13時と11/26・22時／24時のランク配列は正本と全一致。https://yoshi2026s.github.io/poco-meter/data/borders.json
