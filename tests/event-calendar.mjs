@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {eventCalendarMonth, eventCalendarName, eventCalendarURL, eventSoonOrder, eventSpan, eventHours, validEventDays} from '../calculator/event-calendar.mjs';
 import {calendarEventDays, forecastBundle, EVENTS_PER_DAY} from '../automation/build-meter-factors.mjs';
+import {historyHalfDayDates} from '../calculator/history-core.mjs';
 
 const events = {events: [
   {title: '【大型】冬祭り開催', url: 'https://report.pococha.com/n/a', type: 'big', confidence: 'high', ranks: ['S1', 'S2'], periods: [{start: '2026-01-02', end: '2026-01-04', label: '冬祭り', ranks: ['S1', 'S2'], startTime: '12:00', endTime: '23:59'}]},
@@ -170,4 +171,18 @@ test('メイン画面のイベント欄にも半日の印', () => {
   const html = fs.readFileSync(new URL('../calculator/index.html', import.meta.url), 'utf8');
   assert.match(html, /if\(\/（半日）\$\/\.test\(aoTimeSpan\(e\)\)\)\{var h=document\.createElement\('span'\);h\.className='ao-badge half';h\.textContent='半日';badges\.push\(h\);\}/, '半日の開催に「半日」の印');
   assert.match(html, /\.main-card \.ao-badge\.half\{background:#0e7490!important\}/, '印の色はイベントカレンダーの半日と同じ');
+});
+test('過去のボーダー表のカレンダーにも半日の印（区切りはイベントカレンダーと同じ）', () => {
+  const r = calendarEventDays({events: []}, '2026-01-01', '2026-01-31', [
+    {name: '昼の半日', date: '2026-01-05', startTime: '12:00', endTime: '23:59', url: 'https://yotei.ember-w.com/events/2026-01/'},
+    {name: '夜の半日', date: '2026-01-05', startTime: '18:00', endTime: '23:59', url: 'https://yotei.ember-w.com/events/2026-01/'},
+    {name: '1日', date: '2026-01-06', startTime: '00:00', endTime: '23:59', url: 'https://yotei.ember-w.com/events/2026-01/'},
+    {name: '2日間', date: '2026-01-07', end: '2026-01-08', startTime: '12:00', endTime: '23:59', url: 'https://yotei.ember-w.com/events/2026-01/'},
+  ]);
+  const half = historyHalfDayDates(r);
+  assert.deepEqual([...half], [['2026-01-05', 1]], '12:00〜23:59 は半日、6時間未満・1日・複数日は入れない');
+  assert.equal(r.list.filter(x => eventHours(x) === '半日').length, 1, 'eventHours と同じ判定');
+  for (const bad of [null, {}, {schema: 'x', list: [], days: {}}, {schema: 'poco-meter-event-days-v1', list: 'x', days: {}}]) assert.equal(historyHalfDayDates(bad).size, 0);
+  const page = fs.readFileSync(new URL('../calculator/border-history.html', import.meta.url), 'utf8');
+  assert.ok(page.includes("fetch('./data/event-days.json'") && page.includes("'cal-half'") && page.includes('.cal-half{'), '生成したページにも入っている');
 });

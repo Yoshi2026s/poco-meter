@@ -151,3 +151,14 @@ export function historyMeterCalendar(index,filters,month){
  const ranks=scope.rank?[scope.rank]:METER_CALENDAR_RANKS,closes=scope.close?[scope.close]:HISTORY_CLOSES,byKey=new Map();for(const row of rows){const key=row.rank+'|'+row.date+'|'+row.close;if(!byKey.has(key))byKey.set(key,[]);byKey.get(key).push(row);}
  return {...calendar,count:rows.length,closes,ranks:ranks.map(rank=>({rank,count:rows.filter(row=>row.rank===rank).length,cells:calendar.cells.map(date=>date?{date,records:closes.flatMap(close=>{const matches=byKey.get(rank+'|'+date+'|'+close)||[];return matches.length?matches.map(row=>({close,row,conflict:matches.length>1})):[{close,row:null}];})}:null)}))};
 }
+// 公開時の data/event-days.json（メーター画面のイベントカレンダーと同じデータ）から、半日（同じ日の6時間超〜13時間）の開催がある日と件数を取り出す。
+// 区切りは calculator/event-calendar.mjs の eventHours と同じ。データが無い・形が違うときは空。
+export function historyHalfDayDates(data){
+ const out=new Map();if(!data||typeof data!=='object'||data.schema!=='poco-meter-event-days-v1'||!Array.isArray(data.list)||!data.days||typeof data.days!=='object')return out;
+ const min=v=>{const m=typeof v==='string'&&v.match(/^(\d{1,2}):(\d{2})$/);return m?Number(m[1])*60+Number(m[2]):NaN;};
+ const half=x=>{if(!x||typeof x!=='object'||!x.start||x.end&&x.end!==x.start)return false;const d=min(x.endTime)-min(x.startTime);return d>360&&d<=780;};
+ for(const [date,day] of Object.entries(data.days)){if(!validHistoryDate(date)||!day||typeof day!=='object')continue;
+  const ids=new Set();for(const k of ['e','l','c'])if(Array.isArray(day[k]))for(const i of day[k])if(Number.isInteger(i)&&half(data.list[i]))ids.add(i);
+  if(ids.size)out.set(date,ids.size);}
+ return out;
+}
