@@ -2,6 +2,14 @@
 
 ## 2026-11-28（日本時間）
 
+- 24時個別記事はタイムアウトを受けて待ち時間上限を30秒にした1回の再取得で完了。11/26・24時の54値も正本と全一致し、今回の取得元本文との照合は計162値・不一致0まで確認できた。最初のタイムアウト履歴は保持する。記事一覧の自動更新で起きたnetwork停止とは別の取得経路・結果であり、自動更新の復旧確認にはしない。https://one-carat.com/campus/archives/90412
+
+- 12:00開始回は既定ブランチc810073ef458455a767442ea0f670b5661200f52を再読込。11/28 11:29:39日本時間開始のschedule実行46098333086は失敗、ログのoutcome=stopped、stop.code=network、対象URLはONECARAT記事一覧。HTTP403とは特定されていない。最終失敗通知ステップ13がexit 1、前段の保存・イベント生成は成功して既存値を維持。sync.last_attemptは11/28 11:29:56、last_successは11/28 02:54:06日本時間（2026-11-27T17:54:06.191Z）、status=unavailable。https://github.com/Yoshi2026s/poco-meter/actions/runs/46098333086 ・ https://github.com/Yoshi2026s/poco-meter/commit/c810073ef458455a767442ea0f670b5661200f52 ・ https://one-carat.com/campus/archives/category/streamer-tips/pococha-rank-border
+- 個別記事を今回直接取得し11/25・13時と11/26・22時の各D1〜S6×±0・+1・+2（各54値、計108値）は正本と全一致。24時記事の初回は15秒タイムアウトで未完了のため、これを取得成功に数えない。ウェブ閲覧経路には11/26・24時の本文が表示される。数値・画像の転載をせず既存データ同日同締め同ランク同指標を参照。https://one-carat.com/campus/archives/90414 ・ https://one-carat.com/campus/archives/90413 ・ https://one-carat.com/campus/archives/90412
+- 公開JSONを再取得し、上記13時・22時と保存済み11/26・24時の計162値のランク配列・syncが正本と一致。公開成功は取得元への接続復旧を意味しない。今回の後続Pages公開46098449467は成功。https://yoshi2026s.github.io/poco-meter/data/borders.json ・ https://github.com/Yoshi2026s/poco-meter/actions/runs/46098449467
+- 11/26・13時と11/27・13時／22時／24時の4区分は保存行なし。対象日本文を取得できず取得不可として保留し、11:29の更新は失敗済みなので未実行を理由とした更新待ちとは区別する。掲載なし・ゼロ値とは扱わない。11/27・24時は集計日11/27・締め日時11/28 00:00。11/28各締めは確認時点で締め前で欠損数に含めない。E帯・ボイス別の母数・値は未確認。11/15・13時、11/16・22時／24時の過去依頼162値は保存維持の履歴を参照する。
+- Code向け照合根拠：対象automation/update-borders-json.mjsとlib/border-source.mjs、再現は記事一覧の接続でnetwork停止。今回の個別13時・22時GETは成功、24時はタイムアウトという取得経路差があるため全面的な接続拒否やコード不具合と断定しない。次回の自然なschedule実行で同URLの接続とsync.last_success・保存行を再確認する。手動再実行・ワークフロー変更・ボーダー手編集・Codexへの依頼は行わない。
+
 - 11/28 00時台に24時記事を再取得しても11/26集計分のまま。00:00を過ぎたため11/27・24時（締め日時11/28 00:00）は公開待ちに移す。11/28・13時／22時／24時は締め前で欠損集計に含めない。公開JSONの再取得でも上記3区分のランク配列は正本と一致し、syncは昼の時刻のまま。https://yoshi2026s.github.io/poco-meter/data/borders.json
 
 - 11/27 23:57開始の再確認。ONECARAT本文は11/25・13時、11/26・22時／24時のまま。各D1〜S6の18ランク×±0・+1・+2、54値×3区分の計162値を既定ブランチff6b239bf849bb767a65c905e6c6ab5ddf791a00のdata/borders.jsonと照合し全一致（3区分の欠損0・不一致0）。数値は既存データの同日同締め同ランク・指標を参照し転載しない。https://one-carat.com/campus/archives/90414 ・ https://one-carat.com/campus/archives/90413 ・ https://one-carat.com/campus/archives/90412
