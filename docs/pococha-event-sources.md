@@ -8,6 +8,22 @@
 
 ## 2026-11-28（日本時間）
 
+### 参考・12時台の再照合と確認範囲
+
+- 直近保存a9b44267427717c86d2e5b0b5bdaf1656f96e052（11/28 00:02日本時間）の24時間前まで重ね、11月末・12月予告も再検索。公式noteトップ、おいも大収穫祭、POCO LAND、Rain TreeのDeNA公式本文、LIVESTAR事務所公式、321告知ページ、個人noteを再読込。新しい公式開催日程の変更・中止の確定0件。同じ開催回の公式行は再登録しない。おいもは11/28 23:59終了、ぽこチャレは12/2 23:59:59終了・同時刻までエントリ可のまま。各対象・特典・注意点は既存公式行を参照。https://report.pococha.com/ ・ https://report.pococha.com/n/n642997ac8aa1 ・ https://report.pococha.com/n/nbf2c1188a729 ・ https://dena.com/jp/news/5484/ ・ https://livestar-tokyo.co.jp/christmas-lottery-ticket-event-2026/ ・ https://321.inc/info/event/9485 ・ https://note.com/tanaka_deke813/n/nb300b83e0f67
+- 本日11/28開始の第三者掲載は既存表の激辛麺セット（12:00〜23:59、D3〜S6）と夜のバラ編（12:00〜11/30 23:59、D1〜S6）。11/29はもこもこ猫耳ヘアバンド（12:00〜23:59、D3〜S6）、11/30はデビューぽこトレ（12:00〜23:59、E1〜D3）を本文再確認。EMBER11月94件・12月105件の一覧の版は11/27 23:44へ更新されたが、件数は今回個別照合した件数ではない。公式個別ID・エントリ・獲得条件は未確認で、既存候補に重複追加しない。https://yotei.ember-w.com/events/2026-11/ ・ https://yotei.ember-w.com/events/2026-12/
+- 12月のTEAM CUPは12/4 12:00〜12/6 23:59・D1〜S6で掲載。旧候補にあったボイス限定の表記が今回一覧にないため条件相違を保留、制限撤廃とは断定しない。TGCしずおか2027は12/4 12:00〜12/8 23:59・C1〜S6掲載で、既存ライブタイムズ記事の予選別条件と一括の掲載ランクを混同しない。https://yotei.ember-w.com/events/2026-12/ ・ https://livetimes.jp/article/67555/
+- LIVESTARはPococha参加に11/29までのDランク以上到達が必要、申込は12/15 23:59までという既存条件のまま。321詳細サイトは今回取得不可、個人マイイベは本文に正確な期間がなく現在開催中と断定しない。https://livestar-tokyo.co.jp/christmas-lottery-ticket-event-2026/ ・ https://321christmas2026.studio.site/ ・ https://note.com/tanaka_deke813/n/nb300b83e0f67
+
+### 未確認・保留（参考・SNSとアプリ内限定範囲）
+
+- 誕生日アイテムランキング12月編の終了告知という検索抜粋は継続保留。公式X投稿2125522382739898810本文と短縮リンク、12月LPは今回取得不可で、ミラーの表示だけから2026年12月終了を公式確認済みにしない。Instagram・YouTubeも取得不可。公式お知らせ一覧・合同クリスマスCanvaは本文0行。アプリ内条件、告知画像だけの条件、動画説明欄は追加確認なし。HAISHIN LAB不使用。未取得範囲は次回へ繰り越す。https://x.com/pococha_jp/status/2125522382739898810 ・ https://t.co/IQAfT6Ovsn ・ https://www.pococha.com/ja/lp/birthday-ranking-02-202612 ・ https://www.instagram.com/pococha_jp/ ・ https://www.youtube.com/@pococha ・ https://www.pococha.com/ja/news ・ https://activation-cp202412.my.canva.site/christmas2026
+
+### 第三者カレンダーで確認した候補（参考・終了済み事務所対抗戦の追加照合）
+
+- ギルドカップ2026はPococha for Businessの4/8告知本文で9/10開始〜11/14最終総力戦終了、全6団体戦と確認。TOP10はエントリ時S1〜S6を10名、DRAFT10はB1〜B3を2名・A1〜A3を4名・S1〜S6を4名。両ステージ参加可・同一ライバー重複不可、団体戦期間中は他アプリ内イベント参加不可。事務所ポイント同点時は団体戦イベントpt合算で判定。各団体戦の開始終了時刻・エントリ締切・画像内プライズ条件は未確認。副将戦の公式ID guildcup2026_top10_fukusho_1_001_224920はページ本文0行で今回の細日程を確定せず、参考記録に置く。https://note.com/pocochaforbiz/n/nd46e3309ce13 ・ https://event.pococha.com/en-us/festivals/guildcup2026_top10_fukusho_1_001_224920
+- Randiantの11/15事務所公式本文はTOP10総合3位と同期間を掲載し運営側ルール記事へリンクしている。個人minnminnの9/15公開noteは代表選出を記載するが日程・最終順位の独立裏付けには使わない。いずれも現在開催中・新規開催として扱わず、事務所対抗という種別を除外しないための終了済み照合。https://www.randiant.com/news/guild-cup-2026/ ・ https://note.com/minnminn0221/n/n7a3f036cf78c
+
 ### 公式本文で確認
 
 - Rain Tree 韓国公演特別企画 リレー配信：12/4〜12/18。メンバー16名が2人1組で全8回のトーク配信。11/26のDeNA公式発表で期間を確認。https://www.pococha.com/ja-jp/lp/raintree-seoul-202612 ・ https://dena.com/jp/news/5484/
